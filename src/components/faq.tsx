@@ -16,7 +16,7 @@ const QUESTIONS = [
     a: "Tem dois PDFs visuais (instalação e personalização) E dois guias de IA que funcionam como suporte infinito. A IA resolve qualquer problema que aparecer, sem limite de perguntas, sem fila, sem horário.",
   },
   {
-    q: "R$9,90? Qual é o truque?",
+    q: "R$19,90? Qual é o truque?",
     a: "Nenhum. Sem assinatura, sem upsell, sem paywall escondido. Você baixa o ZIP com os 8 arquivos e é seu pra sempre. O preço é acessível porque o objetivo é volume, não margem.",
   },
 ];
