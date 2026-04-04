@@ -29,7 +29,7 @@ export function CTA() {
         </div>
 
         <a
-          href="#LINK_KIWIFY"
+          href="https://pay.kiwify.com.br/D3Ari3v"
           className="group inline-flex items-center gap-2 rounded-xl bg-green-500 px-12 py-5 text-lg font-bold text-black transition-all duration-200 hover:bg-green-400 hover:-translate-y-0.5 cursor-pointer animate-pulse-glow"
         >
           QUERO O JARVIS KIT &rarr;

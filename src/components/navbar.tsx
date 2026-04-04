@@ -41,7 +41,7 @@ export function Navbar() {
 
         {/* Desktop CTA */}
         <a
-          href="#LINK_KIWIFY"
+          href="https://pay.kiwify.com.br/D3Ari3v"
           className="hidden md:inline-flex items-center gap-2 rounded-full bg-green-500 px-5 py-2 text-sm font-semibold text-black transition-all duration-200 hover:bg-green-400 cursor-pointer green-glow-sm"
         >
           Comprar Kit
@@ -71,7 +71,7 @@ export function Navbar() {
             </a>
           ))}
           <a
-            href="#LINK_KIWIFY"
+            href="https://pay.kiwify.com.br/D3Ari3v"
             onClick={() => setMobileOpen(false)}
             className="inline-flex items-center justify-center gap-2 rounded-full bg-green-500 px-5 py-2.5 text-sm font-semibold text-black cursor-pointer"
           >

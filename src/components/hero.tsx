@@ -75,7 +75,7 @@ export function Hero() {
         {/* CTAs */}
         <div className="animate-fade-in-up delay-500 mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
           <a
-            href="#LINK_KIWIFY"
+            href="https://pay.kiwify.com.br/D3Ari3v"
             className="group inline-flex items-center gap-2 rounded-xl bg-green-500 px-10 py-4 text-base font-bold text-black transition-all duration-200 hover:bg-green-400 hover:-translate-y-0.5 cursor-pointer green-glow"
           >
             QUERO O JARVIS KIT &rarr;
