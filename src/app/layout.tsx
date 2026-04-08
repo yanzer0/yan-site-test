@@ -21,9 +21,9 @@ const fraunces = Fraunces({
 });
 
 export const metadata: Metadata = {
-  title: "Infuser — Kits de Automacao e Produtividade",
+  title: "Infuser — Kits de Automação e Produtividade",
   description:
-    "Kits prontos pra transformar sua rotina. Jarvis Kit (automacao por palmas e voz) e Segundo Cerebro. Por Yan Galasso.",
+    "Kits prontos pra transformar sua rotina. Jarvis Kit (automação por palmas e voz) e Segundo Cérebro. Por Yan Galasso.",
 };
 
 export default function RootLayout({

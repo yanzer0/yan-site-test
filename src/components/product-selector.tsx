@@ -12,7 +12,7 @@ const PRODUCTS = [
     id: "jarvis" as const,
     icon: "/jarvis-product-mockup.png",
     title: "Kit Jarvis",
-    subtitle: "Automacao por palmas e voz",
+    subtitle: "Automação por palmas e voz",
     accent: "green",
     borderClass: "border-green-500/30 hover:border-green-400",
     glowClass: "green-glow-sm",
@@ -22,13 +22,13 @@ const PRODUCTS = [
   {
     id: "segundo-cerebro" as const,
     icon: null,
-    title: "Kit Segundo Cerebro",
-    subtitle: "Memoria permanente pro Claude Code",
-    accent: "purple",
-    borderClass: "border-purple-500/30 hover:border-purple-400",
-    glowClass: "purple-glow-sm",
-    titleClass: "text-purple-400",
-    bgGlow: "bg-purple-500/5",
+    title: "Kit Segundo Cérebro",
+    subtitle: "Memória permanente pro Claude Code",
+    accent: "green",
+    borderClass: "border-green-500/30 hover:border-green-400",
+    glowClass: "green-glow-sm",
+    titleClass: "text-green-400",
+    bgGlow: "bg-green-500/5",
   },
 ] as const;
 
@@ -37,7 +37,7 @@ export function ProductSelector({ onSelect }: ProductSelectorProps) {
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Dual glow orbs */}
       <div className="absolute top-1/3 left-1/3 -translate-x-1/2 w-[400px] h-[400px] rounded-full bg-green-500/8 blur-[120px] pointer-events-none" />
-      <div className="absolute top-1/3 right-1/3 translate-x-1/2 w-[400px] h-[400px] rounded-full bg-purple-500/8 blur-[120px] pointer-events-none" />
+      <div className="absolute top-1/3 right-1/3 translate-x-1/2 w-[400px] h-[400px] rounded-full bg-green-500/8 blur-[120px] pointer-events-none" />
 
       <div className="relative z-10 mx-auto max-w-3xl px-4 sm:px-6 text-center">
         {/* Logo */}
@@ -62,7 +62,7 @@ export function ProductSelector({ onSelect }: ProductSelectorProps) {
 
         {/* Headline */}
         <h1 className="animate-fade-in-up delay-100 font-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-[1.1] mb-4">
-          Qual kit voce quer?
+          Qual kit você quer?
         </h1>
 
         {/* Subline */}
@@ -91,8 +91,8 @@ export function ProductSelector({ onSelect }: ProductSelectorProps) {
                     />
                   </div>
                 ) : (
-                  <div className="w-20 h-20 rounded-lg bg-purple-500/10 border border-purple-500/20 flex items-center justify-center">
-                    <Brain className="h-8 w-8 text-purple-400" />
+                  <div className="w-20 h-20 rounded-lg bg-green-500/10 border border-green-500/20 flex items-center justify-center">
+                    <Brain className="h-8 w-8 text-green-400" />
                   </div>
                 )}
               </div>

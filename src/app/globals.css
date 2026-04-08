@@ -146,16 +146,6 @@
   .green-glow-sm {
     box-shadow: 0 2px 8px rgba(168, 232, 76, 0.08);
   }
-  /* Purple for Segundo Cerebro product differentiation */
-  .purple-glow {
-    box-shadow: 0 4px 12px rgba(168, 85, 247, 0.12);
-  }
-  .purple-glow-sm {
-    box-shadow: 0 2px 8px rgba(168, 85, 247, 0.08);
-  }
-  .text-gradient-purple {
-    @apply bg-gradient-to-r from-purple-400 to-violet-300 bg-clip-text text-transparent;
-  }
   .text-gradient-green {
     background: linear-gradient(to right, #A8E84C, #C5F26E);
     -webkit-background-clip: text;
@@ -189,14 +179,6 @@
   }
 }
 
-@keyframes pulse-glow-purple {
-  0%, 100% {
-    box-shadow: 0 4px 12px rgba(168, 85, 247, 0.1);
-  }
-  50% {
-    box-shadow: 0 6px 20px rgba(168, 85, 247, 0.18);
-  }
-}
 
 @keyframes marquee {
   from {
@@ -214,9 +196,6 @@
   }
   .animate-pulse-glow {
     animation: pulse-glow 3s ease-in-out infinite;
-  }
-  .animate-pulse-glow-purple {
-    animation: pulse-glow-purple 3s ease-in-out infinite;
   }
   .animate-marquee {
     animation: marquee 30s linear infinite;
