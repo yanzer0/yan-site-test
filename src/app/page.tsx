@@ -13,6 +13,7 @@ import { CTA } from "@/components/cta";
 import { Footer } from "@/components/footer";
 import { ProductSelector } from "@/components/product-selector";
 import { SegundoCerebro } from "@/components/segundo-cerebro";
+import { SegundoCerebroUpsell } from "@/components/upsell-segundo-cerebro";
 
 type Kit = "jarvis" | "segundo-cerebro" | null;
 
@@ -55,6 +56,7 @@ export default function Home() {
         <Technical />
         <FAQ />
         <CTA />
+        <SegundoCerebroUpsell />
       </main>
       <Footer />
     </>

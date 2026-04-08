@@ -22,7 +22,7 @@ const PRODUCTS = [
     id: "segundo-cerebro" as const,
     icon: null,
     title: "Kit Segundo Cerebro",
-    subtitle: "Em breve — mais detalhes",
+    subtitle: "Memoria permanente pro Claude Code",
     accent: "purple",
     borderClass: "border-purple-500/30 hover:border-purple-400",
     glowClass: "purple-glow-sm",
