@@ -1,23 +1,23 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, DM_Sans, JetBrains_Mono } from "next/font/google";
+import { Outfit, Space_Mono, Fraunces } from "next/font/google";
 import "./globals.css";
 
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-heading",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-});
-
-const dmSans = DM_Sans({
+const outfit = Outfit({
   variable: "--font-sans",
   subsets: ["latin"],
-  weight: ["400", "500", "700"],
+  weight: ["300", "400", "500", "600"],
 });
 
-const jetbrainsMono = JetBrains_Mono({
+const spaceMono = Space_Mono({
   variable: "--font-mono",
   subsets: ["latin"],
-  weight: ["400", "500"],
+  weight: ["400", "700"],
+});
+
+const fraunces = Fraunces({
+  variable: "--font-punch",
+  subsets: ["latin"],
+  axes: ["SOFT", "WONK"],
 });
 
 export const metadata: Metadata = {
@@ -34,7 +34,7 @@ export default function RootLayout({
   return (
     <html
       lang="pt-BR"
-      className={`${spaceGrotesk.variable} ${dmSans.variable} ${jetbrainsMono.variable} dark h-full antialiased`}
+      className={`${outfit.variable} ${spaceMono.variable} ${fraunces.variable} dark h-full antialiased`}
     >
       <body className="min-h-full flex flex-col font-sans">{children}</body>
     </html>

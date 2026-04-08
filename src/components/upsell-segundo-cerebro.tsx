@@ -6,7 +6,7 @@ export function SegundoCerebroUpsell() {
   return (
     <section className="py-16 sm:py-20">
       <div className="mx-auto max-w-3xl px-4 sm:px-6 text-center">
-        <div className="rounded-2xl border border-purple-500/20 bg-purple-500/[0.04] p-8 sm:p-10">
+        <div className="rounded-lg border border-purple-500/20 bg-purple-500/[0.04] p-8 sm:p-10">
           <div className="inline-flex items-center gap-3 mb-4">
             <span className="h-px w-5 bg-purple-400/40" />
             <span className="font-mono text-[11px] uppercase tracking-[0.15em] text-purple-400/70">
@@ -32,7 +32,7 @@ export function SegundoCerebroUpsell() {
           >
             <button
               id="kiwify-upsell-trigger-oT2C28S"
-              className="rounded-xl bg-purple-500 px-8 py-3 text-base font-bold text-white transition-all duration-200 hover:bg-purple-400 cursor-pointer purple-glow"
+              className="rounded-lg bg-purple-500 px-8 py-3 text-base font-bold text-white transition-all duration-200 hover:bg-purple-400 cursor-pointer purple-glow"
             >
               Sim, eu aceito essa oferta especial!
             </button>

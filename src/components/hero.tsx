@@ -47,7 +47,7 @@ export function Hero() {
         </p>
 
         {/* Video */}
-        <div className="animate-fade-in-up delay-300 mt-10 max-w-2xl mx-auto rounded-2xl overflow-hidden border border-green-500/10 relative group cursor-pointer" onClick={toggleVideo}>
+        <div className="animate-fade-in-up delay-300 mt-10 max-w-2xl mx-auto rounded-lg overflow-hidden border border-green-500/10 relative group cursor-pointer" onClick={toggleVideo}>
           <video
             ref={videoRef}
             src="/video-site.mp4"
@@ -76,13 +76,13 @@ export function Hero() {
         <div className="animate-fade-in-up delay-500 mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
           <a
             href="https://pay.kiwify.com.br/D3Ari3v"
-            className="group inline-flex items-center gap-2 rounded-xl bg-green-500 px-10 py-4 text-base font-bold text-black transition-all duration-200 hover:bg-green-400 hover:-translate-y-0.5 cursor-pointer green-glow"
+            className="group inline-flex items-center gap-2 rounded-lg bg-green-500 px-10 py-4 text-base font-bold text-black transition-all duration-200 hover:bg-green-400 hover:-translate-y-0.5 cursor-pointer green-glow"
           >
             QUERO O JARVIS KIT &rarr;
           </a>
           <a
             href="#como-funciona"
-            className="inline-flex items-center gap-2 rounded-xl border border-green-500/30 bg-transparent px-6 py-4 text-sm font-medium text-green-400 transition-all duration-200 hover:border-green-400 hover:bg-green-500/5 cursor-pointer"
+            className="inline-flex items-center gap-2 rounded-lg border border-green-500/30 bg-transparent px-6 py-4 text-sm font-medium text-green-400 transition-all duration-200 hover:border-green-400 hover:bg-green-500/5 cursor-pointer"
           >
             &darr; Como funciona
           </a>

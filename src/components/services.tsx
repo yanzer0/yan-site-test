@@ -30,7 +30,7 @@ export function Problem() {
         </p>
 
         {/* Image 1 - Terminal screenshot */}
-        <div className="rounded-2xl overflow-hidden border border-green-500/10">
+        <div className="rounded-lg overflow-hidden border border-green-500/10">
           <Image
             src="/jarvis-terminal.png"
             alt="Terminal macOS com JARVIS rodando"

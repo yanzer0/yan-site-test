@@ -30,7 +30,7 @@ export function CTA() {
 
         <a
           href="https://pay.kiwify.com.br/D3Ari3v"
-          className="group inline-flex items-center gap-2 rounded-xl bg-green-500 px-12 py-5 text-lg font-bold text-black transition-all duration-200 hover:bg-green-400 hover:-translate-y-0.5 cursor-pointer animate-pulse-glow"
+          className="group inline-flex items-center gap-2 rounded-lg bg-green-500 px-12 py-5 text-lg font-bold text-black transition-all duration-200 hover:bg-green-400 hover:-translate-y-0.5 cursor-pointer animate-pulse-glow"
         >
           QUERO O JARVIS KIT &rarr;
         </a>
@@ -40,7 +40,7 @@ export function CTA() {
         </p>
 
         {/* Image 4 - Product mockup */}
-        <div className="mt-10 max-w-lg mx-auto rounded-2xl overflow-hidden border border-green-500/10">
+        <div className="mt-10 max-w-lg mx-auto rounded-lg overflow-hidden border border-green-500/10">
           <Image
             src="/jarvis-product-mockup.png"
             alt="Mockup do JARVIS Kit"

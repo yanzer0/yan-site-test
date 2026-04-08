@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { Brain } from "lucide-react";
 
 interface ProductSelectorProps {
   onSelect: (kit: "jarvis" | "segundo-cerebro") => void;
@@ -75,12 +76,12 @@ export function ProductSelector({ onSelect }: ProductSelectorProps) {
             <button
               key={product.id}
               onClick={() => onSelect(product.id)}
-              className={`group relative rounded-2xl border ${product.borderClass} bg-white/[0.02] p-8 sm:p-10 text-left transition-all duration-300 hover:scale-[1.02] hover:${product.bgGlow} cursor-pointer`}
+              className={`group relative rounded-lg border ${product.borderClass} bg-white/[0.02] p-8 sm:p-10 text-left transition-all duration-300 hover:scale-[1.02] hover:${product.bgGlow} cursor-pointer`}
             >
               {/* Icon area */}
               <div className="mb-6 flex items-center justify-center">
                 {product.icon ? (
-                  <div className="w-20 h-20 rounded-2xl overflow-hidden border border-white/10">
+                  <div className="w-20 h-20 rounded-lg overflow-hidden border border-white/10">
                     <Image
                       src={product.icon}
                       alt={product.title}
@@ -90,8 +91,8 @@ export function ProductSelector({ onSelect }: ProductSelectorProps) {
                     />
                   </div>
                 ) : (
-                  <div className="w-20 h-20 rounded-2xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center">
-                    <span className="text-4xl">🧠</span>
+                  <div className="w-20 h-20 rounded-lg bg-purple-500/10 border border-purple-500/20 flex items-center justify-center">
+                    <Brain className="h-8 w-8 text-purple-400" />
                   </div>
                 )}
               </div>

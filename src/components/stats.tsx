@@ -55,7 +55,7 @@ export function AITeacher() {
         </div>
 
         {/* Image 2 - AI guide */}
-        <div className="rounded-2xl overflow-hidden border border-green-500/10">
+        <div className="rounded-lg overflow-hidden border border-green-500/10">
           <Image
             src="/jarvis-ai-guide.png"
             alt="Split screen: Claude guiando instalação + terminal com JARVIS"

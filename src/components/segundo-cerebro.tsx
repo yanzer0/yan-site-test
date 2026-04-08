@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Menu, X, ArrowLeft } from "lucide-react";
+import { Menu, X, ArrowLeft, Code2, Target, BookOpen, Video, BarChart3 } from "lucide-react";
 import Image from "next/image";
 import Script from "next/script";
 
@@ -9,7 +9,7 @@ interface SegundoCerebroProps {
   onBack: () => void;
 }
 
-const CHECKOUT_URL = "SEU_LINK_KIWIFY_AQUI";
+const CHECKOUT_URL = "https://pay.kiwify.com.br/oT2C28S";
 
 /* ─── Navbar ─── */
 function SCNavbar({ onBack }: { onBack: () => void }) {
@@ -22,7 +22,7 @@ function SCNavbar({ onBack }: { onBack: () => void }) {
 
   return (
     <header className="fixed top-4 left-4 right-4 z-50">
-      <nav className="mx-auto max-w-3xl glass rounded-2xl px-6 py-3 flex items-center justify-between">
+      <nav className="mx-auto max-w-3xl glass rounded-lg px-6 py-3 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <button
             onClick={onBack}
@@ -72,7 +72,7 @@ function SCNavbar({ onBack }: { onBack: () => void }) {
       </nav>
 
       {mobileOpen && (
-        <div className="md:hidden mt-2 mx-auto max-w-3xl glass rounded-2xl p-6 flex flex-col gap-4">
+        <div className="md:hidden mt-2 mx-auto max-w-3xl glass rounded-lg p-6 flex flex-col gap-4">
           {NAV_LINKS.map((link) => (
             <a
               key={link.label}
@@ -132,7 +132,7 @@ function HeroSection() {
           </div>
           <a
             href="#comprar"
-            className="group inline-flex items-center gap-2 rounded-xl bg-purple-500 px-10 py-4 text-base font-bold text-white transition-all duration-200 hover:bg-purple-400 hover:-translate-y-0.5 cursor-pointer purple-glow"
+            className="group inline-flex items-center gap-2 rounded-lg bg-purple-500 px-10 py-4 text-base font-bold text-white transition-all duration-200 hover:bg-purple-400 hover:-translate-y-0.5 cursor-pointer purple-glow"
           >
             Quero o Kit — R$37 &rarr;
           </a>
@@ -242,7 +242,7 @@ function RevelationSection() {
         </p>
 
         {/* Terminal block */}
-        <div className="rounded-xl bg-[#0d0d0d] border border-purple-500/15 p-5 mb-6 font-mono">
+        <div className="rounded-lg bg-[#0d0d0d] border border-purple-500/15 p-5 mb-6 font-mono">
           <div className="flex items-center gap-2 mb-3">
             <span className="w-3 h-3 rounded-full bg-red-500/60" />
             <span className="w-3 h-3 rounded-full bg-yellow-500/60" />
@@ -261,7 +261,7 @@ function RevelationSection() {
         </p>
 
         {/* Screenshot placeholder: /prospect-research */}
-        <div className="rounded-2xl overflow-hidden border border-purple-500/10 mb-10 bg-zinc-900/50">
+        <div className="rounded-lg overflow-hidden border border-purple-500/10 mb-10 bg-zinc-900/50">
           <div className="aspect-video flex items-center justify-center p-8">
             <div className="text-center">
               <div className="font-mono text-[10px] uppercase tracking-widest text-purple-400/60 mb-2">screenshot</div>
@@ -302,7 +302,7 @@ function RevelationSection() {
         </div>
 
         {/* Screenshot placeholder: .claude/commands/ */}
-        <div className="rounded-2xl overflow-hidden border border-purple-500/10 mt-8 bg-zinc-900/50">
+        <div className="rounded-lg overflow-hidden border border-purple-500/10 mt-8 bg-zinc-900/50">
           <div className="aspect-video flex items-center justify-center p-8">
             <div className="text-center">
               <div className="font-mono text-[10px] uppercase tracking-widest text-purple-400/60 mb-2">screenshot</div>
@@ -356,7 +356,7 @@ function DemoSection() {
           {DEMOS.map((demo) => (
             <div
               key={demo.title}
-              className="glass border-purple-500/10 rounded-2xl overflow-hidden"
+              className="glass border-purple-500/10 rounded-lg overflow-hidden"
             >
               {/* Screenshot placeholder */}
               <div className="aspect-video bg-zinc-900/50 flex items-center justify-center p-6">
@@ -447,7 +447,7 @@ function KitContentsSection() {
 
         {/* Screenshots: vault structure + CLAUDE.md + template */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-12">
-          <div className="rounded-2xl overflow-hidden border border-purple-500/10 bg-zinc-900/50">
+          <div className="rounded-lg overflow-hidden border border-purple-500/10 bg-zinc-900/50">
             <div className="aspect-[4/3] flex items-center justify-center p-4">
               <div className="text-center">
                 <div className="font-mono text-[10px] uppercase tracking-widest text-purple-400/60 mb-2">screenshot</div>
@@ -455,7 +455,7 @@ function KitContentsSection() {
               </div>
             </div>
           </div>
-          <div className="rounded-2xl overflow-hidden border border-purple-500/10 bg-zinc-900/50">
+          <div className="rounded-lg overflow-hidden border border-purple-500/10 bg-zinc-900/50">
             <div className="aspect-[4/3] flex items-center justify-center p-4">
               <div className="text-center">
                 <div className="font-mono text-[10px] uppercase tracking-widest text-purple-400/60 mb-2">screenshot</div>
@@ -463,7 +463,7 @@ function KitContentsSection() {
               </div>
             </div>
           </div>
-          <div className="rounded-2xl overflow-hidden border border-purple-500/10 bg-zinc-900/50">
+          <div className="rounded-lg overflow-hidden border border-purple-500/10 bg-zinc-900/50">
             <div className="aspect-[4/3] flex items-center justify-center p-4">
               <div className="text-center">
                 <div className="font-mono text-[10px] uppercase tracking-widest text-purple-400/60 mb-2">screenshot</div>
@@ -503,12 +503,12 @@ function KitContentsSection() {
 
 /* ─── Section 6: Pra Quem E ─── */
 function AudienceSection() {
-  const PROFILES = [
-    { icon: "💻", title: "Desenvolvedores", desc: "Gerencia sprints, documenta decisoes tecnicas, registra aprendizados de debugging. O daily-briefing vira seu standup pessoal. Renomeia _pipeline/ pra _projects/ e pronto." },
-    { icon: "🎯", title: "Freelancers e Agencias", desc: "Pipeline de clientes, pesquisa de prospects, geracao de propostas, follow-ups. O modulo de negocios foi feito pra voce. O Claude vira seu gerente comercial que nunca esquece um lead." },
-    { icon: "📚", title: "Estudantes e Pesquisadores", desc: "Organiza TCC, mestrado, projetos de pesquisa. Captura insights com braindump, registra referencias, acompanha progresso. O weekly-review vira sua bussola academica." },
-    { icon: "🎬", title: "Criadores de Conteudo", desc: "Calendario editorial, ideias de conteudo, posicionamento, tom de voz. O /content-idea gera sugestoes baseadas no que voce ja publicou e nos seus objetivos." },
-    { icon: "📊", title: "Gestores e Lideres", desc: "Acompanha projetos da equipe, registra decisoes estrategicas, revisao semanal de prioridades. O vault vira seu segundo cerebro gerencial." },
+  const PROFILES: { icon: React.ReactNode; title: string; desc: string }[] = [
+    { icon: <Code2 className="h-5 w-5 text-purple-400" />, title: "Desenvolvedores", desc: "Gerencia sprints, documenta decisoes tecnicas, registra aprendizados de debugging. O daily-briefing vira seu standup pessoal. Renomeia _pipeline/ pra _projects/ e pronto." },
+    { icon: <Target className="h-5 w-5 text-purple-400" />, title: "Freelancers e Agencias", desc: "Pipeline de clientes, pesquisa de prospects, geracao de propostas, follow-ups. O modulo de negocios foi feito pra voce. O Claude vira seu gerente comercial que nunca esquece um lead." },
+    { icon: <BookOpen className="h-5 w-5 text-purple-400" />, title: "Estudantes e Pesquisadores", desc: "Organiza TCC, mestrado, projetos de pesquisa. Captura insights com braindump, registra referencias, acompanha progresso. O weekly-review vira sua bussola academica." },
+    { icon: <Video className="h-5 w-5 text-purple-400" />, title: "Criadores de Conteudo", desc: "Calendario editorial, ideias de conteudo, posicionamento, tom de voz. O /content-idea gera sugestoes baseadas no que voce ja publicou e nos seus objetivos." },
+    { icon: <BarChart3 className="h-5 w-5 text-purple-400" />, title: "Gestores e Lideres", desc: "Acompanha projetos da equipe, registra decisoes estrategicas, revisao semanal de prioridades. O vault vira seu segundo cerebro gerencial." },
   ];
 
   return (
@@ -528,7 +528,7 @@ function AudienceSection() {
               key={profile.title}
               className="glass p-6 flex items-start gap-4"
             >
-              <span className="text-2xl flex-shrink-0">{profile.icon}</span>
+              <span className="flex-shrink-0 w-8 h-8 rounded-md bg-purple-500/10 flex items-center justify-center">{profile.icon}</span>
               <div>
                 <h3 className="font-heading text-[15px] font-bold text-white mb-1">
                   {profile.title}
@@ -616,7 +616,7 @@ function ValueComparisonSection() {
           {COMPARISONS.map((item) => (
             <div
               key={item.label}
-              className={`rounded-2xl p-6 text-center transition-all ${
+              className={`rounded-lg p-6 text-center transition-all ${
                 item.highlight
                   ? "border-2 border-purple-500/40 bg-purple-500/[0.06] purple-glow-sm"
                   : "glass"
@@ -729,7 +729,7 @@ function SupportSection() {
         </p>
 
         {/* Highlighted box */}
-        <div className="rounded-xl border border-purple-500/20 bg-purple-500/[0.06] p-8 mb-8">
+        <div className="rounded-lg border border-purple-500/20 bg-purple-500/[0.06] p-8 mb-8">
           <h3 className="font-heading text-xl font-bold text-white mb-4">
             Suporte Infinito via IA
           </h3>
@@ -770,7 +770,7 @@ function PricingSection() {
         </div>
 
         {/* Price box */}
-        <div className="mx-auto max-w-sm rounded-2xl border-2 border-purple-500/40 bg-purple-500/[0.06] p-8 mb-6">
+        <div className="mx-auto max-w-sm rounded-lg border-2 border-purple-500/40 bg-purple-500/[0.06] p-8 mb-6">
           <div className="font-mono text-lg text-zinc-500 line-through mb-1">R$67</div>
           <div className="font-heading text-5xl sm:text-6xl font-extrabold text-purple-400 mb-2">R$37</div>
           <p className="text-sm text-purple-300/70 mb-6">
@@ -778,7 +778,7 @@ function PricingSection() {
           </p>
           <a
             href={CHECKOUT_URL}
-            className="block w-full rounded-xl bg-purple-500 px-8 py-4 text-lg font-bold text-white transition-all duration-200 hover:bg-purple-400 hover:-translate-y-0.5 cursor-pointer animate-pulse-glow-purple"
+            className="block w-full rounded-lg bg-purple-500 px-8 py-4 text-lg font-bold text-white transition-all duration-200 hover:bg-purple-400 hover:-translate-y-0.5 cursor-pointer animate-pulse-glow-purple"
           >
             Quero o Kit Segundo Cerebro &rarr;
           </a>
@@ -819,7 +819,7 @@ function FinalPushSection() {
         <div className="mt-10 text-center">
           <a
             href="#comprar"
-            className="group inline-flex items-center gap-2 rounded-xl bg-purple-500 px-10 py-4 text-base font-bold text-white transition-all duration-200 hover:bg-purple-400 hover:-translate-y-0.5 cursor-pointer purple-glow"
+            className="group inline-flex items-center gap-2 rounded-lg bg-purple-500 px-10 py-4 text-base font-bold text-white transition-all duration-200 hover:bg-purple-400 hover:-translate-y-0.5 cursor-pointer purple-glow"
           >
             Montar meu Segundo Cerebro — R$37 &rarr;
           </a>
@@ -870,7 +870,7 @@ function JarvisUpsell() {
   return (
     <section className="py-16 sm:py-20">
       <div className="mx-auto max-w-3xl px-4 sm:px-6 text-center">
-        <div className="rounded-2xl border border-green-500/20 bg-green-500/[0.04] p-8 sm:p-10">
+        <div className="rounded-lg border border-green-500/20 bg-green-500/[0.04] p-8 sm:p-10">
           <div className="inline-flex items-center gap-3 mb-4">
             <span className="h-px w-5 bg-green-400/40" />
             <span className="font-mono text-[11px] uppercase tracking-[0.15em] text-green-400/70">
@@ -896,7 +896,7 @@ function JarvisUpsell() {
           >
             <button
               id="kiwify-upsell-trigger-D3Ari3v"
-              className="rounded-xl bg-green-500 px-8 py-3 text-base font-bold text-black transition-all duration-200 hover:bg-green-400 cursor-pointer green-glow"
+              className="rounded-lg bg-green-500 px-8 py-3 text-base font-bold text-black transition-all duration-200 hover:bg-green-400 cursor-pointer green-glow"
             >
               Sim, eu aceito essa oferta especial!
             </button>

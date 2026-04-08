@@ -18,7 +18,7 @@ export function Navbar({ onBack }: NavbarProps) {
 
   return (
     <header className="fixed top-4 left-4 right-4 z-50">
-      <nav className="mx-auto max-w-3xl glass rounded-2xl px-6 py-3 flex items-center justify-between">
+      <nav className="mx-auto max-w-3xl glass rounded-lg px-6 py-3 flex items-center justify-between">
         <div className="flex items-center gap-3">
           {/* Back button */}
           {onBack && (
@@ -76,7 +76,7 @@ export function Navbar({ onBack }: NavbarProps) {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div className="md:hidden mt-2 mx-auto max-w-3xl glass rounded-2xl p-6 flex flex-col gap-4">
+        <div className="md:hidden mt-2 mx-auto max-w-3xl glass rounded-lg p-6 flex flex-col gap-4">
           {NAV_LINKS.map((link) => (
             <a
               key={link.label}
