@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ArrowLeft } from "lucide-react";
 import Image from "next/image";
 
 const NAV_LINKS = [
@@ -9,14 +9,30 @@ const NAV_LINKS = [
   { label: "FAQ", href: "#faq" },
 ];
 
-export function Navbar() {
+interface NavbarProps {
+  onBack?: () => void;
+}
+
+export function Navbar({ onBack }: NavbarProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
     <header className="fixed top-4 left-4 right-4 z-50">
       <nav className="mx-auto max-w-3xl glass rounded-2xl px-6 py-3 flex items-center justify-between">
-        {/* Logo */}
-        <a href="#" className="flex items-center cursor-pointer">
+        <div className="flex items-center gap-3">
+          {/* Back button */}
+          {onBack && (
+            <button
+              onClick={onBack}
+              className="inline-flex items-center gap-1 text-xs text-zinc-400 hover:text-white transition-colors cursor-pointer mr-1"
+              aria-label="Voltar aos kits"
+            >
+              <ArrowLeft className="h-3.5 w-3.5" />
+              <span className="hidden sm:inline">Kits</span>
+            </button>
+          )}
+          {/* Logo */}
+          <a href="#" className="flex items-center cursor-pointer">
           <Image
             src="/lockup-sem-fundo.png"
             alt="Infuser"
@@ -25,6 +41,7 @@ export function Navbar() {
             className="h-8 w-auto"
           />
         </a>
+        </div>
 
         {/* Desktop links */}
         <div className="hidden md:flex items-center gap-8">

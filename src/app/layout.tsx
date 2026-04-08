@@ -21,9 +21,9 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "JARVIS Kit — Automação por Palmas e Voz",
+  title: "Infuser — Kits de Automacao e Produtividade",
   description:
-    "O kit completo pra transformar seu computador no Jarvis do Tony Stark. Automação por palmas e voz, pronta pra rodar em 5 minutos.",
+    "Kits prontos pra transformar sua rotina. Jarvis Kit (automacao por palmas e voz) e Segundo Cerebro. Por Yan Galasso.",
 };
 
 export default function RootLayout({

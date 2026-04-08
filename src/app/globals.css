@@ -116,6 +116,15 @@
   .green-glow-sm {
     box-shadow: 0 0 15px rgba(34, 197, 94, 0.2);
   }
+  .purple-glow {
+    box-shadow: 0 0 30px rgba(168, 85, 247, 0.3);
+  }
+  .purple-glow-sm {
+    box-shadow: 0 0 15px rgba(168, 85, 247, 0.2);
+  }
+  .text-gradient-purple {
+    @apply bg-gradient-to-r from-purple-400 to-violet-300 bg-clip-text text-transparent;
+  }
   .text-gradient-green {
     @apply bg-gradient-to-r from-green-400 to-emerald-300 bg-clip-text text-transparent;
   }
