@@ -723,10 +723,9 @@ function AudienceSection() {
 /* ─── Section 7: Pra Quem NÃO É ─── */
 function NotForSection() {
   const WARNINGS = [
-    { title: "Você não tem Claude Code.", desc: "O kit depende do Claude Code funcionando na sua máquina. Sem ele, os slash commands não rodam. Você precisa de um plano Pro, Max ou acesso via API." },
-    { title: "Você quer mágica sem esforço.", desc: "O kit vem com templates e guias, mas você precisa preencher com os SEUS dados. São 30-60 minutos de setup inicial. Se não éstá disposto a investir esse tempo, não vai funcionar." },
+    { title: "Você não tem Claude Code.", desc: "O kit depende do Claude Code funcionando na sua máquina. Sem ele, os slash commands não rodam." },
+    { title: "Você quer mágica sem esforço.", desc: "O kit vem com templates e guias, mas você precisa preencher com os SEUS dados. São 30-60 minutos de setup inicial. Se não esta disposto a investir esse tempo, não vai funcionar." },
     { title: "Você espera um curso com vídeo-aulas.", desc: "Isso não é um curso. É um sistema pronto. Tem guias escritos e suporte via IA, mas não tem vídeo-aula de 10 horas. É direto ao ponto." },
-    { title: "Você nunca usou um terminal.", desc: "O Claude Code roda no terminal. Se você nunca abriu um terminal na vida e não tem interesse em aprender, esse kit não vai funcionar pra você." },
   ];
 
   return (
@@ -762,7 +761,7 @@ function NotForSection() {
           ))}
         </div>
 
-        <p className="mt-8 text-sm text-zinc-600 text-center">
+        <p className="mt-10 text-base sm:text-lg text-zinc-400 text-center font-medium">
           Se nenhum desses se aplica, continua lendo. O que vem a seguir vai fazer <span className="text-gradient-green font-semibold">R$37 parecer piada.</span>
         </p>
       </div>
