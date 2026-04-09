@@ -774,7 +774,7 @@ function ValueComparisonSection() {
   const COMPARISONS = [
     { price: "R$70", label: "Um rodízio japonês", duration: "dura 2 horas", highlight: false },
     { price: "R$65", label: "Netflix + Spotify por 1 mês", duration: "dura 30 dias", highlight: false },
-    { price: "R$75", label: "Um corte de cabelo no salão", duration: "dura 3 semanas", highlight: false },
+    { price: "R$60", label: "Um corte de cabelo no salão", duration: "dura 3 semanas", highlight: false },
     { price: "R$67", label: "Kit Segundo Cérebro", duration: "funciona pra sempre", highlight: true },
   ];
 
