@@ -430,7 +430,7 @@ function DemoSection() {
 
           {/* Row 1: daily-briefing (vertical) + braindump + end-session */}
           <div className="md:col-span-5 glass border-green-500/10 rounded-lg overflow-hidden">
-            <div className="overflow-hidden relative">
+            <div className="overflow-hidden relative max-h-[600px]">
               <ZoomableImage
                 src="/segundo-cerebro/daily-briefing.webp"
                 alt="Output do /daily-briefing no terminal"
@@ -594,16 +594,14 @@ function KitContentsSection() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {/* Estrutura do vault */}
             <div className="rounded-lg overflow-hidden border border-green-500/10">
-              <div className="h-[320px] overflow-hidden relative">
+              <div className="h-[320px] overflow-hidden">
                 <ZoomableImage
                   src="/segundo-cerebro/estrutura-do-vault.webp"
                   alt="Sidebar do Obsidian — estrutura do vault"
                   width={935}
                   height={591}
                   className="w-full h-auto"
-                >
-                  <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#0d0f0d] to-transparent pointer-events-none" />
-                </ZoomableImage>
+                />
               </div>
               <div className="px-4 py-3 bg-zinc-900/50">
                 <p className="font-mono text-[10px] uppercase tracking-widest text-green-400/60">Estrutura do vault</p>
