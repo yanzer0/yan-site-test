@@ -154,6 +154,7 @@
   }
   .font-punch {
     font-family: var(--font-punch);
+    font-weight: 800;
     font-variation-settings: 'SOFT' 100, 'WONK' 1;
   }
 }
