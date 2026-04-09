@@ -18,7 +18,7 @@ export function Hero() {
         />
       </div>
 
-      <div className="relative z-10 mx-auto max-w-3xl px-4 sm:px-6 text-center">
+      <div className="relative z-10 mx-auto max-w-4xl px-4 sm:px-6 text-center">
         {/* Eyebrow */}
         <div className="animate-fade-in-up inline-flex items-center gap-3 mb-8">
           <span className="h-px w-5 bg-green-400" />

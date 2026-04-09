@@ -1,6 +1,6 @@
 export function TrustBar() {
   return (
-    <section className="py-10 border-t border-b border-white/5">
+    <section className="py-6 border-t border-b border-white/5 bg-[#0A0A0A]">
       <div className="mx-auto max-w-3xl px-4 sm:px-6 text-center">
         <p className="font-mono text-[13px] leading-relaxed text-zinc-500">
           O vídeo de demonstração atingiu{" "}

@@ -2,7 +2,7 @@
 
 export function SegundoCerebroUpsell({ onNavigate }: { onNavigate?: () => void }) {
   return (
-    <section className="py-16 sm:py-20">
+    <section className="py-12 sm:py-16">
       <div className="mx-auto max-w-3xl px-4 sm:px-6 text-center">
         <div className="rounded-lg border border-green-500/20 bg-green-500/[0.04] p-8 sm:p-10">
           <div className="inline-flex items-center gap-3 mb-4">

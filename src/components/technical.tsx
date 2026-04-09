@@ -3,7 +3,7 @@ import Image from "next/image";
 export function Technical() {
   return (
     <section className="py-20 sm:py-28">
-      <div className="mx-auto max-w-3xl px-4 sm:px-6">
+      <div className="mx-auto max-w-4xl px-4 sm:px-6">
         <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-green-400 mb-4">
           Pra quem quer entender
         </p>
@@ -35,7 +35,7 @@ export function Technical() {
         </p>
 
         {/* Image 3 - Spectrum */}
-        <div className="rounded-lg overflow-hidden border border-green-500/10">
+        <div className="rounded-lg overflow-hidden border border-white/8">
           <Image
             src="/jarvis-spectrum.webp"
             alt="Comparação de espectros: batida na mesa vs estalo vs palma"

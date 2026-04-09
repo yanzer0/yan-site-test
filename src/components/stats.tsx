@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export function AITeacher() {
   return (
-    <section className="py-20 sm:py-28">
+    <section className="py-20 sm:py-28 bg-[#050505]">
       <div className="mx-auto max-w-3xl px-4 sm:px-6">
         <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight leading-tight mb-2">
           Nunca programou?
@@ -55,7 +55,7 @@ export function AITeacher() {
         </div>
 
         {/* Image 2 - AI guide */}
-        <div className="rounded-lg overflow-hidden border border-green-500/10">
+        <div className="rounded-lg overflow-hidden border border-white/8">
           <Image
             src="/jarvis-ai-guide.webp"
             alt="Split screen: Claude guiando instalação + terminal com JARVIS"

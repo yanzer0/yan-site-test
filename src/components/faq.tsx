@@ -35,7 +35,7 @@ export function FAQ() {
           {QUESTIONS.map((item) => (
             <div key={item.q} className="py-6">
               <div className="flex items-start gap-3 mb-3">
-                <span className="flex-shrink-0 w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-black text-[13px] font-bold">
+                <span className="flex-shrink-0 w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-zinc-300 text-[13px] font-bold">
                   ?
                 </span>
                 <h3 className="font-heading text-[15px] font-semibold text-white leading-snug">

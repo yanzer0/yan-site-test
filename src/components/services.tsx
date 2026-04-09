@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export function Problem() {
   return (
-    <section id="como-funciona" className="py-20 sm:py-28 bg-black">
+    <section id="como-funciona" className="py-20 sm:py-28" style={{ background: 'linear-gradient(160deg, #000 30%, #0D1A08 70%, #1A2210 100%)' }}>
       <div className="mx-auto max-w-3xl px-4 sm:px-6">
         <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight leading-tight mb-6">
           Você viu o vídeo.
@@ -10,7 +10,7 @@ export function Problem() {
           Quis fazer <span className="font-punch text-gradient-green">igual.</span>
         </h2>
 
-        <p className="text-[15px] text-zinc-400 leading-relaxed mb-4">
+        <p className="text-[15px] text-zinc-300 leading-relaxed mb-4">
           Aí abriu o Google. Descobriu que precisa de Python. Que precisa de
           bibliotecas. Que precisa entender FFT, transformada de Fourier, análise
           espectral, similaridade do cosseno. Que o microfone do Mac se comporta
@@ -22,7 +22,7 @@ export function Problem() {
           Eu levei dias pra fazer funcionar. <span className="text-gradient-green">Você não precisa.</span>
         </p>
 
-        <p className="text-[15px] text-zinc-400 leading-relaxed mb-8">
+        <p className="text-[15px] text-zinc-300 leading-relaxed mb-8">
           O JARVIS Kit é o <span className="text-gradient-green font-semibold">código pronto</span> &mdash; testado no Windows e no Mac
           &mdash; com guia de instalação passo a passo e guia de personalização
           pra você trocar a música, o app, o comando e a frase de voz em 5
@@ -30,7 +30,7 @@ export function Problem() {
         </p>
 
         {/* Image 1 - Terminal screenshot */}
-        <div className="rounded-lg overflow-hidden border border-green-500/10">
+        <div className="rounded-lg overflow-hidden border border-white/8">
           <Image
             src="/jarvis-terminal.webp"
             alt="Terminal macOS com JARVIS rodando"
