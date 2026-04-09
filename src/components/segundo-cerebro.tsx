@@ -1,13 +1,79 @@
 "use client";
 
-import { useState } from "react";
-import { Menu, X, ArrowLeft, Code2, Target, BookOpen, Video, BarChart3 } from "lucide-react";
+import { useState, useCallback } from "react";
+import { Menu, X, ArrowLeft, Code2, Target, BookOpen, Video, BarChart3, Expand } from "lucide-react";
 import Image from "next/image";
 import Script from "next/script";
 import { FallingPattern } from "@/components/ui/falling-pattern";
 
 interface SegundoCerebroProps {
   onBack: () => void;
+}
+
+/* ─── Lightbox Modal ─── */
+function ImageLightbox({ src, alt, onClose }: { src: string; alt: string; onClose: () => void }) {
+  return (
+    <div
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-sm cursor-zoom-out p-4 sm:p-8"
+      onClick={onClose}
+    >
+      <button
+        onClick={onClose}
+        className="absolute top-4 right-4 z-[101] w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors cursor-pointer"
+        aria-label="Fechar"
+      >
+        <X className="h-5 w-5 text-white" />
+      </button>
+      <div className="relative max-h-[90vh] max-w-[90vw] overflow-auto rounded-lg" onClick={(e) => e.stopPropagation()}>
+        <Image
+          src={src}
+          alt={alt}
+          width={2560}
+          height={2560}
+          className="w-auto h-auto max-h-[90vh] max-w-[90vw] object-contain rounded-lg"
+          quality={95}
+          priority
+        />
+      </div>
+    </div>
+  );
+}
+
+/* ─── Zoomable Image wrapper ─── */
+function ZoomableImage({ src, alt, width, height, className, quality = 85, children }: {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+  className?: string;
+  quality?: number;
+  children?: React.ReactNode;
+}) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <div className="group relative cursor-zoom-in" onClick={() => setOpen(true)}>
+        <Image
+          src={src}
+          alt={alt}
+          width={width}
+          height={height}
+          className={className}
+          quality={quality}
+        />
+        {children}
+        {/* Hover overlay */}
+        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-200 flex items-center justify-center opacity-0 group-hover:opacity-100 pointer-events-none">
+          <span className="flex items-center gap-2 rounded-full bg-black/70 px-4 py-2 text-xs font-medium text-white backdrop-blur-sm border border-white/10">
+            <Expand className="h-3.5 w-3.5" />
+            Ver imagem inteira
+          </span>
+        </div>
+      </div>
+      {open && <ImageLightbox src={src} alt={alt} onClose={() => setOpen(false)} />}
+    </>
+  );
 }
 
 const CHECKOUT_URL = "https://pay.kiwify.com.br/oT2C28S";
@@ -288,7 +354,7 @@ function RevelationSection() {
 
         {/* Screenshot: /daily-briefing output */}
         <div className="rounded-lg overflow-hidden border border-green-500/10 mb-10">
-          <Image
+          <ZoomableImage
             src="/segundo-cerebro/daily-briefing.webp"
             alt="Output do /daily-briefing — briefing completo do dia com pipeline e prioridades"
             width={1065}
@@ -331,7 +397,7 @@ function RevelationSection() {
 
         {/* Screenshot: .claude/commands/ */}
         <div className="rounded-lg overflow-hidden border border-green-500/10 mt-8">
-          <Image
+          <ZoomableImage
             src="/segundo-cerebro/8-comandos.webp"
             alt="Pasta .claude/commands/ — 8 slash commands prontos"
             width={939}
@@ -364,15 +430,15 @@ function DemoSection() {
           {/* Row 1: daily-briefing (vertical, stretches full height) + braindump + end-session */}
           <div className="md:col-span-5 glass border-green-500/10 rounded-lg overflow-hidden flex flex-col">
             <div className="flex-1 relative overflow-hidden rounded-t-lg min-h-[400px]">
-              <Image
+              <ZoomableImage
                 src="/segundo-cerebro/daily-briefing.webp"
                 alt="Output do /daily-briefing no terminal"
                 width={1065}
                 height={1398}
                 className="absolute inset-0 w-full h-full object-cover object-top"
-                quality={85}
-              />
-              <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#0d0f0d] to-transparent pointer-events-none" />
+              >
+                <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#0d0f0d] to-transparent pointer-events-none" />
+              </ZoomableImage>
             </div>
             <div className="p-5">
               <h3 className="font-mono text-green-400 text-sm font-bold mb-2">/daily-briefing</h3>
@@ -386,13 +452,12 @@ function DemoSection() {
             {/* braindump */}
             <div className="glass border-green-500/10 rounded-lg overflow-hidden">
               <div className="overflow-hidden rounded-t-lg">
-                <Image
+                <ZoomableImage
                   src="/segundo-cerebro/braindump.webp"
                   alt="Output do /braindump no terminal"
                   width={1065}
                   height={748}
                   className="w-full h-auto"
-                  quality={85}
                 />
               </div>
               <div className="p-5">
@@ -406,15 +471,15 @@ function DemoSection() {
             {/* end-session */}
             <div className="glass border-green-500/10 rounded-lg overflow-hidden">
               <div className="overflow-hidden rounded-t-lg max-h-[400px] relative">
-                <Image
+                <ZoomableImage
                   src="/segundo-cerebro/end-session.webp"
                   alt="Output do /end-session — fechamento de sessão completo"
                   width={1070}
                   height={1559}
                   className="w-full h-auto"
-                  quality={85}
-                />
-                <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#0d0f0d] to-transparent pointer-events-none" />
+                >
+                  <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#0d0f0d] to-transparent pointer-events-none" />
+                </ZoomableImage>
               </div>
               <div className="p-5">
                 <h3 className="font-mono text-green-400 text-sm font-bold mb-2">/end-session</h3>
@@ -429,13 +494,12 @@ function DemoSection() {
           {/* Row 2: Obsidian full-width */}
           <div className="md:col-span-12 glass border-green-500/10 rounded-lg overflow-hidden">
             <div className="overflow-hidden rounded-t-lg">
-              <Image
+              <ZoomableImage
                 src="/segundo-cerebro/obsidian-full.webp"
                 alt="Vault completo no Obsidian — sidebar com estrutura de pastas e current-state aberto"
                 width={2559}
                 height={1379}
                 className="w-full h-auto"
-                quality={85}
               />
             </div>
             <div className="p-5">
@@ -513,13 +577,12 @@ function KitContentsSection() {
         <div className="space-y-4 mb-12">
           {/* CLAUDE.md — full width hero shot */}
           <div className="rounded-lg overflow-hidden border border-green-500/10">
-            <Image
+            <ZoomableImage
               src="/segundo-cerebro/claude-md.webp"
               alt="CLAUDE.md aberto — centenas de linhas de prompt engineering"
               width={2123}
               height={1327}
               className="w-full h-auto"
-              quality={85}
             />
             <div className="px-4 py-3 bg-zinc-900/50">
               <p className="font-mono text-[10px] uppercase tracking-widest text-green-400/60">CLAUDE.md — a alma do cérebro</p>
@@ -530,13 +593,12 @@ function KitContentsSection() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-start">
             {/* Estrutura do vault */}
             <div className="rounded-lg overflow-hidden border border-green-500/10">
-              <Image
+              <ZoomableImage
                 src="/segundo-cerebro/estrutura-do-vault.webp"
                 alt="Sidebar do Obsidian — estrutura do vault"
                 width={935}
                 height={591}
                 className="w-full h-auto"
-                quality={85}
               />
               <div className="px-4 py-3 bg-zinc-900/50">
                 <p className="font-mono text-[10px] uppercase tracking-widest text-green-400/60">Estrutura do vault</p>
@@ -545,15 +607,15 @@ function KitContentsSection() {
             {/* About-me — cropped with fade */}
             <div className="rounded-lg overflow-hidden border border-green-500/10 relative">
               <div className="max-h-[360px] overflow-hidden relative">
-                <Image
+                <ZoomableImage
                   src="/segundo-cerebro/about-me.webp"
                   alt="Template about-me.md — perguntas-guia para personalização"
                   width={716}
                   height={1763}
                   className="w-full h-auto"
-                  quality={85}
-                />
-                <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-zinc-900 to-transparent" />
+                >
+                  <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-zinc-900 to-transparent pointer-events-none" />
+                </ZoomableImage>
               </div>
               <div className="px-4 py-3 bg-zinc-900/50">
                 <p className="font-mono text-[10px] uppercase tracking-widest text-green-400/60">Template about-me.md</p>
