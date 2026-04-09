@@ -359,17 +359,17 @@ function DemoSection() {
         </p>
 
         {/* Bento Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-start">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:items-stretch">
 
-          {/* Row 1: daily-briefing (vertical, tall) + braindump + end-session */}
-          <div className="md:col-span-5 glass border-green-500/10 rounded-lg overflow-hidden">
-            <div className="overflow-hidden rounded-t-lg">
+          {/* Row 1: daily-briefing (vertical, stretches full height) + braindump + end-session */}
+          <div className="md:col-span-5 glass border-green-500/10 rounded-lg overflow-hidden flex flex-col">
+            <div className="flex-1 relative overflow-hidden rounded-t-lg min-h-[400px]">
               <Image
                 src="/segundo-cerebro/daily-briefing.webp"
                 alt="Output do /daily-briefing no terminal"
                 width={1065}
                 height={1398}
-                className="w-full h-auto"
+                className="absolute inset-0 w-full h-full object-cover object-top"
                 quality={85}
               />
             </div>
