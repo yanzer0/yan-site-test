@@ -7,7 +7,7 @@ export function AITeacher() {
         <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight leading-tight mb-2">
           Nunca programou?
           <br />
-          <span className="font-punch text-green-400">Perfeito.</span>
+          <span className="font-punch text-gradient-green">Perfeito.</span>
         </h2>
         <p className="text-[15px] text-zinc-400 mb-8">
           O JARVIS Kit vem com guias prontos pra IA — é o que torna ele

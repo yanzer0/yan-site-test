@@ -55,7 +55,7 @@ export function Includes() {
       <div className="mx-auto max-w-4xl px-4 sm:px-6">
         <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-center mb-3">
           8 arquivos.{" "}
-          <span className="font-punch text-green-400">Zero enrolação.</span>
+          <span className="font-punch text-gradient-green">Zero enrolação.</span>
         </h2>
         <p className="text-center text-zinc-500 text-[15px] mb-12">
           Tudo que você precisa pra instalar, rodar e personalizar.

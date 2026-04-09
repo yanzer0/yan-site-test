@@ -130,7 +130,7 @@ function HeroSection() {
         <div className="animate-fade-in-up delay-300 mt-10">
           <div className="flex items-baseline justify-center gap-3 mb-6">
             <span className="font-mono text-lg text-zinc-500 line-through">R$67</span>
-            <span className="font-punch text-5xl sm:text-6xl font-extrabold text-green-400">R$37</span>
+            <span className="font-punch text-5xl sm:text-6xl font-extrabold text-gradient-green">R$37</span>
           </div>
           <a
             href={CHECKOUT_URL}
@@ -624,7 +624,7 @@ function ValueComparisonSection() {
                   : "glass"
               }`}
             >
-              <div className={`font-punch text-2xl font-extrabold mb-1 ${item.highlight ? "text-green-400" : "text-zinc-300"}`}>
+              <div className={`font-punch text-2xl font-extrabold mb-1 ${item.highlight ? "text-gradient-green" : "text-zinc-300"}`}>
                 {item.price}
               </div>
               <div className={`text-sm font-semibold mb-2 ${item.highlight ? "text-white" : "text-zinc-400"}`}>
@@ -691,7 +691,7 @@ function FAQSection() {
         <h2 className="font-heading text-2xl sm:text-3xl font-extrabold tracking-tight mb-10">
           Perguntas que você
           <br />
-          <span className="font-punch text-green-400">provavelmente tem.</span>
+          <span className="font-punch text-gradient-green">provavelmente tem.</span>
         </h2>
 
         <div className="divide-y divide-white/5">
@@ -774,7 +774,7 @@ function PricingSection() {
         {/* Price box */}
         <div className="mx-auto max-w-sm rounded-lg border-2 border-green-500/40 bg-green-500/[0.06] p-8 mb-6">
           <div className="font-mono text-lg text-zinc-500 line-through mb-1">R$67</div>
-          <div className="font-punch text-5xl sm:text-6xl font-extrabold text-green-400 mb-2">R$37</div>
+          <div className="font-punch text-5xl sm:text-6xl font-extrabold text-gradient-green mb-2">R$37</div>
           <p className="text-sm text-green-300/70 mb-6">
             Preço de lançamento — só pros 30 primeiros. Depois sobe pra R$67.
           </p>

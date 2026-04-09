@@ -10,7 +10,7 @@ export function Technical() {
         <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight leading-tight mb-6">
           Não é volume.
           <br />
-          É <span className="font-punch text-green-400">fingerprint espectral.</span>
+          É <span className="font-punch text-gradient-green">fingerprint espectral.</span>
         </h2>
 
         <p className="text-[15px] text-zinc-400 leading-relaxed mb-4">

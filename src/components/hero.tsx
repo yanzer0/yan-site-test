@@ -68,8 +68,8 @@ export function Hero() {
 
         {/* Price */}
         <div className="animate-fade-in-up delay-400 mt-10 flex items-baseline justify-center gap-2">
-          <span className="font-punch text-5xl sm:text-6xl font-extrabold text-green-400">R$19</span>
-          <span className="font-punch text-2xl sm:text-3xl font-semibold text-green-400">,90</span>
+          <span className="font-punch text-5xl sm:text-6xl font-extrabold text-gradient-green">R$19</span>
+          <span className="font-punch text-2xl sm:text-3xl font-semibold text-gradient-green">,90</span>
         </div>
 
         {/* CTAs */}
