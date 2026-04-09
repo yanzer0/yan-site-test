@@ -934,7 +934,7 @@ function PricingSection() {
           Pronto pra montar o seu?
         </h2>
 
-        <div className="space-y-4 text-[15px] text-zinc-400 leading-relaxed max-w-lg mx-auto mb-10">
+        <div className="space-y-4 text-[15px] text-zinc-400 leading-relaxed max-w-2xl mx-auto mb-10">
           <p>
             Se eu vendesse isso como consultoria de setup personalizado, cobraria R$3.000+ (e já vendi). Se vendesse como curso com vídeo-aulas, cobraria R$197. Se vendesse como assinatura mensal com suporte, cobraria R$97/mês.
           </p>
