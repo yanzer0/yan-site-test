@@ -929,7 +929,7 @@ function PricingSection() {
     <section id="comprar" className="py-24 sm:py-32 relative">
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[500px] h-[500px] rounded-full bg-green-500/[0.04] blur-[150px] pointer-events-none" />
 
-      <div className="relative z-10 mx-auto max-w-3xl px-4 sm:px-6 text-center">
+      <div className="relative z-10 mx-auto max-w-4xl px-4 sm:px-6 text-center">
         <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-6">
           Pronto pra montar o seu?
         </h2>
