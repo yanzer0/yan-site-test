@@ -359,10 +359,10 @@ function DemoSection() {
         </p>
 
         {/* Bento Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-start">
 
-          {/* Row 1: daily-briefing (vertical, tall) + braindump (shorter) */}
-          <div className="md:col-span-5 glass border-green-500/10 rounded-lg overflow-hidden flex flex-col">
+          {/* Row 1: daily-briefing (vertical, tall) + braindump + end-session */}
+          <div className="md:col-span-5 glass border-green-500/10 rounded-lg overflow-hidden">
             <div className="overflow-hidden rounded-t-lg">
               <Image
                 src="/segundo-cerebro/daily-briefing.webp"
@@ -383,7 +383,7 @@ function DemoSection() {
 
           <div className="md:col-span-7 flex flex-col gap-4">
             {/* braindump */}
-            <div className="glass border-green-500/10 rounded-lg overflow-hidden flex-1 flex flex-col">
+            <div className="glass border-green-500/10 rounded-lg overflow-hidden">
               <div className="overflow-hidden rounded-t-lg">
                 <Image
                   src="/segundo-cerebro/braindump.webp"
@@ -403,7 +403,7 @@ function DemoSection() {
             </div>
 
             {/* end-session */}
-            <div className="glass border-green-500/10 rounded-lg overflow-hidden flex-1 flex flex-col">
+            <div className="glass border-green-500/10 rounded-lg overflow-hidden">
               <div className="overflow-hidden rounded-t-lg max-h-[400px]">
                 <Image
                   src="/segundo-cerebro/end-session.webp"
@@ -507,24 +507,10 @@ function KitContentsSection() {
           Você descompacta, personaliza com os seus dados, e o cérebro já esta funcionando.
         </p>
 
-        {/* Screenshots: vault structure + CLAUDE.md + about-me template */}
-        <div className="grid grid-cols-1 sm:grid-cols-12 gap-4 mb-12">
-          {/* Estrutura do vault — horizontal */}
-          <div className="sm:col-span-5 rounded-lg overflow-hidden border border-green-500/10">
-            <Image
-              src="/segundo-cerebro/estrutura-do-vault.webp"
-              alt="Sidebar do Obsidian — estrutura do vault"
-              width={935}
-              height={591}
-              className="w-full h-auto"
-              quality={85}
-            />
-            <div className="px-4 py-3 bg-zinc-900/50">
-              <p className="font-mono text-[10px] uppercase tracking-widest text-green-400/60">Estrutura do vault</p>
-            </div>
-          </div>
-          {/* CLAUDE.md — horizontal/wide */}
-          <div className="sm:col-span-7 rounded-lg overflow-hidden border border-green-500/10">
+        {/* Screenshots: CLAUDE.md hero + vault structure & about-me side by side */}
+        <div className="space-y-4 mb-12">
+          {/* CLAUDE.md — full width hero shot */}
+          <div className="rounded-lg overflow-hidden border border-green-500/10">
             <Image
               src="/segundo-cerebro/claude-md.webp"
               alt="CLAUDE.md aberto — centenas de linhas de prompt engineering"
@@ -537,17 +523,36 @@ function KitContentsSection() {
               <p className="font-mono text-[10px] uppercase tracking-widest text-green-400/60">CLAUDE.md — a alma do cérebro</p>
             </div>
           </div>
-          {/* About-me template — vertical, full width centered */}
-          <div className="sm:col-span-12 flex justify-center">
-            <div className="rounded-lg overflow-hidden border border-green-500/10 max-w-sm w-full">
+
+          {/* Row 2: estrutura do vault + about-me */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-start">
+            {/* Estrutura do vault */}
+            <div className="rounded-lg overflow-hidden border border-green-500/10">
               <Image
-                src="/segundo-cerebro/about-me.webp"
-                alt="Template about-me.md — perguntas-guia para personalização"
-                width={716}
-                height={1763}
+                src="/segundo-cerebro/estrutura-do-vault.webp"
+                alt="Sidebar do Obsidian — estrutura do vault"
+                width={935}
+                height={591}
                 className="w-full h-auto"
                 quality={85}
               />
+              <div className="px-4 py-3 bg-zinc-900/50">
+                <p className="font-mono text-[10px] uppercase tracking-widest text-green-400/60">Estrutura do vault</p>
+              </div>
+            </div>
+            {/* About-me — cropped with fade */}
+            <div className="rounded-lg overflow-hidden border border-green-500/10 relative">
+              <div className="max-h-[360px] overflow-hidden relative">
+                <Image
+                  src="/segundo-cerebro/about-me.webp"
+                  alt="Template about-me.md — perguntas-guia para personalização"
+                  width={716}
+                  height={1763}
+                  className="w-full h-auto"
+                  quality={85}
+                />
+                <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-zinc-900 to-transparent" />
+              </div>
               <div className="px-4 py-3 bg-zinc-900/50">
                 <p className="font-mono text-[10px] uppercase tracking-widest text-green-400/60">Template about-me.md</p>
               </div>
