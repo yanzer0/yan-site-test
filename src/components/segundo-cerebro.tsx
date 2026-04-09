@@ -426,18 +426,17 @@ function DemoSection() {
         </p>
 
         {/* Bento Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:items-stretch">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-start">
 
-          {/* Row 1: daily-briefing (vertical, stretches full height) + braindump + end-session */}
-          <div className="md:col-span-5 glass border-green-500/10 rounded-lg overflow-hidden flex flex-col">
-            <div className="flex-1 overflow-hidden rounded-t-lg min-h-[400px] relative">
+          {/* Row 1: daily-briefing (vertical) + braindump + end-session */}
+          <div className="md:col-span-5 glass border-green-500/10 rounded-lg overflow-hidden">
+            <div className="overflow-hidden relative">
               <ZoomableImage
                 src="/segundo-cerebro/daily-briefing.webp"
                 alt="Output do /daily-briefing no terminal"
                 width={1065}
                 height={1398}
-                className="absolute inset-0 w-full h-full object-cover object-top"
-                containerClassName="absolute inset-0"
+                className="w-full h-auto"
               >
                 <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#0d0f0d] to-transparent pointer-events-none" />
               </ZoomableImage>
@@ -591,18 +590,17 @@ function KitContentsSection() {
             </div>
           </div>
 
-          {/* Row 2: estrutura do vault + about-me — equal height */}
+          {/* Row 2: estrutura do vault + about-me — equal height, overflow clipped */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {/* Estrutura do vault */}
-            <div className="rounded-lg overflow-hidden border border-green-500/10 flex flex-col">
-              <div className="flex-1 relative overflow-hidden min-h-[280px]">
+            <div className="rounded-lg overflow-hidden border border-green-500/10">
+              <div className="h-[320px] overflow-hidden relative">
                 <ZoomableImage
                   src="/segundo-cerebro/estrutura-do-vault.webp"
                   alt="Sidebar do Obsidian — estrutura do vault"
                   width={935}
                   height={591}
-                  className="absolute inset-0 w-full h-full object-cover object-top"
-                  containerClassName="absolute inset-0"
+                  className="w-full h-auto"
                 >
                   <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#0d0f0d] to-transparent pointer-events-none" />
                 </ZoomableImage>
@@ -611,16 +609,15 @@ function KitContentsSection() {
                 <p className="font-mono text-[10px] uppercase tracking-widest text-green-400/60">Estrutura do vault</p>
               </div>
             </div>
-            {/* About-me — cropped with fade, same height */}
-            <div className="rounded-lg overflow-hidden border border-green-500/10 flex flex-col">
-              <div className="flex-1 relative overflow-hidden min-h-[280px]">
+            {/* About-me — cropped with fade */}
+            <div className="rounded-lg overflow-hidden border border-green-500/10">
+              <div className="h-[320px] overflow-hidden relative">
                 <ZoomableImage
                   src="/segundo-cerebro/about-me.webp"
                   alt="Template about-me.md — perguntas-guia para personalização"
                   width={716}
                   height={1763}
-                  className="absolute inset-0 w-full h-full object-cover object-top"
-                  containerClassName="absolute inset-0"
+                  className="w-full h-auto"
                 >
                   <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#0d0f0d] to-transparent pointer-events-none" />
                 </ZoomableImage>
