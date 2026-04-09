@@ -372,6 +372,7 @@ function DemoSection() {
                 className="absolute inset-0 w-full h-full object-cover object-top"
                 quality={85}
               />
+              <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#0d0f0d] to-transparent pointer-events-none" />
             </div>
             <div className="p-5">
               <h3 className="font-mono text-green-400 text-sm font-bold mb-2">/daily-briefing</h3>
@@ -404,7 +405,7 @@ function DemoSection() {
 
             {/* end-session */}
             <div className="glass border-green-500/10 rounded-lg overflow-hidden">
-              <div className="overflow-hidden rounded-t-lg max-h-[400px]">
+              <div className="overflow-hidden rounded-t-lg max-h-[400px] relative">
                 <Image
                   src="/segundo-cerebro/end-session.webp"
                   alt="Output do /end-session — fechamento de sessão completo"
@@ -413,6 +414,7 @@ function DemoSection() {
                   className="w-full h-auto"
                   quality={85}
                 />
+                <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#0d0f0d] to-transparent pointer-events-none" />
               </div>
               <div className="p-5">
                 <h3 className="font-mono text-green-400 text-sm font-bold mb-2">/end-session</h3>
