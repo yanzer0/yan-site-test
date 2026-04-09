@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import { Menu, X, ArrowLeft, Code2, Target, BookOpen, Video, BarChart3, Expand } from "lucide-react";
 import Image from "next/image";
 import Script from "next/script";
@@ -413,6 +413,45 @@ function RevelationSection() {
   );
 }
 
+/* ─── Daily Briefing Card (special: image covers full height) ─── */
+function DailyBriefingCard() {
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+
+  return (
+    <div className="md:col-span-5 glass border-green-500/10 rounded-lg overflow-hidden flex flex-col group">
+      <div className="flex-1 relative min-h-[400px] cursor-zoom-in" onClick={() => setLightboxOpen(true)}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/segundo-cerebro/daily-briefing.webp"
+          alt="Output do /daily-briefing no terminal"
+          className="absolute inset-0 w-full h-full object-cover object-top"
+        />
+        <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#0d0f0d] to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-200 pointer-events-none" />
+        <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10">
+          <span className="flex items-center gap-2 rounded-full bg-black/70 px-3 py-1.5 text-[11px] font-medium text-white backdrop-blur-sm border border-white/10">
+            <Expand className="h-3 w-3" />
+            Ver inteira
+          </span>
+        </div>
+      </div>
+      <div className="p-5">
+        <h3 className="font-mono text-green-400 text-sm font-bold mb-2">/daily-briefing</h3>
+        <p className="text-[13px] text-zinc-500 leading-relaxed">
+          Um comando. Briefing completo do dia com tudo que você precisa saber.
+        </p>
+      </div>
+      {lightboxOpen && (
+        <ImageLightbox
+          src="/segundo-cerebro/daily-briefing.webp"
+          alt="Output do /daily-briefing no terminal"
+          onClose={() => setLightboxOpen(false)}
+        />
+      )}
+    </div>
+  );
+}
+
 /* ─── Section 4: Demo Visual (Bento Grid) ─── */
 function DemoSection() {
   return (
@@ -427,28 +466,10 @@ function DemoSection() {
         </p>
 
         {/* Bento Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-start">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:items-stretch">
 
-          {/* Row 1: daily-briefing (vertical) + braindump + end-session */}
-          <div className="md:col-span-5 glass border-green-500/10 rounded-lg overflow-hidden">
-            <div className="overflow-hidden relative max-h-[800px]">
-              <ZoomableImage
-                src="/segundo-cerebro/daily-briefing.webp"
-                alt="Output do /daily-briefing no terminal"
-                width={1065}
-                height={1398}
-                className="w-full h-auto"
-              >
-                <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#0d0f0d] to-transparent pointer-events-none" />
-              </ZoomableImage>
-            </div>
-            <div className="p-5">
-              <h3 className="font-mono text-green-400 text-sm font-bold mb-2">/daily-briefing</h3>
-              <p className="text-[13px] text-zinc-500 leading-relaxed">
-                Um comando. Briefing completo do dia com tudo que você precisa saber.
-              </p>
-            </div>
-          </div>
+          {/* Row 1: daily-briefing stretches full height, image covers */}
+          <DailyBriefingCard />
 
           <div className="md:col-span-7 flex flex-col gap-4">
             {/* braindump */}
