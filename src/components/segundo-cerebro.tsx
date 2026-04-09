@@ -730,7 +730,7 @@ function NotForSection() {
 
   return (
     <section className="py-20 sm:py-28">
-      <div className="mx-auto max-w-3xl px-4 sm:px-6">
+      <div className="mx-auto max-w-4xl px-4 sm:px-6">
         <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight leading-tight mb-4">
           Honestidade: esse kit{" "}
           <strong>não é</strong>{" "}
