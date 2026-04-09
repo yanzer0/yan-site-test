@@ -56,22 +56,23 @@ export function Navbar({ onBack }: NavbarProps) {
           ))}
         </div>
 
-        {/* Desktop CTA */}
-        <a
-          href="https://pay.kiwify.com.br/D3Ari3v"
-          className="hidden md:inline-flex items-center gap-2 rounded-full bg-green-500 px-5 py-2 text-sm font-semibold text-black transition-all duration-200 hover:bg-green-400 cursor-pointer green-glow-sm"
-        >
-          Comprar Kit
-        </a>
+        <div className="flex items-center gap-2">
+          <a
+            href="https://pay.kiwify.com.br/D3Ari3v"
+            className="inline-flex items-center gap-2 rounded-full bg-green-500 px-4 py-2 text-xs sm:text-sm font-semibold text-black transition-all duration-200 hover:bg-green-400 cursor-pointer green-glow-sm"
+          >
+            Comprar Kit
+          </a>
 
-        {/* Mobile toggle */}
-        <button
-          onClick={() => setMobileOpen(!mobileOpen)}
-          className="md:hidden text-white cursor-pointer p-2"
-          aria-label="Toggle menu"
-        >
-          {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        </button>
+          {/* Mobile toggle */}
+          <button
+            onClick={() => setMobileOpen(!mobileOpen)}
+            className="md:hidden text-white cursor-pointer p-2"
+            aria-label="Toggle menu"
+          >
+            {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+        </div>
       </nav>
 
       {/* Mobile menu */}

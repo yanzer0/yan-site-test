@@ -36,6 +36,12 @@ export default function RootLayout({
       lang="pt-BR"
       className={`${outfit.variable} ${spaceMono.variable} ${fraunces.variable} dark h-full antialiased`}
     >
+      <head>
+        <link
+          href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800&display=swap"
+          rel="stylesheet"
+        />
+      </head>
       <body className="min-h-full flex flex-col font-sans">{children}</body>
     </html>
   );

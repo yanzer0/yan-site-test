@@ -55,20 +55,22 @@ function SCNavbar({ onBack }: { onBack: () => void }) {
           ))}
         </div>
 
-        <a
-          href="#comprar"
-          className="hidden md:inline-flex items-center gap-2 rounded-full bg-green-500 px-5 py-2 text-sm font-semibold text-black transition-all duration-200 hover:bg-green-400 cursor-pointer green-glow-sm"
-        >
-          Quero o Kit
-        </a>
+        <div className="flex items-center gap-2">
+          <a
+            href="#comprar"
+            className="inline-flex items-center gap-2 rounded-full bg-green-500 px-4 py-2 text-xs sm:text-sm font-semibold text-black transition-all duration-200 hover:bg-green-400 cursor-pointer green-glow-sm"
+          >
+            Quero o Kit
+          </a>
 
-        <button
-          onClick={() => setMobileOpen(!mobileOpen)}
-          className="md:hidden text-white cursor-pointer p-2"
-          aria-label="Toggle menu"
-        >
-          {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        </button>
+          <button
+            onClick={() => setMobileOpen(!mobileOpen)}
+            className="md:hidden text-white cursor-pointer p-2"
+            aria-label="Toggle menu"
+          >
+            {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+        </div>
       </nav>
 
       {mobileOpen && (
