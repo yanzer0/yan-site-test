@@ -1,8 +1,10 @@
-const FILES = [
+import React from "react";
+
+const FILES: { ext: string; title: string; desc: React.ReactNode; highlight: boolean }[] = [
   {
     ext: ".py",
     title: "jarvis-windows.py",
-    desc: "Código completo pra Windows. Comentado em português. Seção de configuração separada — você edita só o que precisa.",
+    desc: <>Código completo pra Windows. <span className="text-gradient-green font-semibold">Comentado em português.</span> Seção de configuração separada — você edita só o que precisa.</>,
     highlight: false,
   },
   {
@@ -14,13 +16,13 @@ const FILES = [
   {
     ext: ".bat",
     title: "setup-windows.bat",
-    desc: "Duplo clique e ele instala todas as dependências automaticamente. Zero terminal.",
+    desc: <><span className="text-gradient-green font-semibold">Duplo clique</span> e ele instala todas as dependências automaticamente. <span className="text-gradient-green font-semibold">Zero terminal.</span></>,
     highlight: false,
   },
   {
     ext: ".pdf",
     title: "Guia de Instalação",
-    desc: "Passo a passo visual com as instruções detalhadas. Do zero. Python, bibliotecas, permissões, calibração.",
+    desc: <>Passo a passo visual com as instruções detalhadas. <span className="text-gradient-green font-semibold">Do zero.</span> Python, bibliotecas, permissões, calibração.</>,
     highlight: false,
   },
   {
@@ -32,13 +34,13 @@ const FILES = [
   {
     ext: ".md",
     title: "Guia de Instalação (IA)",
-    desc: "Cola no Claude, ChatGPT ou qualquer IA. Ela vira seu professor particular e te guia até funcionar.",
+    desc: <>Cola no Claude, ChatGPT ou qualquer IA. Ela vira seu <span className="text-gradient-green font-semibold">professor particular</span> e te guia até funcionar.</>,
     highlight: true,
   },
   {
     ext: ".md",
     title: "Guia de Personalização (IA)",
-    desc: "Cola na IA e ela te ensina a personalizar tudo — um ajuste de cada vez, testando junto com você.",
+    desc: <>Cola na IA e ela te ensina a personalizar tudo — um ajuste de cada vez, <span className="text-gradient-green font-semibold">testando junto com você.</span></>,
     highlight: true,
   },
   {

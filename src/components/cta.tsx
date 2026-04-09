@@ -15,7 +15,7 @@ export function CTA() {
 
         <p className="text-[15px] text-zinc-400 max-w-md mx-auto mb-8">
           Código completo (Windows + Mac). Guias visuais. Guias de IA que te
-          ensinam como um professor particular. Personalize em 5 minutos.
+          ensinam como um professor particular. <span className="text-gradient-green font-semibold">Personalize em 5 minutos.</span>
         </p>
 
         {/* Price */}

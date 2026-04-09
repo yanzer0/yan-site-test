@@ -19,11 +19,11 @@ export function Problem() {
         </p>
 
         <p className="text-[15px] text-zinc-200 font-semibold mb-4">
-          Eu levei dias pra fazer funcionar. Você não precisa.
+          Eu levei dias pra fazer funcionar. <span className="text-gradient-green">Você não precisa.</span>
         </p>
 
         <p className="text-[15px] text-zinc-400 leading-relaxed mb-8">
-          O JARVIS Kit é o código pronto &mdash; testado no Windows e no Mac
+          O JARVIS Kit é o <span className="text-gradient-green font-semibold">código pronto</span> &mdash; testado no Windows e no Mac
           &mdash; com guia de instalação passo a passo e guia de personalização
           pra você trocar a música, o app, o comando e a frase de voz em 5
           minutos.

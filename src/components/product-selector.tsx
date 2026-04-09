@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { DottedSurface } from "@/components/ui/dotted-surface";
 
 interface ProductSelectorProps {
   onSelect: (kit: "jarvis" | "segundo-cerebro") => void;
@@ -28,9 +29,8 @@ const PRODUCTS = [
 export function ProductSelector({ onSelect }: ProductSelectorProps) {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Dual glow orbs */}
-      <div className="absolute top-1/3 left-1/3 -translate-x-1/2 w-[400px] h-[400px] rounded-full bg-green-500/8 blur-[120px] pointer-events-none" />
-      <div className="absolute top-1/3 right-1/3 translate-x-1/2 w-[400px] h-[400px] rounded-full bg-green-500/8 blur-[120px] pointer-events-none" />
+      {/* 3D dotted surface background */}
+      <DottedSurface />
 
       <div className="relative z-10 mx-auto max-w-3xl px-4 sm:px-6 text-center">
         {/* Logo */}
@@ -38,9 +38,9 @@ export function ProductSelector({ onSelect }: ProductSelectorProps) {
           <Image
             src="/lockup-sem-fundo.png"
             alt="Infuser"
-            width={140}
-            height={36}
-            className="h-9 w-auto mx-auto"
+            width={280}
+            height={72}
+            className="h-16 sm:h-20 w-auto mx-auto"
           />
         </div>
 
@@ -69,7 +69,7 @@ export function ProductSelector({ onSelect }: ProductSelectorProps) {
             <button
               key={product.id}
               onClick={() => onSelect(product.id)}
-              className={`group relative rounded-lg border ${product.borderClass} bg-white/[0.02] overflow-hidden text-left transition-all duration-300 hover:scale-[1.02] cursor-pointer`}
+              className="group relative rounded-lg border border-white/10 bg-black/60 backdrop-blur shadow-lg overflow-hidden text-left transition-all duration-300 hover:scale-[1.02] hover:bg-black/50 cursor-pointer"
             >
               {/* Cover image */}
               <div className="aspect-[16/9] overflow-hidden">

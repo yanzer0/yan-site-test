@@ -1,27 +1,22 @@
 "use client";
 
-import { useRef, useState } from "react";
-import { Play, Pause } from "lucide-react";
+import { FallingPattern } from "@/components/ui/falling-pattern";
 
 export function Hero() {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [playing, setPlaying] = useState(false);
-
-  function toggleVideo() {
-    if (!videoRef.current) return;
-    if (videoRef.current.paused) {
-      videoRef.current.play();
-      setPlaying(true);
-    } else {
-      videoRef.current.pause();
-      setPlaying(false);
-    }
-  }
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-28 pb-16">
-      {/* Green glow orb */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-green-500/10 blur-[120px] pointer-events-none" />
+      {/* Falling pattern background */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <FallingPattern
+          className="h-full [mask-image:radial-gradient(ellipse_at_center,transparent,var(--background))]"
+          color="#A8E84C"
+          backgroundColor="#000000"
+          duration={80}
+          blurIntensity="0.5rem"
+          density={2}
+        />
+      </div>
 
       <div className="relative z-10 mx-auto max-w-3xl px-4 sm:px-6 text-center">
         {/* Eyebrow */}
@@ -43,27 +38,19 @@ export function Hero() {
         {/* Subline */}
         <p className="animate-fade-in-up delay-200 mt-6 max-w-xl mx-auto text-base sm:text-lg text-zinc-400 leading-relaxed">
           O kit completo pra transformar seu computador no Jarvis do Tony Stark.
-          Automação por palmas e voz, pronta pra rodar em 5 minutos.
+          Automação por palmas e voz, pronta pra rodar <span className="text-gradient-green font-semibold">em 5 minutos.</span>
         </p>
 
         {/* Video */}
-        <div className="animate-fade-in-up delay-300 mt-10 max-w-2xl mx-auto rounded-lg overflow-hidden border border-green-500/10 relative group cursor-pointer" onClick={toggleVideo}>
+        <div className="animate-fade-in-up delay-300 mt-10 max-w-2xl mx-auto rounded-lg overflow-hidden border border-green-500/10">
           <video
-            ref={videoRef}
             src="/video-site.mp4"
             className="w-full aspect-video object-cover"
+            autoPlay
+            loop
+            muted
             playsInline
-            onEnded={() => setPlaying(false)}
           />
-          <div className={`absolute inset-0 flex items-center justify-center bg-black/30 transition-opacity duration-300 ${playing ? "opacity-0 group-hover:opacity-100" : "opacity-100"}`}>
-            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-green-500 flex items-center justify-center green-glow">
-              {playing ? (
-                <Pause className="h-6 w-6 sm:h-7 sm:w-7 text-black" />
-              ) : (
-                <Play className="h-6 w-6 sm:h-7 sm:w-7 text-black ml-1" />
-              )}
-            </div>
-          </div>
         </div>
 
         {/* Price */}

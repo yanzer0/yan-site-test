@@ -29,7 +29,7 @@ export function AITeacher() {
             Ela dá <strong className="text-white">um passo de cada vez</strong>.
             Espera você confirmar que funcionou. Se der erro, pede o print e
             resolve. Não avança até estar tudo certo. É como ter um professor
-            particular que não desiste de você.
+            particular que <span className="text-gradient-green font-semibold">não desiste de você.</span>
           </p>
 
           {/* Steps */}

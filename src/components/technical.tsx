@@ -31,7 +31,7 @@ export function Technical() {
           <br />
           Estalo de dedo? 55%. Descartado.
           <br />
-          Sua palma? 87%. Ativado.
+          <span className="text-gradient-green">Sua palma? 87%. Ativado.</span>
         </p>
 
         {/* Image 3 - Spectrum */}
