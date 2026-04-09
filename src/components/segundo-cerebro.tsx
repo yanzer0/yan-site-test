@@ -222,17 +222,17 @@ function HeroSection() {
         {/* Price + CTA */}
         <div className="animate-fade-in-up delay-400 mt-10">
           <div className="flex items-baseline justify-center gap-3 mb-6">
-            <span className="font-mono text-lg text-zinc-500 line-through">R$67</span>
-            <span className="font-punch text-5xl sm:text-6xl font-extrabold text-gradient-green">R$37</span>
+            <span className="font-mono text-lg text-zinc-500 line-through">R$127</span>
+            <span className="font-punch text-5xl sm:text-6xl font-extrabold text-gradient-green">R$67</span>
           </div>
           <a
             href={CHECKOUT_URL}
             className="group inline-flex items-center gap-2 rounded-lg bg-green-500 px-10 py-4 text-base font-bold text-black transition-all duration-200 hover:bg-green-400 hover:-translate-y-0.5 cursor-pointer green-glow"
           >
-            Quero o Kit — R$37 &rarr;
+            Quero o Kit — R$67 &rarr;
           </a>
           <p className="mt-4 font-mono text-[12px] text-green-300/70 font-medium">
-            ⚡ Os 30 primeiros pagam R$37. Depois sobe pra R$67.
+            ⚡ Pagamento único. Acesso vitalício.
           </p>
         </div>
       </div>
@@ -762,7 +762,7 @@ function NotForSection() {
         </div>
 
         <p className="mt-10 text-base sm:text-lg text-zinc-400 text-center font-medium">
-          Se nenhum desses se aplica, continua lendo. O que vem a seguir vai fazer <span className="text-gradient-green font-semibold">R$37 parecer piada.</span>
+          Se nenhum desses se aplica, continua lendo. O que vem a seguir vai fazer <span className="text-gradient-green font-semibold">R$67 parecer piada.</span>
         </p>
       </div>
     </section>
@@ -772,10 +772,10 @@ function NotForSection() {
 /* ─── Section 8: Comparação de Valor ─── */
 function ValueComparisonSection() {
   const COMPARISONS = [
-    { price: "R$38", label: "Um lanche no iFood", duration: "dura 20 minutos", highlight: false },
-    { price: "R$45", label: "Uma pizza media", duration: "dura uma noite", highlight: false },
-    { price: "R$35", label: "4 cafes na semana", duration: "dura 4 dias", highlight: false },
-    { price: "R$37", label: "Kit Segundo Cérebro", duration: "funciona pra sempre", highlight: true },
+    { price: "R$70", label: "Um rodízio japonês", duration: "dura 2 horas", highlight: false },
+    { price: "R$65", label: "Netflix + Spotify por 1 mês", duration: "dura 30 dias", highlight: false },
+    { price: "R$75", label: "Um corte de cabelo no salão", duration: "dura 3 semanas", highlight: false },
+    { price: "R$67", label: "Kit Segundo Cérebro", duration: "funciona pra sempre", highlight: true },
   ];
 
   return (
@@ -783,7 +783,7 @@ function ValueComparisonSection() {
       <div className="mx-auto max-w-3xl px-4 sm:px-6">
         <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-center mb-12">
           O que mais você compra com{" "}
-          <span className="font-punch text-gradient-green">R$37</span>?
+          <span className="font-punch text-gradient-green">R$67</span>?
         </h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-12">
@@ -811,16 +811,16 @@ function ValueComparisonSection() {
 
         <div className="space-y-5">
           <p className="text-[15px] text-zinc-400 leading-relaxed">
-            O lanche acaba em 20 minutos. A pizza acaba na mesma noite. O cafe acaba antes do almoço.
+            O rodízio acaba em 2 horas. O streaming reseta no mês seguinte. O cabelo cresce de volta.
           </p>
           <p className="text-[15px] text-zinc-400 leading-relaxed">
-            O segundo cérebro <strong className="text-gradient-green font-semibold">fica mais inteligente a cada dia que você usa.</strong> Acumula conhecimento, registra decisões, consolida aprendizados. Daqui a 6 mêses ele vai saber mais sobre o seu trabalho do que qualquer colega.
+            O segundo cérebro <strong className="text-gradient-green font-semibold">fica mais inteligente a cada dia que você usa.</strong> Acumula conhecimento, registra decisões, consolida aprendizados. Daqui a 6 meses ele vai saber mais sobre o seu trabalho do que qualquer colega.
           </p>
           <p className="text-[15px] text-zinc-400 leading-relaxed">
-            E o preço de R$37 é só pros primeiros 30. Depois disso, sobe pra R$67 e não volta.
+            R$67 é menos do que você gasta num jantar fora. Só que o jantar acaba na mesma noite — e o segundo cérebro fica melhor a cada semana.
           </p>
           <p className="text-[15px] text-zinc-400 leading-relaxed">
-            Se você ganha R$50/hora e o kit te economiza 1 hora por semana (e vai economizar mais), ele se paga em menos de uma semana. Nas 51 semanas seguintes, é lucro puro — de tempo, não de dinheiro. <strong className="text-white">Tempo que você usa pra fazer o que importa em vez de ficar explicando contexto pra IA.</strong>
+            Se você ganha R$50/hora e o kit te economiza 1 hora por semana (e vai economizar mais), ele se paga em menos de duas semanas. Nas 50 semanas seguintes, é lucro puro — de tempo, não de dinheiro. <strong className="text-white">Tempo que você usa pra fazer o que importa em vez de ficar explicando contexto pra IA.</strong>
           </p>
         </div>
       </div>
@@ -916,7 +916,7 @@ function SupportSection() {
         </div>
 
         <p className="text-[15px] text-zinc-400 leading-relaxed">
-          Pensa nisso: você está pagando R$37 por um kit que vem com suporte técnico ilimitado e permanente. Qualquer SaaS cobra isso <em>por mês</em> só pelo suporte.
+          Pensa nisso: você está pagando R$67 por um kit que vem com suporte técnico ilimitado e permanente. Qualquer SaaS cobra isso <em>por mês</em> só pelo suporte.
         </p>
       </div>
     </section>
@@ -945,10 +945,10 @@ function PricingSection() {
 
         {/* Price box */}
         <div className="mx-auto max-w-sm rounded-lg border-2 border-green-500/40 bg-green-500/[0.06] p-8 mb-6">
-          <div className="font-mono text-lg text-zinc-500 line-through mb-1">R$67</div>
-          <div className="font-punch text-5xl sm:text-6xl font-extrabold text-gradient-green mb-2">R$37</div>
+          <div className="font-mono text-lg text-zinc-500 line-through mb-1">R$127</div>
+          <div className="font-punch text-5xl sm:text-6xl font-extrabold text-gradient-green mb-2">R$67</div>
           <p className="text-sm text-green-300/70 mb-6">
-            Preço de lançamento — só pros 30 primeiros. Depois sobe pra R$67.
+            Pagamento único. Sem assinatura. Sem renovação.
           </p>
           <a
             href={CHECKOUT_URL}
@@ -995,10 +995,10 @@ function FinalPushSection() {
             href={CHECKOUT_URL}
             className="group inline-flex items-center gap-2 rounded-lg bg-green-500 px-10 py-4 text-base font-bold text-black transition-all duration-200 hover:bg-green-400 hover:-translate-y-0.5 cursor-pointer green-glow"
           >
-            Montar meu Segundo Cérebro — R$37 &rarr;
+            Montar meu Segundo Cérebro — R$67 &rarr;
           </a>
           <p className="mt-4 font-mono text-[12px] text-green-300/70">
-            Os 30 primeiros pagam R$37. Depois sobe pra R$67 e não volta.
+            Pagamento único. Acesso vitalício. Atualizações incluídas.
           </p>
         </div>
       </div>
