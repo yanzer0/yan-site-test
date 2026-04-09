@@ -8,6 +8,7 @@ import { FallingPattern } from "@/components/ui/falling-pattern";
 
 interface SegundoCerebroProps {
   onBack: () => void;
+  onNavigateToJarvis?: () => void;
 }
 
 /* ─── Lightbox Modal ─── */
@@ -1040,7 +1041,7 @@ function SCFooter() {
 }
 
 /* ─── Upsell: Jarvis Kit (cross-sell on Segundo Cérebro page) ─── */
-function JarvisUpsell() {
+function JarvisUpsell({ onNavigate }: { onNavigate?: () => void }) {
   return (
     <section className="py-16 sm:py-20">
       <div className="mx-auto max-w-3xl px-4 sm:px-6 text-center">
@@ -1048,7 +1049,7 @@ function JarvisUpsell() {
           <div className="inline-flex items-center gap-3 mb-4">
             <span className="h-px w-5 bg-green-400/40" />
             <span className="font-mono text-[11px] uppercase tracking-[0.15em] text-green-400/70">
-              Oferta especial
+              Conheça também
             </span>
             <span className="h-px w-5 bg-green-400/40" />
           </div>
@@ -1061,26 +1062,12 @@ function JarvisUpsell() {
             Automação por palmas e voz. Duas palmas e tudo liga sozinho. O companheiro perfeito pro seu Segundo Cérebro.
           </p>
 
-          {/* Kiwify upsell widget */}
-          <div
-            id="kiwify-upsell-D3Ari3v"
-            data-upsell-url=""
-            data-downsell-url=""
-            style={{ textAlign: "center" }}
+          <button
+            onClick={onNavigate}
+            className="rounded-lg bg-green-500 px-8 py-3 text-base font-bold text-black transition-all duration-200 hover:bg-green-400 cursor-pointer green-glow"
           >
-            <button
-              id="kiwify-upsell-trigger-D3Ari3v"
-              className="rounded-lg bg-green-500 px-8 py-3 text-base font-bold text-black transition-all duration-200 hover:bg-green-400 cursor-pointer green-glow"
-            >
-              Sim, eu aceito essa oferta especial!
-            </button>
-            <div
-              id="kiwify-upsell-cancel-trigger-D3Ari3v"
-              className="mt-4 cursor-pointer text-sm text-zinc-500 underline"
-            >
-              Não, eu gostaria de recusar essa oferta
-            </div>
-          </div>
+            Conhecer o Jarvis Kit &rarr;
+          </button>
         </div>
       </div>
     </section>
@@ -1088,7 +1075,7 @@ function JarvisUpsell() {
 }
 
 /* ─── Main Component ─── */
-export function SegundoCerebro({ onBack }: SegundoCerebroProps) {
+export function SegundoCerebro({ onBack, onNavigateToJarvis }: SegundoCerebroProps) {
   return (
     <>
       <SCNavbar onBack={onBack} />
@@ -1105,7 +1092,7 @@ export function SegundoCerebro({ onBack }: SegundoCerebroProps) {
         <SupportSection />
         <PricingSection />
         <FinalPushSection />
-        <JarvisUpsell />
+        <JarvisUpsell onNavigate={onNavigateToJarvis} />
       </main>
       <SCFooter />
 

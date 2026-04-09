@@ -40,7 +40,7 @@ export default function Home() {
 
   // Segundo Cerebro placeholder
   if (selectedKit === "segundo-cerebro") {
-    return <SegundoCerebro onBack={handleBack} />;
+    return <SegundoCerebro onBack={handleBack} onNavigateToJarvis={() => setSelectedKit("jarvis")} />;
   }
 
   // Jarvis Kit — original landing page, untouched
@@ -56,7 +56,7 @@ export default function Home() {
         <Technical />
         <FAQ />
         <CTA />
-        <SegundoCerebroUpsell />
+        <SegundoCerebroUpsell onNavigate={() => setSelectedKit("segundo-cerebro")} />
       </main>
       <Footer />
     </>
