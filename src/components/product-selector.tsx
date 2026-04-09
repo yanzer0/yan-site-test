@@ -36,7 +36,7 @@ export function ProductSelector({ onSelect }: ProductSelectorProps) {
         {/* Logo */}
         <div className="animate-fade-in-up mb-12">
           <Image
-            src="/lockup-sem-fundo.png"
+            src="/lockup-sem-fundo.svg"
             alt="Infuser"
             width={280}
             height={72}

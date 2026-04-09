@@ -34,7 +34,7 @@ export function Navbar({ onBack }: NavbarProps) {
           {/* Logo */}
           <a href="#" className="flex items-center cursor-pointer">
           <Image
-            src="/lockup-sem-fundo.png"
+            src="/lockup-sem-fundo.svg"
             alt="Infuser"
             width={120}
             height={32}

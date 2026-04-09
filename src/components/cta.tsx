@@ -42,10 +42,11 @@ export function CTA() {
         {/* Image 4 - Product mockup */}
         <div className="mt-10 max-w-lg mx-auto rounded-lg overflow-hidden border border-green-500/10">
           <Image
-            src="/jarvis-product-mockup.png"
+            src="/jarvis-product-mockup.webp"
             alt="Mockup do JARVIS Kit"
             width={1400}
             height={788}
+            sizes="(max-width: 768px) 100vw, 700px"
             className="w-full h-auto"
           />
         </div>

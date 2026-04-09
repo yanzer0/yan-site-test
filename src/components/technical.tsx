@@ -37,10 +37,11 @@ export function Technical() {
         {/* Image 3 - Spectrum */}
         <div className="rounded-lg overflow-hidden border border-green-500/10">
           <Image
-            src="/jarvis-spectrum.png"
+            src="/jarvis-spectrum.webp"
             alt="Comparação de espectros: batida na mesa vs estalo vs palma"
             width={1400}
             height={788}
+            sizes="(max-width: 768px) 100vw, 700px"
             className="w-full h-auto"
           />
         </div>

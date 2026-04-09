@@ -50,6 +50,7 @@ export function Hero() {
             loop
             muted
             playsInline
+            preload="metadata"
           />
         </div>
 

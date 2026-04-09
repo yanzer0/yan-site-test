@@ -57,10 +57,11 @@ export function AITeacher() {
         {/* Image 2 - AI guide */}
         <div className="rounded-lg overflow-hidden border border-green-500/10">
           <Image
-            src="/jarvis-ai-guide.png"
+            src="/jarvis-ai-guide.webp"
             alt="Split screen: Claude guiando instalação + terminal com JARVIS"
             width={1400}
             height={788}
+            sizes="(max-width: 768px) 100vw, 700px"
             className="w-full h-auto"
           />
         </div>

@@ -32,10 +32,11 @@ export function Problem() {
         {/* Image 1 - Terminal screenshot */}
         <div className="rounded-lg overflow-hidden border border-green-500/10">
           <Image
-            src="/jarvis-terminal.png"
+            src="/jarvis-terminal.webp"
             alt="Terminal macOS com JARVIS rodando"
             width={1400}
             height={788}
+            sizes="(max-width: 768px) 100vw, 700px"
             className="w-full h-auto"
           />
         </div>

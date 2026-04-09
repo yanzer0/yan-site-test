@@ -6,7 +6,7 @@ export function Footer() {
       <div className="mx-auto max-w-3xl px-4 sm:px-6 text-center">
         <div className="flex items-center justify-center mb-4">
           <Image
-            src="/lockup-sem-fundo.png"
+            src="/lockup-sem-fundo.svg"
             alt="Infuser"
             width={100}
             height={28}
