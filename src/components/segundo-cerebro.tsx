@@ -187,7 +187,7 @@ function PainSection() {
           {PAIN_ITEMS.map((item) => (
             <div key={item} className="flex items-start gap-3">
               <span className="flex-shrink-0 mt-0.5 w-5 h-5 rounded-full bg-red-500/15 flex items-center justify-center">
-                <span className="text-red-400 text-xs font-bold">&timês;</span>
+                <span className="text-red-400 text-xs font-bold">×</span>
               </span>
               <span className="text-[15px] text-zinc-400 leading-relaxed">{item}</span>
             </div>
