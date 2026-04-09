@@ -69,7 +69,7 @@ export function ProductSelector({ onSelect }: ProductSelectorProps) {
             <button
               key={product.id}
               onClick={() => onSelect(product.id)}
-              className={`group relative rounded-lg border bg-black/60 backdrop-blur shadow-lg overflow-hidden text-left transition-all duration-300 hover:scale-[1.02] hover:bg-black/50 cursor-pointer ${
+              className={`group relative rounded-lg border bg-black/60 backdrop-blur shadow-lg overflow-hidden text-left transition-all duration-200 hover:scale-[1.02] hover:bg-black/50 cursor-pointer ${
                 product.id === "segundo-cerebro"
                   ? "border-green-500/40 ring-1 ring-green-500/20"
                   : "border-white/10"

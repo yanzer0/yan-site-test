@@ -63,7 +63,7 @@ export function Includes() {
           Tudo que você precisa pra instalar, rodar e personalizar.
         </p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-[2px]">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {FILES.map((file) => (
             <div
               key={file.title}

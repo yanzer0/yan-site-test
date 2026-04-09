@@ -652,7 +652,7 @@ function KitContentsSection() {
         <div className="h-px bg-white/5 mb-12" />
 
         {/* Cards grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-[2px]">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {CARDS.map((card) => (
             <div
               key={card.title}
@@ -953,7 +953,7 @@ function PricingSection() {
           </p>
           <a
             href={CHECKOUT_URL}
-            className="block w-full rounded-lg bg-green-500 px-8 py-4 text-lg font-bold text-black transition-all duration-200 hover:bg-green-400 hover:-translate-y-0.5 cursor-pointer animate-pulse-glow"
+            className="block w-full rounded-lg bg-green-500 px-8 py-4 text-lg font-bold text-black transition-all duration-200 hover:bg-green-400 hover:-translate-y-0.5 cursor-pointer"
           >
             Quero o Kit Segundo Cérebro &rarr;
           </a>
