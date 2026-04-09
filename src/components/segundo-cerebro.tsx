@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Menu, X, ArrowLeft, Code2, Target, BookOpen, Video, BarChart3 } from "lucide-react";
 import Image from "next/image";
 import Script from "next/script";
+import { FallingPattern } from "@/components/ui/falling-pattern";
 
 interface SegundoCerebroProps {
   onBack: () => void;
@@ -100,11 +101,22 @@ function SCNavbar({ onBack }: { onBack: () => void }) {
 
 /* ─── Section 1: Hero ─── */
 function HeroSection() {
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-28 pb-16">
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-green-500/10 blur-[120px] pointer-events-none" />
+      {/* Falling pattern background — brighter than Jarvis (density 3, less blur) */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <FallingPattern
+          className="h-full [mask-image:radial-gradient(ellipse_at_center,transparent_20%,var(--background))]"
+          color="#A8E84C"
+          backgroundColor="#000000"
+          duration={80}
+          blurIntensity="0.3rem"
+          density={3}
+        />
+      </div>
 
-      <div className="relative z-10 mx-auto max-w-3xl px-4 sm:px-6 text-center">
+      <div className="relative z-10 mx-auto max-w-4xl px-4 sm:px-6 text-center">
         {/* Badge */}
         <div className="animate-fade-in-up inline-flex items-center gap-3 mb-8">
           <span className="h-px w-5 bg-green-400" />
@@ -115,19 +127,31 @@ function HeroSection() {
         </div>
 
         {/* Headline */}
-        <h1 className="animate-fade-in-up delay-100 font-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.05]">
+        <h1 className="animate-fade-in-up delay-100 font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.05]">
           Configura uma vez.
           <br />
           <span className="font-punch text-gradient-green">Ele nunca mais esquece.</span>
         </h1>
 
         {/* Subheadline */}
-        <p className="animate-fade-in-up delay-200 mt-6 max-w-xl mx-auto text-base sm:text-lg text-zinc-400 leading-relaxed">
-          O sistema completo pra dar <strong className="text-white">memória permanente</strong> pro seu Claude Code. Ele lembra quem você é, o que faz, e o que precisa — <strong className="text-white">sem você explicar de novo toda vez.</strong>
+        <p className="animate-fade-in-up delay-200 mt-6 max-w-2xl mx-auto text-base sm:text-lg text-zinc-400 leading-relaxed">
+          O sistema completo pra dar <strong className="text-gradient-green font-semibold">memória permanente</strong> pro seu Claude Code. Ele lembra quem você é, o que faz, e o que precisa — <strong className="text-white">sem você explicar de novo toda vez.</strong>
         </p>
 
+        {/* Video */}
+        <div className="animate-fade-in-up delay-300 mt-10 max-w-2xl mx-auto rounded-lg overflow-hidden border border-green-500/10">
+          <video
+            src="/video-segundo-cerebro.mp4"
+            className="w-full aspect-video object-cover"
+            autoPlay
+            loop
+            muted
+            playsInline
+          />
+        </div>
+
         {/* Price + CTA */}
-        <div className="animate-fade-in-up delay-300 mt-10">
+        <div className="animate-fade-in-up delay-400 mt-10">
           <div className="flex items-baseline justify-center gap-3 mb-6">
             <span className="font-mono text-lg text-zinc-500 line-through">R$67</span>
             <span className="font-punch text-5xl sm:text-6xl font-extrabold text-gradient-green">R$37</span>
@@ -173,8 +197,8 @@ function PainSection() {
           <p className="text-[15px] text-zinc-300 italic leading-relaxed">
             &ldquo;Eu sou freelancer, trabalho com design, meu público é tal, meu preço é tal, o projeto atual é esse, o cliente pediu aquilo...&rdquo;
           </p>
-          <p className="text-[15px] text-white font-semibold">
-            Toda. Santa. Vez.
+          <p className="text-[15px] font-semibold">
+            <span className="text-gradient-green">Toda. Santa. Vez.</span>
           </p>
           <p className="text-[15px] text-zinc-400 leading-relaxed">
             Você digita um paragrafo inteiro de contexto antes de fazer a pergunta real. E mesmo assim, a resposta vem genérica porque o Claude não sabe o suficiente sobre você.
@@ -211,7 +235,7 @@ function PainSection() {
             Quantas respostas genéricas você aceitou porque não tinha paciência de contextualizar tudo de novo?
           </p>
           <p className="text-[15px] text-white font-semibold leading-relaxed">
-            E o pior: quantas vezes você deixou de usar o Claude porque dava preguiça de explicar tudo de novo?
+            E o pior: quantas vezes você <span className="text-gradient-green">deixou de usar o Claude</span> porque dava preguiça de explicar tudo de novo?
           </p>
         </div>
       </div>
@@ -259,17 +283,19 @@ function RevelationSection() {
           E ele te responde com um briefing completo do seu dia: o que ficou pendente da semana passada, quais projetos estão ativos, quais decisões você tomou recentemente, o que precisa de atenção urgente, e o que fazer primeiro.
         </p>
         <p className="text-[15px] text-white font-semibold mb-4">
-          Sem você explicar nada. Porque ele já sabe tudo.
+          Sem você explicar nada. Porque <span className="text-gradient-green">ele já sabe tudo.</span>
         </p>
 
-        {/* Screenshot placeholder: /prospect-research */}
-        <div className="rounded-lg overflow-hidden border border-green-500/10 mb-10 bg-zinc-900/50">
-          <div className="aspect-vídeo flex items-center justify-center p-8">
-            <div className="text-center">
-              <div className="font-mono text-[10px] uppercase tracking-widest text-green-400/60 mb-2">screenshot</div>
-              <p className="text-sm text-zinc-500">Output do /prospect-research — score de qualificação, análise completa</p>
-            </div>
-          </div>
+        {/* Screenshot: /daily-briefing output */}
+        <div className="rounded-lg overflow-hidden border border-green-500/10 mb-10">
+          <Image
+            src="/segundo-cerebro/daily-briefing.webp"
+            alt="Output do /daily-briefing — briefing completo do dia com pipeline e prioridades"
+            width={1065}
+            height={1398}
+            className="w-full h-auto"
+            quality={90}
+          />
         </div>
 
         {/* Divider */}
@@ -293,7 +319,7 @@ function RevelationSection() {
         {/* Closing */}
         <div className="space-y-5">
           <p className="text-[15px] text-zinc-400 leading-relaxed">
-            Isso não é ficção. Não é uma feature futura do Claude. <strong className="text-white">Isso funciona hoje.</strong>
+            Isso não é ficção. Não é uma feature futura do Claude. <strong className="text-gradient-green font-semibold">Isso funciona hoje.</strong>
           </p>
           <p className="text-[15px] text-zinc-400 leading-relaxed">
             É um sistema de memória persistente que usa o Obsidian como vault e o Claude Code como cérebro. Você alimenta o sistema com o que ele precisa saber sobre você, e ele usa essa informação pra operar com contexto completo. Sempre.
@@ -303,49 +329,27 @@ function RevelationSection() {
           </p>
         </div>
 
-        {/* Screenshot placeholder: .claude/commands/ */}
-        <div className="rounded-lg overflow-hidden border border-green-500/10 mt-8 bg-zinc-900/50">
-          <div className="aspect-vídeo flex items-center justify-center p-8">
-            <div className="text-center">
-              <div className="font-mono text-[10px] uppercase tracking-widest text-green-400/60 mb-2">screenshot</div>
-              <p className="text-sm text-zinc-500">Pasta .claude/commands/ — lista dos 8 arquivos de slash commands</p>
-            </div>
-          </div>
+        {/* Screenshot: .claude/commands/ */}
+        <div className="rounded-lg overflow-hidden border border-green-500/10 mt-8">
+          <Image
+            src="/segundo-cerebro/8-comandos.webp"
+            alt="Pasta .claude/commands/ — 8 slash commands prontos"
+            width={939}
+            height={374}
+            className="w-full h-auto"
+            quality={90}
+          />
         </div>
       </div>
     </section>
   );
 }
 
-/* ─── Section 4: Demo Visual ─── */
+/* ─── Section 4: Demo Visual (Bento Grid) ─── */
 function DemoSection() {
-  const DEMOS = [
-    {
-      title: "/daily-briefing",
-      desc: "Um comando. Briefing completo do dia com tudo que você precisa saber.",
-      placeholder: "Output do /daily-briefing no terminal",
-    },
-    {
-      title: "/braindump",
-      desc: "Teve uma ideia? Joga pro cérebro. Ele captura, conecta com o que já existe no vault, e arquiva.",
-      placeholder: "Output do /braindump no terminal",
-    },
-    {
-      title: "/end-session",
-      desc: "Terminou de trabalhar? Um comando e ele consolida tudo que aconteceu, atualiza a memória, registra decisões e aprendizados.",
-      descBold: "Amanhã quando você abrir, ele sabe exatamente onde vocês pararam.",
-      placeholder: "Output do /end-session + current-state.md atualizado",
-    },
-    {
-      title: "O vault no Obsidian",
-      desc: "Tudo organizado. Memoria, knowledge base, learnings, decisions, pipeline. Cada arquivo se conecta ao outro.",
-      placeholder: "Sidebar do Obsidian com a estrutura de pastas",
-    },
-  ];
-
   return (
     <section className="py-20 sm:py-28 bg-black">
-      <div className="mx-auto max-w-4xl px-4 sm:px-6">
+      <div className="mx-auto max-w-5xl px-4 sm:px-6">
         <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-center mb-3">
           Olha o que ele faz com{" "}
           <span className="font-punch text-gradient-green">um comando</span>
@@ -354,36 +358,92 @@ function DemoSection() {
           Screenshots reais do sistema funcionando.
         </p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          {DEMOS.map((demo) => (
-            <div
-              key={demo.title}
-              className="glass border-green-500/10 rounded-lg overflow-hidden"
-            >
-              {/* Screenshot placeholder */}
-              <div className="aspect-vídeo bg-zinc-900/50 flex items-center justify-center p-6">
-                <div className="text-center">
-                  <div className="font-mono text-[10px] uppercase tracking-widest text-green-400/60 mb-2">screenshot</div>
-                  <p className="text-xs text-zinc-600">{demo.placeholder}</p>
-                </div>
+        {/* Bento Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
+
+          {/* Row 1: daily-briefing (vertical, tall) + braindump (shorter) */}
+          <div className="md:col-span-5 glass border-green-500/10 rounded-lg overflow-hidden flex flex-col">
+            <div className="overflow-hidden rounded-t-lg">
+              <Image
+                src="/segundo-cerebro/daily-briefing.webp"
+                alt="Output do /daily-briefing no terminal"
+                width={1065}
+                height={1398}
+                className="w-full h-auto"
+                quality={85}
+              />
+            </div>
+            <div className="p-5">
+              <h3 className="font-mono text-green-400 text-sm font-bold mb-2">/daily-briefing</h3>
+              <p className="text-[13px] text-zinc-500 leading-relaxed">
+                Um comando. Briefing completo do dia com tudo que você precisa saber.
+              </p>
+            </div>
+          </div>
+
+          <div className="md:col-span-7 flex flex-col gap-4">
+            {/* braindump */}
+            <div className="glass border-green-500/10 rounded-lg overflow-hidden flex-1 flex flex-col">
+              <div className="overflow-hidden rounded-t-lg">
+                <Image
+                  src="/segundo-cerebro/braindump.webp"
+                  alt="Output do /braindump no terminal"
+                  width={1065}
+                  height={748}
+                  className="w-full h-auto"
+                  quality={85}
+                />
               </div>
-              {/* Text */}
-              <div className="p-6">
-                <h3 className="font-mono text-green-400 text-sm font-bold mb-2">
-                  {demo.title}
-                </h3>
+              <div className="p-5">
+                <h3 className="font-mono text-green-400 text-sm font-bold mb-2">/braindump</h3>
                 <p className="text-[13px] text-zinc-500 leading-relaxed">
-                  {demo.desc}
-                  {demo.descBold && (
-                    <>
-                      {" "}
-                      <strong className="text-white">{demo.descBold}</strong>
-                    </>
-                  )}
+                  Teve uma ideia? Joga pro cérebro. Ele captura, conecta com o que já existe no vault, e arquiva.
                 </p>
               </div>
             </div>
-          ))}
+
+            {/* end-session */}
+            <div className="glass border-green-500/10 rounded-lg overflow-hidden flex-1 flex flex-col">
+              <div className="overflow-hidden rounded-t-lg max-h-[400px]">
+                <Image
+                  src="/segundo-cerebro/end-session.webp"
+                  alt="Output do /end-session — fechamento de sessão completo"
+                  width={1070}
+                  height={1559}
+                  className="w-full h-auto"
+                  quality={85}
+                />
+              </div>
+              <div className="p-5">
+                <h3 className="font-mono text-green-400 text-sm font-bold mb-2">/end-session</h3>
+                <p className="text-[13px] text-zinc-500 leading-relaxed">
+                  Terminou de trabalhar? Um comando e ele consolida tudo que aconteceu, atualiza a memória, registra decisões e aprendizados.{" "}
+                  <strong className="text-gradient-green">Amanhã quando você abrir, ele sabe exatamente onde vocês pararam.</strong>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Row 2: Obsidian full-width */}
+          <div className="md:col-span-12 glass border-green-500/10 rounded-lg overflow-hidden">
+            <div className="overflow-hidden rounded-t-lg">
+              <Image
+                src="/segundo-cerebro/obsidian-full.webp"
+                alt="Vault completo no Obsidian — sidebar com estrutura de pastas e current-state aberto"
+                width={2559}
+                height={1379}
+                className="w-full h-auto"
+                quality={85}
+              />
+            </div>
+            <div className="p-5">
+              <h3 className="font-mono text-green-400 text-sm font-bold mb-2">O vault no Obsidian</h3>
+              <p className="text-[13px] text-zinc-500 leading-relaxed">
+                Tudo organizado. Memória, knowledge base, learnings, decisions, pipeline. Cada arquivo se conecta ao outro.
+              </p>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
@@ -443,33 +503,53 @@ function KitContentsSection() {
         </h2>
         <p className="text-center text-[15px] text-zinc-400 mb-4">
           Não é um curso. Não é um ebook. É um{" "}
-          <strong className="text-white">sistema pronto pra usar.</strong>{" "}
+          <strong className="text-gradient-green font-semibold">sistema pronto pra usar.</strong>{" "}
           Você descompacta, personaliza com os seus dados, e o cérebro já esta funcionando.
         </p>
 
-        {/* Screenshots: vault structure + CLAUDE.md + template */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-12">
-          <div className="rounded-lg overflow-hidden border border-green-500/10 bg-zinc-900/50">
-            <div className="aspect-[4/3] flex items-center justify-center p-4">
-              <div className="text-center">
-                <div className="font-mono text-[10px] uppercase tracking-widest text-green-400/60 mb-2">screenshot</div>
-                <p className="text-xs text-zinc-600">Sidebar do Obsidian — estrutura do vault</p>
-              </div>
+        {/* Screenshots: vault structure + CLAUDE.md + about-me template */}
+        <div className="grid grid-cols-1 sm:grid-cols-12 gap-4 mb-12">
+          {/* Estrutura do vault — horizontal */}
+          <div className="sm:col-span-5 rounded-lg overflow-hidden border border-green-500/10">
+            <Image
+              src="/segundo-cerebro/estrutura-do-vault.webp"
+              alt="Sidebar do Obsidian — estrutura do vault"
+              width={935}
+              height={591}
+              className="w-full h-auto"
+              quality={85}
+            />
+            <div className="px-4 py-3 bg-zinc-900/50">
+              <p className="font-mono text-[10px] uppercase tracking-widest text-green-400/60">Estrutura do vault</p>
             </div>
           </div>
-          <div className="rounded-lg overflow-hidden border border-green-500/10 bg-zinc-900/50">
-            <div className="aspect-[4/3] flex items-center justify-center p-4">
-              <div className="text-center">
-                <div className="font-mono text-[10px] uppercase tracking-widest text-green-400/60 mb-2">screenshot</div>
-                <p className="text-xs text-zinc-600">CLAUDE.md aberto — densidade do conteúdo</p>
-              </div>
+          {/* CLAUDE.md — horizontal/wide */}
+          <div className="sm:col-span-7 rounded-lg overflow-hidden border border-green-500/10">
+            <Image
+              src="/segundo-cerebro/claude-md.webp"
+              alt="CLAUDE.md aberto — centenas de linhas de prompt engineering"
+              width={2123}
+              height={1327}
+              className="w-full h-auto"
+              quality={85}
+            />
+            <div className="px-4 py-3 bg-zinc-900/50">
+              <p className="font-mono text-[10px] uppercase tracking-widest text-green-400/60">CLAUDE.md — a alma do cérebro</p>
             </div>
           </div>
-          <div className="rounded-lg overflow-hidden border border-green-500/10 bg-zinc-900/50">
-            <div className="aspect-[4/3] flex items-center justify-center p-4">
-              <div className="text-center">
-                <div className="font-mono text-[10px] uppercase tracking-widest text-green-400/60 mb-2">screenshot</div>
-                <p className="text-xs text-zinc-600">Template about-me.md — perguntas-guia</p>
+          {/* About-me template — vertical, full width centered */}
+          <div className="sm:col-span-12 flex justify-center">
+            <div className="rounded-lg overflow-hidden border border-green-500/10 max-w-sm w-full">
+              <Image
+                src="/segundo-cerebro/about-me.webp"
+                alt="Template about-me.md — perguntas-guia para personalização"
+                width={716}
+                height={1763}
+                className="w-full h-auto"
+                quality={85}
+              />
+              <div className="px-4 py-3 bg-zinc-900/50">
+                <p className="font-mono text-[10px] uppercase tracking-widest text-green-400/60">Template about-me.md</p>
               </div>
             </div>
           </div>
@@ -590,7 +670,7 @@ function NotForSection() {
         </div>
 
         <p className="mt-8 text-sm text-zinc-600 text-center">
-          Se nenhum desses se aplica, continua lendo. O que vem a seguir vai fazer R$37 parecer piada.
+          Se nenhum desses se aplica, continua lendo. O que vem a seguir vai fazer <span className="text-gradient-green font-semibold">R$37 parecer piada.</span>
         </p>
       </div>
     </section>
@@ -642,7 +722,7 @@ function ValueComparisonSection() {
             O lanche acaba em 20 minutos. A pizza acaba na mesma noite. O cafe acaba antes do almoço.
           </p>
           <p className="text-[15px] text-zinc-400 leading-relaxed">
-            O segundo cérebro <strong className="text-white">fica mais inteligente a cada dia que você usa.</strong> Acumula conhecimento, registra decisões, consolida aprendizados. Daqui a 6 mêses ele vai saber mais sobre o seu trabalho do que qualquer colega.
+            O segundo cérebro <strong className="text-gradient-green font-semibold">fica mais inteligente a cada dia que você usa.</strong> Acumula conhecimento, registra decisões, consolida aprendizados. Daqui a 6 mêses ele vai saber mais sobre o seu trabalho do que qualquer colega.
           </p>
           <p className="text-[15px] text-zinc-400 leading-relaxed">
             E o preço de R$37 é só pros primeiros 30. Depois disso, sobe pra R$67 e não volta.
@@ -739,7 +819,7 @@ function SupportSection() {
             Dentro do kit tem um arquivo chamado <strong className="text-white">prompt-suporte-llm.md</strong>. Você copia o conteúdo, cola num chat novo do Claude ou ChatGPT, e ganha um assistente que conhece o kit inteiro.
           </p>
           <p className="text-[15px] text-zinc-400 leading-relaxed">
-            Ele tira dúvidas de instalação, ajuda a personalizar, resolve erros, ensina a criar novos comandos, e guia qualquer modificação que você quiser fazer. <strong className="text-white">Disponível 24h. Sem fila. Sem ticket. Sem prazo de expiração.</strong>
+            Ele tira dúvidas de instalação, ajuda a personalizar, resolve erros, ensina a criar novos comandos, e guia qualquer modificação que você quiser fazer. <strong className="text-gradient-green font-semibold">Disponível 24h. Sem fila. Sem ticket. Sem prazo de expiração.</strong>
           </p>
         </div>
 
@@ -815,7 +895,7 @@ function FinalPushSection() {
             <code className="text-green-400 bg-green-500/10 px-2 py-0.5 rounded">/daily-briefing</code>{" "}
             e receber um resumo personalizado do seu dia. Sem explicar nada. Sem contextualizar. Sem começar do zero.
           </p>
-          <p>O cérebro vai estar te esperando.</p>
+          <p><span className="text-gradient-green font-semibold">O cérebro vai estar te esperando.</span></p>
         </div>
 
         <div className="mt-10 text-center">
