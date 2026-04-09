@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "skills": {
+    "dev-browser": {
+      "source": "SawyerHood/dev-browser",
+      "sourceType": "github",
+      "computedHash": "852a5a8415f19de7512f00dcfe0640711a4790e2165ff806f4d3e75c5e7c5199"
+    },
+    "emil-design-eng": {
+      "source": "emilkowalski/skill",
+      "sourceType": "github",
+      "computedHash": "ac3fc5b4e206488ffc408a2806f829bb2e5eaf518fded09be34790685c2b3a0d"
+    }
+  }
+}
