@@ -63,13 +63,17 @@ export function ProductSelector({ onSelect }: ProductSelectorProps) {
           Selecione o produto que vai transformar sua rotina.
         </p>
 
-        {/* Product cards grid */}
-        <div className="animate-fade-in-up delay-300 grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+        {/* Product cards grid — always side by side */}
+        <div className="animate-fade-in-up delay-300 grid grid-cols-2 gap-3 sm:gap-6">
           {PRODUCTS.map((product) => (
             <button
               key={product.id}
               onClick={() => onSelect(product.id)}
-              className="group relative rounded-lg border border-white/10 bg-black/60 backdrop-blur shadow-lg overflow-hidden text-left transition-all duration-300 hover:scale-[1.02] hover:bg-black/50 cursor-pointer"
+              className={`group relative rounded-lg border bg-black/60 backdrop-blur shadow-lg overflow-hidden text-left transition-all duration-300 hover:scale-[1.02] hover:bg-black/50 cursor-pointer ${
+                product.id === "segundo-cerebro"
+                  ? "border-green-500/40 ring-1 ring-green-500/20"
+                  : "border-white/10"
+              }`}
             >
               {/* Cover image */}
               <div className="aspect-[16/9] overflow-hidden">
@@ -83,17 +87,24 @@ export function ProductSelector({ onSelect }: ProductSelectorProps) {
               </div>
 
               {/* Text content */}
-              <div className="p-6">
-                <h2 className={`font-heading text-xl sm:text-2xl font-bold ${product.titleClass} mb-2`}>
+              <div className="p-3 sm:p-6">
+                <h2 className={`font-heading text-sm sm:text-2xl font-bold ${product.titleClass} mb-1 sm:mb-2`}>
                   {product.title}
                 </h2>
-                <p className="text-sm text-zinc-400">
+                <p className="text-[11px] sm:text-sm text-zinc-400 leading-snug">
                   {product.subtitle}
                 </p>
-                <div className={`mt-4 inline-flex items-center gap-2 text-sm font-medium ${product.titleClass} opacity-60 group-hover:opacity-100 transition-opacity`}>
+                <div className={`mt-2 sm:mt-4 inline-flex items-center gap-1 sm:gap-2 text-[11px] sm:text-sm font-medium ${product.titleClass} opacity-60 group-hover:opacity-100 transition-opacity`}>
                   Acessar <span className="transition-transform group-hover:translate-x-1">&rarr;</span>
                 </div>
               </div>
+
+              {/* Destaque badge for Segundo Cérebro */}
+              {product.id === "segundo-cerebro" && (
+                <div className="absolute top-2 right-2 sm:top-3 sm:right-3 rounded-full bg-green-500 px-2 py-0.5 sm:px-3 sm:py-1 text-[9px] sm:text-[11px] font-bold text-black uppercase tracking-wider">
+                  Novo
+                </div>
+              )}
             </button>
           ))}
         </div>
