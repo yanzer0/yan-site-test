@@ -104,7 +104,7 @@ function SCNavbar({ onBack }: { onBack: () => void }) {
           </button>
           <a href="#" className="flex items-center cursor-pointer">
             <Image
-              src="/lockup-sem-fundo.png"
+              src="/lockup-sem-fundo.svg"
               alt="Infuser"
               width={120}
               height={32}
@@ -216,6 +216,7 @@ function HeroSection() {
             loop
             muted
             playsInline
+            preload="metadata"
           />
         </div>
 
@@ -270,7 +271,7 @@ function PainSection() {
             <span className="text-gradient-green">Toda. Santa. Vez.</span>
           </p>
           <p className="text-[15px] text-zinc-400 leading-relaxed">
-            Você digita um paragrafo inteiro de contexto antes de fazer a pergunta real. E mesmo assim, a resposta vem genérica porque o Claude não sabe o suficiente sobre você.
+            Você digita um parágrafo inteiro de contexto antes de fazer a pergunta real. E mesmo assim, a resposta vem genérica porque o Claude não sabe o suficiente sobre você.
           </p>
         </div>
 
@@ -594,7 +595,7 @@ function KitContentsSection() {
         <p className="text-center text-[15px] text-zinc-400 mb-4">
           Não é um curso. Não é um ebook. É um{" "}
           <strong className="text-gradient-green font-semibold">sistema pronto pra usar.</strong>{" "}
-          Você descompacta, personaliza com os seus dados, e o cérebro já esta funcionando.
+          Você descompacta, personaliza com os seus dados, e o cérebro já está funcionando.
         </p>
 
         {/* Screenshots: CLAUDE.md hero + vault structure & about-me side by side */}
@@ -681,8 +682,8 @@ function AudienceSection() {
   const PROFILES: { icon: React.ReactNode; title: string; desc: string }[] = [
     { icon: <Code2 className="h-5 w-5 text-green-400" />, title: "Desenvolvedores", desc: "Gerencia sprints, documenta decisões técnicas, registra aprendizados de debugging. O daily-briefing vira seu standup pessoal. Renomeia _pipeline/ pra _projects/ e pronto." },
     { icon: <Target className="h-5 w-5 text-green-400" />, title: "Freelancers e Agencias", desc: "Pipeline de clientes, pesquisa de prospects, geracao de propostas, follow-ups. O módulo de negócios foi feito pra você. O Claude vira seu gerente comercial que nunca esquece um lead." },
-    { icon: <BookOpen className="h-5 w-5 text-green-400" />, title: "Estudantes e Pesquisadores", desc: "Organiza TCC, mêstrado, projetos de pesquisa. Captura insights com braindump, registra referências, acompanha progresso. O weekly-review vira sua bússola acadêmica." },
-    { icon: <Video className="h-5 w-5 text-green-400" />, title: "Criadores de Conteúdo", desc: "Calendário editorial, ideias de conteúdo, posicionamento, tom de voz. O /content-idea gera sugestões baseadas no que você já publicouu e nos seus objetivos." },
+    { icon: <BookOpen className="h-5 w-5 text-green-400" />, title: "Estudantes e Pesquisadores", desc: "Organiza TCC, mestrado, projetos de pesquisa. Captura insights com braindump, registra referências, acompanha progresso. O weekly-review vira sua bússola acadêmica." },
+    { icon: <Video className="h-5 w-5 text-green-400" />, title: "Criadores de Conteúdo", desc: "Calendário editorial, ideias de conteúdo, posicionamento, tom de voz. O /content-idea gera sugestões baseadas no que você já publicou e nos seus objetivos." },
     { icon: <BarChart3 className="h-5 w-5 text-green-400" />, title: "Gestores e Líderes", desc: "Acompanha projetos da equipe, registra decisões estratégicas, revisão semanal de prioridades. O vault vira seu segundo cérebro gerencial." },
   ];
 
@@ -724,7 +725,7 @@ function AudienceSection() {
 function NotForSection() {
   const WARNINGS = [
     { title: "Você não tem Claude Code.", desc: "O kit depende do Claude Code funcionando na sua máquina. Sem ele, os slash commands não rodam." },
-    { title: "Você quer mágica sem esforço.", desc: "O kit vem com templates e guias, mas você precisa preencher com os SEUS dados. São 30-60 minutos de setup inicial. Se não esta disposto a investir esse tempo, não vai funcionar." },
+    { title: "Você quer mágica sem esforço.", desc: "O kit vem com templates e guias, mas você precisa preencher com os SEUS dados. São 30-60 minutos de setup inicial. Se não está disposto a investir esse tempo, não vai funcionar." },
     { title: "Você espera um curso com vídeo-aulas.", desc: "Isso não é um curso. É um sistema pronto. Tem guias escritos e suporte via IA, mas não tem vídeo-aula de 10 horas. É direto ao ponto." },
   ];
 
@@ -840,7 +841,7 @@ function FAQSection() {
       a: "Qualquer plano que dê acesso ao Claude Code: Pro, Max ou API. O kit não requer nenhuma feature especial. Se você já usa Claude Code, tem tudo que precisa.",
     },
     {
-      q: "Funciona pro meu caso? Eu não sou empresario.",
+      q: "Funciona pro meu caso? Eu não sou empresário.",
       a: "O kit é modular. O core universal (daily-briefing, end-session, braindump, weekly-review, templates de identidade/objetivos/projetos) funciona pra qualquer pessoa. O módulo de negócios (prospect-research, pipeline, proposal-generator) é opcional — pode usar ou deletar. Tem exemplos de personalização pra dev, estudante, criador de conteúdo, gestor, freelancer.",
     },
     {
@@ -849,7 +850,7 @@ function FAQSection() {
     },
     {
       q: "\"São só arquivos de texto. Pagar por .md?\"",
-      a: "Da mesma forma que um contrato de 2 páginas pode valer milhões e um livro pode mudar uma vida — o valor não éstá no formato, está no conteúdo. Você está pagando pelas semanas de refinamento condensadas em arquivos prontos pra usar. Pelo prompt engineering. Pela lógica dos comandos. Pelos guardrails. Pelo tempo que você NÃO vai gastar tentando fazer tudo do zero.",
+      a: "Da mesma forma que um contrato de 2 páginas pode valer milhões e um livro pode mudar uma vida — o valor não está no formato, está no conteúdo. Você está pagando pelas semanas de refinamento condensadas em arquivos prontos pra usar. Pelo prompt engineering. Pela lógica dos comandos. Pelos guardrails. Pelo tempo que você NÃO vai gastar tentando fazer tudo do zero.",
     },
     {
       q: "E se eu não conseguir configurar?",
@@ -977,10 +978,10 @@ function FinalPushSection() {
         <div className="space-y-6 text-base sm:text-lg text-zinc-400 leading-relaxed">
           <p>Você tem duas opções agora.</p>
           <p>
-            A primeira e fechar essa pagina. Abrir o Claude Code amanhã. Digitar aquele paragrafo de contexto que você sempre digita. Receber uma resposta genérica. Repetir isso na terça, na quarta, na semana que vem, no mês que vem. E cada vez que abrir um chat novo, começar do zero. De novo.
+            A primeira é fechar essa página. Abrir o Claude Code amanhã. Digitar aquele parágrafo de contexto que você sempre digita. Receber uma resposta genérica. Repetir isso na terça, na quarta, na semana que vem, no mês que vem. E cada vez que abrir um chat novo, começar do zero. De novo.
           </p>
           <p>
-            A segunda e clicar no botao, baixar o kit, e gastar 30 minutos configurando o seu segundo cérebro.
+            A segunda é clicar no botão, baixar o kit, e gastar 30 minutos configurando o seu segundo cérebro.
           </p>
           <p className="text-white font-bold">
             Daqui a 30 minutos, você pode abrir o Claude Code, digitar{" "}
@@ -1013,7 +1014,7 @@ function SCFooter() {
       <div className="mx-auto max-w-3xl px-4 sm:px-6 text-center">
         <div className="flex items-center justify-center mb-4">
           <Image
-            src="/lockup-sem-fundo.png"
+            src="/lockup-sem-fundo.svg"
             alt="Infuser"
             width={100}
             height={28}
