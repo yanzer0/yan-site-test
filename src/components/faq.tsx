@@ -28,7 +28,7 @@ export function FAQ() {
         <h2 className="font-heading text-2xl sm:text-3xl font-extrabold tracking-tight mb-10">
           Perguntas honestas,
           <br />
-          <span className="text-green-400">respostas diretas.</span>
+          <span className="font-punch text-green-400">respostas diretas.</span>
         </h2>
 
         <div className="divide-y divide-white/5">

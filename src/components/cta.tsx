@@ -10,7 +10,7 @@ export function CTA() {
         <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-4">
           Duas palmas.
           <br />
-          <span className="text-green-400">R$19,90.</span>
+          <span className="font-punch text-green-400">R$19,90.</span>
         </h2>
 
         <p className="text-[15px] text-zinc-400 max-w-md mx-auto mb-8">
@@ -20,10 +20,10 @@ export function CTA() {
 
         {/* Price */}
         <div className="flex items-baseline justify-center gap-2 mb-8">
-          <span className="font-heading text-5xl sm:text-6xl font-extrabold text-green-400">
+          <span className="font-punch text-5xl sm:text-6xl font-extrabold text-green-400">
             R$19
           </span>
-          <span className="font-heading text-2xl sm:text-3xl font-semibold text-green-400">
+          <span className="font-punch text-2xl sm:text-3xl font-semibold text-green-400">
             ,90
           </span>
         </div>

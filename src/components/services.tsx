@@ -7,7 +7,7 @@ export function Problem() {
         <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight leading-tight mb-6">
           Você viu o vídeo.
           <br />
-          Quis fazer <span className="text-green-400">igual.</span>
+          Quis fazer <span className="font-punch text-green-400">igual.</span>
         </h2>
 
         <p className="text-[15px] text-zinc-400 leading-relaxed mb-4">

@@ -37,7 +37,7 @@ export function Hero() {
         <h1 className="animate-fade-in-up delay-100 font-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.05]">
           Duas palmas.
           <br />
-          <span className="text-gradient-green">Tudo liga sozinho.</span>
+          <span className="font-punch text-gradient-green">Tudo liga sozinho.</span>
         </h1>
 
         {/* Subline */}
@@ -68,8 +68,8 @@ export function Hero() {
 
         {/* Price */}
         <div className="animate-fade-in-up delay-400 mt-10 flex items-baseline justify-center gap-2">
-          <span className="font-heading text-5xl sm:text-6xl font-extrabold text-green-400">R$19</span>
-          <span className="font-heading text-2xl sm:text-3xl font-semibold text-green-400">,90</span>
+          <span className="font-punch text-5xl sm:text-6xl font-extrabold text-green-400">R$19</span>
+          <span className="font-punch text-2xl sm:text-3xl font-semibold text-green-400">,90</span>
         </div>
 
         {/* CTAs */}

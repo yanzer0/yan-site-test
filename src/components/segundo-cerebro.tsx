@@ -116,7 +116,7 @@ function HeroSection() {
         <h1 className="animate-fade-in-up delay-100 font-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.05]">
           Configura uma vez.
           <br />
-          <span className="text-gradient-green">Ele nunca mais esquece.</span>
+          <span className="font-punch text-gradient-green">Ele nunca mais esquece.</span>
         </h1>
 
         {/* Subheadline */}
@@ -128,7 +128,7 @@ function HeroSection() {
         <div className="animate-fade-in-up delay-300 mt-10">
           <div className="flex items-baseline justify-center gap-3 mb-6">
             <span className="font-mono text-lg text-zinc-500 line-through">R$67</span>
-            <span className="font-heading text-5xl sm:text-6xl font-extrabold text-green-400">R$37</span>
+            <span className="font-punch text-5xl sm:text-6xl font-extrabold text-green-400">R$37</span>
           </div>
           <a
             href="#comprar"
@@ -233,7 +233,7 @@ function RevelationSection() {
       <div className="mx-auto max-w-3xl px-4 sm:px-6">
         <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight leading-tight mb-6">
           E se você configurasse{" "}
-          <span className="text-gradient-green">uma vez</span>{" "}
+          <span className="font-punch text-gradient-green">uma vez</span>{" "}
           e ele nunca mais esquecesse?
         </h2>
 
@@ -346,7 +346,7 @@ function DemoSection() {
       <div className="mx-auto max-w-4xl px-4 sm:px-6">
         <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-center mb-3">
           Olha o que ele faz com{" "}
-          <span className="text-gradient-green">um comando</span>
+          <span className="font-punch text-gradient-green">um comando</span>
         </h2>
         <p className="text-center text-zinc-500 text-[15px] mb-12">
           Screenshots reais do sistema funcionando.
@@ -516,7 +516,7 @@ function AudienceSection() {
       <div className="mx-auto max-w-3xl px-4 sm:px-6">
         <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight leading-tight mb-4">
           Funciona pra você se você usa{" "}
-          <span className="text-gradient-green">Claude Code</span>
+          <span className="font-punch text-gradient-green">Claude Code</span>
         </h2>
         <p className="text-[15px] text-zinc-400 leading-relaxed mb-10">
           O kit é modular. Vem com um core universal que funciona pra qualquer pessoa + um módulo de negócios que é opcional. Você usa o que fizer sentido e adapta o resto.
@@ -609,7 +609,7 @@ function ValueComparisonSection() {
       <div className="mx-auto max-w-3xl px-4 sm:px-6">
         <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-center mb-12">
           O que mais você compra com{" "}
-          <span className="text-gradient-green">R$37</span>?
+          <span className="font-punch text-gradient-green">R$37</span>?
         </h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-12">
@@ -622,7 +622,7 @@ function ValueComparisonSection() {
                   : "glass"
               }`}
             >
-              <div className={`font-heading text-2xl font-extrabold mb-1 ${item.highlight ? "text-green-400" : "text-zinc-300"}`}>
+              <div className={`font-punch text-2xl font-extrabold mb-1 ${item.highlight ? "text-green-400" : "text-zinc-300"}`}>
                 {item.price}
               </div>
               <div className={`text-sm font-semibold mb-2 ${item.highlight ? "text-white" : "text-zinc-400"}`}>
@@ -689,7 +689,7 @@ function FAQSection() {
         <h2 className="font-heading text-2xl sm:text-3xl font-extrabold tracking-tight mb-10">
           Perguntas que você
           <br />
-          <span className="text-green-400">provavelmente tem.</span>
+          <span className="font-punch text-green-400">provavelmente tem.</span>
         </h2>
 
         <div className="divide-y divide-white/5">
@@ -721,7 +721,7 @@ function SupportSection() {
       <div className="mx-auto max-w-3xl px-4 sm:px-6">
         <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight leading-tight mb-6">
           Compre uma vez. Tenha suporte{" "}
-          <span className="text-gradient-green">pra sempre.</span>
+          <span className="font-punch text-gradient-green">pra sempre.</span>
         </h2>
 
         <p className="text-[15px] text-zinc-400 leading-relaxed mb-8">
@@ -772,7 +772,7 @@ function PricingSection() {
         {/* Price box */}
         <div className="mx-auto max-w-sm rounded-lg border-2 border-green-500/40 bg-green-500/[0.06] p-8 mb-6">
           <div className="font-mono text-lg text-zinc-500 line-through mb-1">R$67</div>
-          <div className="font-heading text-5xl sm:text-6xl font-extrabold text-green-400 mb-2">R$37</div>
+          <div className="font-punch text-5xl sm:text-6xl font-extrabold text-green-400 mb-2">R$37</div>
           <p className="text-sm text-green-300/70 mb-6">
             Preço de lançamento — só pros 30 primeiros. Depois sobe pra R$67.
           </p>
@@ -881,7 +881,7 @@ function JarvisUpsell() {
 
           <h3 className="font-heading text-xl sm:text-2xl font-bold text-white mb-3">
             Conhece o{" "}
-            <span className="text-gradient-green">Jarvis Kit</span>?
+            <span className="font-punch text-gradient-green">Jarvis Kit</span>?
           </h3>
           <p className="text-sm text-zinc-400 leading-relaxed max-w-md mx-auto mb-6">
             Automação por palmas e voz. Duas palmas e tudo liga sozinho. O companheiro perfeito pro seu Segundo Cérebro.
