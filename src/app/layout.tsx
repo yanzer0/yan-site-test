@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Outfit, Space_Mono, Fraunces } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
 const outfit = Outfit({
@@ -20,6 +21,17 @@ const fraunces = Fraunces({
   axes: ["SOFT", "WONK"],
 });
 
+const cabinetGrotesk = localFont({
+  variable: "--font-cabinet",
+  src: [
+    { path: "../fonts/cabinet-grotesk-400.woff2", weight: "400", style: "normal" },
+    { path: "../fonts/cabinet-grotesk-500.woff2", weight: "500", style: "normal" },
+    { path: "../fonts/cabinet-grotesk-700.woff2", weight: "700", style: "normal" },
+    { path: "../fonts/cabinet-grotesk-800.woff2", weight: "800", style: "normal" },
+  ],
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: "Infuser — Kits de Automação e Produtividade",
   description:
@@ -34,7 +46,7 @@ export default function RootLayout({
   return (
     <html
       lang="pt-BR"
-      className={`${outfit.variable} ${spaceMono.variable} ${fraunces.variable} dark h-full antialiased`}
+      className={`${outfit.variable} ${spaceMono.variable} ${fraunces.variable} ${cabinetGrotesk.variable} dark h-full antialiased`}
     >
       <body className="min-h-full flex flex-col font-sans">{children}</body>
     </html>

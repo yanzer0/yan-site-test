@@ -57,7 +57,7 @@ function SCNavbar({ onBack }: { onBack: () => void }) {
 
         <div className="flex items-center gap-2">
           <a
-            href="#comprar"
+            href={CHECKOUT_URL}
             className="inline-flex items-center gap-2 rounded-full bg-green-500 px-4 py-2 text-xs sm:text-sm font-semibold text-black transition-all duration-200 hover:bg-green-400 cursor-pointer green-glow-sm"
           >
             Quero o Kit
@@ -86,7 +86,7 @@ function SCNavbar({ onBack }: { onBack: () => void }) {
             </a>
           ))}
           <a
-            href="#comprar"
+            href={CHECKOUT_URL}
             onClick={() => setMobileOpen(false)}
             className="inline-flex items-center justify-center gap-2 rounded-full bg-green-500 px-5 py-2.5 text-sm font-semibold text-black cursor-pointer"
           >
@@ -133,7 +133,7 @@ function HeroSection() {
             <span className="font-punch text-5xl sm:text-6xl font-extrabold text-green-400">R$37</span>
           </div>
           <a
-            href="#comprar"
+            href={CHECKOUT_URL}
             className="group inline-flex items-center gap-2 rounded-lg bg-green-500 px-10 py-4 text-base font-bold text-black transition-all duration-200 hover:bg-green-400 hover:-translate-y-0.5 cursor-pointer green-glow"
           >
             Quero o Kit — R$37 &rarr;
@@ -820,7 +820,7 @@ function FinalPushSection() {
 
         <div className="mt-10 text-center">
           <a
-            href="#comprar"
+            href={CHECKOUT_URL}
             className="group inline-flex items-center gap-2 rounded-lg bg-green-500 px-10 py-4 text-base font-bold text-black transition-all duration-200 hover:bg-green-400 hover:-translate-y-0.5 cursor-pointer green-glow"
           >
             Montar meu Segundo Cérebro — R$37 &rarr;
