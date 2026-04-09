@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import { Brain } from "lucide-react";
 
 interface ProductSelectorProps {
   onSelect: (kit: "jarvis" | "segundo-cerebro") => void;
@@ -10,25 +9,19 @@ interface ProductSelectorProps {
 const PRODUCTS = [
   {
     id: "jarvis" as const,
-    icon: "/jarvis-product-mockup.png",
+    cover: "/capa-jarvis.webp",
     title: "Kit Jarvis",
     subtitle: "Automação por palmas e voz",
-    accent: "green",
     borderClass: "border-green-500/30 hover:border-green-400",
-    glowClass: "green-glow-sm",
     titleClass: "text-green-400",
-    bgGlow: "bg-green-500/5",
   },
   {
     id: "segundo-cerebro" as const,
-    icon: null,
+    cover: "/capa-segundo-cerebro.webp",
     title: "Kit Segundo Cérebro",
     subtitle: "Memória permanente pro Claude Code",
-    accent: "green",
     borderClass: "border-green-500/30 hover:border-green-400",
-    glowClass: "green-glow-sm",
     titleClass: "text-green-400",
-    bgGlow: "bg-green-500/5",
   },
 ] as const;
 
@@ -76,40 +69,30 @@ export function ProductSelector({ onSelect }: ProductSelectorProps) {
             <button
               key={product.id}
               onClick={() => onSelect(product.id)}
-              className={`group relative rounded-lg border ${product.borderClass} bg-white/[0.02] p-8 sm:p-10 text-left transition-all duration-300 hover:scale-[1.02] hover:${product.bgGlow} cursor-pointer`}
+              className={`group relative rounded-lg border ${product.borderClass} bg-white/[0.02] overflow-hidden text-left transition-all duration-300 hover:scale-[1.02] cursor-pointer`}
             >
-              {/* Icon area */}
-              <div className="mb-6 flex items-center justify-center">
-                {product.icon ? (
-                  <div className="w-20 h-20 rounded-lg overflow-hidden border border-white/10">
-                    <Image
-                      src={product.icon}
-                      alt={product.title}
-                      width={80}
-                      height={80}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                ) : (
-                  <div className="w-20 h-20 rounded-lg bg-green-500/10 border border-green-500/20 flex items-center justify-center">
-                    <Brain className="h-8 w-8 text-green-400" />
-                  </div>
-                )}
+              {/* Cover image */}
+              <div className="aspect-[16/9] overflow-hidden">
+                <Image
+                  src={product.cover}
+                  alt={product.title}
+                  width={800}
+                  height={450}
+                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                />
               </div>
 
-              {/* Title */}
-              <h2 className={`font-heading text-xl sm:text-2xl font-bold ${product.titleClass} mb-2`}>
-                {product.title}
-              </h2>
-
-              {/* Subtitle */}
-              <p className="text-sm text-zinc-400">
-                {product.subtitle}
-              </p>
-
-              {/* Arrow indicator */}
-              <div className={`mt-6 inline-flex items-center gap-2 text-sm font-medium ${product.titleClass} opacity-60 group-hover:opacity-100 transition-opacity`}>
-                Acessar <span className="transition-transform group-hover:translate-x-1">&rarr;</span>
+              {/* Text content */}
+              <div className="p-6">
+                <h2 className={`font-heading text-xl sm:text-2xl font-bold ${product.titleClass} mb-2`}>
+                  {product.title}
+                </h2>
+                <p className="text-sm text-zinc-400">
+                  {product.subtitle}
+                </p>
+                <div className={`mt-4 inline-flex items-center gap-2 text-sm font-medium ${product.titleClass} opacity-60 group-hover:opacity-100 transition-opacity`}>
+                  Acessar <span className="transition-transform group-hover:translate-x-1">&rarr;</span>
+                </div>
               </div>
             </button>
           ))}
