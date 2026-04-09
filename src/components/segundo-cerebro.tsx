@@ -40,12 +40,13 @@ function ImageLightbox({ src, alt, onClose }: { src: string; alt: string; onClos
 }
 
 /* ─── Zoomable Image wrapper ─── */
-function ZoomableImage({ src, alt, width, height, className, quality = 85, children }: {
+function ZoomableImage({ src, alt, width, height, className, containerClassName, quality = 85, children }: {
   src: string;
   alt: string;
   width: number;
   height: number;
   className?: string;
+  containerClassName?: string;
   quality?: number;
   children?: React.ReactNode;
 }) {
@@ -53,7 +54,7 @@ function ZoomableImage({ src, alt, width, height, className, quality = 85, child
 
   return (
     <>
-      <div className="group relative cursor-zoom-in" onClick={() => setOpen(true)}>
+      <div className={`group relative cursor-zoom-in ${containerClassName ?? ""}`} onClick={() => setOpen(true)}>
         <Image
           src={src}
           alt={alt}
@@ -429,13 +430,14 @@ function DemoSection() {
 
           {/* Row 1: daily-briefing (vertical, stretches full height) + braindump + end-session */}
           <div className="md:col-span-5 glass border-green-500/10 rounded-lg overflow-hidden flex flex-col">
-            <div className="flex-1 relative overflow-hidden rounded-t-lg min-h-[400px]">
+            <div className="flex-1 overflow-hidden rounded-t-lg min-h-[400px] relative">
               <ZoomableImage
                 src="/segundo-cerebro/daily-briefing.webp"
                 alt="Output do /daily-briefing no terminal"
                 width={1065}
                 height={1398}
                 className="absolute inset-0 w-full h-full object-cover object-top"
+                containerClassName="absolute inset-0"
               >
                 <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#0d0f0d] to-transparent pointer-events-none" />
               </ZoomableImage>
@@ -589,32 +591,38 @@ function KitContentsSection() {
             </div>
           </div>
 
-          {/* Row 2: estrutura do vault + about-me */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-start">
+          {/* Row 2: estrutura do vault + about-me — equal height */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {/* Estrutura do vault */}
-            <div className="rounded-lg overflow-hidden border border-green-500/10">
-              <ZoomableImage
-                src="/segundo-cerebro/estrutura-do-vault.webp"
-                alt="Sidebar do Obsidian — estrutura do vault"
-                width={935}
-                height={591}
-                className="w-full h-auto"
-              />
+            <div className="rounded-lg overflow-hidden border border-green-500/10 flex flex-col">
+              <div className="flex-1 relative overflow-hidden min-h-[280px]">
+                <ZoomableImage
+                  src="/segundo-cerebro/estrutura-do-vault.webp"
+                  alt="Sidebar do Obsidian — estrutura do vault"
+                  width={935}
+                  height={591}
+                  className="absolute inset-0 w-full h-full object-cover object-top"
+                  containerClassName="absolute inset-0"
+                >
+                  <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#0d0f0d] to-transparent pointer-events-none" />
+                </ZoomableImage>
+              </div>
               <div className="px-4 py-3 bg-zinc-900/50">
                 <p className="font-mono text-[10px] uppercase tracking-widest text-green-400/60">Estrutura do vault</p>
               </div>
             </div>
-            {/* About-me — cropped with fade */}
-            <div className="rounded-lg overflow-hidden border border-green-500/10 relative">
-              <div className="max-h-[360px] overflow-hidden relative">
+            {/* About-me — cropped with fade, same height */}
+            <div className="rounded-lg overflow-hidden border border-green-500/10 flex flex-col">
+              <div className="flex-1 relative overflow-hidden min-h-[280px]">
                 <ZoomableImage
                   src="/segundo-cerebro/about-me.webp"
                   alt="Template about-me.md — perguntas-guia para personalização"
                   width={716}
                   height={1763}
-                  className="w-full h-auto"
+                  className="absolute inset-0 w-full h-full object-cover object-top"
+                  containerClassName="absolute inset-0"
                 >
-                  <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-zinc-900 to-transparent pointer-events-none" />
+                  <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#0d0f0d] to-transparent pointer-events-none" />
                 </ZoomableImage>
               </div>
               <div className="px-4 py-3 bg-zinc-900/50">
