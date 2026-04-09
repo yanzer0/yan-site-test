@@ -64,11 +64,12 @@ function ZoomableImage({ src, alt, width, height, className, containerClassName,
           quality={quality}
         />
         {children}
-        {/* Hover overlay */}
-        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-200 flex items-center justify-center opacity-0 group-hover:opacity-100 pointer-events-none">
-          <span className="flex items-center gap-2 rounded-full bg-black/70 px-4 py-2 text-xs font-medium text-white backdrop-blur-sm border border-white/10">
-            <Expand className="h-3.5 w-3.5" />
-            Ver imagem inteira
+        {/* Hover overlay — bg covers full image, button pinned to top area so it's always visible */}
+        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-200 pointer-events-none" />
+        <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10">
+          <span className="flex items-center gap-2 rounded-full bg-black/70 px-3 py-1.5 text-[11px] font-medium text-white backdrop-blur-sm border border-white/10">
+            <Expand className="h-3 w-3" />
+            Ver inteira
           </span>
         </div>
       </div>
@@ -430,7 +431,7 @@ function DemoSection() {
 
           {/* Row 1: daily-briefing (vertical) + braindump + end-session */}
           <div className="md:col-span-5 glass border-green-500/10 rounded-lg overflow-hidden">
-            <div className="overflow-hidden relative">
+            <div className="overflow-hidden relative max-h-[800px]">
               <ZoomableImage
                 src="/segundo-cerebro/daily-briefing.webp"
                 alt="Output do /daily-briefing no terminal"
