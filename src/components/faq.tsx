@@ -1,3 +1,9 @@
+"use client";
+
+import { useState } from "react";
+import { ChevronDown } from "lucide-react";
+import { useScrollReveal } from "@/lib/use-scroll-reveal";
+
 const QUESTIONS = [
   {
     q: "Eu nunca programei na vida. Funciona pra mim?",
@@ -17,35 +23,57 @@ const QUESTIONS = [
   },
   {
     q: "R$19,90? Qual é o truque?",
-    a: "Nenhum. Sem assinatura, sem upsell, sem paywall escondido. Você baixa o ZIP com os 8 arquivos e é seu pra sempre. O preço é acessível porque o objetivo é volume, não margem.",
+    a: "Nenhum. Sem assinatura, sem upsell escondido, sem paywall. Você baixa o ZIP com os 8 arquivos e é seu pra sempre. O preço é acessível porque o objetivo é volume, não margem.",
   },
 ];
 
+function FAQItem({ q, a }: { q: string; a: string }) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div className="border-b border-white/5 last:border-b-0">
+      <button
+        onClick={() => setOpen(!open)}
+        className="w-full py-6 flex items-start gap-3 text-left cursor-pointer group"
+      >
+        <span className="flex-shrink-0 w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-zinc-300 text-[13px] font-bold group-hover:bg-green-500/20 group-hover:text-green-400 transition-colors duration-200">
+          ?
+        </span>
+        <h3 className="font-heading text-[15px] font-semibold text-white leading-snug flex-1 group-hover:text-green-300 transition-colors duration-200">
+          {q}
+        </h3>
+        <ChevronDown
+          className={`h-4 w-4 text-zinc-500 flex-shrink-0 mt-0.5 transition-transform duration-300 ${
+            open ? "rotate-180 text-green-400" : ""
+          }`}
+        />
+      </button>
+      <div className={`faq-answer ${open ? "open" : ""}`}>
+        <div>
+          <p className="text-sm text-zinc-400 leading-relaxed pl-9 pb-6">
+            {a}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function FAQ() {
+  const ref = useScrollReveal();
+
   return (
     <section id="faq" className="py-20 sm:py-28">
-      <div className="mx-auto max-w-3xl px-4 sm:px-6">
+      <div ref={ref} className="scroll-reveal mx-auto max-w-3xl px-4 sm:px-6">
         <h2 className="font-heading text-2xl sm:text-3xl font-extrabold tracking-tight mb-10">
           Perguntas honestas,
           <br />
           <span className="font-punch text-gradient-green">respostas diretas.</span>
         </h2>
 
-        <div className="divide-y divide-white/5">
+        <div>
           {QUESTIONS.map((item) => (
-            <div key={item.q} className="py-6">
-              <div className="flex items-start gap-3 mb-3">
-                <span className="flex-shrink-0 w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-zinc-300 text-[13px] font-bold">
-                  ?
-                </span>
-                <h3 className="font-heading text-[15px] font-semibold text-white leading-snug">
-                  {item.q}
-                </h3>
-              </div>
-              <p className="text-sm text-zinc-400 leading-relaxed pl-9">
-                {item.a}
-              </p>
-            </div>
+            <FAQItem key={item.q} q={item.q} a={item.a} />
           ))}
         </div>
       </div>

@@ -205,10 +205,118 @@
   .delay-500 { animation-delay: 300ms; }
 }
 
+/* ── Scroll Reveal System ── */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.scroll-reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+.scroll-reveal-left {
+  opacity: 0;
+  transform: translateX(-32px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.scroll-reveal-left.revealed {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ── Section Dividers ── */
+.section-divider {
+  position: relative;
+  height: 1px;
+  max-width: 200px;
+  margin: 0 auto;
+  background: linear-gradient(90deg, transparent, rgba(168, 232, 76, 0.3), transparent);
+}
+.section-divider::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #A8E84C;
+  box-shadow: 0 0 12px rgba(168, 232, 76, 0.4);
+}
+
+/* ── Navbar scroll state ── */
+.navbar-scrolled {
+  background: rgba(10, 10, 10, 0.85) !important;
+  backdrop-filter: blur(20px) saturate(1.4) !important;
+  border-color: rgba(168, 232, 76, 0.08) !important;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* ── Enhanced card hover ── */
+.card-hover {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.3s ease,
+              box-shadow 0.3s ease;
+}
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(168, 232, 76, 0.1);
+}
+
+/* ── FAQ Accordion ── */
+.faq-answer {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.3s ease;
+  opacity: 0;
+}
+.faq-answer.open {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+.faq-answer > div {
+  overflow: hidden;
+}
+
+/* ── Green line accent on section images ── */
+.image-frame {
+  position: relative;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+.image-frame::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #A8E84C, transparent);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.image-frame:hover::after {
+  opacity: 1;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-fade-in-up,
   .animate-marquee {
     animation: none;
     opacity: 1;
+  }
+  .scroll-reveal,
+  .scroll-reveal-left {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .card-hover:hover {
+    transform: none;
   }
 }
