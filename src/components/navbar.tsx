@@ -80,7 +80,7 @@ export function Navbar({ onBack }: NavbarProps) {
 
       {/* Mobile menu with animation */}
       <div
-        className={`md:hidden mt-2 mx-auto max-w-3xl glass rounded-lg p-6 flex flex-col gap-4 transition-all duration-300 origin-top ${
+        className={`md:hidden mt-2 mx-auto max-w-3xl rounded-lg border border-white/10 bg-[#0A0A0A]/90 backdrop-blur-xl p-6 flex flex-col gap-4 transition-all duration-300 origin-top ${
           mobileOpen
             ? "opacity-100 scale-y-100 translate-y-0"
             : "opacity-0 scale-y-95 -translate-y-2 pointer-events-none"
