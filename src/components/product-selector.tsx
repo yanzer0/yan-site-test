@@ -46,11 +46,11 @@ export function ProductSelector({ onSelect }: ProductSelectorProps) {
 
         {/* Eyebrow */}
         <div className="animate-fade-in-up inline-flex items-center gap-3 mb-6">
-          <span className="h-px w-5 bg-zinc-600" />
-          <span className="font-mono text-[11px] uppercase tracking-[0.15em] text-zinc-500">
+          <span className="h-px w-5 bg-green-400" />
+          <span className="font-mono text-[11px] uppercase tracking-[0.15em] text-gradient-green">
             Escolha seu kit
           </span>
-          <span className="h-px w-5 bg-zinc-600" />
+          <span className="h-px w-5 bg-green-400" />
         </div>
 
         {/* Headline */}
