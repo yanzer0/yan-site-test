@@ -1,23 +1,8 @@
 "use client";
 
-import { FallingPattern } from "@/components/ui/falling-pattern";
-
 export function Hero() {
-
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-28 pb-16">
-      {/* Falling pattern background */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <FallingPattern
-          className="h-full [mask-image:radial-gradient(ellipse_at_center,transparent,var(--background))]"
-          color="#A8E84C"
-          backgroundColor="#000000"
-          duration={80}
-          blurIntensity="0.5rem"
-          density={2}
-        />
-      </div>
-
       <div className="relative z-10 mx-auto max-w-4xl px-4 sm:px-6 text-center">
         {/* Eyebrow */}
         <div className="animate-fade-in-up inline-flex items-center gap-3 mb-8">
@@ -38,7 +23,7 @@ export function Hero() {
         {/* Subline */}
         <p className="animate-fade-in-up delay-200 mt-6 max-w-xl mx-auto text-base sm:text-lg text-zinc-400 leading-relaxed">
           O kit completo pra transformar seu computador no Jarvis do Tony Stark.
-          Automação por palmas e voz, pronta pra rodar <span className="text-gradient-green font-semibold">em 5 minutos.</span>
+          Automacao por palmas e voz, pronta pra rodar <span className="text-gradient-green font-semibold">em 5 minutos.</span>
         </p>
 
         {/* Video */}

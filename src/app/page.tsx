@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { FallingPattern } from "@/components/ui/falling-pattern";
 import { Navbar } from "@/components/navbar";
 import { Hero } from "@/components/hero";
 import { TrustBar } from "@/components/trust-bar";
@@ -38,27 +39,57 @@ export default function Home() {
     return <ProductSelector onSelect={handleSelect} />;
   }
 
-  // Segundo Cerebro placeholder
+  // Segundo Cerebro
   if (selectedKit === "segundo-cerebro") {
-    return <SegundoCerebro onBack={handleBack} onNavigateToJarvis={() => setSelectedKit("jarvis")} />;
+    return (
+      <>
+        {/* Full-page background */}
+        <div className="fixed inset-0 z-0 pointer-events-none">
+          <FallingPattern
+            className="h-full"
+            color="#A8E84C"
+            backgroundColor="#000000"
+            duration={80}
+            blurIntensity="0.4rem"
+            density={2}
+          />
+        </div>
+        <div className="relative z-10">
+          <SegundoCerebro onBack={handleBack} onNavigateToJarvis={() => setSelectedKit("jarvis")} />
+        </div>
+      </>
+    );
   }
 
-  // Jarvis Kit — original landing page, untouched
+  // Jarvis Kit
   return (
     <>
-      <Navbar onBack={handleBack} />
-      <main>
-        <Hero />
-        <TrustBar />
-        <Problem />
-        <Includes />
-        <AITeacher />
-        <Technical />
-        <FAQ />
-        <CTA />
-        <SegundoCerebroUpsell onNavigate={() => setSelectedKit("segundo-cerebro")} />
-      </main>
-      <Footer />
+      {/* Full-page background */}
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        <FallingPattern
+          className="h-full"
+          color="#A8E84C"
+          backgroundColor="#000000"
+          duration={80}
+          blurIntensity="0.5rem"
+          density={2}
+        />
+      </div>
+      <div className="relative z-10">
+        <Navbar onBack={handleBack} />
+        <main>
+          <Hero />
+          <TrustBar />
+          <Problem />
+          <Includes />
+          <AITeacher />
+          <Technical />
+          <FAQ />
+          <CTA />
+          <SegundoCerebroUpsell onNavigate={() => setSelectedKit("segundo-cerebro")} />
+        </main>
+        <Footer />
+      </div>
     </>
   );
 }

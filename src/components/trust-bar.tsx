@@ -6,7 +6,7 @@ export function TrustBar() {
   const ref = useScrollReveal();
 
   return (
-    <section className="py-8 bg-[#0A0A0A] relative overflow-hidden">
+    <section className="py-8 bg-[#0A0A0A]/80 relative overflow-hidden">
       {/* Subtle gradient line top */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-green-500/20 to-transparent" />
       {/* Subtle gradient line bottom */}

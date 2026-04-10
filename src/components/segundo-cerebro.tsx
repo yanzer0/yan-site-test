@@ -5,7 +5,6 @@ import { Menu, X, ArrowLeft, Code2, Target, BookOpen, Video, BarChart3, Expand, 
 import { useScrollReveal } from "@/lib/use-scroll-reveal";
 import Image from "next/image";
 import Script from "next/script";
-import { FallingPattern } from "@/components/ui/falling-pattern";
 
 interface SegundoCerebroProps {
   onBack: () => void;
@@ -181,18 +180,6 @@ function HeroSection() {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-28 pb-16">
-      {/* Falling pattern background — brighter than Jarvis (density 3, less blur) */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <FallingPattern
-          className="h-full [mask-image:radial-gradient(ellipse_at_center,transparent_20%,var(--background))]"
-          color="#A8E84C"
-          backgroundColor="#000000"
-          duration={80}
-          blurIntensity="0.3rem"
-          density={3}
-        />
-      </div>
-
       <div className="relative z-10 mx-auto max-w-4xl px-4 sm:px-6 text-center">
         {/* Badge */}
         <div className="animate-fade-in-up inline-flex items-center gap-3 mb-8">
@@ -265,7 +252,7 @@ function PainSection() {
   return (
     <>
     <div className="section-divider" />
-    <section className="py-20 sm:py-28 bg-black">
+    <section className="py-20 sm:py-28 bg-black/80">
       <div ref={ref} className="scroll-reveal mx-auto max-w-3xl px-4 sm:px-6">
         <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight leading-tight mb-8">
           Isso aqui te parece familiar?
@@ -476,7 +463,7 @@ function DemoSection() {
   return (
     <>
     <div className="section-divider" />
-    <section className="py-20 sm:py-28 bg-black">
+    <section className="py-20 sm:py-28 bg-black/80">
       <div ref={ref} className="scroll-reveal mx-auto max-w-5xl px-4 sm:px-6">
         <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-center mb-3">
           Olha o que ele faz com{" "}
@@ -715,7 +702,7 @@ function AudienceSection() {
   return (
     <>
     <div className="section-divider" />
-    <section className="py-20 sm:py-28 bg-black">
+    <section className="py-20 sm:py-28 bg-black/80">
       <div ref={ref} className="scroll-reveal mx-auto max-w-3xl px-4 sm:px-6">
         <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight leading-tight mb-4">
           Funciona pra você se você usa{" "}
@@ -815,7 +802,7 @@ function ValueComparisonSection() {
   return (
     <>
     <div className="section-divider" />
-    <section className="py-20 sm:py-28 bg-black">
+    <section className="py-20 sm:py-28 bg-black/80">
       <div ref={ref} className="scroll-reveal mx-auto max-w-3xl px-4 sm:px-6">
         <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-center mb-12">
           O que mais você compra com{" "}
@@ -940,7 +927,7 @@ function SupportSection() {
   return (
     <>
     <div className="section-divider" />
-    <section className="py-20 sm:py-28 bg-black">
+    <section className="py-20 sm:py-28 bg-black/80">
       <div ref={ref} className="scroll-reveal mx-auto max-w-3xl px-4 sm:px-6">
         <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight leading-tight mb-6">
           Compre uma vez. Tenha suporte{" "}
@@ -1029,7 +1016,7 @@ function FinalPushSection() {
   return (
     <>
     <div className="section-divider" />
-    <section className="py-20 sm:py-28 bg-black">
+    <section className="py-20 sm:py-28 bg-black/80">
       <div ref={ref} className="scroll-reveal mx-auto max-w-2xl px-4 sm:px-6">
         <div className="space-y-6 text-base sm:text-lg text-zinc-400 leading-relaxed">
           <p>Você tem duas opções agora.</p>

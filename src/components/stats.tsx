@@ -9,7 +9,7 @@ export function AITeacher() {
   return (
     <>
       <div className="section-divider" />
-      <section className="py-20 sm:py-28 bg-[#050505]">
+      <section className="py-20 sm:py-28 bg-[#050505]/80">
         <div ref={ref} className="scroll-reveal mx-auto max-w-3xl px-4 sm:px-6">
           <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight leading-tight mb-2">
             Nunca programou?
