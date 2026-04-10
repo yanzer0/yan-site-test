@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import { Menu, X, ArrowLeft, Code2, Target, BookOpen, Video, BarChart3, Expand } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Menu, X, ArrowLeft, Code2, Target, BookOpen, Video, BarChart3, Expand, ChevronDown } from "lucide-react";
+import { useScrollReveal } from "@/lib/use-scroll-reveal";
 import Image from "next/image";
 import Script from "next/script";
 import { FallingPattern } from "@/components/ui/falling-pattern";
@@ -84,6 +85,13 @@ const CHECKOUT_URL = "https://pay.kiwify.com.br/oT2C28S";
 /* ─── Navbar ─── */
 function SCNavbar({ onBack }: { onBack: () => void }) {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 60);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const NAV_LINKS = [
     { label: "O que vem no kit", href: "#kit" },
@@ -92,7 +100,7 @@ function SCNavbar({ onBack }: { onBack: () => void }) {
 
   return (
     <header className="fixed top-4 left-4 right-4 z-50">
-      <nav className="mx-auto max-w-3xl glass rounded-lg px-6 py-3 flex items-center justify-between">
+      <nav className={`mx-auto max-w-3xl glass rounded-lg px-6 py-3 flex items-center justify-between transition-all duration-300 ${scrolled ? "navbar-scrolled" : ""}`}>
         <div className="flex items-center gap-3">
           <button
             onClick={onBack}
@@ -118,7 +126,7 @@ function SCNavbar({ onBack }: { onBack: () => void }) {
             <a
               key={link.label}
               href={link.href}
-              className="text-sm text-zinc-400 hover:text-white transition-colors duration-200 cursor-pointer"
+              className="relative text-sm text-zinc-400 hover:text-white transition-colors duration-200 cursor-pointer after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[1px] after:bg-green-400 after:transition-all after:duration-300 hover:after:w-full"
             >
               {link.label}
             </a>
@@ -128,7 +136,7 @@ function SCNavbar({ onBack }: { onBack: () => void }) {
         <div className="flex items-center gap-2">
           <a
             href={CHECKOUT_URL}
-            className="inline-flex items-center gap-2 rounded-full bg-green-500 px-4 py-2 text-xs sm:text-sm font-semibold text-black transition-all duration-200 hover:bg-green-400 cursor-pointer green-glow-sm"
+            className="inline-flex items-center gap-2 rounded-full bg-green-500 px-4 py-2 text-xs sm:text-sm font-semibold text-black transition-all duration-200 hover:bg-green-400 hover:shadow-[0_0_20px_rgba(168,232,76,0.3)] cursor-pointer green-glow-sm"
           >
             Quero o Kit
           </a>
@@ -143,27 +151,27 @@ function SCNavbar({ onBack }: { onBack: () => void }) {
         </div>
       </nav>
 
-      {mobileOpen && (
-        <div className="md:hidden mt-2 mx-auto max-w-3xl glass rounded-lg p-6 flex flex-col gap-4">
-          {NAV_LINKS.map((link) => (
-            <a
-              key={link.label}
-              href={link.href}
-              onClick={() => setMobileOpen(false)}
-              className="text-sm text-zinc-400 hover:text-white transition-colors duration-200 cursor-pointer"
-            >
-              {link.label}
-            </a>
-          ))}
+      <div className={`md:hidden mt-2 mx-auto max-w-3xl glass rounded-lg p-6 flex flex-col gap-4 transition-all duration-300 origin-top ${
+        mobileOpen ? "opacity-100 scale-y-100 translate-y-0" : "opacity-0 scale-y-95 -translate-y-2 pointer-events-none"
+      }`}>
+        {NAV_LINKS.map((link) => (
           <a
-            href={CHECKOUT_URL}
+            key={link.label}
+            href={link.href}
             onClick={() => setMobileOpen(false)}
-            className="inline-flex items-center justify-center gap-2 rounded-full bg-green-500 px-5 py-2.5 text-sm font-semibold text-black cursor-pointer"
+            className="text-sm text-zinc-400 hover:text-white transition-colors duration-200 cursor-pointer"
           >
-            Quero o Kit
+            {link.label}
           </a>
-        </div>
-      )}
+        ))}
+        <a
+          href={CHECKOUT_URL}
+          onClick={() => setMobileOpen(false)}
+          className="inline-flex items-center justify-center gap-2 rounded-full bg-green-500 px-5 py-2.5 text-sm font-semibold text-black cursor-pointer"
+        >
+          Quero o Kit
+        </a>
+      </div>
     </header>
   );
 }
@@ -228,9 +236,9 @@ function HeroSection() {
           </div>
           <a
             href={CHECKOUT_URL}
-            className="group inline-flex items-center gap-2 rounded-lg bg-green-500 px-10 py-4 text-base font-bold text-black transition-all duration-200 hover:bg-green-400 hover:-translate-y-0.5 cursor-pointer green-glow"
+            className="group inline-flex items-center gap-2 rounded-lg bg-green-500 px-10 py-4 text-base font-bold text-black transition-all duration-200 hover:bg-green-400 hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(168,232,76,0.3)] cursor-pointer green-glow"
           >
-            Quero o Kit — R$67 &rarr;
+            Quero o Kit — R$67 <span className="transition-transform duration-200 group-hover:translate-x-1">&rarr;</span>
           </a>
           <p className="mt-4 font-mono text-[12px] text-green-300/70 font-medium">
             ⚡ Pagamento único. Acesso vitalício.
@@ -243,6 +251,7 @@ function HeroSection() {
 
 /* ─── Section 2: A Dor ─── */
 function PainSection() {
+  const ref = useScrollReveal();
   const PAIN_ITEMS = [
     "Abre um chat novo e precisa explicar tudo do zero",
     "Perde 5 minutos dando contexto antes de cada tarefa",
@@ -254,8 +263,10 @@ function PainSection() {
   ];
 
   return (
+    <>
+    <div className="section-divider" />
     <section className="py-20 sm:py-28 bg-black">
-      <div className="mx-auto max-w-3xl px-4 sm:px-6">
+      <div ref={ref} className="scroll-reveal mx-auto max-w-3xl px-4 sm:px-6">
         <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight leading-tight mb-8">
           Isso aqui te parece familiar?
         </h2>
@@ -310,11 +321,13 @@ function PainSection() {
         </div>
       </div>
     </section>
+    </>
   );
 }
 
 /* ─── Section 3: A Revelação ─── */
 function RevelationSection() {
+  const ref = useScrollReveal();
   const BENEFITS = [
     "Sabe quem você é e o que faz",
     "Lembra dos seus projetos, objetivos e decisões",
@@ -325,8 +338,10 @@ function RevelationSection() {
   ];
 
   return (
+    <>
+    <div className="section-divider" />
     <section className="py-20 sm:py-28">
-      <div className="mx-auto max-w-3xl px-4 sm:px-6">
+      <div ref={ref} className="scroll-reveal mx-auto max-w-3xl px-4 sm:px-6">
         <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight leading-tight mb-6">
           E se você configurasse{" "}
           <span className="font-punch text-gradient-green">uma vez</span>{" "}
@@ -357,7 +372,7 @@ function RevelationSection() {
         </p>
 
         {/* Screenshot: /daily-briefing output */}
-        <div className="rounded-lg overflow-hidden border border-green-500/10 mb-10">
+        <div className="rounded-lg overflow-hidden border border-green-500/10 mb-10 image-frame">
           <ZoomableImage
             src="/segundo-cerebro/daily-briefing.webp"
             alt="Output do /daily-briefing — briefing completo do dia com pipeline e prioridades"
@@ -400,7 +415,7 @@ function RevelationSection() {
         </div>
 
         {/* Screenshot: .claude/commands/ */}
-        <div className="rounded-lg overflow-hidden border border-green-500/10 mt-8">
+        <div className="rounded-lg overflow-hidden border border-green-500/10 mt-8 image-frame">
           <ZoomableImage
             src="/segundo-cerebro/8-comandos.webp"
             alt="Pasta .claude/commands/ — 8 slash commands prontos"
@@ -412,6 +427,7 @@ function RevelationSection() {
         </div>
       </div>
     </section>
+    </>
   );
 }
 
@@ -456,9 +472,12 @@ function DailyBriefingCard() {
 
 /* ─── Section 4: Demo Visual (Bento Grid) ─── */
 function DemoSection() {
+  const ref = useScrollReveal();
   return (
+    <>
+    <div className="section-divider" />
     <section className="py-20 sm:py-28 bg-black">
-      <div className="mx-auto max-w-5xl px-4 sm:px-6">
+      <div ref={ref} className="scroll-reveal mx-auto max-w-5xl px-4 sm:px-6">
         <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-center mb-3">
           Olha o que ele faz com{" "}
           <span className="font-punch text-gradient-green">um comando</span>
@@ -475,7 +494,7 @@ function DemoSection() {
 
           <div className="md:col-span-7 flex flex-col gap-4">
             {/* braindump */}
-            <div className="glass border-green-500/10 rounded-lg overflow-hidden">
+            <div className="glass border-green-500/10 rounded-lg overflow-hidden image-frame">
               <div className="overflow-hidden rounded-t-lg">
                 <ZoomableImage
                   src="/segundo-cerebro/braindump.webp"
@@ -494,7 +513,7 @@ function DemoSection() {
             </div>
 
             {/* end-session */}
-            <div className="glass border-green-500/10 rounded-lg overflow-hidden">
+            <div className="glass border-green-500/10 rounded-lg overflow-hidden image-frame">
               <div className="overflow-hidden rounded-t-lg max-h-[400px] relative">
                 <ZoomableImage
                   src="/segundo-cerebro/end-session.webp"
@@ -517,7 +536,7 @@ function DemoSection() {
           </div>
 
           {/* Row 2: Obsidian full-width */}
-          <div className="md:col-span-12 glass border-green-500/10 rounded-lg overflow-hidden">
+          <div className="md:col-span-12 glass border-green-500/10 rounded-lg overflow-hidden image-frame">
             <div className="overflow-hidden rounded-t-lg">
               <ZoomableImage
                 src="/segundo-cerebro/obsidian-full.webp"
@@ -538,6 +557,7 @@ function DemoSection() {
         </div>
       </div>
     </section>
+    </>
   );
 }
 
@@ -586,9 +606,12 @@ function KitContentsSection() {
     },
   ];
 
+  const ref = useScrollReveal();
   return (
+    <>
+    <div className="section-divider" />
     <section id="kit" className="py-20 sm:py-28">
-      <div className="mx-auto max-w-4xl px-4 sm:px-6">
+      <div ref={ref} className="scroll-reveal mx-auto max-w-4xl px-4 sm:px-6">
         <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-center mb-3">
           O que vem no kit
         </h2>
@@ -601,7 +624,7 @@ function KitContentsSection() {
         {/* Screenshots: CLAUDE.md hero + vault structure & about-me side by side */}
         <div className="space-y-4 mb-12">
           {/* CLAUDE.md — full width hero shot */}
-          <div className="rounded-lg overflow-hidden border border-green-500/10">
+          <div className="rounded-lg overflow-hidden border border-green-500/10 image-frame">
             <ZoomableImage
               src="/segundo-cerebro/claude-md.webp"
               alt="CLAUDE.md aberto — centenas de linhas de prompt engineering"
@@ -617,7 +640,7 @@ function KitContentsSection() {
           {/* Row 2: estrutura do vault + about-me */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {/* Estrutura do vault — image dictates height */}
-            <div className="rounded-lg overflow-hidden border border-green-500/10">
+            <div className="rounded-lg overflow-hidden border border-green-500/10 image-frame">
               <ZoomableImage
                 src="/segundo-cerebro/estrutura-do-vault.webp"
                 alt="Sidebar do Obsidian — estrutura do vault"
@@ -630,7 +653,7 @@ function KitContentsSection() {
               </div>
             </div>
             {/* About-me — aspect ratio matched to vault image, cropped with fade */}
-            <div className="rounded-lg overflow-hidden border border-green-500/10">
+            <div className="rounded-lg overflow-hidden border border-green-500/10 image-frame">
               <div className="aspect-[935/591] overflow-hidden relative">
                 <ZoomableImage
                   src="/segundo-cerebro/about-me.webp"
@@ -656,7 +679,7 @@ function KitContentsSection() {
           {CARDS.map((card) => (
             <div
               key={card.title}
-              className={`glass p-6 ${
+              className={`glass p-6 card-hover ${
                 card.highlight
                   ? "border-green-500/15 bg-gradient-to-br from-white/5 to-green-500/[0.03]"
                   : ""
@@ -674,6 +697,7 @@ function KitContentsSection() {
         </div>
       </div>
     </section>
+    </>
   );
 }
 
@@ -687,9 +711,12 @@ function AudienceSection() {
     { icon: <BarChart3 className="h-5 w-5 text-green-400" />, title: "Gestores e Líderes", desc: "Acompanha projetos da equipe, registra decisões estratégicas, revisão semanal de prioridades. O vault vira seu segundo cérebro gerencial." },
   ];
 
+  const ref = useScrollReveal();
   return (
+    <>
+    <div className="section-divider" />
     <section className="py-20 sm:py-28 bg-black">
-      <div className="mx-auto max-w-3xl px-4 sm:px-6">
+      <div ref={ref} className="scroll-reveal mx-auto max-w-3xl px-4 sm:px-6">
         <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight leading-tight mb-4">
           Funciona pra você se você usa{" "}
           <span className="font-punch text-gradient-green">Claude Code</span>
@@ -702,7 +729,7 @@ function AudienceSection() {
           {PROFILES.map((profile) => (
             <div
               key={profile.title}
-              className="glass p-6 flex items-start gap-4"
+              className="glass p-6 flex items-start gap-4 card-hover"
             >
               <span className="flex-shrink-0 w-8 h-8 rounded-md bg-green-500/10 flex items-center justify-center">{profile.icon}</span>
               <div>
@@ -718,6 +745,7 @@ function AudienceSection() {
         </div>
       </div>
     </section>
+    </>
   );
 }
 
@@ -729,9 +757,12 @@ function NotForSection() {
     { title: "Você espera um curso com vídeo-aulas.", desc: "Isso não é um curso. É um sistema pronto. Tem guias escritos e suporte via IA, mas não tem vídeo-aula de 10 horas. É direto ao ponto." },
   ];
 
+  const ref = useScrollReveal();
   return (
+    <>
+    <div className="section-divider" />
     <section className="py-20 sm:py-28">
-      <div className="mx-auto max-w-4xl px-4 sm:px-6">
+      <div ref={ref} className="scroll-reveal mx-auto max-w-4xl px-4 sm:px-6">
         <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight leading-tight mb-4">
           Honestidade: esse kit{" "}
           <strong>não é</strong>{" "}
@@ -767,6 +798,7 @@ function NotForSection() {
         </p>
       </div>
     </section>
+    </>
   );
 }
 
@@ -779,9 +811,12 @@ function ValueComparisonSection() {
     { price: "R$67", label: "Kit Segundo Cérebro", duration: "funciona pra sempre", highlight: true },
   ];
 
+  const ref = useScrollReveal();
   return (
+    <>
+    <div className="section-divider" />
     <section className="py-20 sm:py-28 bg-black">
-      <div className="mx-auto max-w-3xl px-4 sm:px-6">
+      <div ref={ref} className="scroll-reveal mx-auto max-w-3xl px-4 sm:px-6">
         <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-center mb-12">
           O que mais você compra com{" "}
           <span className="font-punch text-gradient-green">R$67</span>?
@@ -826,6 +861,24 @@ function ValueComparisonSection() {
         </div>
       </div>
     </section>
+    </>
+  );
+}
+
+/* ─── FAQ Accordion Item ─── */
+function SCFAQItem({ q, a }: { q: string; a: string }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="border-b border-white/5 last:border-b-0">
+      <button onClick={() => setOpen(!open)} className="w-full py-6 flex items-start gap-3 text-left cursor-pointer group">
+        <span className="flex-shrink-0 w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-zinc-300 text-[13px] font-bold group-hover:bg-green-500/20 group-hover:text-green-400 transition-colors duration-200">?</span>
+        <h3 className="font-heading text-[15px] font-semibold text-white leading-snug flex-1 group-hover:text-green-300 transition-colors duration-200">{q}</h3>
+        <ChevronDown className={`h-4 w-4 text-zinc-500 flex-shrink-0 mt-0.5 transition-transform duration-300 ${open ? "rotate-180 text-green-400" : ""}`} />
+      </button>
+      <div className={`faq-answer ${open ? "open" : ""}`}>
+        <div><p className="text-sm text-zinc-400 leading-relaxed pl-9 pb-6">{a}</p></div>
+      </div>
+    </div>
   );
 }
 
@@ -858,42 +911,37 @@ function FAQSection() {
     },
   ];
 
+  const ref = useScrollReveal();
   return (
+    <>
+    <div className="section-divider" />
     <section id="faq" className="py-20 sm:py-28">
-      <div className="mx-auto max-w-3xl px-4 sm:px-6">
+      <div ref={ref} className="scroll-reveal mx-auto max-w-3xl px-4 sm:px-6">
         <h2 className="font-heading text-2xl sm:text-3xl font-extrabold tracking-tight mb-10">
           Perguntas que você
           <br />
           <span className="font-punch text-gradient-green">provavelmente tem.</span>
         </h2>
 
-        <div className="divide-y divide-white/5">
+        <div>
           {QUESTIONS.map((item) => (
-            <div key={item.q} className="py-6">
-              <div className="flex items-start gap-3 mb-3">
-                <span className="flex-shrink-0 w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-black text-[13px] font-bold">
-                  ?
-                </span>
-                <h3 className="font-heading text-[15px] font-semibold text-white leading-snug">
-                  {item.q}
-                </h3>
-              </div>
-              <p className="text-sm text-zinc-400 leading-relaxed pl-9">
-                {item.a}
-              </p>
-            </div>
+            <SCFAQItem key={item.q} q={item.q} a={item.a} />
           ))}
         </div>
       </div>
     </section>
+    </>
   );
 }
 
 /* ─── Section 10: Suporte Infinito ─── */
 function SupportSection() {
+  const ref = useScrollReveal();
   return (
+    <>
+    <div className="section-divider" />
     <section className="py-20 sm:py-28 bg-black">
-      <div className="mx-auto max-w-3xl px-4 sm:px-6">
+      <div ref={ref} className="scroll-reveal mx-auto max-w-3xl px-4 sm:px-6">
         <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight leading-tight mb-6">
           Compre uma vez. Tenha suporte{" "}
           <span className="font-punch text-gradient-green">pra sempre.</span>
@@ -921,16 +969,20 @@ function SupportSection() {
         </p>
       </div>
     </section>
+    </>
   );
 }
 
 /* ─── Section 11: Preço + CTA ─── */
 function PricingSection() {
+  const ref = useScrollReveal();
   return (
+    <>
+    <div className="section-divider" />
     <section id="comprar" className="py-24 sm:py-32 relative">
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[500px] h-[500px] rounded-full bg-green-500/[0.04] blur-[150px] pointer-events-none" />
 
-      <div className="relative z-10 mx-auto max-w-4xl px-4 sm:px-6 text-center">
+      <div ref={ref} className="scroll-reveal relative z-10 mx-auto max-w-4xl px-4 sm:px-6 text-center">
         <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-6">
           Pronto pra montar o seu?
         </h2>
@@ -953,9 +1005,9 @@ function PricingSection() {
           </p>
           <a
             href={CHECKOUT_URL}
-            className="block w-full rounded-lg bg-green-500 px-8 py-4 text-lg font-bold text-black transition-all duration-200 hover:bg-green-400 hover:-translate-y-0.5 cursor-pointer"
+            className="group block w-full rounded-lg bg-green-500 px-8 py-4 text-lg font-bold text-black transition-all duration-200 hover:bg-green-400 hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(168,232,76,0.3)] cursor-pointer"
           >
-            Quero o Kit Segundo Cérebro &rarr;
+            Quero o Kit Segundo Cérebro <span className="transition-transform duration-200 group-hover:translate-x-1 inline-block">&rarr;</span>
           </a>
           <p className="font-mono text-[11px] text-zinc-500 mt-4">
             Pagamento seguro via Kiwify &middot; Entrega instantânea &middot; Acesso imediato
@@ -967,14 +1019,18 @@ function PricingSection() {
         </p>
       </div>
     </section>
+    </>
   );
 }
 
 /* ─── Section 12: Último Empurrão ─── */
 function FinalPushSection() {
+  const ref = useScrollReveal();
   return (
+    <>
+    <div className="section-divider" />
     <section className="py-20 sm:py-28 bg-black">
-      <div className="mx-auto max-w-2xl px-4 sm:px-6">
+      <div ref={ref} className="scroll-reveal mx-auto max-w-2xl px-4 sm:px-6">
         <div className="space-y-6 text-base sm:text-lg text-zinc-400 leading-relaxed">
           <p>Você tem duas opções agora.</p>
           <p>
@@ -994,9 +1050,9 @@ function FinalPushSection() {
         <div className="mt-10 text-center">
           <a
             href={CHECKOUT_URL}
-            className="group inline-flex items-center gap-2 rounded-lg bg-green-500 px-10 py-4 text-base font-bold text-black transition-all duration-200 hover:bg-green-400 hover:-translate-y-0.5 cursor-pointer green-glow"
+            className="group inline-flex items-center gap-2 rounded-lg bg-green-500 px-10 py-4 text-base font-bold text-black transition-all duration-200 hover:bg-green-400 hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(168,232,76,0.3)] cursor-pointer green-glow"
           >
-            Montar meu Segundo Cérebro — R$67 &rarr;
+            Montar meu Segundo Cérebro — R$67 <span className="transition-transform duration-200 group-hover:translate-x-1">&rarr;</span>
           </a>
           <p className="mt-4 font-mono text-[12px] text-green-300/70">
             Pagamento único. Acesso vitalício. Atualizações incluídas.
@@ -1004,6 +1060,7 @@ function FinalPushSection() {
         </div>
       </div>
     </section>
+    </>
   );
 }
 
