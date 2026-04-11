@@ -139,6 +139,10 @@
   html {
     @apply font-sans;
   }
+  /* Prevent orphan words (single word alone on last line) */
+  p, h1, h2, h3, span, a {
+    text-wrap: pretty;
+  }
 }
 
 /* Glassmorphism utilities */
