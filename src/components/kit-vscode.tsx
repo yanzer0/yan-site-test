@@ -816,6 +816,16 @@ function SegundoCerebroSection() {
                 O Segundo Cérebro te dá o GPS, o destino e o copiloto.
               </span>
             </p>
+
+            <Link
+              href="/"
+              className="group inline-flex items-center gap-2 rounded-lg border border-green-500/30 bg-green-500/10 px-8 py-4 text-base font-bold text-green-400 transition-all duration-200 hover:bg-green-500/20 hover:-translate-y-1 cursor-pointer"
+            >
+              Quero dar um cérebro pro meu Claude Code
+              <span className="transition-transform duration-200 group-hover:translate-x-1">
+                &rarr;
+              </span>
+            </Link>
           </div>
         </div>
       </section>
