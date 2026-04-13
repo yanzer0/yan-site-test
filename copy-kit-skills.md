@@ -3,6 +3,7 @@
 > Este documento contém a copy completa da landing page de vendas.
 > Cada seção está marcada com [SEÇÃO X] para facilitar a implementação.
 > Notas de design/layout estão entre (parênteses itálicos).
+> Siga o design-system já existente no site.
 
 ---
 
