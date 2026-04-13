@@ -6,7 +6,7 @@ import { useScrollReveal } from "@/lib/use-scroll-reveal";
 import Image from "next/image";
 import Link from "next/link";
 
-const CHECKOUT_URL = "#"; // TODO: replace with Kiwify URL
+const CHECKOUT_URL = "https://pay.kiwify.com.br/2r9Z7sZ";
 
 /* ─── Navbar ─── */
 function SKNavbar() {
