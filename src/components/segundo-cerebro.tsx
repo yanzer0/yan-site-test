@@ -4,12 +4,8 @@ import { useState, useEffect } from "react";
 import { Menu, X, ArrowLeft, Code2, Target, BookOpen, Video, BarChart3, Expand, ChevronDown } from "lucide-react";
 import { useScrollReveal } from "@/lib/use-scroll-reveal";
 import Image from "next/image";
+import Link from "next/link";
 import Script from "next/script";
-
-interface SegundoCerebroProps {
-  onBack: () => void;
-  onNavigateToJarvis?: () => void;
-}
 
 /* ─── Lightbox Modal ─── */
 function ImageLightbox({ src, alt, onClose }: { src: string; alt: string; onClose: () => void }) {
@@ -82,7 +78,7 @@ function ZoomableImage({ src, alt, width, height, className, containerClassName,
 const CHECKOUT_URL = "https://pay.kiwify.com.br/oT2C28S";
 
 /* ─── Navbar ─── */
-function SCNavbar({ onBack }: { onBack: () => void }) {
+function SCNavbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -101,14 +97,14 @@ function SCNavbar({ onBack }: { onBack: () => void }) {
     <header className="fixed top-4 left-4 right-4 z-50">
       <nav className={`mx-auto max-w-3xl glass rounded-lg px-6 py-3 flex items-center justify-between transition-all duration-300 ${scrolled ? "navbar-scrolled" : ""}`}>
         <div className="flex items-center gap-3">
-          <button
-            onClick={onBack}
+          <Link
+            href="/"
             className="inline-flex items-center gap-1 text-xs text-zinc-400 hover:text-white transition-colors cursor-pointer mr-1"
             aria-label="Voltar aos kits"
           >
             <ArrowLeft className="h-3.5 w-3.5" />
             <span className="hidden sm:inline">Kits</span>
-          </button>
+          </Link>
           <a href="#" className="flex items-center cursor-pointer">
             <Image
               src="/lockup-sem-fundo.svg"
@@ -1085,7 +1081,7 @@ function SCFooter() {
 }
 
 /* ─── Upsell: Jarvis Kit (cross-sell on Segundo Cérebro page) ─── */
-function JarvisUpsell({ onNavigate }: { onNavigate?: () => void }) {
+function JarvisUpsell() {
   return (
     <section className="py-16 sm:py-20">
       <div className="mx-auto max-w-3xl px-4 sm:px-6 text-center">
@@ -1106,12 +1102,12 @@ function JarvisUpsell({ onNavigate }: { onNavigate?: () => void }) {
             Automação por palmas e voz. Duas palmas e tudo liga sozinho. O companheiro perfeito pro seu Segundo Cérebro.
           </p>
 
-          <button
-            onClick={onNavigate}
-            className="rounded-lg bg-green-500 px-8 py-3 text-base font-bold text-black transition-all duration-200 hover:bg-green-400 cursor-pointer green-glow"
+          <Link
+            href="/kit-jarvis"
+            className="inline-block rounded-lg bg-green-500 px-8 py-3 text-base font-bold text-black transition-all duration-200 hover:bg-green-400 cursor-pointer green-glow"
           >
             Conhecer o Jarvis Kit &rarr;
-          </button>
+          </Link>
         </div>
       </div>
     </section>
@@ -1119,10 +1115,10 @@ function JarvisUpsell({ onNavigate }: { onNavigate?: () => void }) {
 }
 
 /* ─── Main Component ─── */
-export function SegundoCerebro({ onBack, onNavigateToJarvis }: SegundoCerebroProps) {
+export function SegundoCerebro() {
   return (
     <>
-      <SCNavbar onBack={onBack} />
+      <SCNavbar />
       <main>
         <HeroSection />
         <PainSection />
@@ -1136,7 +1132,7 @@ export function SegundoCerebro({ onBack, onNavigateToJarvis }: SegundoCerebroPro
         <SupportSection />
         <PricingSection />
         <FinalPushSection />
-        <JarvisUpsell onNavigate={onNavigateToJarvis} />
+        <JarvisUpsell />
       </main>
       <SCFooter />
 

@@ -1,6 +1,6 @@
-"use client";
+import Link from "next/link";
 
-export function SegundoCerebroUpsell({ onNavigate }: { onNavigate?: () => void }) {
+export function SegundoCerebroUpsell() {
   return (
     <section className="py-12 sm:py-16">
       <div className="mx-auto max-w-3xl px-4 sm:px-6 text-center">
@@ -21,12 +21,12 @@ export function SegundoCerebroUpsell({ onNavigate }: { onNavigate?: () => void }
             Dê <span className="text-gradient-green font-semibold">memória permanente</span> pro seu Claude Code. Ele lembra quem você é, o que faz, e o que precisa — <span className="text-gradient-green font-semibold">sem explicar de novo.</span>
           </p>
 
-          <button
-            onClick={onNavigate}
-            className="rounded-lg bg-green-500 px-8 py-3 text-base font-bold text-black transition-all duration-200 hover:bg-green-400 cursor-pointer green-glow"
+          <Link
+            href="/kit-segundo-cerebro"
+            className="inline-block rounded-lg bg-green-500 px-8 py-3 text-base font-bold text-black transition-all duration-200 hover:bg-green-400 cursor-pointer green-glow"
           >
             Conhecer o Segundo Cérebro &rarr;
-          </button>
+          </Link>
         </div>
       </div>
     </section>

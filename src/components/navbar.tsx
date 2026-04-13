@@ -3,17 +3,14 @@
 import { useState, useEffect } from "react";
 import { Menu, X, ArrowLeft } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 const NAV_LINKS = [
   { label: "Como funciona", href: "#como-funciona" },
   { label: "FAQ", href: "#faq" },
 ];
 
-interface NavbarProps {
-  onBack?: () => void;
-}
-
-export function Navbar({ onBack }: NavbarProps) {
+export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -27,16 +24,14 @@ export function Navbar({ onBack }: NavbarProps) {
     <header className="fixed top-4 left-4 right-4 z-50">
       <nav className={`mx-auto max-w-3xl glass rounded-lg px-6 py-3 flex items-center justify-between transition-all duration-300 ${scrolled ? "navbar-scrolled" : ""}`}>
         <div className="flex items-center gap-3">
-          {onBack && (
-            <button
-              onClick={onBack}
-              className="inline-flex items-center gap-1 text-xs text-zinc-400 hover:text-white transition-colors cursor-pointer mr-1"
-              aria-label="Voltar aos kits"
-            >
-              <ArrowLeft className="h-3.5 w-3.5" />
-              <span className="hidden sm:inline">Kits</span>
-            </button>
-          )}
+          <Link
+            href="/"
+            className="inline-flex items-center gap-1 text-xs text-zinc-400 hover:text-white transition-colors cursor-pointer mr-1"
+            aria-label="Voltar aos kits"
+          >
+            <ArrowLeft className="h-3.5 w-3.5" />
+            <span className="hidden sm:inline">Kits</span>
+          </Link>
           <a href="#" className="flex items-center cursor-pointer">
             <Image
               src="/lockup-sem-fundo.svg"

@@ -1,32 +1,27 @@
-"use client";
-
 import Image from "next/image";
+import Link from "next/link";
 import { DottedSurface } from "@/components/ui/dotted-surface";
-
-interface ProductSelectorProps {
-  onSelect: (kit: "jarvis" | "segundo-cerebro") => void;
-}
 
 const PRODUCTS = [
   {
     id: "jarvis" as const,
+    href: "/kit-jarvis",
     cover: "/capa-jarvis.webp",
     title: "Kit Jarvis",
     subtitle: "Automação por palmas e voz",
-    borderClass: "border-green-500/30 hover:border-green-400",
     titleClass: "text-green-400",
   },
   {
     id: "segundo-cerebro" as const,
+    href: "/kit-segundo-cerebro",
     cover: "/capa-segundo-cerebro.webp",
     title: "Kit Segundo Cérebro",
     subtitle: "Memória permanente pro Claude Code",
-    borderClass: "border-green-500/30 hover:border-green-400",
     titleClass: "text-green-400",
   },
 ] as const;
 
-export function ProductSelector({ onSelect }: ProductSelectorProps) {
+export function ProductSelector() {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* 3D dotted surface background */}
@@ -66,9 +61,9 @@ export function ProductSelector({ onSelect }: ProductSelectorProps) {
         {/* Product cards grid — always side by side */}
         <div className="animate-fade-in-up delay-300 grid grid-cols-2 gap-3 sm:gap-6">
           {PRODUCTS.map((product) => (
-            <button
+            <Link
               key={product.id}
-              onClick={() => onSelect(product.id)}
+              href={product.href}
               className={`group relative rounded-lg border bg-black/60 backdrop-blur shadow-lg overflow-hidden text-left transition-all duration-200 hover:scale-[1.02] hover:bg-black/50 cursor-pointer ${
                 product.id === "segundo-cerebro"
                   ? "border-green-500/40 ring-1 ring-green-500/20"
@@ -105,7 +100,7 @@ export function ProductSelector({ onSelect }: ProductSelectorProps) {
                   Novo
                 </div>
               )}
-            </button>
+            </Link>
           ))}
         </div>
       </div>
