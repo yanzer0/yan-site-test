@@ -24,7 +24,7 @@ const PRODUCTS = [
   {
     id: "kit-skills" as const,
     href: "/kit-skills",
-    cover: "/capa-kit-skills.svg",
+    cover: "/capa-kit-skills.webp",
     title: "Pack de Skills",
     subtitle: "10 superpoderes pro Claude Code",
     titleClass: "text-green-400",

@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="800" height="450" viewBox="0 0 800 450">
-  <rect width="800" height="450" fill="#0A0A0A"/>
-  <rect x="1" y="1" width="798" height="448" fill="none" stroke="#A8E84C" stroke-opacity="0.15" stroke-width="1"/>
-  <text x="400" y="200" text-anchor="middle" fill="#A8E84C" font-family="monospace" font-size="18" opacity="0.6">PACK DE SKILLS</text>
-  <text x="400" y="230" text-anchor="middle" fill="#666" font-family="monospace" font-size="13">[ imagem placeholder ]</text>
-  <circle cx="400" cy="280" r="20" fill="#A8E84C" opacity="0.1"/>
-  <text x="400" y="286" text-anchor="middle" fill="#A8E84C" font-size="16" opacity="0.5">10</text>
-</svg>

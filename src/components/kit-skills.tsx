@@ -142,17 +142,16 @@ function HeroSection() {
           </p>
         </div>
 
-        {/* Hero image placeholder */}
-        <div className="animate-fade-in-up delay-400 mt-12 max-w-2xl mx-auto rounded-lg overflow-hidden border border-green-500/10">
-          <div className="aspect-[16/9] bg-[#0d0d0d] flex items-center justify-center">
-            <div className="text-center">
-              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-green-500/10 flex items-center justify-center">
-                <span className="text-green-400 text-2xl">🎨</span>
-              </div>
-              <p className="text-zinc-600 text-sm font-mono">[HERO IMAGE PLACEHOLDER]</p>
-              <p className="text-zinc-700 text-xs mt-1">Mockup do pack + instalador visual</p>
-            </div>
-          </div>
+        {/* Hero image */}
+        <div className="animate-fade-in-up delay-400 mt-12 max-w-2xl mx-auto rounded-lg overflow-hidden border border-green-500/10 image-frame">
+          <Image
+            src="/kit-skills/hero.webp"
+            alt="Pack de Skills pro Claude Code — mockup do produto"
+            width={1600}
+            height={900}
+            className="w-full h-auto"
+            priority
+          />
         </div>
       </div>
     </section>
@@ -270,26 +269,16 @@ function WhatAreSkillsSection() {
             </p>
           </div>
 
-          {/* Before/After placeholder */}
-          <div className="mt-10 grid grid-cols-2 gap-4">
-            <div className="rounded-lg border border-white/10 overflow-hidden">
-              <div className="aspect-[4/3] bg-[#0d0d0d] flex items-center justify-center p-4">
-                <div className="text-center">
-                  <p className="text-red-400/60 text-xs font-mono mb-2">Sem Skill</p>
-                  <p className="text-zinc-700 text-[11px]">[PLACEHOLDER]</p>
-                  <p className="text-zinc-700 text-[10px] mt-1">Landing page genérica</p>
-                </div>
-              </div>
-            </div>
-            <div className="rounded-lg border border-green-500/20 overflow-hidden">
-              <div className="aspect-[4/3] bg-[#0d0d0d] flex items-center justify-center p-4">
-                <div className="text-center">
-                  <p className="text-green-400/60 text-xs font-mono mb-2">Com Skill</p>
-                  <p className="text-zinc-700 text-[11px]">[PLACEHOLDER]</p>
-                  <p className="text-zinc-700 text-[10px] mt-1">Landing page profissional</p>
-                </div>
-              </div>
-            </div>
+          {/* Before/After */}
+          <div className="mt-10 rounded-lg overflow-hidden border border-green-500/10 image-frame">
+            <Image
+              src="/kit-skills/antes-depois.webp"
+              alt="Comparação: sem skill vs com skill — resultado visual completamente diferente"
+              width={1400}
+              height={700}
+              className="w-full h-auto"
+              loading="lazy"
+            />
           </div>
         </div>
       </section>
@@ -389,6 +378,16 @@ function SkillsSection() {
                 <SkillCard key={skill.title} {...skill} />
               ))}
             </div>
+            <div className="mt-6 rounded-lg overflow-hidden border border-green-500/10 image-frame">
+              <Image
+                src="/kit-skills/design-interface.webp"
+                alt="Interface criada com skills de design — visual profissional e distintivo"
+                width={1400}
+                height={700}
+                className="w-full h-auto"
+                loading="lazy"
+              />
+            </div>
           </div>
 
           {/* BLOCO 2 — Deploy */}
@@ -404,6 +403,16 @@ function SkillsSection() {
               {DEPLOY_SKILLS.map((skill) => (
                 <SkillCard key={skill.title} {...skill} />
               ))}
+            </div>
+            <div className="mt-6 rounded-lg overflow-hidden border border-green-500/10 image-frame">
+              <Image
+                src="/kit-skills/deploy.webp"
+                alt="Agent Browser e deploy em ação — screenshot do terminal"
+                width={1400}
+                height={700}
+                className="w-full h-auto"
+                loading="lazy"
+              />
             </div>
           </div>
 
@@ -421,6 +430,16 @@ function SkillsSection() {
                 <SkillCard key={skill.title} {...skill} />
               ))}
             </div>
+            <div className="mt-6 rounded-lg overflow-hidden border border-green-500/10 image-frame">
+              <Image
+                src="/kit-skills/marketing.webp"
+                alt="Landing page com copy persuasiva e SEO audit gerados pelas skills"
+                width={1400}
+                height={700}
+                className="w-full h-auto"
+                loading="lazy"
+              />
+            </div>
           </div>
 
           {/* BLOCO 4 — Documentos */}
@@ -436,6 +455,16 @@ function SkillsSection() {
               {DOCS_SKILLS.map((skill) => (
                 <SkillCard key={skill.title} {...skill} />
               ))}
+            </div>
+            <div className="mt-6 rounded-lg overflow-hidden border border-green-500/10 image-frame">
+              <Image
+                src="/kit-skills/documentos.webp"
+                alt="Documentos profissionais gerados pela skill — Word, PowerPoint, Excel e PDF"
+                width={1400}
+                height={700}
+                className="w-full h-auto"
+                loading="lazy"
+              />
             </div>
           </div>
         </div>
@@ -501,23 +530,27 @@ function PackContentsSection() {
             ))}
           </div>
 
-          {/* Image placeholders */}
+          {/* Instalador + Video */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-12">
-            <div className="rounded-lg border border-green-500/10 overflow-hidden">
-              <div className="aspect-[16/10] bg-[#0d0d0d] flex items-center justify-center p-4">
-                <div className="text-center">
-                  <p className="text-zinc-600 text-xs font-mono">[INSTALADOR VISUAL]</p>
-                  <p className="text-zinc-700 text-[10px] mt-1">Screenshot do HTML</p>
-                </div>
-              </div>
+            <div className="rounded-lg border border-green-500/10 overflow-hidden image-frame">
+              <Image
+                src="/kit-skills/instalador.webp"
+                alt="Instalador visual aberto no navegador — interface dark com os 3 passos"
+                width={1200}
+                height={750}
+                className="w-full h-auto"
+                loading="lazy"
+              />
             </div>
-            <div className="rounded-lg border border-green-500/10 overflow-hidden">
-              <div className="aspect-[16/10] bg-[#0d0d0d] flex items-center justify-center p-4">
-                <div className="text-center">
-                  <p className="text-zinc-600 text-xs font-mono">[VIDEO TUTORIAL]</p>
-                  <p className="text-zinc-700 text-[10px] mt-1">Thumbnail do vídeo</p>
-                </div>
-              </div>
+            <div className="rounded-lg border border-green-500/10 overflow-hidden image-frame">
+              <Image
+                src="/kit-skills/video-tutorial.webp"
+                alt="Thumbnail do vídeo tutorial de instalação no Windows"
+                width={1200}
+                height={750}
+                className="w-full h-auto"
+                loading="lazy"
+              />
             </div>
           </div>
 
@@ -704,17 +737,16 @@ function PricingSection() {
             <span className="font-punch text-gradient-green">agora</span>
           </h2>
 
-          {/* Product image placeholder */}
-          <div className="max-w-sm mx-auto rounded-lg border border-green-500/10 overflow-hidden mb-10">
-            <div className="aspect-[4/3] bg-[#0d0d0d] flex items-center justify-center p-4">
-              <div className="text-center">
-                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-green-500/10 flex items-center justify-center">
-                  <span className="text-green-400 text-2xl">📦</span>
-                </div>
-                <p className="text-zinc-600 text-xs font-mono">[PRODUTO PLACEHOLDER]</p>
-                <p className="text-zinc-700 text-[10px] mt-1">Mockup 3D do pack</p>
-              </div>
-            </div>
+          {/* Product mockup */}
+          <div className="max-w-sm mx-auto rounded-lg border border-green-500/10 overflow-hidden mb-10 image-frame">
+            <Image
+              src="/kit-skills/mockup3d.webp"
+              alt="Pack de Skills INFUSER — mockup 3D do produto digital"
+              width={1200}
+              height={900}
+              className="w-full h-auto"
+              loading="lazy"
+            />
           </div>
 
           {/* Price card */}
