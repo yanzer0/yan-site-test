@@ -18,7 +18,7 @@ Se você usa o Claude Code sem Skills, está usando 10% do que ele pode fazer.
 Esse é o kit com as 10 skills que eu uso todo dia pra transformar o Claude Code num time inteiro — designer, copywriter, auditor de SEO, testador e mais. Instale em 5 minutos. Sem precisar ser técnico.
 
 *(Botão CTA primário)*
-**CTA:** Quero as 10 Skills → R$47
+**CTA:** Quero as 10 Skills → R$29,90
 
 *(Prova social rápida abaixo do botão — opcional)*
 Skills curadas entre 69.000+ disponíveis · Instalador visual incluso · Acesso imediato
@@ -204,7 +204,7 @@ Cria documentos Word com formatação completa (índice, cabeçalhos, tabelas), 
 | Vídeo tutorial de instalação | R$30+ |
 | Guia manual completo em português | R$30+ |
 | **Total real** | **R$300+** |
-| **Você paga** | **R$47** |
+| **Você paga** | **R$29,90** |
 
 ---
 
@@ -243,7 +243,7 @@ O instalador visual é um arquivo HTML que abre no navegador. Você seleciona o 
 **"Funciona no Mac?"**
 Sim. O instalador gera comandos tanto pra Windows quanto pra Mac. O guia manual também cobre os dois sistemas com comandos separados pra cada um.
 
-**"R$47 por arquivos de configuração?"**
+**"R$29,90 por arquivos de configuração?"**
 Você não está pagando por arquivos. Está pagando por semanas de pesquisa, testes e validação condensadas em 5 minutos de instalação. É o mesmo motivo pelo qual você compra um livro — o papel custa centavos, o conhecimento organizado é o que vale. O pack inclui skills de equipes como Anthropic (criadores do Claude) e Vercel (criadores do Next.js) que sozinhas já valem múltiplas vezes o investimento.
 
 **"E se as skills ficarem desatualizadas?"**
@@ -272,7 +272,7 @@ Sim. A extensão e o terminal usam a mesma pasta de skills. Instale uma vez e fu
 
 10 skills que eu uso todo dia pra criar, testar e vender projetos com Claude Code.
 
-~~R$67~~ **R$47**
+~~R$67~~ **R$29,90**
 Pagamento único · Acesso imediato · Sem assinatura
 
 *(Botão CTA grande)*
@@ -291,10 +291,10 @@ Você pode continuar usando o Claude Code do jeito que usa hoje. Gerando interfa
 
 Ou pode instalar as mesmas skills que eu uso — em 5 minutos — e ver a diferença no próximo projeto.
 
-A escolha é sua. Mas o preço de R$47 pode não durar.
+A escolha é sua. Mas o preço de R$29,90 pode não durar.
 
 *(Botão CTA final)*
-**Quero as 10 skills → R$47**
+**Quero as 10 skills → R$29,90**
 
 ---
 

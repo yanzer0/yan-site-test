@@ -588,7 +588,7 @@ function PackContentsSection() {
               </div>
               <div className="flex items-center justify-between px-5 py-4 bg-green-500/10">
                 <span className="text-[14px] text-gradient-green font-bold">Você paga</span>
-                <span className="text-[14px] text-gradient-green font-mono font-bold">R$47</span>
+                <span className="text-[14px] text-gradient-green font-mono font-bold">R$29,90</span>
               </div>
             </div>
           </div>
@@ -680,7 +680,7 @@ function FAQSection() {
       a: "Sim. O instalador gera comandos tanto pra Windows quanto pra Mac. O guia manual também cobre os dois sistemas com comandos separados pra cada um.",
     },
     {
-      q: "R$47 por arquivos de configuração?",
+      q: "R$29,90 por arquivos de configuração?",
       a: "Você não está pagando por arquivos. Está pagando por semanas de pesquisa, testes e validação condensadas em 5 minutos de instalação. É o mesmo motivo pelo qual você compra um livro — o papel custa centavos, o conhecimento organizado é o que vale. O pack inclui skills de equipes como Anthropic (criadores do Claude) e Vercel (criadores do Next.js) que sozinhas já valem múltiplas vezes o investimento.",
     },
     {
@@ -771,7 +771,7 @@ function PricingSection() {
             {/* Price */}
             <div className="flex items-baseline justify-center gap-3 mb-6">
               <span className="font-mono text-lg text-zinc-500 line-through">R$67</span>
-              <span className="font-punch text-5xl sm:text-6xl font-extrabold text-gradient-green">R$47</span>
+              <span className="font-punch text-5xl sm:text-6xl font-extrabold text-gradient-green">R$29,90</span>
             </div>
 
             <p className="text-[13px] text-zinc-500 mb-6">
@@ -813,7 +813,7 @@ function FinalSection() {
               Ou pode instalar as mesmas skills que eu uso — em 5 minutos — e ver a diferença no próximo projeto.
             </p>
             <p className="text-[15px] text-white font-semibold leading-relaxed">
-              A escolha é sua. Mas o preço de <span className="text-gradient-green">R$47</span> pode não durar.
+              A escolha é sua. Mas o preço de <span className="text-gradient-green">R$29,90</span> pode não durar.
             </p>
           </div>
 
@@ -821,7 +821,7 @@ function FinalSection() {
             href={CHECKOUT_URL}
             className="group inline-flex items-center gap-2 rounded-lg bg-green-500 px-10 py-4 text-base font-bold text-black transition-all duration-200 hover:bg-green-400 hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(168,232,76,0.3)] cursor-pointer green-glow"
           >
-            Quero as 10 Skills → R$47 <span className="transition-transform duration-200 group-hover:translate-x-1">&rarr;</span>
+            Quero as 10 Skills → R$29,90 <span className="transition-transform duration-200 group-hover:translate-x-1">&rarr;</span>
           </a>
         </div>
       </section>
