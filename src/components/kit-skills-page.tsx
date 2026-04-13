@@ -16,6 +16,8 @@ export function KitSkillsPage() {
           blurIntensity="0.4rem"
           density={2}
         />
+        {/* Dark overlay to dim the pattern uniformly */}
+        <div className="absolute inset-0 bg-black/40" />
       </div>
       <div className="relative z-10">
         <KitSkills />

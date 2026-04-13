@@ -126,7 +126,9 @@ function HeroSection() {
 
         {/* Subheadline */}
         <p className="animate-fade-in-up delay-200 mt-6 max-w-3xl mx-auto text-base sm:text-lg text-zinc-400 leading-relaxed">
-          Esse é o kit com as 10 skills que eu uso todo dia pra transformar o Claude Code num time inteiro — designer, copywriter, auditor de SEO, testador e mais. Instale em 5 minutos. <strong className="text-white">Sem precisar ser técnico.</strong>
+          Esse é o kit com as 10 skills que eu uso todo dia pra transformar o Claude Code num time inteiro — designer, copywriter, auditor de SEO, testador e mais.
+          <br />
+          Instale em 5 minutos. <strong className="text-white">Sem precisar ser técnico.</strong>
         </p>
 
         {/* CTA */}
@@ -532,27 +534,35 @@ function PackContentsSection() {
             ))}
           </div>
 
-          {/* Instalador + Video */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-12">
-            <div className="rounded-lg border border-green-500/10 overflow-hidden image-frame">
-              <Image
-                src="/kit-skills/instalador.webp"
-                alt="Instalador visual aberto no navegador — interface dark com os 3 passos"
-                width={1200}
-                height={750}
-                className="w-full h-auto"
-                loading="lazy"
-              />
+          {/* Instalador — destaque full-width */}
+          <div className="mb-6 rounded-xl border border-green-500/25 overflow-hidden shadow-[0_0_40px_rgba(168,232,76,0.08)] image-frame">
+            <Image
+              src="/kit-skills/instalador.webp"
+              alt="Instalador visual aberto no navegador — interface dark com os 3 passos"
+              width={1200}
+              height={750}
+              className="w-full h-auto"
+              loading="lazy"
+            />
+            <div className="px-5 py-4 bg-[#0a0a0a]/80 border-t border-green-500/10">
+              <p className="font-mono text-green-400 text-sm font-bold">Instalador Visual</p>
+              <p className="text-[13px] text-zinc-500 mt-1">Seleciona o sistema, escolhe as skills, copia os comandos. Sem terminal assustador.</p>
             </div>
-            <div className="rounded-lg border border-green-500/10 overflow-hidden image-frame">
-              <Image
-                src="/kit-skills/video-tutorial.webp"
-                alt="Thumbnail do vídeo tutorial de instalação no Windows"
-                width={1200}
-                height={750}
-                className="w-full h-auto"
-                loading="lazy"
-              />
+          </div>
+
+          {/* Video tutorial */}
+          <div className="mb-12 rounded-lg border border-white/10 overflow-hidden image-frame">
+            <Image
+              src="/kit-skills/video-tutorial.webp"
+              alt="Thumbnail do vídeo tutorial de instalação no Windows"
+              width={1200}
+              height={750}
+              className="w-full h-auto"
+              loading="lazy"
+            />
+            <div className="px-5 py-4 bg-[#0a0a0a]/80 border-t border-white/5">
+              <p className="font-mono text-zinc-300 text-sm font-bold">Video Tutorial</p>
+              <p className="text-[13px] text-zinc-500 mt-1">Passo a passo completo da instalação no Windows.</p>
             </div>
           </div>
 
