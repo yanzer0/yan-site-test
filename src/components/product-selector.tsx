@@ -33,7 +33,7 @@ const PRODUCTS = [
   {
     id: "kit-vscode" as const,
     href: "/kit-vscode",
-    cover: "/capa-kit-vscode.webp",
+    cover: "/capa.png",
     title: "Claude Code no VS Code",
     subtitle: "Guia completo de instalação",
     titleClass: "text-green-400",
