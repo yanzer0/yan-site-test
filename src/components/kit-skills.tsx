@@ -137,7 +137,7 @@ function HeroSection() {
             href={CHECKOUT_URL}
             className="group inline-flex items-center gap-2 rounded-lg bg-green-500 px-10 py-4 text-base font-bold text-black transition-all duration-200 hover:bg-green-400 hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(168,232,76,0.3)] cursor-pointer green-glow"
           >
-            Quero as 10 Skills <span className="transition-transform duration-200 group-hover:translate-x-1">&rarr;</span>
+            Quero as 10 Skills e o Instalador de Skills! <span className="transition-transform duration-200 group-hover:translate-x-1">&rarr;</span>
           </a>
           <p className="mt-4 font-mono text-[12px] text-zinc-500">
             Skills curadas entre 69.000+ disponíveis · Instalador visual incluso · Acesso imediato
