@@ -10,6 +10,7 @@ const PRODUCTS = [
     title: "Kit Jarvis",
     subtitle: "Automação por palmas e voz",
     titleClass: "text-green-400",
+    badge: null,
   },
   {
     id: "segundo-cerebro" as const,
@@ -18,6 +19,16 @@ const PRODUCTS = [
     title: "Kit Segundo Cérebro",
     subtitle: "Memória permanente pro Claude Code",
     titleClass: "text-green-400",
+    badge: null,
+  },
+  {
+    id: "kit-skills" as const,
+    href: "/kit-skills",
+    cover: "/capa-kit-skills.svg",
+    title: "Pack de Skills",
+    subtitle: "10 superpoderes pro Claude Code",
+    titleClass: "text-green-400",
+    badge: "Novo",
   },
 ] as const;
 
@@ -58,14 +69,14 @@ export function ProductSelector() {
           Selecione o produto que vai transformar sua rotina.
         </p>
 
-        {/* Product cards grid — always side by side */}
-        <div className="animate-fade-in-up delay-300 grid grid-cols-2 gap-3 sm:gap-6">
+        {/* Product cards grid */}
+        <div className="animate-fade-in-up delay-300 grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-6">
           {PRODUCTS.map((product) => (
             <Link
               key={product.id}
               href={product.href}
               className={`group relative rounded-lg border bg-black/60 backdrop-blur shadow-lg overflow-hidden text-left transition-all duration-200 hover:scale-[1.02] hover:bg-black/50 cursor-pointer ${
-                product.id === "segundo-cerebro"
+                product.badge
                   ? "border-green-500/40 ring-1 ring-green-500/20"
                   : "border-white/10"
               }`}
@@ -94,10 +105,10 @@ export function ProductSelector() {
                 </div>
               </div>
 
-              {/* Destaque badge for Segundo Cérebro */}
-              {product.id === "segundo-cerebro" && (
+              {/* Badge */}
+              {product.badge && (
                 <div className="absolute top-2 right-2 sm:top-3 sm:right-3 rounded-full bg-green-500 px-2 py-0.5 sm:px-3 sm:py-1 text-[9px] sm:text-[11px] font-bold text-black uppercase tracking-wider">
-                  Novo
+                  {product.badge}
                 </div>
               )}
             </Link>
