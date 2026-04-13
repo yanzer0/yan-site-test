@@ -27,7 +27,7 @@ function SKNavbar() {
 
   return (
     <header className="fixed top-4 left-4 right-4 z-50">
-      <nav className={`mx-auto max-w-3xl glass rounded-lg px-6 py-3 flex items-center justify-between transition-all duration-300 ${scrolled ? "navbar-scrolled" : ""}`}>
+      <nav className={`mx-auto max-w-4xl glass rounded-lg px-6 py-3 flex items-center justify-between transition-all duration-300 ${scrolled ? "navbar-scrolled" : ""}`}>
         <div className="flex items-center gap-3">
           <Link
             href="/"
@@ -78,7 +78,7 @@ function SKNavbar() {
         </div>
       </nav>
 
-      <div className={`md:hidden mt-2 mx-auto max-w-3xl rounded-lg border border-white/10 bg-[#0A0A0A]/90 backdrop-blur-xl p-6 flex flex-col gap-4 transition-all duration-300 origin-top ${
+      <div className={`md:hidden mt-2 mx-auto max-w-4xl rounded-lg border border-white/10 bg-[#0A0A0A]/90 backdrop-blur-xl p-6 flex flex-col gap-4 transition-all duration-300 origin-top ${
         mobileOpen ? "opacity-100 scale-y-100 translate-y-0" : "opacity-0 scale-y-95 -translate-y-2 pointer-events-none"
       }`}>
         {NAV_LINKS.map((link) => (
@@ -107,7 +107,7 @@ function SKNavbar() {
 function HeroSection() {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-28 pb-16">
-      <div className="relative z-10 mx-auto max-w-4xl px-4 sm:px-6 text-center">
+      <div className="relative z-10 mx-auto max-w-5xl px-4 sm:px-6 text-center">
         {/* Badge */}
         <div className="animate-fade-in-up inline-flex items-center gap-3 mb-8">
           <span className="h-px w-5 bg-green-400" />
@@ -125,7 +125,7 @@ function HeroSection() {
         </h1>
 
         {/* Subheadline */}
-        <p className="animate-fade-in-up delay-200 mt-6 max-w-2xl mx-auto text-base sm:text-lg text-zinc-400 leading-relaxed">
+        <p className="animate-fade-in-up delay-200 mt-6 max-w-3xl mx-auto text-base sm:text-lg text-zinc-400 leading-relaxed">
           Esse é o kit com as 10 skills que eu uso todo dia pra transformar o Claude Code num time inteiro — designer, copywriter, auditor de SEO, testador e mais. Instale em 5 minutos. <strong className="text-white">Sem precisar ser técnico.</strong>
         </p>
 
@@ -143,7 +143,7 @@ function HeroSection() {
         </div>
 
         {/* Hero image */}
-        <div className="animate-fade-in-up delay-400 mt-12 max-w-2xl mx-auto rounded-lg overflow-hidden border border-green-500/10 image-frame">
+        <div className="animate-fade-in-up delay-400 mt-12 max-w-3xl mx-auto rounded-lg overflow-hidden border border-green-500/10 image-frame">
           <Image
             src="/kit-skills/hero.webp"
             alt="Pack de Skills pro Claude Code — mockup do produto"
@@ -166,7 +166,7 @@ function PainSection() {
     <>
       <div className="section-divider" />
       <section className="py-20 sm:py-28 bg-black/80">
-        <div ref={ref} className="scroll-reveal mx-auto max-w-3xl px-4 sm:px-6">
+        <div ref={ref} className="scroll-reveal mx-auto max-w-4xl px-4 sm:px-6">
           <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight leading-tight mb-8">
             Você reconhece isso?
           </h2>
@@ -202,7 +202,7 @@ function StorySection() {
     <>
       <div className="section-divider" />
       <section className="py-20 sm:py-28">
-        <div ref={ref} className="scroll-reveal mx-auto max-w-3xl px-4 sm:px-6">
+        <div ref={ref} className="scroll-reveal mx-auto max-w-4xl px-4 sm:px-6">
           <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight leading-tight mb-8">
             Como eu descobri que estava usando o Claude Code{" "}
             <span className="font-punch text-gradient-green">errado</span>
@@ -242,7 +242,7 @@ function WhatAreSkillsSection() {
     <>
       <div className="section-divider" />
       <section className="py-20 sm:py-28 bg-black/80">
-        <div ref={ref} className="scroll-reveal mx-auto max-w-3xl px-4 sm:px-6">
+        <div ref={ref} className="scroll-reveal mx-auto max-w-4xl px-4 sm:px-6">
           <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight leading-tight mb-8">
             O que são Skills{" "}
             <span className="text-zinc-500">(e por que mudam tudo)</span>
@@ -356,7 +356,7 @@ function SkillsSection() {
     <>
       <div className="section-divider" />
       <section id="skills" className="py-20 sm:py-28">
-        <div ref={ref} className="scroll-reveal mx-auto max-w-4xl px-4 sm:px-6">
+        <div ref={ref} className="scroll-reveal mx-auto max-w-5xl px-4 sm:px-6">
           <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-center mb-3">
             O que as 10 skills fazem por você
           </h2>
@@ -508,7 +508,7 @@ function PackContentsSection() {
     <>
       <div className="section-divider" />
       <section id="kit" className="py-20 sm:py-28 bg-black/80">
-        <div ref={ref} className="scroll-reveal mx-auto max-w-3xl px-4 sm:px-6">
+        <div ref={ref} className="scroll-reveal mx-auto max-w-4xl px-4 sm:px-6">
           <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-center mb-12">
             Tudo o que você recebe
           </h2>
@@ -608,7 +608,7 @@ function ForWhoSection() {
     <>
       <div className="section-divider" />
       <section className="py-20 sm:py-28">
-        <div ref={ref} className="scroll-reveal mx-auto max-w-3xl px-4 sm:px-6">
+        <div ref={ref} className="scroll-reveal mx-auto max-w-4xl px-4 sm:px-6">
           <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-center mb-12">
             Pra quem é esse pack
           </h2>
@@ -691,7 +691,7 @@ function FAQSection() {
     <>
       <div className="section-divider" />
       <section id="faq" className="py-20 sm:py-28 bg-black/80">
-        <div ref={ref} className="scroll-reveal mx-auto max-w-3xl px-4 sm:px-6">
+        <div ref={ref} className="scroll-reveal mx-auto max-w-4xl px-4 sm:px-6">
           <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-center mb-12">
             Perguntas frequentes
           </h2>
@@ -731,7 +731,7 @@ function PricingSection() {
     <>
       <div className="section-divider" />
       <section className="py-20 sm:py-28">
-        <div ref={ref} className="scroll-reveal mx-auto max-w-3xl px-4 sm:px-6 text-center">
+        <div ref={ref} className="scroll-reveal mx-auto max-w-4xl px-4 sm:px-6 text-center">
           <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight mb-8">
             Transforme seu Claude Code{" "}
             <span className="font-punch text-gradient-green">agora</span>
@@ -792,7 +792,7 @@ function FinalSection() {
     <>
       <div className="section-divider" />
       <section className="py-20 sm:py-28 bg-black/80">
-        <div ref={ref} className="scroll-reveal mx-auto max-w-3xl px-4 sm:px-6 text-center">
+        <div ref={ref} className="scroll-reveal mx-auto max-w-4xl px-4 sm:px-6 text-center">
           <div className="space-y-5 mb-10">
             <p className="text-[15px] text-zinc-400 leading-relaxed">
               Você pode continuar usando o Claude Code do jeito que usa hoje. Gerando interfaces genéricas. Testando no olho. Fazendo deploy com medo. Escrevendo copy no achismo.
@@ -821,7 +821,7 @@ function FinalSection() {
 function SKFooter() {
   return (
     <footer className="border-t border-white/5 py-10">
-      <div className="mx-auto max-w-3xl px-4 sm:px-6 text-center">
+      <div className="mx-auto max-w-4xl px-4 sm:px-6 text-center">
         <div className="flex items-center justify-center mb-4">
           <Image
             src="/lockup-sem-fundo.svg"
