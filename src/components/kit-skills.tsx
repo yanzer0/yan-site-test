@@ -425,9 +425,11 @@ function SkillsSection() {
                 <p className="text-zinc-500 text-sm">3 skills que fazem seu projeto gerar dinheiro, não só funcionar</p>
               </div>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {MARKETING_SKILLS.map((skill) => (
-                <SkillCard key={skill.title} {...skill} />
+            <div className="grid grid-cols-1 sm:grid-cols-6 gap-4">
+              {MARKETING_SKILLS.map((skill, i) => (
+                <div key={skill.title} className={i === 0 ? "sm:col-span-3" : i === 1 ? "sm:col-span-3" : "sm:col-span-6"}>
+                  <SkillCard {...skill} />
+                </div>
               ))}
             </div>
             <div className="mt-6 rounded-lg overflow-hidden border border-green-500/10 image-frame">
@@ -451,7 +453,7 @@ function SkillsSection() {
                 <p className="text-zinc-500 text-sm">1 skill (com 4 módulos) que cria documentos profissionais</p>
               </div>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
               {DOCS_SKILLS.map((skill) => (
                 <SkillCard key={skill.title} {...skill} />
               ))}
@@ -475,7 +477,7 @@ function SkillsSection() {
 
 function SkillCard({ title, desc, meta }: { title: string; desc: string; meta: string }) {
   return (
-    <div className="glass border-green-500/10 rounded-lg p-5 card-hover">
+    <div className="glass border-green-500/10 rounded-lg p-5 card-hover h-full">
       <h4 className="font-heading text-base font-bold text-white mb-3">{title}</h4>
       <p className="text-[13px] text-zinc-400 leading-relaxed mb-4">{desc}</p>
       <p className="font-mono text-[11px] text-green-400/60 leading-relaxed">{meta}</p>
@@ -489,7 +491,7 @@ function PackContentsSection() {
 
   const ITEMS = [
     { text: "10 skills premium curadas entre 69.000+ disponíveis — incluindo 80+ sub-skills", sub: "Skills criadas pela Anthropic, Vercel e especialistas reconhecidos" },
-    { text: "Instalador Visual — um HTML que abre no navegador, sem instalar nada. Seleciona o sistema, escolhe as skills, copia os comandos e cola. Sem medo de terminal.", sub: null },
+    { text: "Instalador Visual — uma interface que abre no navegador, sem instalar nada. Seleciona o sistema, escolhe as skills, copia os comandos e cola. Sem medo de terminal.", sub: null },
     { text: "Vídeo tutorial de instalação passo a passo mostrando a instalação completa no Windows.", sub: null },
     { text: "Guia manual completo — passo a passo individual de cada skill com comandos pra Windows e Mac, pra quem prefere ir no próprio ritmo.", sub: null },
     { text: "Descrição detalhada de cada skill — o que faz, quando usar, exemplo prático de uso e link do repositório original.", sub: null },
