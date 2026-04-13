@@ -30,6 +30,15 @@ const PRODUCTS = [
     titleClass: "text-green-400",
     badge: "Novo",
   },
+  {
+    id: "kit-vscode" as const,
+    href: "/kit-vscode",
+    cover: "/capa-kit-vscode.webp",
+    title: "Claude Code no VS Code",
+    subtitle: "Guia completo de instalação",
+    titleClass: "text-green-400",
+    badge: null,
+  },
 ] as const;
 
 export function ProductSelector() {
@@ -70,7 +79,7 @@ export function ProductSelector() {
         </p>
 
         {/* Product cards grid */}
-        <div className="animate-fade-in-up delay-300 grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-6">
+        <div className="animate-fade-in-up delay-300 grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-6">
           {PRODUCTS.map((product) => (
             <Link
               key={product.id}
