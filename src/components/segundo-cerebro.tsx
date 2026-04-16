@@ -219,9 +219,13 @@ function HeroSection() {
           >
             Quero o Segundo Cérebro! <span className="transition-transform duration-200 group-hover:translate-x-1">&rarr;</span>
           </a>
-          <p className="mt-4 font-mono text-[12px] text-green-300/70 font-medium">
-            ⚡ Pagamento único. Acesso vitalício.
-          </p>
+          <a
+            href="#como-funciona"
+            className="group/scroll mt-5 inline-flex flex-col items-center gap-1 text-green-300/60 hover:text-green-300 transition-colors duration-200 cursor-pointer"
+          >
+            <span className="font-mono text-[13px] font-medium tracking-wide">Entenda como funciona</span>
+            <span className="animate-bounce text-lg">↓</span>
+          </a>
         </div>
       </div>
     </section>
@@ -244,7 +248,7 @@ function PainSection() {
   return (
     <>
     <div className="section-divider" />
-    <section className="py-20 sm:py-28 bg-black/80">
+    <section id="como-funciona" className="py-20 sm:py-28 bg-black/80">
       <div ref={ref} className="scroll-reveal mx-auto max-w-3xl px-4 sm:px-6">
         <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight leading-tight mb-8">
           Isso aqui te parece familiar?
