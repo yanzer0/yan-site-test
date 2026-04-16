@@ -211,17 +211,13 @@ function HeroSection() {
           />
         </div>
 
-        {/* Price + CTA */}
+        {/* CTA */}
         <div className="animate-fade-in-up delay-400 mt-10">
-          <div className="flex items-baseline justify-center gap-3 mb-6">
-            <span className="font-mono text-lg text-zinc-500 line-through">R$127</span>
-            <span className="font-punch text-5xl sm:text-6xl font-extrabold text-gradient-green">R$67</span>
-          </div>
           <a
             href={CHECKOUT_URL}
             className="group inline-flex items-center gap-2 rounded-lg bg-green-500 px-10 py-4 text-base font-bold text-black transition-all duration-200 hover:bg-green-400 hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(168,232,76,0.3)] cursor-pointer green-glow"
           >
-            Quero o Kit — R$67 <span className="transition-transform duration-200 group-hover:translate-x-1">&rarr;</span>
+            Quero o Segundo Cérebro! <span className="transition-transform duration-200 group-hover:translate-x-1">&rarr;</span>
           </a>
           <p className="mt-4 font-mono text-[12px] text-green-300/70 font-medium">
             ⚡ Pagamento único. Acesso vitalício.
