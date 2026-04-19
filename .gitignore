@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# design-system source assets (heavy PNGs not shipped to web)
+design-system/infuser/**/*.png
+
+# local video backups
+public/*.bak

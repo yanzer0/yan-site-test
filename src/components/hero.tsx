@@ -30,12 +30,13 @@ export function Hero() {
         <div className="animate-fade-in-up delay-300 mt-10 max-w-2xl mx-auto rounded-lg overflow-hidden border border-green-500/10">
           <video
             src="/video-site.mp4"
+            poster="/video-site-poster.jpg"
             className="w-full aspect-video object-cover"
             autoPlay
             loop
             muted
             playsInline
-            preload="metadata"
+            preload="none"
           />
         </div>
 
