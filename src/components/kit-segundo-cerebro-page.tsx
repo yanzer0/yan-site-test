@@ -1,6 +1,6 @@
 "use client";
 
-import { FallingPattern } from "@/components/ui/falling-pattern";
+import { FallingPattern } from "@/components/ui/falling-pattern-lazy";
 import { SegundoCerebro } from "@/components/segundo-cerebro";
 
 export function KitSegundoCerebroPage() {

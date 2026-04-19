@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Menu, X, ArrowLeft, ChevronDown } from "lucide-react";
 import { useScrollReveal } from "@/lib/use-scroll-reveal";
+import { useScrolled } from "@/lib/use-scrolled";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -11,13 +12,7 @@ const CHECKOUT_URL = "https://pay.kiwify.com.br/2r9Z7sZ";
 /* ─── Navbar ─── */
 function SKNavbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 60);
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  const scrolled = useScrolled(60);
 
   const NAV_LINKS = [
     { label: "O que fazem", href: "#skills" },
@@ -151,6 +146,8 @@ function HeroSection() {
             alt="Pack de Skills pro Claude Code — mockup do produto"
             width={1600}
             height={900}
+            sizes="(max-width: 768px) 100vw, 1024px"
+            quality={80}
             className="w-full h-auto"
             priority
           />
@@ -278,6 +275,8 @@ function WhatAreSkillsSection() {
               alt="Comparação: sem skill vs com skill — resultado visual completamente diferente"
               width={1400}
               height={700}
+              sizes="(max-width: 768px) 100vw, 1024px"
+              quality={80}
               className="w-full h-auto"
               loading="lazy"
             />
@@ -386,6 +385,8 @@ function SkillsSection() {
                 alt="Interface criada com skills de design — visual profissional e distintivo"
                 width={1400}
                 height={700}
+                sizes="(max-width: 768px) 100vw, 1024px"
+                quality={80}
                 className="w-full h-auto"
                 loading="lazy"
               />
@@ -412,6 +413,8 @@ function SkillsSection() {
                 alt="Agent Browser e deploy em ação — screenshot do terminal"
                 width={1400}
                 height={700}
+                sizes="(max-width: 768px) 100vw, 1024px"
+                quality={80}
                 className="w-full h-auto"
                 loading="lazy"
               />
@@ -440,6 +443,8 @@ function SkillsSection() {
                 alt="Landing page com copy persuasiva e SEO audit gerados pelas skills"
                 width={1400}
                 height={700}
+                sizes="(max-width: 768px) 100vw, 1024px"
+                quality={80}
                 className="w-full h-auto"
                 loading="lazy"
               />
@@ -466,6 +471,8 @@ function SkillsSection() {
                 alt="Documentos profissionais gerados pela skill — Word, PowerPoint, Excel e PDF"
                 width={1400}
                 height={700}
+                sizes="(max-width: 768px) 100vw, 1024px"
+                quality={80}
                 className="w-full h-auto"
                 loading="lazy"
               />
@@ -541,6 +548,8 @@ function PackContentsSection() {
               alt="Instalador visual aberto no navegador — interface dark com os 3 passos"
               width={1200}
               height={750}
+              sizes="(max-width: 768px) 100vw, 1024px"
+              quality={80}
               className="w-full h-auto"
               loading="lazy"
             />
@@ -557,6 +566,8 @@ function PackContentsSection() {
               alt="Thumbnail do vídeo tutorial de instalação no Windows"
               width={1200}
               height={750}
+              sizes="(max-width: 768px) 100vw, 1024px"
+              quality={80}
               className="w-full h-auto"
               loading="lazy"
             />
@@ -756,6 +767,8 @@ function PricingSection() {
               alt="Pack de Skills INFUSER — mockup 3D do produto digital"
               width={1200}
               height={900}
+              sizes="(max-width: 640px) 100vw, 384px"
+              quality={80}
               className="w-full h-auto"
               loading="lazy"
             />

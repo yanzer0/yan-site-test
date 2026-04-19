@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { DottedSurface } from "@/components/ui/dotted-surface";
+import { DottedSurface } from "@/components/ui/dotted-surface-lazy";
 
 const PRODUCTS = [
   {
@@ -97,6 +97,8 @@ export function ProductSelector() {
                   alt={product.title}
                   width={800}
                   height={450}
+                  sizes="(max-width: 640px) 50vw, 220px"
+                  quality={80}
                   className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                 />
               </div>

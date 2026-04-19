@@ -1,6 +1,6 @@
 "use client";
 
-import { FallingPattern } from "@/components/ui/falling-pattern";
+import { FallingPattern } from "@/components/ui/falling-pattern-lazy";
 import { Navbar } from "@/components/navbar";
 import { Hero } from "@/components/hero";
 import { TrustBar } from "@/components/trust-bar";

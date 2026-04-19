@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import {
   Menu,
   X,
@@ -22,20 +22,15 @@ import {
   ListChecks,
 } from "lucide-react";
 import { useScrollReveal } from "@/lib/use-scroll-reveal";
-import { FallingPattern } from "@/components/ui/falling-pattern";
+import { useScrolled } from "@/lib/use-scrolled";
+import { FallingPattern } from "@/components/ui/falling-pattern-lazy";
 import Image from "next/image";
 import Link from "next/link";
 
 /* ─── Navbar ─── */
 function VSCodeNavbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 60);
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  const scrolled = useScrolled(60);
 
   const NAV_LINKS = [
     { label: "Vantagens", href: "#vantagens" },
@@ -165,8 +160,10 @@ function HeroSection() {
             alt="Kit Claude Code no VS Code - INFUSER"
             width={1500}
             height={400}
-            className="w-full h-auto"
+            sizes="(max-width: 768px) 100vw, 1024px"
+            quality={80}
             priority
+            className="w-full h-auto"
           />
         </div>
 

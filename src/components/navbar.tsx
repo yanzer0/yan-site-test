@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Menu, X, ArrowLeft } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useScrolled } from "@/lib/use-scrolled";
 
 const NAV_LINKS = [
   { label: "Como funciona", href: "#como-funciona" },
@@ -12,13 +13,7 @@ const NAV_LINKS = [
 
 export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 60);
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  const scrolled = useScrolled(60);
 
   return (
     <header className="fixed top-4 left-4 right-4 z-50">

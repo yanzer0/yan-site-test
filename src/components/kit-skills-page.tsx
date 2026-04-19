@@ -1,6 +1,6 @@
 "use client";
 
-import { FallingPattern } from "@/components/ui/falling-pattern";
+import { FallingPattern } from "@/components/ui/falling-pattern-lazy";
 import { KitSkills } from "@/components/kit-skills";
 
 export function KitSkillsPage() {

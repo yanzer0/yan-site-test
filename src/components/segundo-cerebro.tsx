@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Menu, X, ArrowLeft, Code2, Target, BookOpen, Video, BarChart3, Expand, ChevronDown } from "lucide-react";
 import { useScrollReveal } from "@/lib/use-scroll-reveal";
+import { useScrolled } from "@/lib/use-scrolled";
 import Image from "next/image";
 import Link from "next/link";
 import Script from "next/script";
@@ -37,7 +38,7 @@ function ImageLightbox({ src, alt, onClose }: { src: string; alt: string; onClos
 }
 
 /* ─── Zoomable Image wrapper ─── */
-function ZoomableImage({ src, alt, width, height, className, containerClassName, quality = 85, children }: {
+function ZoomableImage({ src, alt, width, height, className, containerClassName, quality = 80, sizes = "(max-width: 768px) 100vw, 1024px", children }: {
   src: string;
   alt: string;
   width: number;
@@ -45,6 +46,7 @@ function ZoomableImage({ src, alt, width, height, className, containerClassName,
   className?: string;
   containerClassName?: string;
   quality?: number;
+  sizes?: string;
   children?: React.ReactNode;
 }) {
   const [open, setOpen] = useState(false);
@@ -57,6 +59,7 @@ function ZoomableImage({ src, alt, width, height, className, containerClassName,
           alt={alt}
           width={width}
           height={height}
+          sizes={sizes}
           className={className}
           quality={quality}
         />
@@ -80,13 +83,7 @@ const CHECKOUT_URL = "https://pay.kiwify.com.br/oT2C28S";
 /* ─── Navbar ─── */
 function SCNavbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 60);
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  const scrolled = useScrolled(60);
 
   const NAV_LINKS = [
     { label: "O que vem no kit", href: "#kit" },
