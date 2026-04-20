@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { Menu, X, ArrowLeft, Code2, Target, BookOpen, Video, BarChart3, Expand, ChevronDown } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Menu, X, ArrowLeft, Code2, Target, BookOpen, Video, BarChart3, Expand, ChevronDown, Flame, Gift } from "lucide-react";
 import { useScrollReveal } from "@/lib/use-scroll-reveal";
 import { useScrolled } from "@/lib/use-scrolled";
 import Image from "next/image";
@@ -78,7 +78,83 @@ function ZoomableImage({ src, alt, width, height, className, containerClassName,
   );
 }
 
-const CHECKOUT_URL = "https://pay.kiwify.com.br/oT2C28S";
+const CHECKOUT_URL = "https://pay.kiwify.com.br/25qc5Pb";
+const PROMO_DEADLINE = "2026-04-20T23:59:59-03:00";
+
+/* ─── Countdown hook ─── */
+function useCountdown(target: string) {
+  const [now, setNow] = useState(() => Date.now());
+  useEffect(() => {
+    const id = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(id);
+  }, []);
+  const diff = Math.max(0, new Date(target).getTime() - now);
+  const hours = Math.floor(diff / 3_600_000);
+  const minutes = Math.floor((diff % 3_600_000) / 60_000);
+  const seconds = Math.floor((diff % 60_000) / 1000);
+  return { hours, minutes, seconds, expired: diff === 0 };
+}
+
+/* ─── Promo Countdown ─── */
+function PromoCountdown({ compact = false }: { compact?: boolean }) {
+  const { hours, minutes, seconds, expired } = useCountdown(PROMO_DEADLINE);
+  const pad = (n: number) => n.toString().padStart(2, "0");
+  if (expired) return null;
+  if (compact) {
+    return (
+      <span className="font-mono tabular-nums text-[11px] sm:text-xs font-bold text-black">
+        {pad(hours)}:{pad(minutes)}:{pad(seconds)}
+      </span>
+    );
+  }
+  return (
+    <div className="flex items-center gap-2 font-mono tabular-nums">
+      {[
+        { v: hours, l: "h" },
+        { v: minutes, l: "min" },
+        { v: seconds, l: "s" },
+      ].map((u) => (
+        <div key={u.l} className="flex flex-col items-center min-w-[52px] rounded-md bg-black/60 border border-green-500/30 px-3 py-2">
+          <span className="text-2xl sm:text-3xl font-extrabold text-green-300 leading-none">{pad(u.v)}</span>
+          <span className="text-[10px] uppercase tracking-widest text-zinc-500 mt-1">{u.l}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* ─── Top Promo Bar (sticky) ─── */
+function PromoBar() {
+  const { expired } = useCountdown(PROMO_DEADLINE);
+  if (expired) return null;
+  return (
+    <div className="fixed top-0 left-0 right-0 z-[60] bg-gradient-to-r from-green-500 via-green-400 to-green-500 text-black shadow-[0_2px_20px_rgba(168,232,76,0.35)]">
+      <div className="mx-auto max-w-5xl px-4 py-2 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[11px] sm:text-sm font-bold">
+        <span className="inline-flex items-center gap-1.5">
+          <Flame className="h-3.5 w-3.5" /> PROMO RELÂMPAGO
+        </span>
+        <span className="hidden sm:inline opacity-60">&middot;</span>
+        <span><span className="line-through opacity-70">R$67</span> <span className="ml-1">agora R$47</span></span>
+        <span className="hidden sm:inline opacity-60">&middot;</span>
+        <span className="inline-flex items-center gap-1.5">+ Kit Jarvis GRÁTIS</span>
+        <span className="hidden sm:inline opacity-60">&middot;</span>
+        <span className="inline-flex items-center gap-1.5">
+          acaba em <PromoCountdown compact />
+        </span>
+      </div>
+    </div>
+  );
+}
+
+/* ─── Bonus pill (above CTAs) ─── */
+function BonusPill({ className = "" }: { className?: string }) {
+  return (
+    <div className={`inline-flex items-center gap-2 rounded-full border border-amber-400/40 bg-amber-400/10 px-4 py-1.5 text-xs sm:text-sm font-bold text-amber-300 ${className}`}>
+      <Gift className="h-3.5 w-3.5" />
+      + Kit Jarvis <span className="text-amber-200">GRÁTIS</span> inclusa
+    </div>
+  );
+}
 
 /* ─── Navbar ─── */
 function SCNavbar() {
@@ -91,7 +167,7 @@ function SCNavbar() {
   ];
 
   return (
-    <header className="fixed top-4 left-4 right-4 z-50">
+    <header className="fixed top-12 sm:top-14 left-4 right-4 z-50">
       <nav className={`mx-auto max-w-3xl glass rounded-lg px-6 py-3 flex items-center justify-between transition-all duration-300 ${scrolled ? "navbar-scrolled" : ""}`}>
         <div className="flex items-center gap-3">
           <Link
@@ -174,6 +250,14 @@ function HeroSection() {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-28 pb-16">
       <div className="relative z-10 mx-auto max-w-4xl px-4 sm:px-6 text-center">
+        {/* Promo badge */}
+        <div className="animate-fade-in-up inline-flex items-center gap-2 rounded-full border border-green-400/50 bg-green-500/15 px-4 py-1.5 mb-5 shadow-[0_0_30px_rgba(168,232,76,0.15)]">
+          <Flame className="h-3.5 w-3.5 text-green-300" />
+          <span className="font-mono text-[11px] sm:text-xs uppercase tracking-[0.15em] font-bold text-green-300">
+            Promo Relâmpago &middot; só hoje
+          </span>
+        </div>
+
         {/* Badge */}
         <div className="animate-fade-in-up inline-flex items-center gap-3 mb-8">
           <span className="h-px w-5 bg-green-400" />
@@ -210,12 +294,16 @@ function HeroSection() {
 
         {/* CTA */}
         <div className="animate-fade-in-up delay-400 mt-10 flex flex-col items-center">
+          <BonusPill className="mb-3" />
           <a
             href={CHECKOUT_URL}
             className="group inline-flex items-center gap-2 rounded-lg bg-green-500 px-10 py-4 text-base font-bold text-black transition-all duration-200 hover:bg-green-400 hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(168,232,76,0.3)] cursor-pointer green-glow"
           >
-            Quero o Segundo Cérebro! <span className="transition-transform duration-200 group-hover:translate-x-1">&rarr;</span>
+            Quero o Segundo Cérebro — R$47 <span className="transition-transform duration-200 group-hover:translate-x-1">&rarr;</span>
           </a>
+          <p className="mt-2 text-[12px] text-zinc-500">
+            <span className="line-through">R$67</span> <span className="text-green-300 font-semibold">hoje R$47</span> &middot; acaba 23:59
+          </p>
           <a
             href="#como-funciona"
             className="group/scroll mt-5 inline-flex flex-col items-center gap-1 text-green-300/60 hover:text-green-300 transition-colors duration-200 cursor-pointer"
@@ -774,7 +862,7 @@ function NotForSection() {
         </div>
 
         <p className="mt-10 text-base sm:text-lg text-zinc-400 text-center font-medium">
-          Se nenhum desses se aplica, continua lendo. O que vem a seguir vai fazer <span className="text-gradient-green font-semibold">R$67 parecer piada.</span>
+          Se nenhum desses se aplica, continua lendo. O que vem a seguir vai fazer <span className="text-gradient-green font-semibold">R$47 parecer piada.</span>
         </p>
       </div>
     </section>
@@ -788,7 +876,7 @@ function ValueComparisonSection() {
     { price: "R$70", label: "Um rodízio japonês", duration: "dura 2 horas", highlight: false },
     { price: "R$65", label: "Netflix + Spotify por 1 mês", duration: "dura 30 dias", highlight: false },
     { price: "R$60", label: "Um corte de cabelo no salão", duration: "dura 3 semanas", highlight: false },
-    { price: "R$67", label: "Kit Segundo Cérebro", duration: "funciona pra sempre", highlight: true },
+    { price: "R$47", label: "Kit Segundo Cérebro + Jarvis", duration: "funciona pra sempre", highlight: true },
   ];
 
   const ref = useScrollReveal();
@@ -799,7 +887,7 @@ function ValueComparisonSection() {
       <div ref={ref} className="scroll-reveal mx-auto max-w-3xl px-4 sm:px-6">
         <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-center mb-12">
           O que mais você compra com{" "}
-          <span className="font-punch text-gradient-green">R$67</span>?
+          <span className="font-punch text-gradient-green">R$47</span>?
         </h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-12">
@@ -833,7 +921,7 @@ function ValueComparisonSection() {
             O segundo cérebro <strong className="text-gradient-green font-semibold">fica mais inteligente a cada dia que você usa.</strong> Acumula conhecimento, registra decisões, consolida aprendizados. Daqui a 6 meses ele vai saber mais sobre o seu trabalho do que qualquer colega.
           </p>
           <p className="text-[15px] text-zinc-400 leading-relaxed">
-            R$67 é menos do que você gasta num jantar fora. Só que o jantar acaba na mesma noite — e o segundo cérebro fica melhor a cada semana.
+            R$47 é menos do que você gasta num jantar fora. Só que o jantar acaba na mesma noite — e o segundo cérebro fica melhor a cada semana.
           </p>
           <p className="text-[15px] text-zinc-400 leading-relaxed">
             Se você ganha R$50/hora e o kit te economiza 1 hora por semana (e vai economizar mais), ele se paga em menos de duas semanas. Nas 50 semanas seguintes, é lucro puro — de tempo, não de dinheiro. <strong className="text-white">Tempo que você usa pra fazer o que importa em vez de ficar explicando contexto pra IA.</strong>
@@ -945,7 +1033,7 @@ function SupportSection() {
         </div>
 
         <p className="text-[15px] text-zinc-400 leading-relaxed">
-          Pensa nisso: você está pagando R$67 por um kit que vem com suporte técnico ilimitado e permanente. Qualquer SaaS cobra isso <em>por mês</em> só pelo suporte.
+          Pensa nisso: você está pagando R$47 por um kit que vem com suporte técnico ilimitado e permanente. Qualquer SaaS cobra isso <em>por mês</em> só pelo suporte.
         </p>
       </div>
     </section>
@@ -976,18 +1064,30 @@ function PricingSection() {
           </p>
         </div>
 
+        {/* Countdown */}
+        <div className="mb-6 flex flex-col items-center gap-3">
+          <span className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.15em] text-green-300">
+            <Flame className="h-3.5 w-3.5" /> A promoção acaba em
+          </span>
+          <PromoCountdown />
+        </div>
+
         {/* Price box */}
         <div className="mx-auto max-w-sm rounded-lg border-2 border-green-500/40 bg-green-500/[0.06] p-8 mb-6">
-          <div className="font-mono text-lg text-zinc-500 line-through mb-1">R$127</div>
-          <div className="font-punch text-5xl sm:text-6xl font-extrabold text-gradient-green mb-2">R$67</div>
-          <p className="text-sm text-green-300/70 mb-6">
-            Pagamento único. Sem assinatura. Sem renovação.
+          <div className="font-mono text-base text-zinc-500 line-through mb-0.5">R$127</div>
+          <div className="font-mono text-2xl sm:text-3xl text-zinc-400 line-through decoration-red-400/70 decoration-2 mb-1">R$67</div>
+          <div className="font-punch text-6xl sm:text-7xl font-extrabold text-gradient-green mb-2 leading-none">R$47</div>
+          <p className="text-sm text-green-300/80 mb-5 font-semibold">
+            Só hoje &middot; Pagamento único. Sem assinatura.
           </p>
+
+          <BonusPill className="mb-5 mx-auto" />
+
           <a
             href={CHECKOUT_URL}
             className="group block w-full rounded-lg bg-green-500 px-8 py-4 text-lg font-bold text-black transition-all duration-200 hover:bg-green-400 hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(168,232,76,0.3)] cursor-pointer"
           >
-            Quero o Kit Segundo Cérebro <span className="transition-transform duration-200 group-hover:translate-x-1 inline-block">&rarr;</span>
+            Garantir por R$47 <span className="transition-transform duration-200 group-hover:translate-x-1 inline-block">&rarr;</span>
           </a>
           <p className="font-mono text-[11px] text-zinc-500 mt-4">
             Pagamento seguro via Kiwify &middot; Entrega instantânea &middot; Acesso imediato
@@ -1027,12 +1127,13 @@ function FinalPushSection() {
           <p><span className="text-gradient-green font-semibold">O cérebro vai estar te esperando.</span></p>
         </div>
 
-        <div className="mt-10 text-center">
+        <div className="mt-10 text-center flex flex-col items-center">
+          <BonusPill className="mb-3" />
           <a
             href={CHECKOUT_URL}
             className="group inline-flex items-center gap-2 rounded-lg bg-green-500 px-10 py-4 text-base font-bold text-black transition-all duration-200 hover:bg-green-400 hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(168,232,76,0.3)] cursor-pointer green-glow"
           >
-            Montar meu Segundo Cérebro — R$67 <span className="transition-transform duration-200 group-hover:translate-x-1">&rarr;</span>
+            Montar meu Segundo Cérebro — <span className="line-through opacity-60">R$67</span> R$47 <span className="transition-transform duration-200 group-hover:translate-x-1">&rarr;</span>
           </a>
           <p className="mt-4 font-mono text-[12px] text-green-300/70">
             Pagamento único. Acesso vitalício. Atualizações incluídas.
@@ -1115,8 +1216,9 @@ function JarvisUpsell() {
 export function SegundoCerebro() {
   return (
     <>
+      <PromoBar />
       <SCNavbar />
-      <main>
+      <main className="pt-8 sm:pt-6">
         <HeroSection />
         <PainSection />
         <RevelationSection />
