@@ -96,14 +96,13 @@ function useCountdown(target: string) {
 }
 
 /* ─── Promo Countdown ─── */
-function PromoCountdown({ compact = false, tone = "dark" }: { compact?: boolean; tone?: "dark" | "light" }) {
+function PromoCountdown({ compact = false }: { compact?: boolean }) {
   const { hours, minutes, seconds, expired } = useCountdown(PROMO_DEADLINE);
   const pad = (n: number) => n.toString().padStart(2, "0");
   if (expired) return null;
   if (compact) {
-    const colorClass = tone === "light" ? "text-black" : "text-green-300";
     return (
-      <span className={`font-mono tabular-nums text-base sm:text-lg font-bold ${colorClass}`}>
+      <span className="font-mono tabular-nums text-[11px] sm:text-xs font-bold text-black">
         {pad(hours)}:{pad(minutes)}:{pad(seconds)}
       </span>
     );
@@ -140,7 +139,7 @@ function PromoBar() {
         <span className="inline-flex items-center gap-1.5">+ Kit Jarvis GRÁTIS</span>
         <span className="hidden sm:inline opacity-60">&middot;</span>
         <span className="inline-flex items-center gap-1.5">
-          acaba em <PromoCountdown compact tone="light" />
+          acaba em <PromoCountdown compact />
         </span>
       </div>
     </div>
@@ -302,16 +301,9 @@ function HeroSection() {
           >
             Quero o Segundo Cérebro — R$47 <span className="transition-transform duration-200 group-hover:translate-x-1">&rarr;</span>
           </a>
-          <div className="mt-4 flex flex-col sm:flex-row items-center gap-2 sm:gap-3 text-sm sm:text-base">
-            <span className="inline-flex items-baseline gap-2">
-              <span className="line-through text-zinc-500">R$67</span>
-              <span className="text-green-300 font-bold text-lg sm:text-xl">hoje R$47</span>
-            </span>
-            <span className="hidden sm:inline text-zinc-600">&middot;</span>
-            <span className="inline-flex items-center gap-2 font-semibold text-zinc-300">
-              acaba em <PromoCountdown compact />
-            </span>
-          </div>
+          <p className="mt-2 text-[12px] text-zinc-500">
+            <span className="line-through">R$67</span> <span className="text-green-300 font-semibold">hoje R$47</span> &middot; acaba 23:59
+          </p>
           <a
             href="#como-funciona"
             className="group/scroll mt-5 inline-flex flex-col items-center gap-1 text-green-300/60 hover:text-green-300 transition-colors duration-200 cursor-pointer"
