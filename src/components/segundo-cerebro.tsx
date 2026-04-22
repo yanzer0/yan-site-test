@@ -355,20 +355,24 @@ function HeroSection() {
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-28 pb-16">
       <div className="relative z-10 mx-auto max-w-4xl px-4 sm:px-6 text-center">
         {/* Promo badge */}
-        <div className="animate-fade-in-up inline-flex items-center gap-2 rounded-full border border-green-400/50 bg-green-500/15 px-4 py-1.5 mb-5 shadow-[0_0_30px_rgba(168,232,76,0.15)]">
-          <Sparkles className="h-3.5 w-3.5 text-green-300" />
-          <span className="font-mono text-[11px] sm:text-xs uppercase tracking-[0.15em] font-bold text-green-300">
-            10 MIL SEGUIDORES · Promo Relâmpago
+        <div className="animate-fade-in-up mb-5">
+          <span className="inline-flex items-center gap-2 rounded-full border border-green-400/50 bg-green-500/15 px-4 py-1.5 shadow-[0_0_30px_rgba(168,232,76,0.15)]">
+            <Sparkles className="h-3.5 w-3.5 text-green-300" />
+            <span className="font-mono text-[11px] sm:text-xs uppercase tracking-[0.15em] font-bold text-green-300">
+              10 MIL SEGUIDORES · Promo Relâmpago
+            </span>
           </span>
         </div>
 
         {/* Badge */}
-        <div className="animate-fade-in-up inline-flex items-center gap-3 mb-8">
-          <span className="h-px w-5 bg-green-400" />
-          <span className="font-mono text-[11px] uppercase tracking-[0.15em] text-green-400">
-            Kit Segundo Cérebro
+        <div className="animate-fade-in-up mb-8">
+          <span className="inline-flex items-center gap-3">
+            <span className="h-px w-5 bg-green-400" />
+            <span className="font-mono text-[11px] uppercase tracking-[0.15em] text-green-400">
+              Kit Segundo Cérebro
+            </span>
+            <span className="h-px w-5 bg-green-400" />
           </span>
-          <span className="h-px w-5 bg-green-400" />
         </div>
 
         {/* Headline */}
