@@ -271,7 +271,7 @@ function SCNavbar() {
   ];
 
   return (
-    <header className="fixed top-12 sm:top-14 left-4 right-4 z-50">
+    <header className="fixed top-[76px] sm:top-16 left-4 right-4 z-50">
       <nav className={`mx-auto max-w-3xl glass rounded-lg px-6 py-3 flex items-center justify-between transition-all duration-300 ${scrolled ? "navbar-scrolled" : ""}`}>
         <div className="flex items-center gap-3">
           <Link
@@ -352,23 +352,23 @@ function SCNavbar() {
 function HeroSection() {
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-28 pb-16">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-36 sm:pt-32 pb-10 sm:pb-16">
       <div className="relative z-10 mx-auto max-w-4xl px-4 sm:px-6 text-center">
         {/* Promo badge */}
-        <div className="animate-fade-in-up mb-5">
-          <span className="inline-flex items-center gap-2 rounded-full border border-green-400/50 bg-green-500/15 px-4 py-1.5 shadow-[0_0_30px_rgba(168,232,76,0.15)]">
-            <Sparkles className="h-3.5 w-3.5 text-green-300" />
-            <span className="font-mono text-[11px] sm:text-xs uppercase tracking-[0.15em] font-bold text-green-300">
+        <div className="animate-fade-in-up mb-3 sm:mb-5">
+          <span className="inline-flex items-center gap-2 rounded-full border border-green-400/50 bg-green-500/15 px-3 sm:px-4 py-1 sm:py-1.5 shadow-[0_0_30px_rgba(168,232,76,0.15)]">
+            <Sparkles className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-green-300" />
+            <span className="font-mono text-[10px] sm:text-xs uppercase tracking-[0.15em] font-bold text-green-300">
               10 MIL SEGUIDORES · Promo Relâmpago
             </span>
           </span>
         </div>
 
         {/* Badge */}
-        <div className="animate-fade-in-up mb-8">
+        <div className="animate-fade-in-up mb-4 sm:mb-8">
           <span className="inline-flex items-center gap-3">
             <span className="h-px w-5 bg-green-400" />
-            <span className="font-mono text-[11px] uppercase tracking-[0.15em] text-green-400">
+            <span className="font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.15em] text-green-400">
               Kit Segundo Cérebro
             </span>
             <span className="h-px w-5 bg-green-400" />
@@ -376,19 +376,19 @@ function HeroSection() {
         </div>
 
         {/* Headline */}
-        <h1 className="animate-fade-in-up delay-100 font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.05]">
+        <h1 className="animate-fade-in-up delay-100 font-heading text-[26px] sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.05]">
           Configura uma vez.
           <br />
           <span className="font-punch text-gradient-green">Ele nunca mais esquece.</span>
         </h1>
 
         {/* Subheadline */}
-        <p className="animate-fade-in-up delay-200 mt-6 max-w-2xl mx-auto text-base sm:text-lg text-zinc-400 leading-relaxed">
+        <p className="animate-fade-in-up delay-200 mt-4 sm:mt-6 max-w-2xl mx-auto text-[13px] sm:text-lg text-zinc-400 leading-relaxed">
           O sistema completo pra dar <strong className="text-gradient-green font-semibold">memória permanente</strong> pro seu Claude Code. Ele lembra quem você é, o que faz, e o que precisa — <strong className="text-white">sem você explicar de novo toda vez.</strong>
         </p>
 
         {/* Video */}
-        <div className="animate-fade-in-up delay-300 mt-10 max-w-2xl mx-auto rounded-lg overflow-hidden border border-green-500/10">
+        <div className="animate-fade-in-up delay-300 mt-6 sm:mt-10 max-w-2xl mx-auto rounded-lg overflow-hidden border border-green-500/10">
           <video
             src="/video-segundo-cerebro.mp4"
             className="w-full aspect-video object-cover"
@@ -401,7 +401,7 @@ function HeroSection() {
         </div>
 
         {/* CTA */}
-        <div className="animate-fade-in-up delay-400 mt-10 flex flex-col items-center">
+        <div className="animate-fade-in-up delay-400 mt-6 sm:mt-10 flex flex-col items-center">
           <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-amber-400/40 bg-amber-400/10 px-4 py-1.5 text-xs sm:text-sm font-bold text-amber-300">
             <Sparkles className="h-3.5 w-3.5" />
             Pack: Segundo Cérebro + Jarvis + Skills
