@@ -2,11 +2,23 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { Flame } from "lucide-react";
 import { DottedSurface } from "@/components/ui/dotted-surface-lazy";
 
-const PRODUCTS = [
+type BadgeVariant = "new" | "promo";
+
+const PRODUCTS: readonly {
+  id: string;
+  href: string;
+  cover: string;
+  title: string;
+  subtitle: string;
+  titleClass: string;
+  badge: string | null;
+  badgeVariant?: BadgeVariant;
+}[] = [
   {
-    id: "jarvis" as const,
+    id: "jarvis",
     href: "/kit-jarvis",
     cover: "/capa-jarvis.webp",
     title: "Kit Jarvis",
@@ -15,25 +27,27 @@ const PRODUCTS = [
     badge: null,
   },
   {
-    id: "segundo-cerebro" as const,
+    id: "segundo-cerebro",
     href: "/kit-segundo-cerebro",
     cover: "/capa-segundo-cerebro.webp",
     title: "Kit Segundo Cérebro",
     subtitle: "Memória permanente pro Claude Code",
     titleClass: "text-green-400",
-    badge: null,
+    badge: "Promoção",
+    badgeVariant: "promo",
   },
   {
-    id: "kit-skills" as const,
+    id: "kit-skills",
     href: "/kit-skills",
     cover: "/capa-kit-skills.webp",
     title: "Pack de Skills",
     subtitle: "10 superpoderes pro Claude Code",
     titleClass: "text-green-400",
     badge: "Novo",
+    badgeVariant: "new",
   },
   {
-    id: "kit-vscode" as const,
+    id: "kit-vscode",
     href: "/kit-vscode",
     cover: "/capa-kit-vscode.webp",
     title: "Claude Code no VS Code",
@@ -41,7 +55,7 @@ const PRODUCTS = [
     titleClass: "text-green-400",
     badge: null,
   },
-] as const;
+];
 
 export function ProductSelector() {
   return (
@@ -87,7 +101,9 @@ export function ProductSelector() {
               key={product.id}
               href={product.href}
               className={`group relative rounded-lg border bg-black/60 backdrop-blur shadow-lg overflow-hidden text-left transition-all duration-200 hover:scale-[1.02] hover:bg-black/50 cursor-pointer ${
-                product.badge
+                product.badgeVariant === "promo"
+                  ? "border-amber-400/60 ring-2 ring-amber-400/40 shadow-[0_0_24px_rgba(251,191,36,0.25)]"
+                  : product.badge
                   ? "border-green-500/40 ring-1 ring-green-500/20"
                   : "border-white/10"
               }`}
@@ -120,9 +136,16 @@ export function ProductSelector() {
 
               {/* Badge */}
               {product.badge && (
-                <div className="absolute top-2 right-2 sm:top-3 sm:right-3 rounded-full bg-green-500 px-2 py-0.5 sm:px-3 sm:py-1 text-[9px] sm:text-[11px] font-bold text-black uppercase tracking-wider">
-                  {product.badge}
-                </div>
+                product.badgeVariant === "promo" ? (
+                  <div className="absolute top-2 right-2 sm:top-3 sm:right-3 inline-flex items-center gap-1 rounded-full bg-gradient-to-r from-amber-400 via-orange-500 to-red-500 px-2 py-0.5 sm:px-3 sm:py-1 text-[9px] sm:text-[11px] font-black text-black uppercase tracking-wider shadow-[0_4px_14px_rgba(251,146,60,0.5)] motion-safe:animate-pulse">
+                    <Flame className="h-2.5 w-2.5 sm:h-3 sm:w-3" strokeWidth={2.5} />
+                    {product.badge}
+                  </div>
+                ) : (
+                  <div className="absolute top-2 right-2 sm:top-3 sm:right-3 rounded-full bg-green-500 px-2 py-0.5 sm:px-3 sm:py-1 text-[9px] sm:text-[11px] font-bold text-black uppercase tracking-wider">
+                    {product.badge}
+                  </div>
+                )
               )}
             </Link>
           ))}
