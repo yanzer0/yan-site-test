@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { Menu, X, ArrowLeft, Code2, Target, BookOpen, Video, BarChart3, Expand, ChevronDown } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { Menu, X, ArrowLeft, Code2, Target, BookOpen, Video, BarChart3, Expand, ChevronDown, Flame, Sparkles, ShoppingBag, Brain, Wand2, Zap } from "lucide-react";
 import { useScrollReveal } from "@/lib/use-scroll-reveal";
 import { useScrolled } from "@/lib/use-scrolled";
 import Image from "next/image";
@@ -78,7 +78,187 @@ function ZoomableImage({ src, alt, width, height, className, containerClassName,
   );
 }
 
-const CHECKOUT_URL = "https://pay.kiwify.com.br/oT2C28S";
+const CHECKOUT_URL = "https://pay.kiwify.com.br/25qc5Pb";
+const PROMO_DEADLINE = "2026-04-24T00:00:00-03:00";
+
+const PROMO_NAMES = [
+  "Amanda Pinto", "Henrique da Conceição", "Reginaldo de Melo", "Felipe Marques",
+  "Adriano dos Reis", "Wilson de Andrade", "Renata Gomes", "Juliana Alves",
+  "Márcio Leite", "Marco do Nascimento", "Diogo Amorim", "Wilson Fernandes",
+  "Bruna Queiroz", "Luana Morais", "Thaís Nogueira", "Lara de Moraes",
+  "Marcos Vieira", "Daniel Gonçalves", "Natália Cordeiro", "André Cavalcante",
+  "Eliane de Carvalho", "Renato Henrique", "Nicolas Menezes", "Valdir de Jesus",
+  "Alessandra Martins", "Rita Coelho", "Davi da Rosa", "Márcia Nogueira",
+  "Rodrigo Farias", "Mariana de Almeida", "Willian Amaral", "Janaína de Jesus",
+  "Tiago de Assis", "Douglas da Cruz", "Nelson de Souza", "Daniele Medeiros",
+  "Gilberto Gonçalves", "Alex de Brito", "Diogo Marques", "Tiago Borges",
+  "Felipe Filho", "Viviane Amorim", "Michele Silveira", "Raimundo de Lima",
+  "Rita Silveira", "Marina Corrêa", "Simone Martins", "Renan Miranda",
+  "Felipe Silveira", "Raimundo Alves", "Alex Neto", "Thiago Martins",
+  "Ana Sales", "Leandro Filho", "Raimundo Lopes", "Victor Amorim",
+  "Larissa Aguiar", "Antônio Maria", "Lucas Pinto", "André Fernandes",
+  "Sebastião Teixeira", "Guilherme Correia", "Antônia Correia", "Emerson de Sousa",
+  "Artur Amorim", "Renan da Costa", "Luana Maria", "Sara Machado",
+  "Fernando da Silva", "Henrique Farias", "Artur da Conceição", "Nicolas Borges",
+  "Luis Rodrigues", "Tiago Henrique", "Anderson de Brito", "Edson Morais",
+  "Lúcia Farias", "Fabrício da Conceição", "Renato França", "Raimundo da Cruz",
+  "Sebastião Batista", "Raquel Dias", "Fernando Machado", "Bruna Cavalcante",
+  "Alexandre Henrique", "Daniel Aparecida", "Adriana Lopes", "Bruna Nogueira",
+  "Sandra de Paula", "Antônia Bezerra", "Flávia de Jesus", "Murilo Ribeiro",
+  "Gabriel de Carvalho", "Júlio Sales", "Sônia Pinto", "Janaína Dias",
+  "Maria Sales", "Emerson Coelho", "Henrique de Araújo", "Eduardo de Oliveira",
+];
+
+/* ─── Countdown hook ─── */
+function useCountdown(target: string) {
+  const [now, setNow] = useState<number | null>(null);
+  useEffect(() => {
+    const tick = () => setNow(Date.now());
+    const firstId = setTimeout(tick, 0);
+    const id = setInterval(tick, 1000);
+    return () => {
+      clearTimeout(firstId);
+      clearInterval(id);
+    };
+  }, []);
+  if (now === null) {
+    return { days: 0, hours: 0, minutes: 0, seconds: 0, expired: false, mounted: false };
+  }
+  const diff = Math.max(0, new Date(target).getTime() - now);
+  const days = Math.floor(diff / 86_400_000);
+  const hours = Math.floor((diff % 86_400_000) / 3_600_000);
+  const minutes = Math.floor((diff % 3_600_000) / 60_000);
+  const seconds = Math.floor((diff % 60_000) / 1000);
+  return { days, hours, minutes, seconds, expired: diff === 0, mounted: true };
+}
+
+const pad = (n: number) => n.toString().padStart(2, "0");
+
+/* ─── Promo Countdown ─── */
+function PromoCountdown({ compact = false, tone = "dark" }: { compact?: boolean; tone?: "dark" | "light" }) {
+  const { days, hours, minutes, seconds, expired, mounted } = useCountdown(PROMO_DEADLINE);
+  if (!mounted) return <span className="inline-block w-[100px] h-[20px]" aria-hidden />;
+  if (expired) return null;
+  if (compact) {
+    const colorClass = tone === "light" ? "text-black" : "text-green-300";
+    return (
+      <span className={`font-mono tabular-nums text-sm sm:text-base font-bold ${colorClass}`}>
+        {pad(days)}:{pad(hours)}:{pad(minutes)}:{pad(seconds)}
+      </span>
+    );
+  }
+  const UNITS = [
+    { v: days, l: "dias" },
+    { v: hours, l: "horas" },
+    { v: minutes, l: "min" },
+    { v: seconds, l: "seg" },
+  ];
+  return (
+    <div className="flex items-center justify-center gap-2 sm:gap-3 font-mono tabular-nums">
+      {UNITS.map((u) => (
+        <div
+          key={u.l}
+          className="flex flex-col items-center min-w-[64px] sm:min-w-[80px] rounded-lg bg-black/70 border border-green-500/30 px-3 py-3 shadow-[0_0_30px_rgba(168,232,76,0.1)]"
+        >
+          <span className="text-3xl sm:text-4xl font-extrabold text-green-300 leading-none">{pad(u.v)}</span>
+          <span className="text-[10px] uppercase tracking-widest text-zinc-500 mt-1">{u.l}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* ─── Top Promo Bar (sticky) ─── */
+function PromoBar() {
+  const { expired, mounted } = useCountdown(PROMO_DEADLINE);
+  if (!mounted || expired) return null;
+  return (
+    <div className="fixed top-0 left-0 right-0 z-[60] bg-gradient-to-r from-green-500 via-green-400 to-green-500 text-black shadow-[0_2px_20px_rgba(168,232,76,0.35)]">
+      <div className="mx-auto max-w-5xl px-4 py-2 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[11px] sm:text-sm font-bold">
+        <span className="inline-flex items-center gap-1.5">
+          <Flame className="h-3.5 w-3.5" /> 10K SEGUIDORES · PROMO RELÂMPAGO
+        </span>
+        <span className="hidden sm:inline opacity-60">·</span>
+        <span className="inline-flex items-center gap-1.5">
+          Segundo Cérebro + Jarvis + Skills
+        </span>
+        <span className="hidden sm:inline opacity-60">·</span>
+        <span className="inline-flex items-center gap-1.5">
+          acaba em <PromoCountdown compact tone="light" />
+        </span>
+      </div>
+    </div>
+  );
+}
+
+/* ─── Social Proof Toast ─── */
+function SocialProofToast() {
+  const [current, setCurrent] = useState<string | null>(null);
+  const lastIndex = useRef<number>(-1);
+  const { expired, mounted } = useCountdown(PROMO_DEADLINE);
+
+  useEffect(() => {
+    if (!mounted || expired) return;
+    let showTimeout: ReturnType<typeof setTimeout>;
+    let hideTimeout: ReturnType<typeof setTimeout>;
+
+    const pickName = () => {
+      let idx = Math.floor(Math.random() * PROMO_NAMES.length);
+      if (idx === lastIndex.current) idx = (idx + 1) % PROMO_NAMES.length;
+      lastIndex.current = idx;
+      return PROMO_NAMES[idx];
+    };
+
+    const scheduleNext = () => {
+      const delay = 10_000 + Math.random() * 15_000; // 10-25s
+      showTimeout = setTimeout(() => {
+        setCurrent(pickName());
+        hideTimeout = setTimeout(() => {
+          setCurrent(null);
+          scheduleNext();
+        }, 5000);
+      }, delay);
+    };
+
+    scheduleNext();
+    return () => {
+      clearTimeout(showTimeout);
+      clearTimeout(hideTimeout);
+    };
+  }, [mounted, expired]);
+
+  if (!mounted || expired) return null;
+
+  const initials = (name: string) =>
+    name
+      .split(/\s+/)
+      .filter((p) => p.length > 2)
+      .slice(0, 2)
+      .map((p) => p[0])
+      .join("")
+      .toUpperCase();
+
+  return (
+    <div
+      className={`fixed bottom-4 left-4 z-50 max-w-[280px] sm:max-w-xs transition-all duration-500 motion-reduce:transition-none ${
+        current ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"
+      }`}
+    >
+      {current && (
+        <div className="flex items-center gap-3 rounded-lg border border-green-500/30 bg-black/90 backdrop-blur-md px-4 py-3 shadow-[0_8px_30px_rgba(0,0,0,0.6)]">
+          <span className="flex-shrink-0 w-9 h-9 rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center text-[11px] font-bold text-black">
+            {initials(current)}
+          </span>
+          <div className="flex-1 min-w-0 text-[13px] leading-tight">
+            <div className="font-semibold text-white truncate">{current}</div>
+            <div className="text-[11px] text-green-300">acabou de adquirir o pack da promoção!</div>
+          </div>
+          <ShoppingBag className="h-4 w-4 text-green-400 flex-shrink-0" />
+        </div>
+      )}
+    </div>
+  );
+}
 
 /* ─── Navbar ─── */
 function SCNavbar() {
@@ -91,7 +271,7 @@ function SCNavbar() {
   ];
 
   return (
-    <header className="fixed top-4 left-4 right-4 z-50">
+    <header className="fixed top-12 sm:top-14 left-4 right-4 z-50">
       <nav className={`mx-auto max-w-3xl glass rounded-lg px-6 py-3 flex items-center justify-between transition-all duration-300 ${scrolled ? "navbar-scrolled" : ""}`}>
         <div className="flex items-center gap-3">
           <Link
@@ -174,6 +354,14 @@ function HeroSection() {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-28 pb-16">
       <div className="relative z-10 mx-auto max-w-4xl px-4 sm:px-6 text-center">
+        {/* Promo badge */}
+        <div className="animate-fade-in-up inline-flex items-center gap-2 rounded-full border border-green-400/50 bg-green-500/15 px-4 py-1.5 mb-5 shadow-[0_0_30px_rgba(168,232,76,0.15)]">
+          <Sparkles className="h-3.5 w-3.5 text-green-300" />
+          <span className="font-mono text-[11px] sm:text-xs uppercase tracking-[0.15em] font-bold text-green-300">
+            10 MIL SEGUIDORES · Promo Relâmpago
+          </span>
+        </div>
+
         {/* Badge */}
         <div className="animate-fade-in-up inline-flex items-center gap-3 mb-8">
           <span className="h-px w-5 bg-green-400" />
@@ -210,12 +398,19 @@ function HeroSection() {
 
         {/* CTA */}
         <div className="animate-fade-in-up delay-400 mt-10 flex flex-col items-center">
+          <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-amber-400/40 bg-amber-400/10 px-4 py-1.5 text-xs sm:text-sm font-bold text-amber-300">
+            <Sparkles className="h-3.5 w-3.5" />
+            Pack: Segundo Cérebro + Jarvis + Skills
+          </div>
           <a
             href={CHECKOUT_URL}
             className="group inline-flex items-center gap-2 rounded-lg bg-green-500 px-10 py-4 text-base font-bold text-black transition-all duration-200 hover:bg-green-400 hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(168,232,76,0.3)] cursor-pointer green-glow"
           >
-            Quero o Segundo Cérebro! <span className="transition-transform duration-200 group-hover:translate-x-1">&rarr;</span>
+            Quero o pack da promoção <span className="transition-transform duration-200 group-hover:translate-x-1">&rarr;</span>
           </a>
+          <p className="mt-3 text-[12px] sm:text-sm text-zinc-400 inline-flex items-center gap-2">
+            acaba em <PromoCountdown compact />
+          </p>
           <a
             href="#como-funciona"
             className="group/scroll mt-5 inline-flex flex-col items-center gap-1 text-green-300/60 hover:text-green-300 transition-colors duration-200 cursor-pointer"
@@ -963,31 +1158,59 @@ function PricingSection() {
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[500px] h-[500px] rounded-full bg-green-500/[0.04] blur-[150px] pointer-events-none" />
 
       <div ref={ref} className="scroll-reveal relative z-10 mx-auto max-w-4xl px-4 sm:px-6 text-center">
-        <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-6">
-          Pronto pra montar o seu?
-        </h2>
-
-        <div className="space-y-4 text-[15px] text-zinc-400 leading-relaxed max-w-2xl mx-auto mb-10">
-          <p>
-            Se eu vendesse isso como consultoria de setup personalizado, cobraria R$3.000+ (e já vendi). Se vendesse como curso com vídeo-aulas, cobraria R$197. Se vendesse como assinatura mensal com suporte, cobraria R$97/mês.
-          </p>
-          <p>
-            Mas não é nada disso. É um kit pronto. Você baixa, personaliza, e usa. Uma vez.
-          </p>
+        {/* Promo hero */}
+        <div className="inline-flex items-center gap-2 rounded-full border border-green-400/50 bg-green-500/15 px-4 py-1.5 mb-5">
+          <Sparkles className="h-3.5 w-3.5 text-green-300" />
+          <span className="font-mono text-[11px] sm:text-xs uppercase tracking-[0.15em] font-bold text-green-300">
+            Promo 10K Seguidores
+          </span>
         </div>
 
-        {/* Price box */}
-        <div className="mx-auto max-w-sm rounded-lg border-2 border-green-500/40 bg-green-500/[0.06] p-8 mb-6">
-          <div className="font-mono text-lg text-zinc-500 line-through mb-1">R$127</div>
-          <div className="font-punch text-5xl sm:text-6xl font-extrabold text-gradient-green mb-2">R$67</div>
-          <p className="text-sm text-green-300/70 mb-6">
-            Pagamento único. Sem assinatura. Sem renovação.
-          </p>
+        <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-4">
+          Pack completo da promoção
+        </h2>
+        <p className="text-[15px] sm:text-base text-zinc-400 leading-relaxed max-w-2xl mx-auto mb-10">
+          Bati 10 mil seguidores no Instagram e resolvi soltar os 3 kits juntos por tempo limitado.
+          Você leva o pacote inteiro num único checkout.
+        </p>
+
+        {/* Bundle box */}
+        <div className="mx-auto max-w-2xl rounded-2xl border-2 border-green-500/40 bg-green-500/[0.06] p-6 sm:p-10 mb-8 green-glow-sm">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+            {[
+              { icon: <Brain className="h-5 w-5 text-green-300" />, title: "Kit Segundo Cérebro", desc: "Memória permanente pro Claude Code" },
+              { icon: <Wand2 className="h-5 w-5 text-green-300" />, title: "Kit Jarvis", desc: "Automação por palmas e voz" },
+              { icon: <Zap className="h-5 w-5 text-green-300" />, title: "Pack de Skills", desc: "Coleção de skills prontas" },
+            ].map((p) => (
+              <div
+                key={p.title}
+                className="rounded-lg border border-green-500/20 bg-black/40 p-5 flex flex-col items-center text-center gap-2"
+              >
+                <span className="w-10 h-10 rounded-full bg-green-500/10 flex items-center justify-center">
+                  {p.icon}
+                </span>
+                <h3 className="font-heading text-sm sm:text-base font-bold text-white">{p.title}</h3>
+                <p className="text-[12px] text-zinc-500 leading-relaxed">{p.desc}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="mb-8">
+            <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-green-300/70 mb-3">
+              <Flame className="inline h-3.5 w-3.5 mr-1 -mt-0.5" />
+              Promo encerra em
+            </p>
+            <PromoCountdown />
+            <p className="font-mono text-[11px] text-zinc-500 mt-3">
+              até 00:00 de 24/04/2026 · horário de Brasília
+            </p>
+          </div>
+
           <a
             href={CHECKOUT_URL}
             className="group block w-full rounded-lg bg-green-500 px-8 py-4 text-lg font-bold text-black transition-all duration-200 hover:bg-green-400 hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(168,232,76,0.3)] cursor-pointer"
           >
-            Quero o Kit Segundo Cérebro <span className="transition-transform duration-200 group-hover:translate-x-1 inline-block">&rarr;</span>
+            Garantir meu pack <span className="transition-transform duration-200 group-hover:translate-x-1 inline-block">&rarr;</span>
           </a>
           <p className="font-mono text-[11px] text-zinc-500 mt-4">
             Pagamento seguro via Kiwify &middot; Entrega instantânea &middot; Acesso imediato
@@ -995,7 +1218,7 @@ function PricingSection() {
         </div>
 
         <p className="font-mono text-[12px] text-zinc-600 leading-relaxed">
-          CLAUDE.md profissional &middot; 8 slash commands &middot; 4 prompts de setup &middot; 9 templates &middot; Guias completos &middot; Suporte via IA incluso
+          Segundo Cérebro &middot; Jarvis &middot; Skills &middot; Suporte via IA incluso
         </p>
       </div>
     </section>
@@ -1027,15 +1250,19 @@ function FinalPushSection() {
           <p><span className="text-gradient-green font-semibold">O cérebro vai estar te esperando.</span></p>
         </div>
 
-        <div className="mt-10 text-center">
+        <div className="mt-10 text-center flex flex-col items-center">
+          <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-amber-400/40 bg-amber-400/10 px-4 py-1.5 text-xs font-bold text-amber-300">
+            <Sparkles className="h-3.5 w-3.5" />
+            Pack 10K: Segundo Cérebro + Jarvis + Skills
+          </div>
           <a
             href={CHECKOUT_URL}
             className="group inline-flex items-center gap-2 rounded-lg bg-green-500 px-10 py-4 text-base font-bold text-black transition-all duration-200 hover:bg-green-400 hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(168,232,76,0.3)] cursor-pointer green-glow"
           >
-            Montar meu Segundo Cérebro — R$67 <span className="transition-transform duration-200 group-hover:translate-x-1">&rarr;</span>
+            Quero o pack da promoção <span className="transition-transform duration-200 group-hover:translate-x-1">&rarr;</span>
           </a>
-          <p className="mt-4 font-mono text-[12px] text-green-300/70">
-            Pagamento único. Acesso vitalício. Atualizações incluídas.
+          <p className="mt-4 font-mono text-[12px] text-green-300/70 inline-flex items-center gap-2">
+            acaba em <PromoCountdown compact />
           </p>
         </div>
       </div>
@@ -1115,8 +1342,10 @@ function JarvisUpsell() {
 export function SegundoCerebro() {
   return (
     <>
+      <PromoBar />
       <SCNavbar />
-      <main>
+      <SocialProofToast />
+      <main className="pt-8 sm:pt-6">
         <HeroSection />
         <PainSection />
         <RevelationSection />
