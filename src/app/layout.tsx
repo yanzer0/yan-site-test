@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Outfit, Space_Mono, Fraunces } from "next/font/google";
 import localFont from "next/font/local";
+import { UtmTracker } from "@/components/utm-tracker";
 import "./globals.css";
 
 const outfit = Outfit({
@@ -48,7 +49,10 @@ export default function RootLayout({
       lang="pt-BR"
       className={`${outfit.variable} ${spaceMono.variable} ${fraunces.variable} ${cabinetGrotesk.variable} dark h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col font-sans">{children}</body>
+      <body className="min-h-full flex flex-col font-sans">
+        <UtmTracker />
+        {children}
+      </body>
     </html>
   );
 }
