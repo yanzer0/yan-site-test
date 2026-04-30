@@ -99,8 +99,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         data: [eventPayload],
-        // TODO: remover test_event_code apos validar no Test Events da Meta
-        test_event_code: "TEST67483",
         access_token: ACCESS_TOKEN,
       }),
     });
