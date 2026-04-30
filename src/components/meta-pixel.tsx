@@ -1,7 +1,7 @@
 "use client";
 
 import Script from "next/script";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 
 declare global {
@@ -13,18 +13,49 @@ declare global {
 
 const PIXEL_ID = "26669487942716886";
 
+function readCookie(name: string): string | undefined {
+  if (typeof document === "undefined") return undefined;
+  const match = document.cookie.match(new RegExp(`(?:^|; )${name}=([^;]*)`));
+  return match ? decodeURIComponent(match[1]) : undefined;
+}
+
+function generateEventId(): string {
+  if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+    return crypto.randomUUID();
+  }
+  return `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`;
+}
+
 export function MetaPixel() {
   const pathname = usePathname();
-  const isFirstRender = useRef(true);
 
   useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
-    }
+    const eventId = generateEventId();
+    const eventSourceUrl = window.location.href;
+
     if (typeof window.fbq === "function") {
-      window.fbq("track", "PageView");
+      window.fbq("track", "PageView", {}, { eventID: eventId });
     }
+
+    const userData: Record<string, string> = {};
+    const fbp = readCookie("_fbp");
+    const fbc = readCookie("_fbc");
+    if (fbp) userData.fbp = fbp;
+    if (fbc) userData.fbc = fbc;
+
+    fetch("/api/meta-capi", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        event_name: "PageView",
+        event_id: eventId,
+        event_source_url: eventSourceUrl,
+        user_data: userData,
+      }),
+      keepalive: true,
+    }).catch(() => {
+      /* silent — never break the site if CAPI fails */
+    });
   }, [pathname]);
 
   return (
@@ -40,7 +71,6 @@ export function MetaPixel() {
           s.parentNode.insertBefore(t,s)}(window, document,'script',
           'https://connect.facebook.net/en_US/fbevents.js');
           fbq('init', '${PIXEL_ID}');
-          fbq('track', 'PageView');
         `}
       </Script>
       <noscript>
