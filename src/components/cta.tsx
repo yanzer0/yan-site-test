@@ -36,7 +36,7 @@ export function CTA() {
           </div>
 
           <a
-            href="https://pay.kiwify.com.br/D3Ari3v"
+            href="https://pay.wiapy.com/0O6xF70BVe"
             className="group inline-flex items-center gap-2 rounded-lg bg-green-500 px-12 py-5 text-lg font-bold text-black transition-all duration-200 hover:bg-green-400 hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(168,232,76,0.3)] cursor-pointer"
           >
             QUERO O JARVIS KIT <span className="transition-transform duration-200 group-hover:translate-x-1">&rarr;</span>

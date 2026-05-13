@@ -78,7 +78,7 @@ function ZoomableImage({ src, alt, width, height, className, containerClassName,
   );
 }
 
-const CHECKOUT_URL = "https://pay.kiwify.com.br/oT2C28S";
+const CHECKOUT_URL = "https://pay.wiapy.com/h65CZSYaN6";
 
 const BUYER_NAMES = [
   "Amanda Pinto", "Henrique da Conceição", "Reginaldo de Melo", "Felipe Marques",

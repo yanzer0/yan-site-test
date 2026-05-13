@@ -47,7 +47,9 @@ export function UtmTracker() {
     const saved = readSaved();
     if (!Object.keys(saved).length) return;
 
-    document.querySelectorAll<HTMLAnchorElement>('a[href*="kiwify"]').forEach((link) => {
+    document
+      .querySelectorAll<HTMLAnchorElement>('a[href*="kiwify"], a[href*="wiapy"]')
+      .forEach((link) => {
       try {
         const url = new URL(link.href);
         Object.entries(saved).forEach(([key, value]) => {
