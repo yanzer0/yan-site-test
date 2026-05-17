@@ -32,15 +32,6 @@ const PRODUCTS = [
     titleClass: "text-green-400",
     badge: "Novo",
   },
-  {
-    id: "kit-vscode" as const,
-    href: "/kit-vscode",
-    cover: "/capa-kit-vscode.webp",
-    title: "Claude Code no VS Code",
-    subtitle: "Guia completo de instalação",
-    titleClass: "text-green-400",
-    badge: null,
-  },
 ] as const;
 
 export function ProductSelector() {
@@ -81,7 +72,7 @@ export function ProductSelector() {
         </p>
 
         {/* Product cards grid */}
-        <div className="animate-fade-in-up delay-300 grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-6">
+        <div className="animate-fade-in-up delay-300 grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-6">
           {PRODUCTS.map((product) => (
             <Link
               key={product.id}
@@ -99,21 +90,21 @@ export function ProductSelector() {
                   alt={product.title}
                   width={800}
                   height={450}
-                  sizes="(max-width: 640px) 50vw, 220px"
+                  sizes="(max-width: 640px) 100vw, 300px"
                   quality={80}
                   className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                 />
               </div>
 
               {/* Text content */}
-              <div className="p-3 sm:p-6">
-                <h2 className={`font-heading text-sm sm:text-2xl font-bold ${product.titleClass} mb-1 sm:mb-2`}>
+              <div className="p-4 sm:p-6">
+                <h2 className={`font-heading text-lg sm:text-2xl font-bold ${product.titleClass} mb-1 sm:mb-2`}>
                   {product.title}
                 </h2>
-                <p className="text-[11px] sm:text-sm text-zinc-400 leading-snug">
+                <p className="text-xs sm:text-sm text-zinc-400 leading-snug">
                   {product.subtitle}
                 </p>
-                <div className={`mt-2 sm:mt-4 inline-flex items-center gap-1 sm:gap-2 text-[11px] sm:text-sm font-medium ${product.titleClass} opacity-60 group-hover:opacity-100 transition-opacity`}>
+                <div className={`mt-3 sm:mt-4 inline-flex items-center gap-1 sm:gap-2 text-xs sm:text-sm font-medium ${product.titleClass} opacity-60 group-hover:opacity-100 transition-opacity`}>
                   Acessar <span className="transition-transform group-hover:translate-x-1">&rarr;</span>
                 </div>
               </div>
@@ -127,6 +118,52 @@ export function ProductSelector() {
             </Link>
           ))}
         </div>
+
+        {/* Comunidade — horizontal card (desktop) / stacked (mobile) */}
+        <Link
+          href="/comunidade"
+          className="animate-fade-in-up delay-400 group block mt-4 sm:mt-6 rounded-lg border border-green-500/30 bg-black/60 backdrop-blur shadow-lg overflow-hidden text-left transition-all duration-200 hover:scale-[1.01] hover:bg-black/50 ring-1 ring-green-500/15 cursor-pointer"
+        >
+          <div className="flex flex-col sm:flex-row sm:items-stretch">
+            {/* Visual side */}
+            <div className="relative flex items-center justify-center bg-gradient-to-br from-green-500/15 via-green-500/[0.04] to-transparent border-b sm:border-b-0 sm:border-r border-white/10 p-8 sm:p-10 sm:w-[38%] sm:flex-shrink-0">
+              <div className="text-center">
+                <div className="font-punch text-6xl sm:text-7xl font-extrabold text-gradient-green leading-none mb-2">
+                  50
+                </div>
+                <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-green-300/80">
+                  vagas abertas
+                </div>
+              </div>
+              {/* Decorative dots */}
+              <div className="absolute top-3 left-3 w-1.5 h-1.5 rounded-full bg-green-400/40" />
+              <div className="absolute bottom-3 right-3 w-1.5 h-1.5 rounded-full bg-green-400/40" />
+            </div>
+
+            {/* Content side */}
+            <div className="flex-1 p-5 sm:p-8">
+              <div className="inline-flex items-center gap-2 mb-3 px-2.5 py-1 rounded-full bg-green-500/15 border border-green-500/30">
+                <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+                <span className="font-mono text-[10px] uppercase tracking-widest text-green-300">
+                  Gratuito &middot; Comunidade
+                </span>
+              </div>
+              <h2 className="font-heading text-xl sm:text-2xl md:text-3xl font-bold text-green-400 mb-2 leading-tight">
+                Comunidade Infuser
+              </h2>
+              <p className="text-sm sm:text-base text-zinc-400 leading-relaxed mb-4">
+                O único grupo de IA onde a regra é aplicar, não acumular link.
+                Resumo semanal, calls fechadas e gente testando IA de verdade.
+              </p>
+              <div className="inline-flex items-center gap-2 text-sm font-semibold text-green-400 opacity-80 group-hover:opacity-100 transition-opacity">
+                Entrar na comunidade{" "}
+                <span className="transition-transform group-hover:translate-x-1">
+                  &rarr;
+                </span>
+              </div>
+            </div>
+          </div>
+        </Link>
       </div>
     </section>
   );
