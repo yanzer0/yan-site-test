@@ -212,9 +212,10 @@
 /* ── Scroll Reveal System ── */
 .scroll-reveal {
   opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(28px);
+  transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
 }
 .scroll-reveal.revealed {
   opacity: 1;
@@ -223,13 +224,35 @@
 .scroll-reveal-left {
   opacity: 0;
   transform: translateX(-32px);
-  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .scroll-reveal-left.revealed {
   opacity: 1;
   transform: translateX(0);
 }
+
+/* Child stagger — apply alongside .scroll-reveal to fade children sequentially */
+.scroll-reveal-stagger > * {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+.scroll-reveal-stagger.revealed > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+.scroll-reveal-stagger.revealed > *:nth-child(1)  { transition-delay: 40ms; }
+.scroll-reveal-stagger.revealed > *:nth-child(2)  { transition-delay: 120ms; }
+.scroll-reveal-stagger.revealed > *:nth-child(3)  { transition-delay: 200ms; }
+.scroll-reveal-stagger.revealed > *:nth-child(4)  { transition-delay: 280ms; }
+.scroll-reveal-stagger.revealed > *:nth-child(5)  { transition-delay: 360ms; }
+.scroll-reveal-stagger.revealed > *:nth-child(6)  { transition-delay: 440ms; }
+.scroll-reveal-stagger.revealed > *:nth-child(7)  { transition-delay: 520ms; }
+.scroll-reveal-stagger.revealed > *:nth-child(8)  { transition-delay: 600ms; }
+.scroll-reveal-stagger.revealed > *:nth-child(n+9){ transition-delay: 680ms; }
 
 /* ── Section Dividers ── */
 .section-divider {
@@ -315,7 +338,8 @@
     opacity: 1;
   }
   .scroll-reveal,
-  .scroll-reveal-left {
+  .scroll-reveal-left,
+  .scroll-reveal-stagger > * {
     opacity: 1;
     transform: none;
     transition: none;

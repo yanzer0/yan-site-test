@@ -111,7 +111,7 @@ function DecisionReinforcement() {
     <>
       <div className="section-divider" />
       <section className="py-20 sm:py-24 bg-black/80">
-        <div ref={ref} className="scroll-reveal mx-auto max-w-3xl px-4 sm:px-6">
+        <div ref={ref} className="scroll-reveal-stagger mx-auto max-w-3xl px-4 sm:px-6">
           <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight leading-tight mb-8">
             Você acabou de tomar uma decisão que{" "}
             <span className="font-punch text-gradient-green">
@@ -160,7 +160,7 @@ function WhatYouGet() {
     <>
       <div className="section-divider" />
       <section className="py-20 sm:py-24">
-        <div ref={ref} className="scroll-reveal mx-auto max-w-3xl px-4 sm:px-6">
+        <div ref={ref} className="scroll-reveal-stagger mx-auto max-w-3xl px-4 sm:px-6">
           <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight leading-tight mb-10 text-center">
             O que vem com a sua vaga
           </h2>
@@ -194,7 +194,7 @@ function WhyFifty() {
     <>
       <div className="section-divider" />
       <section className="py-20 sm:py-24 bg-black/80">
-        <div ref={ref} className="scroll-reveal mx-auto max-w-3xl px-4 sm:px-6">
+        <div ref={ref} className="scroll-reveal-stagger mx-auto max-w-3xl px-4 sm:px-6">
           <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight leading-tight mb-8">
             Por que só{" "}
             <span className="font-punch text-gradient-green">50</span>?
@@ -251,7 +251,7 @@ function FAQ() {
     <>
       <div className="section-divider" />
       <section className="py-20 sm:py-24">
-        <div ref={ref} className="scroll-reveal mx-auto max-w-3xl px-4 sm:px-6">
+        <div ref={ref} className="scroll-reveal-stagger mx-auto max-w-3xl px-4 sm:px-6">
           <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight leading-tight mb-10 text-center">
             Antes de você preencher
           </h2>
@@ -291,7 +291,7 @@ function FormSection() {
     <>
       <div className="section-divider" />
       <section id="formulario" className="py-20 sm:py-24 bg-black/80">
-        <div ref={ref} className="scroll-reveal mx-auto max-w-3xl px-4 sm:px-6">
+        <div ref={ref} className="scroll-reveal-stagger mx-auto max-w-3xl px-4 sm:px-6">
           <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-center mb-3">
             Pra fechar sua vaga, responde rápido
           </h2>
@@ -358,7 +358,7 @@ function PostScript() {
     <>
       <div className="section-divider" />
       <section className="py-20 sm:py-24">
-        <div ref={ref} className="scroll-reveal mx-auto max-w-3xl px-4 sm:px-6 text-center">
+        <div ref={ref} className="scroll-reveal-stagger mx-auto max-w-3xl px-4 sm:px-6 text-center">
           <p className="font-mono text-[13px] uppercase tracking-[0.2em] text-green-400/70 mb-6">
             P.S.
           </p>
@@ -383,7 +383,7 @@ function ProductOffer() {
     <>
       <div className="section-divider" />
       <section className="py-20 sm:py-28 bg-black/80">
-        <div ref={ref} className="scroll-reveal mx-auto max-w-6xl px-4 sm:px-6">
+        <div ref={ref} className="scroll-reveal-stagger mx-auto max-w-6xl px-4 sm:px-6">
           <div className="text-center max-w-2xl mx-auto mb-12">
             <div className="inline-flex items-center gap-3 mb-6">
               <span className="h-px w-5 bg-green-400/40" />
