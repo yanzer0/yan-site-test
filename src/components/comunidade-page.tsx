@@ -1,5 +1,6 @@
 "use client";
 
+import { useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { FallingPattern } from "@/components/ui/falling-pattern-lazy";
@@ -275,6 +276,17 @@ function FAQ() {
 
 function FormSection() {
   const ref = useScrollReveal();
+  const loadCount = useRef(0);
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleIframeLoad = () => {
+    loadCount.current += 1;
+    // First load = form render. Subsequent loads = navigation after submit.
+    if (loadCount.current > 1) {
+      setSubmitted(true);
+    }
+  };
+
   return (
     <>
       <div className="section-divider" />
@@ -294,12 +306,30 @@ function FormSection() {
               className="w-full"
               style={{ height: "1200px", border: 0 }}
               loading="lazy"
+              onLoad={handleIframeLoad}
             >
               Carregando formulário...
             </iframe>
           </div>
 
-          <div className="mt-10 text-center">
+          <div
+            className={`mt-10 text-center transition-all duration-500 ${
+              submitted
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-4 pointer-events-none h-0 overflow-hidden mt-0"
+            }`}
+            aria-hidden={!submitted}
+          >
+            <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 rounded-full bg-green-500/10 border border-green-500/30">
+              <span className="text-green-400 text-sm">&#10003;</span>
+              <span className="font-mono text-[12px] uppercase tracking-widest text-green-300">
+                Vaga registrada
+              </span>
+            </div>
+            <p className="text-[15px] text-zinc-400 mb-6 max-w-md mx-auto">
+              Agora é só entrar no grupo. Você não vai receber nenhum outro
+              e-mail antes disso.
+            </p>
             <a
               href={WHATSAPP_GROUP_URL}
               target="_blank"
@@ -328,17 +358,17 @@ function PostScript() {
     <>
       <div className="section-divider" />
       <section className="py-20 sm:py-24">
-        <div ref={ref} className="scroll-reveal mx-auto max-w-2xl px-4 sm:px-6 text-center">
-          <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-green-400/60 mb-4">
+        <div ref={ref} className="scroll-reveal mx-auto max-w-3xl px-4 sm:px-6 text-center">
+          <p className="font-mono text-[13px] uppercase tracking-[0.2em] text-green-400/70 mb-6">
             P.S.
           </p>
-          <p className="text-[15px] text-zinc-400 leading-relaxed mb-4">
+          <p className="text-lg sm:text-xl md:text-2xl text-zinc-300 leading-relaxed mb-6">
             Se você tá lendo até aqui e ainda não preencheu, provavelmente tá
             pensando &ldquo;deixa eu fazer depois&rdquo;. Eu também faria. Mas
             se as 50 fecharem antes, essa página vira lista de espera e pode
             ser que demore semanas pra abrir de novo.
           </p>
-          <p className="text-white font-semibold text-base">
+          <p className="text-white font-bold text-xl sm:text-2xl">
             Leva 90 segundos.
           </p>
         </div>
