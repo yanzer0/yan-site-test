@@ -28,6 +28,45 @@ function readSaved(): Record<string, string> {
   }
 }
 
+function shouldSkip(href: string): boolean {
+  if (!href) return true;
+  if (href.startsWith("#")) return true;
+  if (href.startsWith("mailto:")) return true;
+  if (href.startsWith("tel:")) return true;
+  if (href.startsWith("javascript:")) return true;
+  return false;
+}
+
+function buildForwardParams(saved: Record<string, string>): URLSearchParams {
+  const forward = new URLSearchParams(window.location.search);
+  Object.entries(saved).forEach(([key, value]) => {
+    if (!forward.has(key)) forward.set(key, value);
+  });
+  return forward;
+}
+
+function applyParamsToAnchors(forward: URLSearchParams) {
+  if (![...forward.keys()].length) return;
+
+  document.querySelectorAll<HTMLAnchorElement>("a[href]").forEach((link) => {
+    const raw = link.getAttribute("href");
+    if (!raw || shouldSkip(raw)) return;
+
+    try {
+      const url = new URL(link.href, window.location.href);
+      if (url.origin === window.location.origin && url.pathname === window.location.pathname && url.hash && !url.search) {
+        return;
+      }
+      forward.forEach((value, key) => {
+        url.searchParams.set(key, value);
+      });
+      link.href = url.toString();
+    } catch {
+      /* href inválido — ignora */
+    }
+  });
+}
+
 export function UtmTracker() {
   const pathname = usePathname();
 
@@ -45,21 +84,25 @@ export function UtmTracker() {
     }
 
     const saved = readSaved();
-    if (!Object.keys(saved).length) return;
+    const forward = buildForwardParams(saved);
+    if (![...forward.keys()].length) return;
 
-    document
-      .querySelectorAll<HTMLAnchorElement>('a[href*="kiwify"], a[href*="wiapy"]')
-      .forEach((link) => {
-      try {
-        const url = new URL(link.href);
-        Object.entries(saved).forEach(([key, value]) => {
-          url.searchParams.set(key, value);
-        });
-        link.href = url.toString();
-      } catch {
-        /* href inválido — ignora */
-      }
+    applyParamsToAnchors(forward);
+
+    let rafId = 0;
+    const observer = new MutationObserver(() => {
+      if (rafId) return;
+      rafId = window.requestAnimationFrame(() => {
+        rafId = 0;
+        applyParamsToAnchors(forward);
+      });
     });
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    return () => {
+      observer.disconnect();
+      if (rafId) window.cancelAnimationFrame(rafId);
+    };
   }, [pathname]);
 
   return null;
