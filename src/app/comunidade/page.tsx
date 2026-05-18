@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { ComunidadePage } from "@/components/comunidade-page";
 
 export const metadata: Metadata = {
-  title: "Comunidade Infuser — 50 vagas | Yan Galasso",
+  title: "Comunidade Infuser — Lista de espera | Yan Galasso",
   description:
-    "Grupo gratuito de IA onde a regra é aplicar, não acumular link. Resumo semanal, calls fechadas e gente testando IA de verdade. 50 vagas.",
+    "As 50 vagas fecharam. Entra na lista de espera e recebe aviso 24h antes da próxima abertura pública. Comunidade gratuita de IA por Yan Galasso.",
 };
 
 export default function Page() {

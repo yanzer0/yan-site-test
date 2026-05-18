@@ -128,11 +128,11 @@ export function ProductSelector() {
             {/* Visual side */}
             <div className="relative flex items-center justify-center bg-gradient-to-br from-green-500/15 via-green-500/[0.04] to-transparent border-b sm:border-b-0 sm:border-r border-white/10 p-8 sm:p-10 sm:w-[38%] sm:flex-shrink-0">
               <div className="text-center">
-                <div className="font-punch text-6xl sm:text-7xl font-extrabold text-gradient-green leading-none mb-2">
-                  50
+                <div className="font-punch text-5xl sm:text-6xl font-extrabold text-gradient-green leading-none mb-2">
+                  Lista
                 </div>
                 <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-green-300/80">
-                  vagas abertas
+                  de espera
                 </div>
               </div>
               {/* Decorative dots */}
@@ -145,18 +145,18 @@ export function ProductSelector() {
               <div className="inline-flex items-center gap-2 mb-3 px-2.5 py-1 rounded-full bg-green-500/15 border border-green-500/30">
                 <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
                 <span className="font-mono text-[10px] uppercase tracking-widest text-green-300">
-                  Gratuito &middot; Comunidade
+                  Vagas fechadas &middot; Lista aberta
                 </span>
               </div>
               <h2 className="font-heading text-xl sm:text-2xl md:text-3xl font-bold text-green-400 mb-2 leading-tight">
                 Comunidade Infuser
               </h2>
               <p className="text-sm sm:text-base text-zinc-400 leading-relaxed mb-4">
-                O único grupo de IA onde a regra é aplicar, não acumular link.
-                Resumo semanal, calls fechadas e gente testando IA de verdade.
+                As 50 vagas fecharam. Entra na lista de espera e recebe aviso
+                24h antes da próxima abertura pública.
               </p>
               <div className="inline-flex items-center gap-2 text-sm font-semibold text-green-400 opacity-80 group-hover:opacity-100 transition-opacity">
-                Entrar na comunidade{" "}
+                Entrar na lista de espera{" "}
                 <span className="transition-transform group-hover:translate-x-1">
                   &rarr;
                 </span>
