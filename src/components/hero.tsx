@@ -23,7 +23,7 @@ export function Hero() {
         {/* Subline */}
         <p className="animate-fade-in-up delay-200 mt-6 max-w-xl mx-auto text-base sm:text-lg text-zinc-400 leading-relaxed">
           O kit completo pra transformar seu computador no Jarvis do Tony Stark.
-          Automacao por palmas e voz, pronta pra rodar <span className="text-gradient-green font-semibold">em 5 minutos.</span>
+          Automação por palmas e voz, pronta pra rodar <span className="text-gradient-green font-semibold">em 5 minutos.</span>
         </p>
 
         {/* Video */}
@@ -40,14 +40,8 @@ export function Hero() {
           />
         </div>
 
-        {/* Price */}
-        <div className="animate-fade-in-up delay-400 mt-10 flex items-baseline justify-center gap-2">
-          <span className="font-punch text-5xl sm:text-6xl font-extrabold text-gradient-green">R$19</span>
-          <span className="font-punch text-2xl sm:text-3xl font-semibold text-gradient-green">,90</span>
-        </div>
-
         {/* CTAs */}
-        <div className="animate-fade-in-up delay-500 mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+        <div className="animate-fade-in-up delay-400 mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
           <a
             href="https://pay.wiapy.com/0O6xF70BVe"
             className="group inline-flex items-center gap-2 rounded-lg bg-green-500 px-10 py-4 text-base font-bold text-black transition-all duration-200 hover:bg-green-400 hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(168,232,76,0.3)] cursor-pointer green-glow"

@@ -21,7 +21,7 @@ export function CTA() {
           </h2>
 
           <p className="text-[15px] text-zinc-400 max-w-md mx-auto mb-8">
-            Codigo completo (Windows + Mac). Guias visuais. Guias de IA que te
+            Código completo (Windows + Mac). Guias visuais. Guias de IA que te
             ensinam como um professor particular. <span className="text-gradient-green font-semibold">Personalize em 5 minutos.</span>
           </p>
 

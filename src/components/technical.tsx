@@ -15,19 +15,19 @@ export function Technical() {
             Pra quem quer entender
           </p>
           <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight leading-tight mb-6">
-            Nao e volume.
+            Não é volume.
             <br />
-            E <span className="font-punch text-gradient-green">fingerprint espectral.</span>
+            É <span className="font-punch text-gradient-green">fingerprint espectral.</span>
           </h2>
 
           <p className="text-[15px] text-zinc-400 leading-relaxed mb-4">
-            A maioria dos projetos de &quot;deteccao de palma&quot; na internet usa
-            amplitude — se o som e alto, conta. Isso detecta teclado, batida na
-            mesa, porta fechando. Nao funciona.
+            A maioria dos projetos de &quot;detecção de palma&quot; na internet usa
+            amplitude — se o som é alto, conta. Isso detecta teclado, batida na
+            mesa, porta fechando. Não funciona.
           </p>
 
           <p className="text-[15px] text-zinc-400 leading-relaxed mb-4">
-            O JARVIS usa analise espectral. Na calibracao, ele grava o{" "}
+            O JARVIS usa análise espectral. Na calibração, ele grava o{" "}
             <strong className="text-white">formato</strong> do som da sua palma —
             como uma impressao digital sonora. Depois, em tempo real, compara cada
             som contra esse perfil usando similaridade do cosseno.
@@ -56,7 +56,7 @@ export function Technical() {
           <div className="image-frame border border-white/8">
             <Image
               src="/jarvis-spectrum.webp"
-              alt="Comparacao de espectros: batida na mesa vs estalo vs palma"
+              alt="Comparação de espectros: batida na mesa vs estalo vs palma"
               width={1400}
               height={788}
               sizes="(max-width: 768px) 100vw, 700px"
