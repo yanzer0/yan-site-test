@@ -12,28 +12,32 @@ export function Problem() {
       <section id="como-funciona" className="py-20 sm:py-28" style={{ background: 'linear-gradient(160deg, rgba(0,0,0,0.85) 30%, rgba(13,26,8,0.8) 70%, rgba(26,34,16,0.75) 100%)' }}>
         <div ref={ref} className="scroll-reveal mx-auto max-w-3xl px-4 sm:px-6">
           <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight leading-tight mb-6">
-            Você viu o vídeo.
+            Duas palmas. A música toca, o Notion abre,
             <br />
-            Quis fazer <span className="font-punch text-gradient-green">igual.</span>
+            <span className="font-punch text-gradient-green">o app que você quiser entra.</span>
           </h2>
 
-          <p className="text-[15px] text-zinc-300 leading-relaxed mb-4">
-            Aí abriu o Google. Descobriu que precisa de Python. Que precisa de
-            bibliotecas. Que precisa entender FFT, transformada de Fourier, análise
-            espectral, similaridade do cosseno. Que o microfone do Mac se comporta
-            diferente do Windows. Que tem conflito de áudio, problema de permissão,
-            threshold de amplitude...
+          <p className="text-[15px] text-zinc-200 font-semibold mb-4">
+            Parece simples — até você tentar.
           </p>
 
-          <p className="text-[15px] text-zinc-200 font-semibold mb-4">
+          <p className="text-[15px] text-zinc-300 leading-relaxed mb-4">
+            Aí descobre que precisa de Python. De bibliotecas. De entender FFT,
+            transformada de Fourier, análise espectral, similaridade do cosseno.
+            Que o microfone do Mac se comporta diferente do Windows. Que tem
+            conflito de áudio, problema de permissão, threshold de amplitude...
+          </p>
+
+          <p className="font-heading text-xl sm:text-2xl md:text-[28px] text-white font-bold leading-snug mb-6">
             Eu levei dias pra fazer funcionar. <span className="text-gradient-green">Você não precisa.</span>
           </p>
 
           <p className="text-[15px] text-zinc-300 leading-relaxed mb-8">
-            O JARVIS Kit é o <span className="text-gradient-green font-semibold">código pronto</span> &mdash; testado no Windows e no Mac
-            &mdash; com guia de instalação passo a passo e guia de personalização
-            pra você trocar a música, o app, o comando e a frase de voz em 5
-            minutos.
+            O JARVIS Kit é um arquivo <span className="text-gradient-green font-semibold">.zip</span> com o
+            código pronto (Windows e Mac), dois PDFs passo a passo &mdash;
+            instalação e personalização &mdash; e um prompt pra colar no ChatGPT,
+            Claude ou Gemini que vira seu professor particular. Testado nos dois
+            sistemas, pronto pra rodar em 5 minutos.
           </p>
 
           <div className="image-frame border border-white/8">

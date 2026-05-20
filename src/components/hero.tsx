@@ -22,8 +22,9 @@ export function Hero() {
 
         {/* Subline */}
         <p className="animate-fade-in-up delay-200 mt-6 max-w-xl mx-auto text-base sm:text-lg text-zinc-400 leading-relaxed">
-          O kit completo pra transformar seu computador no Jarvis do Tony Stark.
-          Automação por palmas e voz, pronta pra rodar <span className="text-gradient-green font-semibold">em 5 minutos.</span>
+          O Jarvis do Tony Stark, em script pronto.
+          Toca música, abre app, roda automação.
+          Com duas palmas ou um comando de voz. <span className="text-gradient-green font-semibold">Instalado em 5 minutos, mesmo sem entender nada de programação.</span>
         </p>
 
         {/* Video */}
@@ -43,10 +44,10 @@ export function Hero() {
         {/* CTAs */}
         <div className="animate-fade-in-up delay-400 mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
           <a
-            href="https://pay.wiapy.com/0O6xF70BVe"
+            href="#contact"
             className="group inline-flex items-center gap-2 rounded-lg bg-green-500 px-10 py-4 text-base font-bold text-black transition-all duration-200 hover:bg-green-400 hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(168,232,76,0.3)] cursor-pointer green-glow"
           >
-            QUERO O JARVIS KIT <span className="transition-transform duration-200 group-hover:translate-x-1">&rarr;</span>
+            QUERO O JARVIS KIT — R$19,90 <span className="transition-transform duration-200 group-hover:translate-y-1">&darr;</span>
           </a>
           <a
             href="#como-funciona"

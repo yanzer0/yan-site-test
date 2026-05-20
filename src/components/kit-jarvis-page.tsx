@@ -5,13 +5,41 @@ import { Navbar } from "@/components/navbar";
 import { Hero } from "@/components/hero";
 import { TrustBar } from "@/components/trust-bar";
 import { Problem } from "@/components/services";
-import { Includes } from "@/components/how-it-works";
 import { AITeacher } from "@/components/stats";
 import { Technical } from "@/components/technical";
 import { FAQ } from "@/components/faq";
 import { CTA } from "@/components/cta";
 import { Footer } from "@/components/footer";
-import { SegundoCerebroUpsell } from "@/components/upsell-segundo-cerebro";
+import { Offer } from "@/components/offer";
+import {
+  Testimonials,
+  type Testimonial,
+  type FeaturedVideo,
+} from "@/components/testimonials";
+
+const TESTIMONIALS: Testimonial[] = [
+  {
+    name: "Isabela",
+    screenshot: "/testimonial-isabela.webp",
+    screenshotAspect: "portrait",
+  },
+  {
+    name: "Comprador verificado",
+    screenshot: "/testimonial-brother.webp",
+    screenshotAspect: "square",
+  },
+  {
+    name: "Pedro",
+    screenshot: "/testimonial-pedro.webp",
+    screenshotAspect: "portrait",
+  },
+];
+
+const TESTIMONIAL_VIDEO: FeaturedVideo = {
+  src: "/video-testimonial-jarvis.mp4",
+  poster: "/video-testimonial-jarvis-poster.webp",
+  alt: "Vídeo de cliente usando o JARVIS Kit",
+};
 
 export function KitJarvisPage() {
   return (
@@ -35,12 +63,12 @@ export function KitJarvisPage() {
           <Hero />
           <TrustBar />
           <Problem />
-          <Includes />
           <AITeacher />
+          <Testimonials items={TESTIMONIALS} video={TESTIMONIAL_VIDEO} />
+          <Offer />
           <Technical />
-          <FAQ />
           <CTA />
-          <SegundoCerebroUpsell />
+          <FAQ />
         </main>
         <Footer />
       </div>

@@ -22,8 +22,8 @@ const QUESTIONS = [
     a: "Tem dois PDFs visuais (instalação e personalização) E dois guias de IA que funcionam como suporte infinito. A IA resolve qualquer problema que aparecer, sem limite de perguntas, sem fila, sem horário.",
   },
   {
-    q: "R$19,90? Qual é o truque?",
-    a: "Nenhum. Sem assinatura, sem upsell escondido, sem paywall. Você baixa o ZIP com os 8 arquivos e é seu pra sempre. O preço é acessível porque o objetivo é volume, não margem.",
+    q: "O que vem no kit e como funciona o acesso?",
+    a: "Você baixa um .zip com 8 arquivos: script Python (Win + Mac), instalador automático, dois PDFs visuais (instalação + personalização) e dois prompts de IA. Pagamento único de R$19,90. Sem assinatura, sem login em plataforma, sem upsell. Download imediato após o pagamento, é seu pra sempre.",
   },
 ];
 
