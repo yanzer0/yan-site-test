@@ -59,23 +59,16 @@ export function Testimonials({ items, video }: TestimonialsProps) {
 }
 
 function TestimonialCard({ t }: { t: Testimonial }) {
-  const aspect =
-    t.screenshotAspect === "landscape"
-      ? "aspect-video"
-      : t.screenshotAspect === "square"
-      ? "aspect-square"
-      : "aspect-[3/4]";
-
   return (
     <figure className="glass card-hover p-4 flex flex-col gap-3">
       {t.screenshot ? (
-        <div className={`relative w-full ${aspect} rounded-md overflow-hidden border border-white/8 bg-black/40`}>
+        <div className="relative w-full aspect-[9/16] rounded-md overflow-hidden border border-white/8 bg-black/40 flex items-center justify-center">
           <Image
             src={t.screenshot}
             alt={`Depoimento de ${t.name}`}
             fill
             sizes="(max-width: 768px) 100vw, 360px"
-            className="object-cover"
+            className="object-contain"
           />
         </div>
       ) : null}
