@@ -78,7 +78,15 @@ function ZoomableImage({ src, alt, width, height, className, containerClassName,
   );
 }
 
-const CHECKOUT_URL = "https://pay.wiapy.com/h65CZSYaN6";
+const CHECKOUT_URL = "https://pay.hub.la/6VBtmQtyBG5lFjn12AFO";
+
+const FINAL_CTA_ID = "cta-comprar-final";
+
+function scrollToFinalCta() {
+  document
+    .getElementById(FINAL_CTA_ID)
+    ?.scrollIntoView({ behavior: "smooth", block: "center" });
+}
 
 const BUYER_NAMES = [
   "Amanda Pinto", "Henrique da Conceição", "Reginaldo de Melo", "Felipe Marques",
@@ -225,7 +233,11 @@ function SCNavbar() {
 
         <div className="flex items-center gap-2">
           <a
-            href={CHECKOUT_URL}
+            href="#cta-comprar-final"
+            onClick={(e) => {
+              e.preventDefault();
+              scrollToFinalCta();
+            }}
             className="inline-flex items-center gap-2 rounded-full bg-green-500 px-4 py-2 text-xs sm:text-sm font-semibold text-black transition-all duration-200 hover:bg-green-400 hover:shadow-[0_0_20px_rgba(168,232,76,0.3)] cursor-pointer green-glow-sm"
           >
             Quero o Kit
@@ -255,8 +267,12 @@ function SCNavbar() {
           </a>
         ))}
         <a
-          href={CHECKOUT_URL}
-          onClick={() => setMobileOpen(false)}
+          href="#cta-comprar-final"
+          onClick={(e) => {
+            e.preventDefault();
+            setMobileOpen(false);
+            scrollToFinalCta();
+          }}
           className="inline-flex items-center justify-center gap-2 rounded-full bg-green-500 px-5 py-2.5 text-sm font-semibold text-black cursor-pointer"
         >
           Quero o Kit
@@ -309,7 +325,11 @@ function HeroSection() {
         {/* CTA */}
         <div className="animate-fade-in-up delay-400 mt-10 flex flex-col items-center">
           <a
-            href={CHECKOUT_URL}
+            href="#cta-comprar-final"
+            onClick={(e) => {
+              e.preventDefault();
+              scrollToFinalCta();
+            }}
             className="group inline-flex items-center gap-2 rounded-lg bg-green-500 px-10 py-4 text-base font-bold text-black transition-all duration-200 hover:bg-green-400 hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(168,232,76,0.3)] cursor-pointer green-glow"
           >
             Quero o Segundo Cérebro! <span className="transition-transform duration-200 group-hover:translate-x-1">&rarr;</span>
@@ -1082,7 +1102,11 @@ function PricingSection() {
             Pagamento único. Sem assinatura. Sem renovação.
           </p>
           <a
-            href={CHECKOUT_URL}
+            href="#cta-comprar-final"
+            onClick={(e) => {
+              e.preventDefault();
+              scrollToFinalCta();
+            }}
             className="group block w-full rounded-lg bg-green-500 px-8 py-4 text-lg font-bold text-black transition-all duration-200 hover:bg-green-400 hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(168,232,76,0.3)] cursor-pointer"
           >
             Quero o Kit Segundo Cérebro <span className="transition-transform duration-200 group-hover:translate-x-1 inline-block">&rarr;</span>
@@ -1127,6 +1151,7 @@ function FinalPushSection() {
 
         <div className="mt-10 text-center">
           <a
+            id={FINAL_CTA_ID}
             href={CHECKOUT_URL}
             className="group inline-flex items-center gap-2 rounded-lg bg-green-500 px-10 py-4 text-base font-bold text-black transition-all duration-200 hover:bg-green-400 hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(168,232,76,0.3)] cursor-pointer green-glow"
           >
