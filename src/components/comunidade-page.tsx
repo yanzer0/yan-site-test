@@ -401,6 +401,58 @@ function ProductOffer() {
   );
 }
 
+function ClubCta() {
+  const ref = useScrollReveal();
+  return (
+    <>
+      <div className="section-divider" />
+      <section className="py-16 sm:py-20">
+        <div ref={ref} className="scroll-reveal mx-auto max-w-4xl px-4 sm:px-6">
+          <div className="relative overflow-hidden rounded-2xl border border-green-500/40 bg-gradient-to-br from-green-500/[0.10] via-black/60 to-black/70 ring-1 ring-green-500/20 green-glow">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-6 p-7 sm:p-10">
+              <div className="flex-shrink-0 flex justify-center">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/club/infuser-club.webp"
+                  alt="Infuser Club"
+                  width={220}
+                  height={220}
+                  className="h-28 sm:h-36 w-auto"
+                  decoding="async"
+                />
+              </div>
+              <div className="flex-1 text-center sm:text-left">
+                <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-green-300/80 mb-2">
+                  O próximo nível
+                </div>
+                <h3 className="font-heading text-2xl sm:text-3xl font-bold text-white mb-3 leading-tight">
+                  Quer ir além da troca? Entra pro{" "}
+                  <span className="text-gradient-green">Infuser Club</span>.
+                </h3>
+                <p className="text-[14px] sm:text-[15px] text-zinc-400 leading-relaxed mb-6 max-w-2xl">
+                  A comunidade gratuita é o ambiente. O Club é onde você constrói
+                  com a gente: call ao vivo toda semana, desafio quinzenal onde a
+                  Infuser vende o que você cria em parceria, curso do Claude do
+                  zero e bônus. A partir de R$57/mês.
+                </p>
+                <a
+                  href="https://club.useinfuser.com"
+                  className="group inline-flex items-center justify-center gap-2 rounded-lg bg-green-500 px-8 py-4 text-base font-bold text-black transition-all duration-200 hover:bg-green-400 hover:-translate-y-1 cursor-pointer green-glow"
+                >
+                  Conhecer o Infuser Club{" "}
+                  <span className="transition-transform duration-200 group-hover:translate-x-1">
+                    &rarr;
+                  </span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}
+
 function ComunidadeFooter() {
   return (
     <footer className="border-t border-white/5 py-10">
@@ -455,6 +507,7 @@ export function ComunidadePage() {
           <WhyFree />
           <FormSection />
           <ProductOffer />
+          <ClubCta />
         </main>
         <ComunidadeFooter />
       </div>
