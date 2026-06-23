@@ -211,12 +211,12 @@ function WhyFree() {
             <p>
               Se um dia você quiser ir mais fundo (calls ao vivo toda semana,
               desafios pagos com a Infuser, curso do Claude do zero), existe o{" "}
-              <a
-                href="https://club.useinfuser.com"
+              <Link
+                href="/club"
                 className="text-gradient-green font-semibold hover:underline"
               >
                 Infuser Club
-              </a>
+              </Link>
               . Mas isso é totalmente opcional.
             </p>
             <p className="text-white font-semibold">
@@ -435,15 +435,15 @@ function ClubCta() {
                   Infuser vende o que você cria em parceria, curso do Claude do
                   zero e bônus. A partir de R$57/mês.
                 </p>
-                <a
-                  href="https://club.useinfuser.com"
+                <Link
+                  href="/club"
                   className="group inline-flex items-center justify-center gap-2 rounded-lg bg-green-500 px-8 py-4 text-base font-bold text-black transition-all duration-200 hover:bg-green-400 hover:-translate-y-1 cursor-pointer green-glow"
                 >
                   Conhecer o Infuser Club{" "}
                   <span className="transition-transform duration-200 group-hover:translate-x-1">
                     &rarr;
                   </span>
-                </a>
+                </Link>
               </div>
             </div>
           </div>
