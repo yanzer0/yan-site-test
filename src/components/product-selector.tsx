@@ -119,6 +119,46 @@ export function ProductSelector() {
           ))}
         </div>
 
+        {/* Infuser Club — flagship recorrente → club.useinfuser.com */}
+        <a
+          href="https://club.useinfuser.com"
+          className="animate-fade-in-up delay-300 group block mt-4 sm:mt-6 rounded-lg border border-green-500/40 bg-gradient-to-br from-green-500/[0.08] via-black/60 to-black/60 backdrop-blur shadow-lg overflow-hidden text-left transition-all duration-200 hover:scale-[1.01] hover:border-green-500/60 ring-1 ring-green-500/20 cursor-pointer"
+        >
+          <div className="flex flex-col sm:flex-row sm:items-stretch">
+            <div className="relative flex items-center justify-center bg-gradient-to-br from-green-500/15 via-green-500/[0.04] to-transparent border-b sm:border-b-0 sm:border-r border-white/10 p-6 sm:p-8 sm:w-[38%] sm:flex-shrink-0">
+              <Image
+                src="/club/infuser-club.webp"
+                alt="Infuser Club"
+                width={220}
+                height={220}
+                className="h-24 sm:h-28 w-auto"
+              />
+            </div>
+            <div className="flex-1 p-5 sm:p-8">
+              <div className="inline-flex items-center gap-2 mb-3 px-2.5 py-1 rounded-full bg-green-500/15 border border-green-500/30">
+                <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+                <span className="font-mono text-[10px] uppercase tracking-widest text-green-300">
+                  Comunidade &middot; recorrente
+                </span>
+              </div>
+              <h2 className="font-heading text-xl sm:text-2xl md:text-3xl font-bold text-green-400 mb-2 leading-tight">
+                Infuser Club
+              </h2>
+              <p className="text-sm sm:text-base text-zinc-400 leading-relaxed mb-4">
+                O ambiente onde quem já fatura com IA te puxa junto. Calls ao
+                vivo toda semana, desafio quinzenal com freelance real e 4 bônus.
+                A partir de R$57/mês.
+              </p>
+              <div className="inline-flex items-center gap-2 text-sm font-semibold text-green-400 opacity-80 group-hover:opacity-100 transition-opacity">
+                Entrar para o Club{" "}
+                <span className="transition-transform group-hover:translate-x-1">
+                  &rarr;
+                </span>
+              </div>
+            </div>
+          </div>
+        </a>
+
         {/* Comunidade — horizontal card (desktop) / stacked (mobile) */}
         <Link
           href="/comunidade"

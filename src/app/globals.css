@@ -54,6 +54,9 @@
   --color-green-500: #A8E84C;
   --color-emerald-300: #C5F26E;
 
+  /* Brand alias — consumed by smoothui scrollable-card-stack (bg-brand/ring-brand) */
+  --color-brand: #A8E84C;
+
   /* Infuser design tokens (MASTER.md) */
   --color-green-accent: #A8E84C;
   --color-green-glow: rgba(168, 232, 76, 0.15);
