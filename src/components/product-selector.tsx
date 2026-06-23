@@ -119,9 +119,9 @@ export function ProductSelector() {
           ))}
         </div>
 
-        {/* Infuser Club — flagship recorrente → club.useinfuser.com */}
-        <a
-          href="https://club.useinfuser.com"
+        {/* Infuser Club — flagship recorrente → /club (useinfuser.com/club) */}
+        <Link
+          href="/club"
           className="animate-fade-in-up delay-300 group block mt-4 sm:mt-6 rounded-lg border border-green-500/40 bg-gradient-to-br from-green-500/[0.08] via-black/60 to-black/60 backdrop-blur shadow-lg overflow-hidden text-left transition-all duration-200 hover:scale-[1.01] hover:border-green-500/60 ring-1 ring-green-500/20 cursor-pointer"
         >
           <div className="flex flex-col sm:flex-row sm:items-stretch">
@@ -157,7 +157,7 @@ export function ProductSelector() {
               </div>
             </div>
           </div>
-        </a>
+        </Link>
 
         {/* Comunidade — horizontal card (desktop) / stacked (mobile) */}
         <Link
