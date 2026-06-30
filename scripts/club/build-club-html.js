@@ -13,14 +13,13 @@ function rep(label, search, replace, opts = {}) {
 
 // ---- COPY CORRECTIONS ----
 // live 15/06
-rep("eyebrow live", "Comunidade fechada · Lançamento 15/06", "Comunidade fechada · Discord + WhatsApp + Telegram");
-rep("founding-line", "Founding: <b>10 vagas</b> a <b>R$67/mês</b> travado pra sempre.", "A partir de <b>R$57/mês</b> no plano anual · R$97/mês no mensal.");
+// NOTA: o hero virou VSL-led (headline "Entrevista Invertida" + slot 9:16) com a copy
+// já final direto na fonte (club-live.html). Por isso saíram daqui os reps de hero:
+// "eyebrow live", "founding-line", "hero sub2" e "hero sub2 quinz".
 rep("nav seats", '<span class="seats">Founding · 10 vagas</span>', "");
 rep("footer live", " · Lançamento 15/06", "");
 
 // desafio quinzenal
-rep("hero sub2 quinz", "desafio quinzenal com freelance real e acesso ao que está", "desafio quinzenal com freelance real e acesso ao que está", { optional: true }); // already? no
-rep("hero sub2", "desafio mensal com freelance real e acesso ao que está", "desafio quinzenal com freelance real e acesso ao que está");
 rep("demo quinz", "O desafio do mês está aberto.", "O desafio da quinzena está aberto.");
 rep("vs-extra quinz", "desafio mensal com freelance + desconto", "desafio quinzenal com freelance + desconto");
 rep("vs-save quinz", "as calls e o desafio mensal por cima", "as calls e o desafio quinzenal por cima");
