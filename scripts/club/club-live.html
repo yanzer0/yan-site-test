@@ -117,6 +117,16 @@ b,strong{font-weight:700;color:var(--warm)}
 .hero .cta-row{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
 .hero .founding-line{margin-top:26px;font-family:var(--font-mono);font-size:13px;letter-spacing:.04em;color:var(--muted)}
 .hero .founding-line b{color:var(--green);font-weight:700}
+.hero .descubra{color:var(--green);font-weight:700}
+.hero .sub .descubra{letter-spacing:.02em}
+.hero .vsl-wrap{margin:6px 0 34px}
+.hero .vsl-frame{position:relative;width:100%;max-width:316px;aspect-ratio:9/16;border-radius:20px;overflow:hidden;border:1px solid var(--line);background:var(--panel);box-shadow:0 24px 70px rgba(0,0,0,.55)}
+.hero .vsl-frame iframe,.hero .vsl-frame video{position:absolute;inset:0;width:100%;height:100%;border:0;object-fit:cover}
+.hero .vsl-ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:15px;text-align:center;padding:20px;background:radial-gradient(120% 80% at 50% 32%,rgba(168,232,76,.14),transparent 62%),linear-gradient(180deg,#151515,#0a0a0a)}
+.hero .vsl-play{width:66px;height:66px;border-radius:50%;display:grid;place-items:center;background:var(--green);box-shadow:0 0 34px rgba(168,232,76,.55)}
+.hero .vsl-play svg{width:26px;height:26px;fill:#0a0a0a;margin-left:4px}
+.hero .vsl-cap{font-family:var(--font-mono);font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);line-height:1.8}
+.hero .vsl-cap i{display:block;color:var(--faint);font-style:normal;letter-spacing:.1em;margin-top:2px}
 
 /* ============ SECTION SHELLS ============ */
 .s{padding:clamp(72px,10vw,128px) 0}
@@ -381,8 +391,17 @@ section.s>.wrap{position:relative;z-index:1}
   <div class="wrap">
     <div class="hero-inner">
       <span class="badge-live"><span class="dot"></span>Comunidade fechada · Lançamento 15/06</span>
-      <h1>Pare de aprender sobre IA. Comece a <span class="serif-i">construir com ela</span>, no ambiente onde quem já fatura te puxa junto.</h1>
-      <p class="sub">Entre para a comunidade onde você para de usar IA e começa a construir sistemas que usam IA por você.</p>
+      <h1>Automatize processos com IA e venda esses sistemas para outros negócios, com uma <span class="serif-i">entrevista invertida</span>.</h1>
+      <p class="sub"><b class="descubra">DESCUBRA AGORA</b> o método por trás disso:</p>
+      <div class="vsl-wrap">
+        <div class="vsl-frame" id="club-vsl">
+          <!-- VSL VERTICAL (9:16): troque o placeholder abaixo pelo embed real. Ex.: <iframe src="URL" allow="autoplay; fullscreen" allowfullscreen></iframe> OU <video src="URL" controls playsinline poster="/club/SEU-POSTER.webp"></video>. NAO use data:image aqui (quebra o mapeamento de imagens do build). -->
+          <div class="vsl-ph">
+            <div class="vsl-play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></div>
+            <span class="vsl-cap">Sua VSL vertical aqui<i>formato story · 9:16</i></span>
+          </div>
+        </div>
+      </div>
       <p class="sub-2">Calls ao vivo toda semana, desafio mensal com freelance real e acesso ao que está funcionando, antes do mercado reagir.</p>
       <p class="sub-2">Inclui também o curso <b>Claude do Zero</b> (as 6 frentes do Claude: Cowork, Chat, Code, Projetos, MCP e Skills) e o <b>Módulo avançado: Claude como sistema operacional</b>.</p>
       <div class="cta-row">
