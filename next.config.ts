@@ -8,6 +8,11 @@ const nextConfig: NextConfig = {
     deviceSizes: [640, 750, 828, 1080, 1200, 1400],
     minimumCacheTTL: 31536000,
   },
+  async rewrites() {
+    return [
+      { source: "/legiaodeagentes", destination: "/legiaodeagentes.html" },
+    ];
+  },
 };
 
 export default nextConfig;
