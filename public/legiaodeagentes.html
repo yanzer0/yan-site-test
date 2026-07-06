@@ -274,10 +274,6 @@ body{overscroll-behavior-y:none}
 ></script>
 </head>
 <body>
-<script id="mobile-lite-head">
-/* MOBILE: forca o caminho reduced-motion (freia morph, cmdbar, reveal) => scroll liso */
-(function(){try{if(window.matchMedia&&window.matchMedia('(max-width:768px)').matches){var real=window.matchMedia.bind(window);window.matchMedia=function(q){if(typeof q==='string'&&q.indexOf('prefers-reduced-motion')>-1){return{matches:true,media:q,onchange:null,addEventListener:function(){},removeEventListener:function(){},addListener:function(){},removeListener:function(){},dispatchEvent:function(){return false;}};}return real(q);};}}catch(e){}})();
-</script>
 <!-- filtro gooey da MorphingText (Magic UI, verbatim) -->
 <svg id="filters" preserveAspectRatio="xMidYMid slice"><defs>
   <filter id="threshold"><feColorMatrix in="SourceGraphic" type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 255 -140"/></filter>
