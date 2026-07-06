@@ -1132,7 +1132,7 @@ setTimeout(autostart, 900);
 
 <!-- ============ SECAO — DEPOIMENTOS (PROVA SOCIAL) ============ -->
 <style id="depo-css">
-  #depoimentos{ display:none; }
+  #depoimentos{ display:block; }
   #depoimentos .wa-list{ display:flex; flex-direction:column; gap:16px; max-width:540px; margin:26px auto 0; }
   #depoimentos .wa-msg{ display:flex; align-items:flex-start; gap:9px; text-align:left; }
   #depoimentos .wa-av{ width:44px; height:44px; border-radius:50%; object-fit:cover; object-position:50% 30%; flex:0 0 44px; margin-top:2px; background:#2a3942; display:block; }
@@ -1294,9 +1294,10 @@ setTimeout(autostart, 900);
 
     <!-- COMPARACAO SIMPLIFICADA (mobile) -->
     <style id="vscmp-css">
-      #vs .vs-cmp{ display:none; }
-      #vs .vs-sub{ display:none; }
+      #vs .vs-cmp{ display:flex; }
+      #vs .vs-sub{ display:block; }
       #vs .vs-cmp{ flex-direction:column; gap:16px; margin-top:20px; }
+      @media(min-width:760px){ #vs .vs-cmp{ flex-direction:row; align-items:stretch; gap:20px; } #vs .vs-cmp .vs-col{ flex:1 1 0; min-width:0; } }
       #vs .vs-col{ position:relative; text-align:left; border-radius:16px; padding:18px 15px; background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.012)); border:1px solid rgba(255,255,255,.08); }
       #vs .vs-col.bad{ border-top:2px solid #FF5247; }
       #vs .vs-col.good{ border:1px solid rgba(198,255,52,.5); box-shadow:0 0 34px rgba(198,255,52,.08); }
