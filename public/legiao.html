@@ -277,6 +277,19 @@ body{overscroll-behavior-y:none}
   async
   defer
 ></script>
+<!-- Meta Pixel + CAPI (portado do layout React p/ a pagina standalone /legiao) -->
+<script id="meta-pixel">
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','26669487942716886');
+(function(){try{
+  var eid=(window.crypto&&crypto.randomUUID)?crypto.randomUUID():(Date.now().toString(36)+'-'+Math.random().toString(36).slice(2));
+  fbq('track','PageView',{},{eventID:eid});
+  function ck(n){var m=document.cookie.match(new RegExp('(?:^|; )'+n+'=([^;]*)'));return m?decodeURIComponent(m[1]):undefined;}
+  var ud={},fbp=ck('_fbp'),fbc=ck('_fbc');if(fbp)ud.fbp=fbp;if(fbc)ud.fbc=fbc;
+  fetch('/api/meta-capi',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({event_name:'PageView',event_id:eid,event_source_url:location.href,user_data:ud}),keepalive:true}).catch(function(){});
+}catch(e){}})();
+</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=26669487942716886&ev=PageView&noscript=1" alt=""></noscript>
 </head>
 <body>
 <!-- filtro gooey da MorphingText (Magic UI, verbatim) -->
@@ -305,7 +318,7 @@ body{overscroll-behavior-y:none}
       <p class="sub">80 agentes de IA com o método e os anti-padrões de um especialista de verdade, a um pedido de distância dentro do seu Claude.</p>
       <div class="ctas">
         <a href="#agentes" class="btn sbtn" data-shader data-base="#0b1206" data-glass="#C6FF34" role="button"><canvas class="sbtn-cv" aria-hidden="true"></canvas><span class="sbtn-tx">Quero os agentes <span class="arr">→</span></span></a>
-        <a href="#prova" class="btn btn-glass">Ver a demo ao vivo</a>
+        <a href="#demo" class="btn btn-glass">Ver a demo ao vivo</a>
       </div>
     </div>
 
@@ -641,13 +654,13 @@ body{overscroll-behavior-y:none}
 #salas .esteira{margin-top:clamp(24px,4vw,34px)}
 #salas .req-node{display:inline-flex;align-items:center;gap:9px;padding:11px 16px;border-radius:var(--r-full);background:linear-gradient(135deg,rgba(198,255,52,.1),rgba(255,255,255,.02));border:1px solid rgba(198,255,52,.3);color:var(--warm);font-size:14px;margin-bottom:18px}
 #salas .req-node .rq-ic{color:var(--lime);font-size:12px}
-#salas .steps{position:relative;display:flex;flex-direction:column;gap:15px;padding-left:34px}
-#salas .steps::before{content:"";position:absolute;left:15px;top:6px;bottom:6px;width:2px;background:rgba(255,255,255,.08)}
-#salas .steps::after{content:"";position:absolute;left:15px;top:6px;width:2px;height:calc(100% - 12px);transform-origin:top;transform:scaleY(0);background:linear-gradient(180deg,var(--lime),var(--teal-300),var(--teal-500));transition:transform 1.5s var(--ease-out) .35s}
+#salas .steps{position:relative;display:flex;flex-direction:column;gap:15px;padding-left:58px}
+#salas .steps::before{content:"";position:absolute;left:6px;top:6px;bottom:6px;width:2px;background:rgba(255,255,255,.08)}
+#salas .steps::after{content:"";position:absolute;left:6px;top:6px;width:2px;height:calc(100% - 12px);transform-origin:top;transform:scaleY(0);background:linear-gradient(180deg,var(--lime),var(--teal-300),var(--teal-500));transition:transform 1.5s var(--ease-out) .35s}
 #salas.reveal.in .steps::after{transform:scaleY(1)}
 #salas .step{position:relative;display:flex;align-items:baseline;flex-wrap:wrap;gap:2px 10px;opacity:0;transform:translateX(10px);transition:opacity .5s var(--ease-out),transform .5s var(--ease-out);transition-delay:calc(var(--k,0)*.13s + .4s)}
 #salas.reveal.in .step{opacity:1;transform:none}
-#salas .step .st-n{position:absolute;left:-34px;top:-3px;width:30px;height:30px;border-radius:8px;display:grid;place-items:center;font-family:var(--fm);font-size:12px;color:var(--lime);background:rgba(198,255,52,.08);border:1px solid rgba(198,255,52,.2)}
+#salas .step .st-n{position:absolute;left:-42px;top:-3px;width:30px;height:30px;border-radius:8px;display:grid;place-items:center;font-family:var(--fm);font-size:12px;color:var(--lime);background:rgba(198,255,52,.08);border:1px solid rgba(198,255,52,.2)}
 #salas .step b{font-family:var(--fd);color:var(--warm);font-weight:600;font-size:clamp(15px,4vw,17px)}
 #salas .step .cmd{font-family:var(--fm);font-size:11.5px;color:var(--teal-300)}
 #salas .after-p{margin-top:clamp(22px,3.6vw,28px)}
@@ -705,9 +718,9 @@ body{overscroll-behavior-y:none}
       <div class="req-node"><span class="rq-ic">&#9654;</span><span class="mono">"monta meu lançamento"</span></div>
       <div class="steps">
         <div class="step" style="--k:0"><span class="st-n">01</span><b>Entender o público</b></div>
-        <div class="step" style="--k:1"><span class="st-n">02</span><b>Montar a oferta</b><span class="cmd">/oferta</span></div>
-        <div class="step" style="--k:2"><span class="st-n">03</span><b>Escrever a VSL</b><span class="cmd">/vsl</span></div>
-        <div class="step" style="--k:3"><span class="st-n">04</span><b>Montar a página</b><span class="cmd"><code>/pagina-de-vendas</code></span></div>
+        <div class="step" style="--k:1"><span class="st-n">02</span><b>Montar a oferta</b></div>
+        <div class="step" style="--k:2"><span class="st-n">03</span><b>Escrever a VSL</b></div>
+        <div class="step" style="--k:3"><span class="st-n">04</span><b>Montar a página</b></div>
         <div class="step" style="--k:4"><span class="st-n">05</span><b>A sequência de e-mail</b></div>
         <div class="step" style="--k:5"><span class="st-n">06</span><b>O tráfego</b></div>
       </div>
@@ -777,8 +790,8 @@ body{overscroll-behavior-y:none}
 #prova .prova-fecho{margin-top:clamp(20px,3.4vw,28px)}
 #prova .demo-lead{margin-top:clamp(16px,2.6vw,20px)}
 .demo-embed{margin-top:clamp(16px,3vw,22px);border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--edge);background:var(--onyx);box-shadow:0 18px 50px rgba(0,0,0,.5)}
-.demo-frame{display:block;width:100%;height:min(76dvh,600px);border:0;background:transparent}
-@media(max-width:640px){.demo-frame{height:min(78dvh,560px);min-height:500px}}
+.demo-frame{display:block;width:100%;height:auto;min-height:460px;border:0;background:transparent;overflow:hidden}
+@media(max-width:640px){.demo-frame{min-height:520px}}
 #prova .selo{margin-top:12px;font-family:var(--fm);font-size:12px;color:var(--n-300)}
 @media(prefers-reduced-motion:reduce){#prova .pq-dot{animation:none}}
 </style>
@@ -802,12 +815,12 @@ body{overscroll-behavior-y:none}
           <blockquote class="pq-out">Você não tem um problema de inglês. Você tem um problema de inglês técnico em tempo real, e nenhum curso de inglês foi feito pra isso.</blockquote>
         </article>
         <article class="card prova-q">
-          <div class="pq-head"><span class="pq-dot"></span><b>Forja de Página de Vendas</b><span class="pq-cmd"><code>/pagina-de-vendas</code></span></div>
+          <div class="pq-head"><span class="pq-dot"></span><b>Forja de Página de Vendas</b></div>
           <p class="pq-ctx">Curso de confeitaria. O agente reposicionou o problema antes de escrever uma linha:</p>
           <blockquote class="pq-out">Você faz um bolo que todo mundo elogia, mas que ninguém nunca te pagou pra fazer? Existe um motivo, e não tem nada a ver com o seu bolo.</blockquote>
         </article>
         <article class="card prova-q">
-          <div class="pq-head"><span class="pq-dot"></span><b>Recuperação WhatsApp</b><span class="pq-cmd">/recuperacao-whatsapp</span></div>
+          <div class="pq-head"><span class="pq-dot"></span><b>Recuperação WhatsApp</b></div>
           <p class="pq-ctx">Cliente sumido há 60 dias. Em vez de "viu minha mensagem?", montou uma árvore de 3 toques com regra de parada:</p>
           <blockquote class="pq-out">Toque 1: "Como tá indo o whey? Conseguiu manter a rotina?" Abre pelo cliente, não pela venda. Respondeu = vira conversa humana e sai do automático. Máximo 3 toques, sem urgência fabricada.</blockquote>
         </article>
@@ -815,7 +828,7 @@ body{overscroll-behavior-y:none}
     </div>
     <p class="prova-fecho">Abre qualquer um e você vê a anatomia: a calibração, o método que ele segue, e o que ele nunca faz. É o mesmo rigor das skills que a gente usa pra atender empresa pagante.</p>
     <hr class="divider" style="margin-top:clamp(28px,5vw,44px)">
-    <p class="demo-lead">Prefere ver ao vivo? Abaixo, o agente conduzindo um chat de verdade. Troca de agente nas abas:</p>
+    <p class="demo-lead" id="demo">Prefere ver ao vivo? Abaixo, o agente conduzindo um chat de verdade. Troca de agente nas abas:</p>
     <div class="demo-embed"><iframe class="demo-frame" title="Demo: agentes trabalhando" loading="lazy" srcdoc="<!DOCTYPE html>
 <html lang=&quot;pt-BR&quot;>
 <head>
@@ -871,6 +884,10 @@ body{overscroll-behavior-y:none}
   .agent .bub.output{border:1px solid var(--accent);background:rgba(168,232,76,.06)}
   .agent .bub.output .who{color:var(--accent)}
   .supo{color:var(--muted);font-size:12px;font-family:'JetBrains Mono',monospace}
+  .filechip{display:inline-flex;align-items:center;gap:8px;max-width:100%;margin-bottom:8px;padding:8px 11px;border-radius:9px;background:#0b1206;border:1px solid #234012;font-family:'JetBrains Mono',monospace;font-size:12px}
+  .filechip svg{width:16px;height:16px;color:var(--accent2);flex:none}
+  .filechip .fx-nm{color:var(--fg);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .filechip .fx-sz{color:var(--muted);flex:none}
 
   /* typing */
   .typing{display:inline-flex;gap:4px;padding:12px 14px;background:#0a0f06;border:1px solid var(--border);border-radius:14px}
@@ -907,7 +924,6 @@ body{overscroll-behavior-y:none}
   <div class=&quot;agentbar&quot;>
     <span class=&quot;dot&quot;></span>
     <span class=&quot;nm&quot; id=&quot;agName&quot;>Auditor de Conta Meta</span>
-    <span class=&quot;cmd mono&quot; id=&quot;agCmd&quot;>/auditar-conta-meta</span>
   </div>
 
   <div class=&quot;chat chat-live&quot; id=&quot;chatLive&quot; role=&quot;tabpanel&quot;></div>
@@ -929,9 +945,9 @@ const DATA = [
     turns: [
       { role:&quot;user&quot;, kind:&quot;message&quot;, text:&quot;Herdei uma conta de tráfego de infoprodutor, objetivo Compra, R$300/dia. Quero saber se posso escalar ou tô jogando verba no lixo.&quot; },
       { role:&quot;agent&quot;, kind:&quot;message&quot;, text:&quot;Sou o Auditor de Conta Meta. Faço diagnóstico 0-100 nas 4 dimensões que a Meta usa pra te entregar (criativo, sinal/evento, público e estrutura) e te digo o que arrumar primeiro. Me passa o que conseguir: objetivo, gasto, CTR dos tops, número de compras na última semana, se tem CAPI ligada, e quantos conjuntos. Não sabe onde achar? Te guio na tela.&quot; },
-      { role:&quot;user&quot;, kind:&quot;message&quot;, text:&quot;14 anúncios ativos, 2 vídeos antigos levam 80% do gasto, CTR geral 0,9%. Umas 6 compras na semana pelo Gerenciador, mas o checkout (Hotmart) mostra 11 no mesmo período. CAPI não sei dizer. 5 conjuntos, ABO.&quot; },
+      { role:&quot;user&quot;, kind:&quot;message&quot;, file:&quot;exportacao-meta-ultimos-30-dias.csv&quot;, text:&quot;Segue o export da conta, dá uma olhada. Resumindo: 14 anúncios ativos, 2 vídeos antigos levam 80% do gasto, CTR geral 0,9%. Umas 6 compras na semana pelo Gerenciador, mas o checkout (Hotmart) mostra 11 no mesmo período. CAPI não sei dizer. 5 conjuntos, ABO.&quot; },
       { role:&quot;agent&quot;, kind:&quot;diagnostico&quot;, text:&quot;Gargalo dominante: SINAL/EVENTO. O Gerenciador conta 6 compras, o checkout conta 11. Isso é ~45% das vendas sumindo antes de chegar ao otimizador. A conta não está otimizando mal: ela está otimizando cega. Qualquer leitura de qual criativo ou público funciona está enviesada por esse furo.&quot; },
-      { role:&quot;agent&quot;, kind:&quot;output&quot;, text:&quot;Score: 48/100 - conta NÃO está pronta pra escalar.\n\nCriativo 14/25 - 2 vídeos de 40 dias com 80% do gasto: dependência frágil.\nSinal/evento 8/25 - furo de tracking. Prioridade 1.\nPúblico 13/25 - 3 lookalike da mesma origem concorrem no leilão.\nEstrutura 13/25 - 5 conjuntos dividem os poucos eventos.\n\nOrdem: (1) fechar o tracking com /tracking-meta, sem isso toda otimização é dado pela metade; (2) consolidar conjuntos; (3) checar sobreposição; (4) só então renovar criativo.&quot; },
+      { role:&quot;agent&quot;, kind:&quot;output&quot;, text:&quot;Score: 48/100 - conta NÃO está pronta pra escalar.\n\nCriativo 14/25 - 2 vídeos de 40 dias com 80% do gasto: dependência frágil.\nSinal/evento 8/25 - furo de tracking. Prioridade 1.\nPúblico 13/25 - 3 lookalike da mesma origem concorrem no leilão.\nEstrutura 13/25 - 5 conjuntos dividem os poucos eventos.\n\nOrdem: (1) fechar o tracking primeiro, sem isso toda otimização é dado pela metade; (2) consolidar conjuntos; (3) checar sobreposição; (4) só então renovar criativo.&quot; },
       { role:&quot;agent&quot;, kind:&quot;message&quot;, text:&quot;E não vou cravar que seu CTR 0,9% é ruim como verdade universal [SUPOSIÇÃO - varia por nicho]. Me traz o histórico dos meses bons que eu digo se é queda ou se é o normal dessa conta.&quot; }
     ]
   },
@@ -955,8 +971,8 @@ const DATA = [
       { role:&quot;user&quot;, kind:&quot;message&quot;, text:&quot;Quero lançar um curso de inglês pra programadores. A pessoa lê documentação tranquilo, mas trava na hora de falar em daily ou code review com gringo. Já tentou Duolingo, cursinho e Anki. Ticket R$997, tráfego frio no Instagram, primeiro lançamento.&quot; },
       { role:&quot;agent&quot;, kind:&quot;message&quot;, text:&quot;Antes de te dar a Big Idea, deixa eu cravar o diagnóstico, é dele que sai o ângulo. Já tenho quase tudo. Só me confirma: tem alguma frase literal do seu público descrevendo a frustração? Comentário, DM, resposta de formulário, qualquer coisa na voz deles.&quot; },
       { role:&quot;user&quot;, kind:&quot;message&quot;, text:&quot;Não tenho reviews, é o primeiro lançamento. Mas converso com esse povo todo dia no Instagram.&quot; },
-      { role:&quot;agent&quot;, kind:&quot;diagnostico&quot;, text:&quot;Diagnóstico: nível 3 de consciência (ele já sabe que precisa praticar fala, não perca tempo provando isso) e estágio 4 de sofisticação (já viu 'método de imersão', 'inglês na ponta da língua', está cínico com promessa grande). Isso vem do histórico de tentativas que você listou. [SUPOSIÇÃO] Não tenho a voz literal dele reclamando. Recomendo /message-mining em comentários de posts de inglês pra dev antes de escrever.&quot; },
-      { role:&quot;agent&quot;, kind:&quot;output&quot;, text:&quot;Big Idea: 'Você não tem um problema de inglês. Você tem um problema de inglês técnico em tempo real, e nenhum curso de inglês foi feito pra isso.'\n\nÂngulo 1 (recomendado): 'Por que você lê inglês perfeito mas trava de falar' - entra pelo mecanismo, onde nível 3 deve começar.\nÂngulo 2: 'O inglês que você aprendeu não é o de uma daily'.\nÂngulo 3: 'Imersão não funciona pra quem não tem 6 meses sobrando' - só se a mineração mostrar cinismo alto.\n\nEstágio 4 exige mecanismo único nomeado: leve pro /mecanismo-unico, sem nome o cinismo não fura.&quot; }
+      { role:&quot;agent&quot;, kind:&quot;diagnostico&quot;, text:&quot;Diagnóstico: nível 3 de consciência (ele já sabe que precisa praticar fala, não perca tempo provando isso) e estágio 4 de sofisticação (já viu 'método de imersão', 'inglês na ponta da língua', está cínico com promessa grande). Isso vem do histórico de tentativas que você listou. [SUPOSIÇÃO] Não tenho a voz literal dele reclamando. Recomendo minerar as mensagens (message mining) dos comentários de posts de inglês pra dev antes de escrever.&quot; },
+      { role:&quot;agent&quot;, kind:&quot;output&quot;, text:&quot;Big Idea: 'Você não tem um problema de inglês. Você tem um problema de inglês técnico em tempo real, e nenhum curso de inglês foi feito pra isso.'\n\nÂngulo 1 (recomendado): 'Por que você lê inglês perfeito mas trava de falar' - entra pelo mecanismo, onde nível 3 deve começar.\nÂngulo 2: 'O inglês que você aprendeu não é o de uma daily'.\nÂngulo 3: 'Imersão não funciona pra quem não tem 6 meses sobrando' - só se a mineração mostrar cinismo alto.\n\nEstágio 4 exige mecanismo único nomeado: sem nome o cinismo não fura.&quot; }
     ]
   },
   {
@@ -980,7 +996,7 @@ const DATA = [
       { role:&quot;agent&quot;, kind:&quot;message&quot;, text:&quot;Vou rodar o diagnóstico da Value Equation antes de montar qualquer copy. Me confirma: qual é a transformação real (de/para), quem é o comprador ideal, e se tem concorrentes diretos com reclamações coletadas. Isso muda tudo no ângulo.&quot; },
       { role:&quot;user&quot;, kind:&quot;message&quot;, text:&quot;De fazer copy/tráfego na mão ou aceitar o genérico do ChatGPT -> ter um time de especialistas executando dentro da ferramenta que já usa. Público: vende infoproduto ou serviço, solo ou time pequeno. Concorrentes (Xquads, Bravy) têm reclamação de 'não consegui usar nenhum' e 'não sei o que cada um faz'.&quot; },
       { role:&quot;agent&quot;, kind:&quot;diagnostico&quot;, text:&quot;O eixo fraco não é Dream Outcome nem Tempo/Esforço, a Legião já instala em minutos. É a Probabilidade Percebida de Alcançar. A categoria inteira morre aqui: as reclamações ('é só prompt', 'não consegui usar', 'não sei o que cada um faz') são todas de probabilidade percebida. É nesse eixo que a oferta tem que socar, não em mais features.&quot; },
-      { role:&quot;agent&quot;, kind:&quot;output&quot;, text:&quot;Oferta remontada por eixo:\nDream Outcome = vender 'o time que faz o trabalho que hoje te custa caro ou trava', nunca '80 agentes' (isso é feature).\nProbabilidade Percebida [a alavanca] = mecanismo nomeado: cada agente carrega o framework do especialista real + anti-padrões, se auto-explica, guia o input, e tem demo cru ao vivo.\nÂncoras de mercado [SUPOSIÇÃO: confirmar]: copywriter R$3-8k, gestor de tráfego R$1,5-3k/mês.\nPróximo passo: /precificacao pra ancorar o R$97.&quot; }
+      { role:&quot;agent&quot;, kind:&quot;output&quot;, text:&quot;Oferta remontada por eixo:\nDream Outcome = vender 'o time que faz o trabalho que hoje te custa caro ou trava', nunca '80 agentes' (isso é feature).\nProbabilidade Percebida [a alavanca] = mecanismo nomeado: cada agente carrega o framework do especialista real + anti-padrões, se auto-explica, guia o input, e tem demo cru ao vivo.\nÂncoras de mercado [SUPOSIÇÃO: confirmar]: copywriter R$3-8k, gestor de tráfego R$1,5-3k/mês.\nPróximo passo: ancorar o R$97 nas referências reais de mercado.&quot; }
     ]
   },
   {
@@ -992,7 +1008,7 @@ const DATA = [
       { role:&quot;agent&quot;, kind:&quot;message&quot;, text:&quot;Tenho o suficiente pra montar o roteiro. Vou cravar o nível de consciência, construir o mecanismo com você (você não tinha nomeado) e marcar onde falta prova, que eu não vou inventar.&quot; },
       { role:&quot;agent&quot;, kind:&quot;diagnostico&quot;, text:&quot;O dentista sente a dor (aperto apesar do faturamento alto) mas acha que o problema é 'ganhar mais' ou 'cortar gasto'. Não enxerga a causa. Tráfego frio, então o lead abre agitando a dor nomeada, nunca pelo mecanismo. Mecanismo: problema = 'Caixa Único' (PF e PJ misturados, a clínica come o salário antes dele ver); solução = 'Separação em 3 Caixas' (clínica, pró-labore, reserva). O dinheiro não muda, ele para de sumir porque ele enxerga quanto é dele.&quot; },
       { role:&quot;agent&quot;, kind:&quot;output&quot;, text:&quot;LEAD (0:00-0:45): 'Se você é dentista, fatura mais de R$ 40 mil por mês e mesmo assim chega no fim do mês sem saber pra onde foi o dinheiro... o problema não é o que te disseram. Não tem nada a ver com ganhar mais. Tem a ver com um erro que quase todo dentista comete, e que ninguém te ensinou na faculdade nem o seu contador te falou.'&quot; },
-      { role:&quot;agent&quot;, kind:&quot;message&quot;, text:&quot;[SUPOSIÇÃO - confirme] Você disse que atendeu ~30 dentistas mas não passou case. Não vou inventar 'dentista que economizou R$ X'. Me mande 1-2 cases reais ou rode /message-mining nos seus atendimentos. Sem isso o bloco de prova fica oco e a VSL não sustenta o ticket de R$ 3.500.&quot; }
+      { role:&quot;agent&quot;, kind:&quot;message&quot;, text:&quot;[SUPOSIÇÃO - confirme] Você disse que atendeu ~30 dentistas mas não passou case. Não vou inventar 'dentista que economizou R$ X'. Me mande 1-2 cases reais ou minere as mensagens dos seus atendimentos. Sem isso o bloco de prova fica oco e a VSL não sustenta o ticket de R$ 3.500.&quot; }
     ]
   }
 ];
@@ -1001,7 +1017,6 @@ const tabsEl = document.getElementById('tabs');
 const live = document.getElementById('chatLive');
 const staticEl = document.getElementById('chatStatic');
 const agName = document.getElementById('agName');
-const agCmd = document.getElementById('agCmd');
 const provesEl = document.getElementById('proves');
 let cur = 0, playToken = 0;
 const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -1009,7 +1024,8 @@ document.body.classList.add('js');
 function whoLabel(t){ return t.role === 'user' ? 'Você' : (t.kind==='output' ? 'Output' : (t.kind==='diagnostico' ? 'Diagnóstico' : 'Agente')); }
 function bubbleHTML(t){
   const cls = t.role === 'agent' ? ('bub ' + t.kind) : 'bub';
-  return '<div class=&quot;row '+t.role+'&quot;><div class=&quot;'+cls+'&quot;><div class=&quot;who&quot;>'+whoLabel(t)+'</div>'+escapeHtml(t.text)+'</div></div>';
+  const fileH = t.file ? '<div class=&quot;filechip&quot;><svg viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;1.7&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;><path d=&quot;M14 3v5h5&quot;/><path d=&quot;M7 3h7l5 5v13H7z&quot;/></svg><span class=&quot;fx-nm&quot;>'+escapeHtml(t.file)+'</span><span class=&quot;fx-sz&quot;>58 KB</span></div>' : '';
+  return '<div class=&quot;row '+t.role+'&quot;><div class=&quot;'+cls+'&quot;><div class=&quot;who&quot;>'+whoLabel(t)+'</div>'+fileH+escapeHtml(t.text)+'</div></div>';
 }
 function escapeHtml(s){ return s.replace(/[&amp;<>]/g, c=>({'&amp;':'&amp;amp;','<':'&amp;lt;','>':'&amp;gt;'}[c])); }
 function renderStatic(d){ staticEl.innerHTML = d.turns.map(bubbleHTML).join(''); }
@@ -1019,7 +1035,7 @@ function renderTabs(){
 }
 function select(i){
   cur = i; const d = DATA[i];
-  agName.textContent = d.agent; agCmd.textContent = d.command;
+  agName.textContent = d.agent;
   provesEl.innerHTML = '<b>O que isso prova:</b> ' + escapeHtml(d.proves);
   renderStatic(d);
   tabsEl.querySelectorAll('.tab').forEach(b=>b.setAttribute('aria-selected', (+b.dataset.i===i)));
@@ -1864,6 +1880,35 @@ setTimeout(autostart, 900);
     var a = e.target.closest ? e.target.closest('a[href^="http"]') : null;
     if(a) apply(a);
   }, true);
+})();
+</script>
+<script id="smooth-anchor">
+(function(){
+  var DUR=1600;
+  function ease(t){return t<0.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;}
+  function animateTo(y){var sY=window.scrollY,d=y-sY;if(Math.abs(d)<4)return;var t0=performance.now();function step(now){var p=Math.min((now-t0)/DUR,1);window.scrollTo(0,sY+d*ease(p));if(p<1)requestAnimationFrame(step);}requestAnimationFrame(step);}
+  document.addEventListener('click',function(e){
+    if(e.defaultPrevented||e.button!==0||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;
+    var a=e.target.closest?e.target.closest('a[href]'):null;if(!a)return;
+    var raw=a.getAttribute('href');if(!raw||raw.indexOf('#')<0)return;
+    var url;try{url=new URL(a.href,location.href);}catch(_){return;}
+    if(url.origin!==location.origin||url.pathname!==location.pathname||!url.hash||url.hash==='#')return;
+    var el=document.getElementById(decodeURIComponent(url.hash.slice(1)));if(!el)return;
+    e.preventDefault();
+    animateTo(el.getBoundingClientRect().top+window.scrollY);
+    if(history.replaceState)history.replaceState(null,'',url.hash);
+  });
+})();
+</script>
+<script id="demo-autofit">
+(function(){
+  var f=document.querySelector('.demo-frame');if(!f)return;
+  function fit(){try{var d=f.contentDocument;if(d&&d.documentElement){var h=Math.max(d.documentElement.scrollHeight,d.body?d.body.scrollHeight:0);if(h>60)f.style.height=h+'px';}}catch(e){}}
+  function hook(){fit();try{var d=f.contentDocument;if(d&&d.body&&'ResizeObserver'in window){new ResizeObserver(fit).observe(d.body);}}catch(e){}}
+  f.addEventListener('load',hook);
+  if(f.contentDocument&&f.contentDocument.readyState==='complete')hook();
+  window.addEventListener('resize',fit);
+  var n=0,iv=setInterval(function(){fit();if(++n>40)clearInterval(iv);},700);
 })();
 </script>
 </body>
