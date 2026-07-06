@@ -2,20 +2,29 @@ const fs = require("fs");
 const path = require("path");
 let h = fs.readFileSync(path.join(__dirname, "club-live.html"), "utf8");
 const report = [];
+// Correções já GRAVADAS direto na fonte club-live.html (founding/vagas removidos + R$67->R$97, 2026-07-03).
+// Ficam aqui como skip tolerante: não devem contar como MISS, e servem de rede de segurança caso a copy antiga reapareça.
+const BAKED_INTO_SOURCE = new Set([
+  "founding-line", "remove offer sorteio li", "mensal flag", "mensal from", "mensal amt",
+  "mensal cta txt", "anual pn", "anual cta txt", "micro 10 vagas", "faq founding q",
+  "faq founding a", "final lede", "final b1", "final b3", "final b4 live", "final after", "remove raffle",
+  "stat big", "stat lbl", // stat "50 mil views JARVIS" removido de vez da fonte (2026-07-03)
+  "hero sub2", // os 2 <p class="sub-2"> removidos do hero (2026-07-05)
+]);
 function rep(label, search, replace, opts = {}) {
   const before = h;
   if (search instanceof RegExp) h = h.replace(search, replace);
   else h = h.split(search).join(replace);
   const changed = before !== h;
-  if (!changed && !opts.optional) report.push("MISS: " + label);
+  if (!changed && !opts.optional && !BAKED_INTO_SOURCE.has(label)) report.push("MISS: " + label);
   else report.push((changed ? "ok  : " : "skip: ") + label);
 }
 
 // ---- COPY CORRECTIONS ----
 // live 15/06
-rep("eyebrow live", "Comunidade fechada · Lançamento 15/06", "Comunidade fechada · Discord + WhatsApp + Telegram");
+rep("eyebrow live", "Comunidade fechada · Lançamento 15/06", "Comunidade fechada · Discord + WhatsApp + Telegram", { optional: true }); // badge removido do hero
 rep("founding-line", "Founding: <b>10 vagas</b> a <b>R$67/mês</b> travado pra sempre.", "A partir de <b>R$57/mês</b> no plano anual · R$97/mês no mensal.");
-rep("nav seats", '<span class="seats">Founding · 10 vagas</span>', "");
+rep("nav seats", '<span class="seats">Founding · 10 vagas</span>', "", { optional: true }); // cta-wrap removido do nav
 rep("footer live", " · Lançamento 15/06", "");
 
 // desafio quinzenal
@@ -90,9 +99,10 @@ const desafioSection = `<!-- ============ DESAFIO QUINZENAL ============ -->
       ${card("Pontuação que abre portas", "Cada vitória, interação e ajuda vira ponto", "Você soma pontos vencendo desafios, interagindo e ajudando outros membros. Quem cresce na pontuação e tem o perfil que a gente precisa entra no radar pra ser contratado pro time da Infuser.")}
       ${card("Já começou", "O primeiro desafio já está no ar", "Não é promessa pro futuro: a primeira call já rodou e o primeiro desafio já está aberto. Quem entra agora pega o jogo no começo.")}
     </div>
-    <div class="rv" style="margin-top:18px;border:1px solid rgba(168,232,76,.32);background:linear-gradient(120deg,rgba(168,232,76,.07),rgba(168,232,76,.02));border-radius:var(--r);padding:24px 30px;text-align:center">
+    <div class="rv" style="margin-top:18px;border:1px solid rgba(198,255,52,.32);background:linear-gradient(120deg,rgba(198,255,52,.07),rgba(198,255,52,.02));border-radius:var(--r);padding:24px 30px;text-align:center">
       <p style="font-size:16px;line-height:1.6;color:var(--warm);margin:0">Um produto seu vendendo, ou uma vaga no nosso time. <b class="g">Só isso já paga o Club muitas vezes.</b> Você não paga por acesso: entra num lugar onde dá pra fazer dinheiro de verdade com IA.</p>
     </div>
+    <div class="sec-cta rv"><a class="btn btn-primary" href="#oferta">Entrar para o Infuser Club <span class="arr">&rarr;</span></a></div>
   </div>
 </section>
 `;
@@ -139,7 +149,7 @@ const preconnects = (h.match(/<link rel="preconnect"[^>]*>/g) || []).join("");
 const fontLinks = (h.match(/<link href="https:\/\/(?:fonts\.googleapis|api\.fontshare)[^>]*>/g) || []).join("");
 const style = (h.match(/<style>[\s\S]*?<\/style>/) || [""])[0];
 let body = (h.match(/<body[^>]*>([\s\S]*?)<\/body>/) || ["", ""])[1];
-body = body.replace(/<script>[\s\S]*?<\/script>/g, ""); // drop inline scripts (ported to React)
+body = body.replace(/<script\b[\s\S]*?<\/script>/gi, ""); // drop TODOS os inline scripts, com ou sem atributos (ex: loader VTURB) — portados p/ React (useEffect)
 
 const fragment = preconnects + "\n" + fontLinks + "\n" + style + "\n" + body;
 

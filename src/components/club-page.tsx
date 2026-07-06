@@ -161,6 +161,19 @@ export function ClubPage() {
         );
         roots.push(r);
       }
+
+      // VSL VTURB: <script> injetado via innerHTML não executa; injeta o loader aqui.
+      const VTURB_SRC =
+        "https://scripts.converteai.net/53b78c15-4e25-48b1-ba74-231d36c12bbd/players/6a490fc4f760b4a57d1b8eab/v4/player.js";
+      if (
+        scope.querySelector("vturb-smartplayer") &&
+        !document.querySelector(`script[src="${VTURB_SRC}"]`)
+      ) {
+        const vs = document.createElement("script");
+        vs.src = VTURB_SRC;
+        vs.async = true;
+        document.head.appendChild(vs);
+      }
     }
 
     // a página antiga gateia o reveal atrás de .js (.js .rv{opacity:0})

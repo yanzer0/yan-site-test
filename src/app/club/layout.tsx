@@ -1,10 +1,12 @@
 import type { PropsWithChildren } from "react";
-import { UtmifyPixel } from "@/components/utmify-pixel";
+import { ClubUtmifyPixel } from "@/components/club-utmify-pixel";
+import { ClubClarity } from "@/components/club-clarity";
 
 export default function ClubLayout({ children }: PropsWithChildren) {
   return (
     <>
-      <UtmifyPixel />
+      <ClubUtmifyPixel />
+      <ClubClarity />
       {children}
     </>
   );
