@@ -11,15 +11,17 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       {
-        // arquivos estaticos do Club (webp/mp4 em public/club) nao sao
-        // content-hashed, entao usa max-age moderado + stale-while-revalidate
-        // em vez de immutable/1 ano (evita servir versao velha por muito
-        // tempo quando um asset e substituido com o mesmo nome).
+        // Assets estaticos do Club (webp/mp4/svg em public/club). Nao sao
+        // content-hashed, mas o fluxo de atualizacao RENOMEIA o arquivo ao
+        // trocar (ex: prova-2.jpg -> prova-2.png -> prova-2.webp), entao
+        // immutable/1 ano e seguro (URL nova = cache novo) e da credito total
+        // no "efficient cache policy" do PageSpeed. Se um dia precisar
+        // substituir mantendo o mesmo nome, trocar o nome/versionar a URL.
         source: "/club/:path*",
         headers: [
           {
             key: "Cache-Control",
-            value: "public, max-age=3600, stale-while-revalidate=86400",
+            value: "public, max-age=31536000, immutable",
           },
         ],
       },
