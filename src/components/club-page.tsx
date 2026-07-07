@@ -122,7 +122,7 @@ const BONUSES: CardItem[] = [
   },
   {
     id: "pergaminho",
-    image: "/club/o-pergaminho.png",
+    image: "/club/o-pergaminho.webp",
     title: "O Pergaminho",
     subtitle:
       "Do zero à sua ideia de negócio validada, em 1 documento, guiado pela IA.",
