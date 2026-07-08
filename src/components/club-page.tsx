@@ -176,6 +176,67 @@ export function ClubPage() {
       }
     }
 
+    // ── VSL delay: revela tudo abaixo do vídeo quando o pitch chega no CTA (11:10 = 670s).
+    // API oficial VTURB (timeupdate + video.currentTime): amarra no tempo REAL do vídeo,
+    // sincroniza mesmo se pausar, ignora o preview de smartAutoPlay. Cache em localStorage
+    // (quem já passou do pitch e recarrega vê tudo na hora) + FAIL-OPEN (se o player não
+    // subir em ~30s, revela mesmo assim pra nunca prender a oferta e zerar venda).
+    type SmartInstance = {
+      on: (ev: string, cb: () => void) => void;
+      video: { currentTime: number };
+      smartAutoPlay?: boolean;
+    };
+    const VSL_CTA_SECONDS = 670;
+    const vslKey = "clubVslUnlocked_" + VSL_CTA_SECONDS;
+    let vslUnlocked = false;
+    let vslTimer: number | undefined;
+    const revealBelowVsl = () => {
+      if (vslUnlocked) return;
+      vslUnlocked = true;
+      document
+        .querySelectorAll(".is-gated")
+        .forEach((el) => el.classList.remove("is-gated"));
+      try {
+        localStorage.setItem(vslKey, "1");
+      } catch {
+        /* localStorage indisponível: segue sem cache */
+      }
+      // carrosséis podem ter montado escondidos (display:none) → força re-medida
+      window.dispatchEvent(new Event("resize"));
+    };
+    let vslAttempts = 0;
+    const watchVslProgress = () => {
+      const sp = (
+        window as unknown as { smartplayer?: { instances?: SmartInstance[] } }
+      ).smartplayer;
+      if (!sp || !sp.instances || !sp.instances.length) {
+        if (vslAttempts >= 30) {
+          revealBelowVsl(); // player não subiu em ~30s: fail-open
+          return;
+        }
+        vslAttempts += 1;
+        vslTimer = window.setTimeout(watchVslProgress, 1000);
+        return;
+      }
+      const inst = sp.instances[0];
+      inst.on("timeupdate", () => {
+        if (vslUnlocked || inst.smartAutoPlay) return;
+        if (inst.video.currentTime < VSL_CTA_SECONDS) return;
+        revealBelowVsl();
+      });
+    };
+    let vslCached = false;
+    try {
+      vslCached = localStorage.getItem(vslKey) === "1";
+    } catch {
+      /* localStorage indisponível */
+    }
+    if (vslCached) {
+      revealBelowVsl();
+    } else {
+      watchVslProgress();
+    }
+
     // a página antiga gateia o reveal atrás de .js (.js .rv{opacity:0})
     const root = document.documentElement;
     root.classList.add("js");
@@ -214,6 +275,7 @@ export function ClubPage() {
     return () => {
       window.removeEventListener("scroll", onScroll);
       io?.disconnect();
+      if (vslTimer) window.clearTimeout(vslTimer);
       root.classList.remove("js");
       roots.forEach((r) => r.unmount());
     };
