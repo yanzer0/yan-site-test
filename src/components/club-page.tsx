@@ -186,7 +186,7 @@ export function ClubPage() {
       video: { currentTime: number };
       smartAutoPlay?: boolean;
     };
-    const VSL_CTA_SECONDS = 30; // TEMP modo de teste — validar o reveal. Trocar pra 670 (11:10) na versão final.
+    const VSL_CTA_SECONDS = 670; // 11:10 — momento em que o narrador faz o CTA na VSL
     const vslKey = "clubVslUnlocked_" + VSL_CTA_SECONDS;
     let vslUnlocked = false;
     let vslTimer: number | undefined;
