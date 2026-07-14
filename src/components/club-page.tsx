@@ -176,7 +176,7 @@ export function ClubPage() {
       }
     }
 
-    // ── VSL delay: revela tudo abaixo do vídeo quando o pitch chega no CTA (9:00 = 540s).
+    // ── VSL delay: revela tudo abaixo do vídeo quando o pitch chega no CTA (9:05 = 545s).
     // API oficial VTURB (timeupdate + video.currentTime): amarra no tempo REAL do vídeo,
     // sincroniza mesmo se pausar, ignora o preview de smartAutoPlay. Cache em localStorage
     // (quem já passou do pitch e recarrega vê tudo na hora) + FAIL-OPEN (se o player não
@@ -186,7 +186,7 @@ export function ClubPage() {
       video: { currentTime: number };
       smartAutoPlay?: boolean;
     };
-    const VSL_CTA_SECONDS = 540; // 9:00 — momento em que o preço é revelado na VSL
+    const VSL_CTA_SECONDS = 545; // 9:05 — momento em que o preço é revelado na VSL
     const vslKey = "clubVslUnlocked_" + VSL_CTA_SECONDS;
     let vslUnlocked = false;
     let vslTimer: number | undefined;
