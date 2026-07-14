@@ -25,6 +25,17 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      {
+        // Avatares dos agentes em /legiao (webp estatico, ver public/legiao/avatars).
+        // Mesmo raciocinio do /club: nome novo ao trocar imagem = cache novo.
+        source: "/legiao/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
     ];
   },
   images: {
