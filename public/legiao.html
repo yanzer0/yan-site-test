@@ -11,35 +11,30 @@
 <meta property="og:description" content="80 agentes de IA com o método e os anti-padrões de um especialista de verdade, a um pedido de distância dentro do seu Claude.">
 <meta name="theme-color" content="#171717">
 <link rel="icon" href="/icon-warm-on-black.svg">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Fontes self-hosted (mesma origem, HTTP/2 ja aberto: zero round-trip cross-origin
+     no caminho critico). Preload so das 2 acima da dobra: Inter (H1 = elemento LCP)
+     e Onest (corpo). Geist Mono carrega sem preload (mono, abaixo da dobra). -->
+<link rel="preload" href="/legiao/fonts/inter-latin-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/legiao/fonts/onest-latin-var.woff2" as="font" type="font/woff2" crossorigin>
+<!-- Trackers (Meta Pixel + UTMify) carregam FORA do caminho critico: na 1a interacao
+     do usuario ou em load+idle, o que vier primeiro. Loader no fim do <body>.
+     dns-prefetch mantido pra aquecer o DNS antes desse carregamento tardio. -->
 <link rel="dns-prefetch" href="https://connect.facebook.net">
 <link rel="dns-prefetch" href="https://cdn.utmify.com.br">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Onest:wght@400;500;600&family=Geist+Mono:wght@500&display=swap" rel="preload" as="style">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Onest:wght@400;500;600&family=Geist+Mono:wght@500&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-<noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Onest:wght@400;500;600&family=Geist+Mono:wght@500&display=swap" rel="stylesheet"></noscript>
-<!-- UTMify: pixel + UTM tracking (atribuicao por criativo) -->
-<script>
-  window.pixelId = "6a4d636e418e8b5a0446d024";
-  var a = document.createElement("script");
-  a.setAttribute("async", "");
-  a.setAttribute("defer", "");
-  a.setAttribute("src", "https://cdn.utmify.com.br/scripts/pixel/pixel.js");
-  document.head.appendChild(a);
-</script>
-<script
-  src="https://cdn.utmify.com.br/scripts/utms/latest.js"
-  data-utmify-prevent-xcod-sck
-  data-utmify-prevent-subids
-  async
-  defer
-></script>
 <style>
+/* Fontes self-hosted, subset latino (cobre acentos PT-BR). Inter e Onest sao
+   variable fonts: um woff2 cobre toda a faixa de peso. font-display:swap =
+   texto visivel de imediato no fallback, troca rapida (mesma origem). */
+@font-face{font-family:"Inter";font-weight:100 900;font-style:normal;font-display:swap;src:url(/legiao/fonts/inter-latin-var.woff2) format("woff2")}
+@font-face{font-family:"Onest";font-weight:100 900;font-style:normal;font-display:swap;src:url(/legiao/fonts/onest-latin-var.woff2) format("woff2")}
+@font-face{font-family:"Geist Mono";font-weight:500;font-style:normal;font-display:swap;src:url(/legiao/fonts/geistmono-latin-500.woff2) format("woff2")}
 :root{
   --carbon:#171717; --onyx:#020202; --warm:#f0f0e4;
   --lime:#c6ff34; --lime-ink:#0c0c08;
   --teal-1:#3bd0a0; --teal-2:#2fa084; --teal-3:#1f6f5f; --teal-4:#143a31;
-  --muted:rgba(240,240,228,.66); --faint:rgba(240,240,228,.42);
+  /* alphas ajustados p/ passar WCAG AA (4.5:1) sobre carbon E sobre os cards tintados:
+     faint .42->.58 (era 3.7:1 = falha) ; muted .66->.70 (mantem hierarquia faint<muted<warm) */
+  --muted:rgba(240,240,228,.70); --faint:rgba(240,240,228,.58);
   --line:rgba(240,240,228,.14); --line-2:rgba(240,240,228,.08);
   --danger:#e5484d; --danger-bg:rgba(229,72,77,.1); --danger-line:rgba(229,72,77,.3);
   --font-display:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
@@ -290,7 +285,7 @@ b,strong{font-weight:700;color:var(--warm)}
 .vs-card.good{background:rgba(198,255,52,.06);border-color:var(--lime)}
 .vs-badge{display:inline-block;font-family:var(--font-mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;
   padding:5px 12px;border-radius:var(--r-full);margin-bottom:16px}
-.vs-badge.bad{color:var(--danger);background:rgba(229,72,77,.14)}
+.vs-badge.bad{color:#ff6b6f;background:rgba(229,72,77,.14)}/* vermelho claro p/ passar AA sobre o fundo tintado (o --danger escuro so dava 3.97:1) */
 .vs-badge.good{color:var(--lime-ink);background:var(--lime)}
 .vs-prompt{font-size:13.5px;color:var(--faint);margin-bottom:12px;line-height:1.5}
 .vs-out{font-family:var(--font-display);font-weight:600;font-size:16px;color:var(--warm);line-height:1.46;margin-bottom:12px}
@@ -848,17 +843,47 @@ footer p{font-size:13px;color:var(--faint)}
   </div>
 </footer>
 
-<!-- Meta Pixel + CAPI -->
-<script id="meta-pixel">
-!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
-fbq('init','26669487942716886');
-(function(){try{
-  var eid=(window.crypto&&crypto.randomUUID)?crypto.randomUUID():(Date.now().toString(36)+'-'+Math.random().toString(36).slice(2));
-  fbq('track','PageView',{},{eventID:eid});
-  function ck(n){var m=document.cookie.match(new RegExp('(?:^|; )'+n+'=([^;]*)'));return m?decodeURIComponent(m[1]):undefined;}
-  var ud={},fbp=ck('_fbp'),fbc=ck('_fbc');if(fbp)ud.fbp=fbp;if(fbc)ud.fbc=fbc;
-  fetch('/api/meta-capi',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({event_name:'PageView',event_id:eid,event_source_url:location.href,user_data:ud}),keepalive:true}).catch(function(){});
-}catch(e){}})();
+<!-- Trackers (Meta Pixel + UTMify) carregados FORA do caminho critico de render.
+     Disparam na 1a interacao do usuario (pointer/scroll/touch/keydown) OU em load+idle,
+     o que vier primeiro. Assim nao competem por CPU/banda no first paint (mata os
+     long-tasks / unused-JS / forced-reflow do fbevents.js), mas ainda rodam bem antes
+     do usuario rolar ate o botao de compra — entao a atribuicao UTM->Hubla e o PageView
+     continuam intactos. PageView do browser + CAPI compartilham o mesmo eventID (dedup). -->
+<script id="deferred-trackers">
+(function(){
+  var loaded=false;
+  var events=['pointerdown','touchstart','scroll','keydown','mousemove'];
+  function detach(){events.forEach(function(e){window.removeEventListener(e,onFirstInteract,{passive:true});});}
+  function loadTrackers(){
+    if(loaded) return; loaded=true; detach();
+    // --- UTMify: captura de UTM (atribuicao por criativo) + pixel ---
+    window.pixelId="6a4d636e418e8b5a0446d024";
+    var up=document.createElement("script");
+    up.async=true; up.defer=true; up.src="https://cdn.utmify.com.br/scripts/pixel/pixel.js";
+    document.head.appendChild(up);
+    var uu=document.createElement("script");
+    uu.async=true; uu.defer=true; uu.src="https://cdn.utmify.com.br/scripts/utms/latest.js";
+    uu.setAttribute("data-utmify-prevent-xcod-sck","");
+    uu.setAttribute("data-utmify-prevent-subids","");
+    document.head.appendChild(uu);
+    // --- Meta Pixel + CAPI (mesmo eventID p/ dedup) ---
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init','26669487942716886');
+    try{
+      var eid=(window.crypto&&crypto.randomUUID)?crypto.randomUUID():(Date.now().toString(36)+'-'+Math.random().toString(36).slice(2));
+      fbq('track','PageView',{},{eventID:eid});
+      var ck=function(n){var m=document.cookie.match(new RegExp('(?:^|; )'+n+'=([^;]*)'));return m?decodeURIComponent(m[1]):undefined;};
+      var ud={},fbp=ck('_fbp'),fbc=ck('_fbc');if(fbp)ud.fbp=fbp;if(fbc)ud.fbc=fbc;
+      fetch('/api/meta-capi',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({event_name:'PageView',event_id:eid,event_source_url:location.href,user_data:ud}),keepalive:true}).catch(function(){});
+    }catch(e){}
+  }
+  function onFirstInteract(){loadTrackers();}
+  events.forEach(function(e){window.addEventListener(e,onFirstInteract,{passive:true});});
+  window.addEventListener('load',function(){
+    if('requestIdleCallback' in window){requestIdleCallback(loadTrackers,{timeout:3000});}
+    else{setTimeout(loadTrackers,2500);}
+  });
+})();
 </script>
 <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=26669487942716886&ev=PageView&noscript=1" alt=""></noscript>
 
