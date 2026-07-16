@@ -1017,11 +1017,7 @@ function PricingSection() {
             Pagamento único. Sem assinatura. Sem renovação.
           </p>
           <a
-            href="#cta-comprar-final"
-            onClick={(e) => {
-              e.preventDefault();
-              scrollToFinalCta();
-            }}
+            href={CHECKOUT_URL}
             className="group block w-full rounded-lg bg-green-500 px-8 py-4 text-lg font-bold text-black transition-all duration-200 hover:bg-green-400 hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(168,232,76,0.3)] cursor-pointer"
           >
             Quero o Kit Segundo Cérebro <span className="transition-transform duration-200 group-hover:translate-x-1 inline-block">&rarr;</span>
