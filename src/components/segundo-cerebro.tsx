@@ -1,11 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Menu, X, ArrowLeft, Code2, Target, BookOpen, Video, BarChart3, Expand, ChevronDown, ShoppingBag } from "lucide-react";
+import { X, Code2, Target, BookOpen, Video, BarChart3, Expand, ChevronDown, ShoppingBag } from "lucide-react";
 import { useScrollReveal } from "@/lib/use-scroll-reveal";
-import { useScrolled } from "@/lib/use-scrolled";
 import Image from "next/image";
-import Link from "next/link";
 import Script from "next/script";
 
 /* ─── Lightbox Modal ─── */
@@ -86,6 +84,23 @@ function scrollToFinalCta() {
   document
     .getElementById(FINAL_CTA_ID)
     ?.scrollIntoView({ behavior: "smooth", block: "center" });
+}
+
+/* ─── Reusable end-of-section CTA (scrolls to the pricing card) ───
+   Plain anchor: the site's global SmoothAnchorScroll handles the
+   animation for same-page "#" links, same as every other in-page
+   link on the site (e.g. the hero's "Entenda como funciona" link). */
+function SectionCta() {
+  return (
+    <div className="mt-14 flex justify-center">
+      <a
+        href="#comprar"
+        className="group inline-flex items-center gap-2 rounded-lg bg-green-500 px-8 py-4 text-base font-bold text-black transition-all duration-200 hover:bg-green-400 hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(168,232,76,0.3)] cursor-pointer"
+      >
+        Quero o Kit Segundo Cérebro <span className="transition-transform duration-200 group-hover:translate-x-1 inline-block">&rarr;</span>
+      </a>
+    </div>
+  );
 }
 
 const BUYER_NAMES = [
@@ -186,117 +201,12 @@ function SocialProofToast() {
   );
 }
 
-/* ─── Navbar ─── */
-function SCNavbar() {
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const scrolled = useScrolled(60);
-
-  const NAV_LINKS = [
-    { label: "O que vem no kit", href: "#kit" },
-    { label: "FAQ", href: "#faq" },
-  ];
-
-  return (
-    <header className="fixed top-4 left-4 right-4 z-50">
-      <nav className={`mx-auto max-w-3xl glass rounded-lg px-6 py-3 flex items-center justify-between transition-all duration-300 ${scrolled ? "navbar-scrolled" : ""}`}>
-        <div className="flex items-center gap-3">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-1 text-xs text-zinc-400 hover:text-white transition-colors cursor-pointer mr-1"
-            aria-label="Voltar aos kits"
-          >
-            <ArrowLeft className="h-3.5 w-3.5" />
-            <span className="hidden sm:inline">Kits</span>
-          </Link>
-          <a href="#" className="flex items-center cursor-pointer">
-            <Image
-              src="/lockup-sem-fundo.svg"
-              alt="Infuser"
-              width={120}
-              height={32}
-              className="h-8 w-auto"
-            />
-          </a>
-        </div>
-
-        <div className="hidden md:flex items-center gap-8">
-          {NAV_LINKS.map((link) => (
-            <a
-              key={link.label}
-              href={link.href}
-              className="relative text-sm text-zinc-400 hover:text-white transition-colors duration-200 cursor-pointer after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[1px] after:bg-green-400 after:transition-all after:duration-300 hover:after:w-full"
-            >
-              {link.label}
-            </a>
-          ))}
-        </div>
-
-        <div className="flex items-center gap-2">
-          <a
-            href="#cta-comprar-final"
-            onClick={(e) => {
-              e.preventDefault();
-              scrollToFinalCta();
-            }}
-            className="inline-flex items-center gap-2 rounded-full bg-green-500 px-4 py-2 text-xs sm:text-sm font-semibold text-black transition-all duration-200 hover:bg-green-400 hover:shadow-[0_0_20px_rgba(168,232,76,0.3)] cursor-pointer green-glow-sm"
-          >
-            Quero o Kit
-          </a>
-
-          <button
-            onClick={() => setMobileOpen(!mobileOpen)}
-            className="md:hidden text-white cursor-pointer p-2"
-            aria-label="Toggle menu"
-          >
-            {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </button>
-        </div>
-      </nav>
-
-      <div className={`md:hidden mt-2 mx-auto max-w-3xl rounded-lg border border-white/10 bg-[#0A0A0A]/90 backdrop-blur-xl p-6 flex flex-col gap-4 transition-all duration-300 origin-top ${
-        mobileOpen ? "opacity-100 scale-y-100 translate-y-0" : "opacity-0 scale-y-95 -translate-y-2 pointer-events-none"
-      }`}>
-        {NAV_LINKS.map((link) => (
-          <a
-            key={link.label}
-            href={link.href}
-            onClick={() => setMobileOpen(false)}
-            className="text-sm text-zinc-400 hover:text-white transition-colors duration-200 cursor-pointer"
-          >
-            {link.label}
-          </a>
-        ))}
-        <a
-          href="#cta-comprar-final"
-          onClick={(e) => {
-            e.preventDefault();
-            setMobileOpen(false);
-            scrollToFinalCta();
-          }}
-          className="inline-flex items-center justify-center gap-2 rounded-full bg-green-500 px-5 py-2.5 text-sm font-semibold text-black cursor-pointer"
-        >
-          Quero o Kit
-        </a>
-      </div>
-    </header>
-  );
-}
-
 /* ─── Section 1: Hero ─── */
 function HeroSection() {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-28 pb-16">
       <div className="relative z-10 mx-auto max-w-4xl px-4 sm:px-6 text-center">
-        {/* Badge */}
-        <div className="animate-fade-in-up inline-flex items-center gap-3 mb-8">
-          <span className="h-px w-5 bg-green-400" />
-          <span className="font-mono text-[11px] uppercase tracking-[0.15em] text-green-400">
-            Kit Segundo Cérebro
-          </span>
-          <span className="h-px w-5 bg-green-400" />
-        </div>
-
         {/* Headline */}
         <h1 className="animate-fade-in-up delay-100 font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.05]">
           Configura uma vez.
@@ -325,11 +235,7 @@ function HeroSection() {
         {/* CTA */}
         <div className="animate-fade-in-up delay-400 mt-10 flex flex-col items-center">
           <a
-            href="#cta-comprar-final"
-            onClick={(e) => {
-              e.preventDefault();
-              scrollToFinalCta();
-            }}
+            href="#comprar"
             className="group inline-flex items-center gap-2 rounded-lg bg-green-500 px-10 py-4 text-base font-bold text-black transition-all duration-200 hover:bg-green-400 hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(168,232,76,0.3)] cursor-pointer green-glow"
           >
             Quero o Segundo Cérebro! <span className="transition-transform duration-200 group-hover:translate-x-1">&rarr;</span>
@@ -417,6 +323,7 @@ function PainSection() {
             E o pior: quantas vezes você <span className="text-gradient-green">deixou de usar o Claude</span> porque dava preguiça de explicar tudo de novo?
           </p>
         </div>
+        <SectionCta />
       </div>
     </section>
     </>
@@ -523,6 +430,7 @@ function RevelationSection() {
             quality={90}
           />
         </div>
+        <SectionCta />
       </div>
     </section>
     </>
@@ -653,6 +561,7 @@ function DemoSection() {
           </div>
 
         </div>
+        <SectionCta />
       </div>
     </section>
     </>
@@ -793,6 +702,7 @@ function KitContentsSection() {
             </div>
           ))}
         </div>
+        <SectionCta />
       </div>
     </section>
     </>
@@ -841,6 +751,7 @@ function AudienceSection() {
             </div>
           ))}
         </div>
+        <SectionCta />
       </div>
     </section>
     </>
@@ -894,6 +805,7 @@ function NotForSection() {
         <p className="mt-10 text-base sm:text-lg text-zinc-400 text-center font-medium">
           Se nenhum desses se aplica, continua lendo. O que vem a seguir vai fazer <span className="text-gradient-green font-semibold">R$67 parecer piada.</span>
         </p>
+        <SectionCta />
       </div>
     </section>
     </>
@@ -957,6 +869,7 @@ function ValueComparisonSection() {
             Se você ganha R$50/hora e o kit te economiza 1 hora por semana (e vai economizar mais), ele se paga em menos de duas semanas. Nas 50 semanas seguintes, é lucro puro — de tempo, não de dinheiro. <strong className="text-white">Tempo que você usa pra fazer o que importa em vez de ficar explicando contexto pra IA.</strong>
           </p>
         </div>
+        <SectionCta />
       </div>
     </section>
     </>
@@ -1026,6 +939,7 @@ function FAQSection() {
             <SCFAQItem key={item.q} q={item.q} a={item.a} />
           ))}
         </div>
+        <SectionCta />
       </div>
     </section>
     </>
@@ -1065,6 +979,7 @@ function SupportSection() {
         <p className="text-[15px] text-zinc-400 leading-relaxed">
           Pensa nisso: você está pagando R$67 por um kit que vem com suporte técnico ilimitado e permanente. Qualquer SaaS cobra isso <em>por mês</em> só pelo suporte.
         </p>
+        <SectionCta />
       </div>
     </section>
     </>
@@ -1112,7 +1027,7 @@ function PricingSection() {
             Quero o Kit Segundo Cérebro <span className="transition-transform duration-200 group-hover:translate-x-1 inline-block">&rarr;</span>
           </a>
           <p className="font-mono text-[11px] text-zinc-500 mt-4">
-            Pagamento seguro via Kiwify &middot; Entrega instantânea &middot; Acesso imediato
+            Pagamento seguro via Hubla &middot; Entrega instantânea &middot; Acesso imediato
           </p>
         </div>
 
@@ -1193,44 +1108,10 @@ function SCFooter() {
           </a>
         </p>
         <p className="font-mono text-[11px] text-zinc-600 mt-1">
-          Produto digital &middot; Entrega instantânea via Kiwify &middot; Sem assinatura
+          Produto digital &middot; Entrega instantânea via Hubla &middot; Sem assinatura
         </p>
       </div>
     </footer>
-  );
-}
-
-/* ─── Upsell: Jarvis Kit (cross-sell on Segundo Cérebro page) ─── */
-function JarvisUpsell() {
-  return (
-    <section className="py-16 sm:py-20">
-      <div className="mx-auto max-w-3xl px-4 sm:px-6 text-center">
-        <div className="rounded-lg border border-green-500/20 bg-green-500/[0.04] p-8 sm:p-10">
-          <div className="inline-flex items-center gap-3 mb-4">
-            <span className="h-px w-5 bg-green-400/40" />
-            <span className="font-mono text-[11px] uppercase tracking-[0.15em] text-green-400/70">
-              Conheça também
-            </span>
-            <span className="h-px w-5 bg-green-400/40" />
-          </div>
-
-          <h3 className="font-heading text-xl sm:text-2xl font-bold text-white mb-3">
-            Conhece o{" "}
-            <span className="font-punch text-gradient-green">Jarvis Kit</span>?
-          </h3>
-          <p className="text-sm text-zinc-400 leading-relaxed max-w-md mx-auto mb-6">
-            Automação por palmas e voz. Duas palmas e tudo liga sozinho. O companheiro perfeito pro seu Segundo Cérebro.
-          </p>
-
-          <Link
-            href="/kit-jarvis"
-            className="inline-block rounded-lg bg-green-500 px-8 py-3 text-base font-bold text-black transition-all duration-200 hover:bg-green-400 cursor-pointer green-glow"
-          >
-            Conhecer o Jarvis Kit &rarr;
-          </Link>
-        </div>
-      </div>
-    </section>
   );
 }
 
@@ -1238,7 +1119,6 @@ function JarvisUpsell() {
 export function SegundoCerebro() {
   return (
     <>
-      <SCNavbar />
       <main>
         <HeroSection />
         <PainSection />
@@ -1252,7 +1132,6 @@ export function SegundoCerebro() {
         <SupportSection />
         <PricingSection />
         <FinalPushSection />
-        <JarvisUpsell />
       </main>
       <SocialProofToast />
       <SCFooter />
