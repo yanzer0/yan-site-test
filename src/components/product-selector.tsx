@@ -2,49 +2,78 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { Inter, Onest, Geist_Mono } from "next/font/google";
 import { DottedSurface } from "@/components/ui/dotted-surface-lazy";
+
+// Identidade v2 (Lime #C6FF34 + Inter/Onest/Geist Mono) escopada só a esta
+// seção — o resto do site ainda está na identidade antiga (MASTER.md /
+// Electric Green), então os tokens globais não são tocados aqui.
+const v2Display = Inter({
+  variable: "--v2-font-display",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+});
+
+const v2Body = Onest({
+  variable: "--v2-font-body",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
+
+const v2Mono = Geist_Mono({
+  variable: "--v2-font-mono",
+  subsets: ["latin"],
+  weight: ["400", "500", "700"],
+});
 
 const PRODUCTS = [
   {
-    id: "jarvis" as const,
-    href: "/kit-jarvis",
-    cover: "/capa-jarvis.webp",
-    title: "Kit Jarvis",
-    subtitle: "Automação por palmas e voz",
-    titleClass: "text-green-400",
-    badge: null,
-  },
-  {
-    id: "segundo-cerebro" as const,
+    id: "segundo-cerebro",
     href: "/kit-segundo-cerebro",
     cover: "/capa-segundo-cerebro.webp",
+    eyebrow: "Kit digital · Passo a passo completo",
     title: "Kit Segundo Cérebro",
-    subtitle: "Memória permanente pro Claude Code",
-    titleClass: "text-green-400",
-    badge: null,
+    description:
+      "Pare de repetir contexto toda vez que abre o Claude Code. Instale o kit e ele passa a lembrar seus projetos, decisões e preferências sozinho — sessão após sessão.",
+    cta: "Acessar o kit",
   },
   {
-    id: "kit-skills" as const,
-    href: "/kit-skills",
-    cover: "/capa-kit-skills.webp",
-    title: "Pack de Skills",
-    subtitle: "10 superpoderes pro Claude Code",
-    titleClass: "text-green-400",
-    badge: "Novo",
+    id: "club",
+    href: "/club",
+    cover: "/club/capa-infuser-club.webp",
+    eyebrow: "Comunidade · Recorrente",
+    title: "Infuser Club",
+    description:
+      "Calls ao vivo toda semana, desafio quinzenal com freelance real e 4 bônus pra quem quer viver de IA. A partir de R$57/mês no plano anual.",
+    cta: "Entrar para o Club",
   },
-] as const;
+  {
+    id: "servico",
+    href: "https://forms.gle/9Jk6ZjaMFC3fgfbt6",
+    cover: "/capa-servico-personalizado.webp",
+    eyebrow: "Serviço personalizado · Sob aplicação",
+    title:
+      "Contrate meu serviço para criar seu segundo cérebro e automatizar seus processos",
+    description:
+      "Preencha uma pesquisa rápida de qualificação. Em até 24h a equipe do Yan entra em contato pra entender seu processo e montar o segundo cérebro sob medida pra você.",
+    cta: "Responder a pesquisa",
+  },
+];
 
 export function ProductSelector() {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden py-16 sm:py-24">
+    <section
+      className={`${v2Display.variable} ${v2Body.variable} ${v2Mono.variable} relative min-h-screen flex items-center justify-center overflow-hidden py-16 sm:py-24`}
+      style={{ fontFamily: "var(--v2-font-body)" }}
+    >
       {/* 3D dotted surface background */}
       <DottedSurface />
 
-      <div className="relative z-10 mx-auto max-w-3xl px-4 sm:px-6 text-center">
-        {/* Logo */}
+      <div className="relative z-10 mx-auto max-w-5xl px-4 sm:px-6 text-center">
+        {/* Logo — v2 (lockup com acento Lime) */}
         <div className="animate-fade-in-up mb-12">
           <Image
-            src="/lockup-sem-fundo.svg"
+            src="/lockup-v2-oficial.svg"
             alt="Infuser"
             width={280}
             height={72}
@@ -54,156 +83,101 @@ export function ProductSelector() {
 
         {/* Eyebrow */}
         <div className="animate-fade-in-up inline-flex items-center gap-3 mb-6">
-          <span className="h-px w-5 bg-green-400" />
-          <span className="font-mono text-[11px] uppercase tracking-[0.15em] text-gradient-green">
-            Escolha seu kit
+          <span className="h-px w-5 bg-[#C6FF34]" />
+          <span
+            className="text-[11px] uppercase tracking-[0.15em] bg-gradient-to-r from-[#C6FF34] to-[#3BD0A0] bg-clip-text text-transparent"
+            style={{ fontFamily: "var(--v2-font-mono)" }}
+          >
+            Escolha seu caminho
           </span>
-          <span className="h-px w-5 bg-green-400" />
+          <span className="h-px w-5 bg-[#C6FF34]" />
         </div>
 
-        {/* Headline */}
-        <h1 className="animate-fade-in-up delay-100 font-heading text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-[1.1] mb-4">
-          Qual kit você quer?
+        {/* Headline — não fala mais em "kit" (agora tem produto + comunidade + serviço) */}
+        <h1
+          className="animate-fade-in-up delay-100 text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-[1.1] mb-4"
+          style={{ fontFamily: "var(--v2-font-display)" }}
+        >
+          Como você quer começar?
         </h1>
 
         {/* Subline */}
         <p className="animate-fade-in-up delay-200 text-[15px] text-zinc-400 max-w-md mx-auto mb-12">
-          Selecione o produto que vai transformar sua rotina.
+          Selecione a opção que vai transformar sua rotina.
         </p>
 
-        {/* Product cards grid */}
-        <div className="animate-fade-in-up delay-300 grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-6">
-          {PRODUCTS.map((product) => (
-            <Link
-              key={product.id}
-              href={product.href}
-              className={`group relative rounded-lg border bg-black/60 backdrop-blur shadow-lg overflow-hidden text-left transition-all duration-200 hover:scale-[1.02] hover:bg-black/50 cursor-pointer ${
-                product.badge
-                  ? "border-green-500/40 ring-1 ring-green-500/20"
-                  : "border-white/10"
-              }`}
-            >
-              {/* Cover image */}
-              <div className="aspect-[16/9] overflow-hidden">
-                <Image
-                  src={product.cover}
-                  alt={product.title}
-                  width={800}
-                  height={450}
-                  sizes="(max-width: 640px) 100vw, 300px"
-                  quality={80}
-                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                />
-              </div>
+        {/* Product cards grid — mesma estrutura pros 3 itens, altura igualada por items-stretch + CTA fixado embaixo */}
+        <div className="animate-fade-in-up delay-300 grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 items-stretch">
+          {PRODUCTS.map((product) => {
+            const cardClassName =
+              "group relative flex flex-col rounded-lg border border-white/10 bg-black/60 backdrop-blur shadow-lg overflow-hidden text-left transition-all duration-200 hover:scale-[1.02] hover:bg-black/50 cursor-pointer";
 
-              {/* Text content */}
-              <div className="p-4 sm:p-6">
-                <h2 className={`font-heading text-lg sm:text-2xl font-bold ${product.titleClass} mb-1 sm:mb-2`}>
-                  {product.title}
-                </h2>
-                <p className="text-xs sm:text-sm text-zinc-400 leading-snug">
-                  {product.subtitle}
-                </p>
-                <div className={`mt-3 sm:mt-4 inline-flex items-center gap-1 sm:gap-2 text-xs sm:text-sm font-medium ${product.titleClass} opacity-60 group-hover:opacity-100 transition-opacity`}>
-                  Acessar <span className="transition-transform group-hover:translate-x-1">&rarr;</span>
+            const cardContent = (
+              <>
+                {/* Cover */}
+                <div className="relative aspect-[16/9] flex items-center justify-center bg-gradient-to-br from-[#C6FF34]/15 via-[#C6FF34]/[0.04] to-transparent border-b border-white/10 overflow-hidden">
+                  <Image
+                    src={product.cover}
+                    alt={product.title}
+                    width={800}
+                    height={450}
+                    sizes="(max-width: 640px) 100vw, 320px"
+                    quality={80}
+                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  />
                 </div>
-              </div>
 
-              {/* Badge */}
-              {product.badge && (
-                <div className="absolute top-2 right-2 sm:top-3 sm:right-3 rounded-full bg-green-500 px-2 py-0.5 sm:px-3 sm:py-1 text-[9px] sm:text-[11px] font-bold text-black uppercase tracking-wider">
-                  {product.badge}
+                {/* Content */}
+                <div className="flex flex-col flex-1 p-4 sm:p-6">
+                  <div className="inline-flex items-center gap-2 mb-3 px-2.5 py-1 rounded-full bg-[#C6FF34]/15 border border-[#C6FF34]/30 self-start">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#C6FF34] animate-pulse" />
+                    <span
+                      className="text-[10px] uppercase tracking-widest text-[#3BD0A0]"
+                      style={{ fontFamily: "var(--v2-font-mono)" }}
+                    >
+                      {product.eyebrow}
+                    </span>
+                  </div>
+                  <h2
+                    className="text-lg sm:text-xl font-bold text-[#C6FF34] mb-2 leading-snug"
+                    style={{ fontFamily: "var(--v2-font-display)" }}
+                  >
+                    {product.title}
+                  </h2>
+                  <p className="text-sm text-zinc-400 leading-relaxed mb-4">
+                    {product.description}
+                  </p>
+                  <div className="mt-auto inline-flex items-center gap-2 text-sm font-semibold text-[#C6FF34] opacity-80 group-hover:opacity-100 transition-opacity self-start">
+                    {product.cta}{" "}
+                    <span className="transition-transform group-hover:translate-x-1">
+                      &rarr;
+                    </span>
+                  </div>
                 </div>
-              )}
-            </Link>
-          ))}
+              </>
+            );
+
+            if (product.href.startsWith("http")) {
+              return (
+                <a
+                  key={product.id}
+                  href={product.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={cardClassName}
+                >
+                  {cardContent}
+                </a>
+              );
+            }
+
+            return (
+              <Link key={product.id} href={product.href} className={cardClassName}>
+                {cardContent}
+              </Link>
+            );
+          })}
         </div>
-
-        {/* Infuser Club — flagship recorrente → /club (useinfuser.com/club) */}
-        <Link
-          href="/club"
-          className="animate-fade-in-up delay-300 group block mt-4 sm:mt-6 rounded-lg border border-green-500/40 bg-gradient-to-br from-green-500/[0.08] via-black/60 to-black/60 backdrop-blur shadow-lg overflow-hidden text-left transition-all duration-200 hover:scale-[1.01] hover:border-green-500/60 ring-1 ring-green-500/20 cursor-pointer"
-        >
-          <div className="flex flex-col sm:flex-row sm:items-stretch">
-            <div className="relative flex items-center justify-center bg-gradient-to-br from-green-500/15 via-green-500/[0.04] to-transparent border-b sm:border-b-0 sm:border-r border-white/10 p-6 sm:p-8 sm:w-[38%] sm:flex-shrink-0">
-              <Image
-                src="/club/infuser-club.webp"
-                alt="Infuser Club"
-                width={220}
-                height={220}
-                className="h-24 sm:h-28 w-auto"
-              />
-            </div>
-            <div className="flex-1 p-5 sm:p-8">
-              <div className="inline-flex items-center gap-2 mb-3 px-2.5 py-1 rounded-full bg-green-500/15 border border-green-500/30">
-                <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-                <span className="font-mono text-[10px] uppercase tracking-widest text-green-300">
-                  Comunidade &middot; recorrente
-                </span>
-              </div>
-              <h2 className="font-heading text-xl sm:text-2xl md:text-3xl font-bold text-green-400 mb-2 leading-tight">
-                Infuser Club
-              </h2>
-              <p className="text-sm sm:text-base text-zinc-400 leading-relaxed mb-4">
-                O ambiente onde quem já fatura com IA te puxa junto. Calls ao
-                vivo toda semana, desafio quinzenal com freelance real e 4 bônus.
-                A partir de R$57/mês.
-              </p>
-              <div className="inline-flex items-center gap-2 text-sm font-semibold text-green-400 opacity-80 group-hover:opacity-100 transition-opacity">
-                Entrar para o Club{" "}
-                <span className="transition-transform group-hover:translate-x-1">
-                  &rarr;
-                </span>
-              </div>
-            </div>
-          </div>
-        </Link>
-
-        {/* Comunidade — horizontal card (desktop) / stacked (mobile) */}
-        <Link
-          href="/comunidade"
-          className="animate-fade-in-up delay-400 group block mt-4 sm:mt-6 rounded-lg border border-green-500/30 bg-black/60 backdrop-blur shadow-lg overflow-hidden text-left transition-all duration-200 hover:scale-[1.01] hover:bg-black/50 ring-1 ring-green-500/15 cursor-pointer"
-        >
-          <div className="flex flex-col sm:flex-row sm:items-stretch">
-            {/* Visual side */}
-            <div className="relative flex items-center justify-center bg-gradient-to-br from-green-500/15 via-green-500/[0.04] to-transparent border-b sm:border-b-0 sm:border-r border-white/10 p-8 sm:p-10 sm:w-[38%] sm:flex-shrink-0">
-              <div className="text-center">
-                <div className="font-punch text-5xl sm:text-6xl font-extrabold text-gradient-green leading-none mb-2">
-                  Grátis
-                </div>
-                <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-green-300/80">
-                  pra todos
-                </div>
-              </div>
-              {/* Decorative dots */}
-              <div className="absolute top-3 left-3 w-1.5 h-1.5 rounded-full bg-green-400/40" />
-              <div className="absolute bottom-3 right-3 w-1.5 h-1.5 rounded-full bg-green-400/40" />
-            </div>
-
-            {/* Content side */}
-            <div className="flex-1 p-5 sm:p-8">
-              <div className="inline-flex items-center gap-2 mb-3 px-2.5 py-1 rounded-full bg-green-500/15 border border-green-500/30">
-                <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-                <span className="font-mono text-[10px] uppercase tracking-widest text-green-300">
-                  Aberta a todos &middot; Grátis
-                </span>
-              </div>
-              <h2 className="font-heading text-xl sm:text-2xl md:text-3xl font-bold text-green-400 mb-2 leading-tight">
-                Comunidade Gratuita
-              </h2>
-              <p className="text-sm sm:text-base text-zinc-400 leading-relaxed mb-4">
-                Comunidade gratuita e aberta a todo mundo. Entra agora e troca com
-                quem está construindo com IA todo dia.
-              </p>
-              <div className="inline-flex items-center gap-2 text-sm font-semibold text-green-400 opacity-80 group-hover:opacity-100 transition-opacity">
-                Entrar na comunidade{" "}
-                <span className="transition-transform group-hover:translate-x-1">
-                  &rarr;
-                </span>
-              </div>
-            </div>
-          </div>
-        </Link>
       </div>
     </section>
   );
