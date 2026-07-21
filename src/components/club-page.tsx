@@ -164,7 +164,7 @@ export function ClubPage() {
 
       // VSL VTURB: <script> injetado via innerHTML não executa; injeta o loader aqui.
       const VTURB_SRC =
-        "https://scripts.converteai.net/53b78c15-4e25-48b1-ba74-231d36c12bbd/players/6a490fc4f760b4a57d1b8eab/v4/player.js";
+        "https://scripts.converteai.net/53b78c15-4e25-48b1-ba74-231d36c12bbd/players/6a5a35822ad4459e3c19995e/v4/player.js";
       if (
         scope.querySelector("vturb-smartplayer") &&
         !document.querySelector(`script[src="${VTURB_SRC}"]`)
@@ -176,7 +176,7 @@ export function ClubPage() {
       }
     }
 
-    // ── VSL delay: revela tudo abaixo do vídeo quando o pitch chega no CTA (9:05 = 545s).
+    // ── VSL delay: revela tudo abaixo do vídeo quando o pitch chega no CTA (5:00 = 300s).
     // API oficial VTURB (timeupdate + video.currentTime): amarra no tempo REAL do vídeo,
     // sincroniza mesmo se pausar, ignora o preview de smartAutoPlay. Cache em localStorage
     // (quem já passou do pitch e recarrega vê tudo na hora) + FAIL-OPEN (se o player não
@@ -186,7 +186,7 @@ export function ClubPage() {
       video: { currentTime: number };
       smartAutoPlay?: boolean;
     };
-    const VSL_CTA_SECONDS = 545; // 9:05 — momento em que o preço é revelado na VSL
+    const VSL_CTA_SECONDS = 300; // 5:00 — momento em que o preço é revelado na VSL
     const vslKey = "clubVslUnlocked_" + VSL_CTA_SECONDS;
     let vslUnlocked = false;
     let vslTimer: number | undefined;
