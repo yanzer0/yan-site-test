@@ -25,6 +25,20 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      {
+        // Assets estaticos SOB /legiao (fonts woff2 + avatares webp). :path+ exige
+        // >=1 segmento, entao casa /legiao/fonts/x e /legiao/avatars/x mas NAO a
+        // pagina /legiao em si — o HTML da LP muda e NAO pode pegar immutable de 1 ano
+        // (senao visitante recorrente/CDN serve versao velha). Nome novo ao trocar
+        // asset = cache novo, mesmo raciocinio do /club.
+        source: "/legiao/:path+",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
     ];
   },
   images: {
