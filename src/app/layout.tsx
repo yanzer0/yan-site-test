@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Outfit, Space_Mono, Fraunces } from "next/font/google";
 import localFont from "next/font/local";
 import { UtmTracker } from "@/components/utm-tracker";
-import { MetaPixel } from "@/components/meta-pixel";
 import { SmoothAnchorScroll } from "@/components/smooth-anchor-scroll";
 import "./globals.css";
 
@@ -54,7 +53,6 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col font-sans">
         <UtmTracker />
         <SmoothAnchorScroll />
-        <MetaPixel />
         {children}
       </body>
     </html>

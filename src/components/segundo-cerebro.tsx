@@ -6,7 +6,6 @@ import { useScrollReveal } from "@/lib/use-scroll-reveal";
 import { useScrolled } from "@/lib/use-scrolled";
 import Image from "next/image";
 import Link from "next/link";
-import Script from "next/script";
 
 /* ─── Lightbox Modal ─── */
 function ImageLightbox({ src, alt, onClose }: { src: string; alt: string; onClose: () => void }) {
@@ -1256,9 +1255,6 @@ export function SegundoCerebro() {
       </main>
       <SocialProofToast />
       <SCFooter />
-
-      {/* Kiwify upsell script */}
-      <Script src="https://snippets.kiwify.com/upsell/upsell.min.js" strategy="lazyOnload" />
     </>
   );
 }
