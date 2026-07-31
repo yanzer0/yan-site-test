@@ -1,6 +1,7 @@
 import type { PropsWithChildren } from "react";
 import Script from "next/script";
 import { SegundoCerebroUtmifyPixel } from "@/components/segundo-cerebro-utmify-pixel";
+import { SegundoCerebroSmoothScroll } from "@/components/segundo-cerebro-smooth-scroll";
 
 // Player VTurb (ConverteAI) da VSL do topo. O <vturb-smartplayer> vem dentro do
 // HTML da page; script inline dentro de dangerouslySetInnerHTML nao executa, por
@@ -12,6 +13,7 @@ export default function KitSegundoCerebroLayout({ children }: PropsWithChildren)
   return (
     <>
       <SegundoCerebroUtmifyPixel />
+      <SegundoCerebroSmoothScroll />
       <Script src={VTURB_PLAYER_SRC} strategy="afterInteractive" />
       {children}
     </>

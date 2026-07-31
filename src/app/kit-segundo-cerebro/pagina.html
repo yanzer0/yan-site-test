@@ -109,8 +109,9 @@ strong{font-weight:700;color:var(--warm)}
 
 /* planos */
 .planos{border-top:1px solid var(--linha);border-bottom:1px solid var(--linha)}
-.cartoes{display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:900px;margin:40px auto 0}
-@media(max-width:820px){.cartoes{grid-template-columns:1fr}}
+.cartoes{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1060px;margin:44px auto 0;align-items:stretch}
+@media(max-width:980px){.cartoes{grid-template-columns:1fr;max-width:460px}}
+.plano{padding:34px 26px;height:100%}
 .plano{display:flex;flex-direction:column;text-align:center;padding:36px 30px;border-radius:20px;
   border:1px solid var(--linha-forte);background:var(--onyx);position:relative}
 .plano--destaque{border:2px solid rgba(198,255,52,.42);background:rgba(198,255,52,.055)}
@@ -283,11 +284,11 @@ footer{padding:44px 0;border-top:1px solid var(--linha);text-align:center;
 <section class="planos" id="planos">
   <div class="env" style="text-align:center">
     <p class="sobre">Comece pelo cérebro. Adicione rotina quando fizer sentido.</p>
-    <h2>Dois planos. O mesmo cérebro privado.</h2>
+    <h2>Três planos. O mesmo cérebro privado.</h2>
     <div class="cartoes">
       <div class="plano">
         <div class="rotulo">Starter</div>
-        <div class="preco"><b>R$67</b><span>/mês</span></div>
+        <div class="preco"><b>R$37</b><span>/mês</span></div>
         <p class="frase">Pra quem já cansou de começar do zero toda vez.</p>
         <div class="divisor"></div>
         <ul class="itens">
@@ -296,21 +297,33 @@ footer{padding:44px 0;border-top:1px solid var(--linha);text-align:center;
           <li>Uso em linguagem normal, direto no Claude e no Codex.</li>
           <li>Tutorial de ativação e conexão.</li>
         </ul>
-        <a class="btn btn--linha" style="margin-top:auto;width:100%" href="https://pay.hub.la/ue4nfO0lfsmbSkbcAIzX">Quero parar de recomeçar <span class="seta">→</span></a>
+        <a class="btn btn--linha" style="margin-top:auto;width:100%" href="https://pay.hub.la/K7x94JZaHOCvBihYxx7v/upsell">Quero parar de recomeçar <span class="seta">&rarr;</span></a>
+        <p class="micro">Assinatura mensal gerenciada pela Hubla.</p>
+      </div>
+      <div class="plano">
+        <div class="rotulo">Avançado</div>
+        <div class="preco"><b>R$67</b><span>/mês</span></div>
+        <p class="frase">Pra quem quer o cérebro com as skills que fazem ele render.</p>
+        <div class="divisor"></div>
+        <ul class="itens">
+          <li>Tudo do Starter.</li>
+          <li>O Kit de Skills da Infuser.</li>
+        </ul>
+        <a class="btn btn--linha" style="margin-top:auto;width:100%" href="https://pay.hub.la/ue4nfO0lfsmbSkbcAIzX">Quero o cérebro com as skills <span class="seta">&rarr;</span></a>
         <p class="micro">Assinatura mensal gerenciada pela Hubla.</p>
       </div>
       <div class="plano plano--destaque">
         <div class="selo">MAIS COMPLETO</div>
-        <div class="rotulo">Avançado</div>
+        <div class="rotulo">Business</div>
         <div class="preco"><b>R$97</b><span>/mês</span></div>
         <p class="frase">Pra quem quer que o cérebro também puxe a rotina por você.</p>
         <div class="divisor"></div>
         <ul class="itens">
-          <li>Tudo do Starter.</li>
+          <li>Tudo do Starter e do Avançado, incluindo o Kit de Skills.</li>
           <li>Os 5 agentes base da Infuser.</li>
           <li>Fluxos prontos pra capturar, organizar e revisar o que importa — sem você ter que lembrar de fazer isso.</li>
         </ul>
-        <a class="btn btn--cheio" style="margin-top:auto;width:100%" href="https://pay.hub.la/B4tP2hnuy5okR3VuBJAI">Quero o cérebro com os 5 agentes <span class="seta">→</span></a>
+        <a class="btn btn--cheio" style="margin-top:auto;width:100%" href="https://pay.hub.la/B4tP2hnuy5okR3VuBJAI">Quero o cérebro com os 5 agentes <span class="seta">&rarr;</span></a>
         <p class="micro">Assinatura mensal gerenciada pela Hubla.</p>
       </div>
     </div>
@@ -321,7 +334,7 @@ footer{padding:44px 0;border-top:1px solid var(--linha);text-align:center;
 <section>
   <div class="env">
     <h2>Cinco rotinas pra esse cérebro não virar só mais uma pasta que você abandona.</h2>
-    <p class="lead">No Avançado, você não precisa lembrar de estruturar nada do jeito perfeito — isso já matou o seu Notion antes, não vai matar isso aqui. Peça em linguagem normal. Os agentes conduzem a próxima ação usando o contexto que já mora no seu cérebro.</p>
+    <p class="lead">No Business, você não precisa lembrar de estruturar nada do jeito perfeito — isso já matou o seu Notion antes, não vai matar isso aqui. Peça em linguagem normal. Os agentes conduzem a próxima ação usando o contexto que já mora no seu cérebro.</p>
     <div class="grade-5">
       <article class="card">
         <img loading="lazy" decoding="async" class="arte arte--1x1" style="border-radius:0;border:0;border-bottom:1px solid var(--linha)" src="/segundo-cerebro-mcp/agente-braindump.webp" alt="Ideias e anotações sendo organizadas em um cofre de memória."/>
@@ -360,7 +373,7 @@ footer{padding:44px 0;border-top:1px solid var(--linha);text-align:center;
       </article>
     </div>
     <div class="centro">
-      <a class="btn btn--cheio" href="https://pay.hub.la/B4tP2hnuy5okR3VuBJAI">Quero o Avançado com os 5 agentes <span class="seta">→</span></a>
+      <a class="btn btn--cheio" href="https://pay.hub.la/B4tP2hnuy5okR3VuBJAI">Quero o Business com os 5 agentes <span class="seta">→</span></a>
     </div>
   </div>
 </section>
@@ -426,7 +439,7 @@ footer{padding:44px 0;border-top:1px solid var(--linha);text-align:center;
     </details>
     <details>
       <summary>O Starter tem os 5 agentes?</summary>
-      <p>Não. O Starter entrega o Brain Base privado pra você registrar e consultar contexto em linguagem normal. Os cinco agentes de rotina entram no plano Avançado.</p>
+      <p>Não. O Starter entrega o Brain Base privado pra você registrar e consultar contexto em linguagem normal. Os cinco agentes de rotina entram no plano Business.</p>
     </details>
     <details>
       <summary>Posso conectar o mesmo cérebro no Claude e no Codex?</summary>
@@ -460,8 +473,8 @@ footer{padding:44px 0;border-top:1px solid var(--linha);text-align:center;
   <div class="env">
     <h2>Seu trabalho continua amanhã. Sua IA não devia esquecer dele hoje.</h2>
     <p class="lead" style="margin:0 auto 18px">Você tem duas opções agora: conectar um cérebro que carrega seu contexto de uma conversa pra outra — ou fechar essa página e, na próxima vez que abrir um chat, começar tudo de novo. De novo.</p>
-    <p class="lead" style="margin:0 auto">Escolha o Brain Base se quer a memória privada conectada ao seu trabalho. Escolha o Avançado se quer começar já com as cinco rotinas que mantêm esse cérebro vivo.</p>
-    <p class="precos-final">Starter · <b>R$67/mês</b><br/>Avançado · <b>R$97/mês</b></p>
+    <p class="lead" style="margin:0 auto">Escolha o Starter se quer a memória privada conectada ao seu trabalho. O Avançado soma o Kit de Skills. O Business leva tudo isso e ainda começa com as cinco rotinas que mantêm esse cérebro vivo.</p>
+    <p class="precos-final">Starter · <b>R$37/mês</b><br/>Avançado · <b>R$67/mês</b><br/>Business · <b>R$97/mês</b></p>
     <a class="btn btn--cheio" href="#planos">Escolher meu plano <span class="seta">→</span></a>
     <p class="micro">Ativação por e-mail · Tutorial incluso · Claude e Codex</p>
   </div>
@@ -475,5 +488,8 @@ footer{padding:44px 0;border-top:1px solid var(--linha);text-align:center;
     Assinatura mensal · Ativação por e-mail · Claude e Codex
   </div>
 </footer>
+
+
+
 
 
