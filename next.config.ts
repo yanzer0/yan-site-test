@@ -29,6 +29,17 @@ const nextConfig: NextConfig = {
         ],
       },
       {
+        // Artes da pagina do Segundo Cerebro MCP. Mesmo raciocinio do /club:
+        // nao sao content-hashed, entao trocar arte = trocar o nome do arquivo.
+        source: "/segundo-cerebro-mcp/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+      {
         // Assets estaticos SOB /legiao (fonts woff2 + avatares webp). :path+ exige
         // >=1 segmento, entao casa /legiao/fonts/x e /legiao/avatars/x mas NAO a
         // pagina /legiao em si — o HTML da LP muda e NAO pode pegar immutable de 1 ano
