@@ -6,6 +6,9 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       { source: "/legiaodeagentes", destination: "/legiao", permanent: false },
+      // URL que o Yan usa pra se referir a pagina; a canonica (e a dos anuncios)
+      // segue sendo /kit-segundo-cerebro.
+      { source: "/segundo-cerebro", destination: "/kit-segundo-cerebro", permanent: false },
     ];
   },
   async headers() {
