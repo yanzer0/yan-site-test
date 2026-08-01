@@ -1,27 +1,16 @@
 "use client";
 
-import { FallingPattern } from "@/components/ui/falling-pattern-lazy";
 import { SegundoCerebro } from "@/components/segundo-cerebro";
 
+// Fundo preto liso: saiu o FallingPattern (as bolinhas verdes animadas) e a
+// camada de escurecimento que vinha junto. O body ja e #000000 (--background
+// no globals.css), entao nao e preciso nenhuma camada de fundo aqui.
+// O FallingPattern continua em uso em /kit-jarvis, /kit-skills, /comunidade e
+// /kit-vscode -- o componente nao foi tocado.
 export function KitSegundoCerebroPage() {
   return (
-    <>
-      {/* Full-page background */}
-      <div className="fixed inset-0 z-0 pointer-events-none">
-        <FallingPattern
-          className="h-full"
-          color="#A8E84C"
-          backgroundColor="#000000"
-          duration={80}
-          blurIntensity="0.4rem"
-          density={2}
-        />
-        {/* Dark overlay to dim the pattern uniformly */}
-        <div className="absolute inset-0 bg-black/40" />
-      </div>
-      <div className="relative z-10">
-        <SegundoCerebro />
-      </div>
-    </>
+    <div className="relative">
+      <SegundoCerebro />
+    </div>
   );
 }
