@@ -46,3 +46,4 @@ design-system/infuser/**/*.png
 # local video backups
 public/*.bak
 build.log
+dev.log
