@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useRef, useState } from "react";
 import { Play } from "lucide-react";
 import { useScrollReveal } from "@/lib/use-scroll-reveal";
+import { SectionCta } from "@/components/section-cta";
 
 export interface Testimonial {
   quote?: string;
@@ -52,6 +53,8 @@ export function Testimonials({ items, video }: TestimonialsProps) {
               ))}
             </div>
           ) : null}
+
+          <SectionCta />
         </div>
       </section>
     </>
@@ -59,8 +62,10 @@ export function Testimonials({ items, video }: TestimonialsProps) {
 }
 
 function TestimonialCard({ t }: { t: Testimonial }) {
+  // bg solido em vez de .glass: backdrop-filter blur(24px) forca o browser a
+  // re-renderizar o que esta atras do card a cada frame de scroll.
   return (
-    <figure className="glass card-hover p-4 flex flex-col gap-3">
+    <figure className="rounded-lg border border-white/10 bg-neutral-950 card-hover p-4 flex flex-col gap-3">
       {t.screenshot ? (
         <div className="relative w-full aspect-[9/16] rounded-md overflow-hidden border border-white/8 bg-black/40 flex items-center justify-center">
           <Image

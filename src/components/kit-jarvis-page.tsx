@@ -1,9 +1,6 @@
 "use client";
 
-import { FallingPattern } from "@/components/ui/falling-pattern-lazy";
-import { Navbar } from "@/components/navbar";
 import { Hero } from "@/components/hero";
-import { TrustBar } from "@/components/trust-bar";
 import { Problem } from "@/components/services";
 import { AITeacher } from "@/components/stats";
 import { Technical } from "@/components/technical";
@@ -45,23 +42,10 @@ export function KitJarvisPage() {
   return (
     <>
       {/* Full-page background */}
-      <div className="fixed inset-0 z-0 pointer-events-none">
-        <FallingPattern
-          className="h-full"
-          color="#A8E84C"
-          backgroundColor="#000000"
-          duration={80}
-          blurIntensity="0.5rem"
-          density={2}
-        />
-        {/* Dark overlay to dim the pattern uniformly */}
-        <div className="absolute inset-0 bg-black/40" />
-      </div>
+      <div className="fixed inset-0 z-0 pointer-events-none bg-black" />
       <div className="relative z-10">
-        <Navbar />
         <main>
           <Hero />
-          <TrustBar />
           <Problem />
           <AITeacher />
           <Testimonials items={TESTIMONIALS} video={TESTIMONIAL_VIDEO} />

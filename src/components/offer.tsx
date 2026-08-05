@@ -3,6 +3,7 @@
 import React from "react";
 import { ShieldCheck, Infinity as InfinityIcon, Quote } from "lucide-react";
 import { useScrollReveal } from "@/lib/use-scroll-reveal";
+import { SectionCta } from "@/components/section-cta";
 
 interface DeliverableItem {
   ext: string;
@@ -89,7 +90,7 @@ export function Offer() {
           </p>
 
           {/* Offer card */}
-          <div className="rounded-2xl border border-white/10 bg-black/60 backdrop-blur-sm p-5 sm:p-8">
+          <div className="rounded-2xl border border-white/10 bg-neutral-950 p-5 sm:p-8">
             {/* Deliverables list */}
             <ul className="flex flex-col gap-3">
               {DELIVERABLES.filter((d) => !d.bonus).map((file) => (
@@ -181,6 +182,8 @@ export function Offer() {
               </figcaption>
             </figure>
           </div>
+
+          <SectionCta />
         </div>
       </section>
     </>

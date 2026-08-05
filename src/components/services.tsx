@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useScrollReveal } from "@/lib/use-scroll-reveal";
+import { SectionCta } from "@/components/section-cta";
 
 export function Problem() {
   const ref = useScrollReveal();
@@ -9,7 +10,7 @@ export function Problem() {
   return (
     <>
       <div className="section-divider" />
-      <section id="como-funciona" className="py-20 sm:py-28" style={{ background: 'linear-gradient(160deg, rgba(0,0,0,0.85) 30%, rgba(13,26,8,0.8) 70%, rgba(26,34,16,0.75) 100%)' }}>
+      <section id="como-funciona" className="py-20 sm:py-28" style={{ background: '#000000' }}>
         <div ref={ref} className="scroll-reveal mx-auto max-w-3xl px-4 sm:px-6">
           <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight leading-tight mb-6">
             Duas palmas. A música toca, o Notion abre,
@@ -50,6 +51,8 @@ export function Problem() {
               className="w-full h-auto"
             />
           </div>
+
+          <SectionCta />
         </div>
       </section>
     </>

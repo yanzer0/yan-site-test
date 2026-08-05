@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useScrollReveal } from "@/lib/use-scroll-reveal";
+import { SectionCta } from "@/components/section-cta";
 
 export function Technical() {
   const ref = useScrollReveal();
@@ -63,6 +64,8 @@ export function Technical() {
               className="w-full h-auto"
             />
           </div>
+
+          <SectionCta />
         </div>
       </section>
     </>

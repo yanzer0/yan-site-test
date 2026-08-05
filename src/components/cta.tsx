@@ -29,8 +29,15 @@ export function CTA() {
     <>
       <div className="section-divider" />
       <section id="contact" className="py-24 sm:py-32 relative">
-        {/* Glow */}
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-green-500/[0.06] blur-[180px] pointer-events-none" />
+        {/* Glow — radial-gradient em vez de blur(180px): mesmo visual, sem
+            passada de blur na GPU (blur gigante trava celular fraco). */}
+        <div
+          className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] pointer-events-none"
+          style={{
+            background:
+              "radial-gradient(circle, rgba(168,232,76,0.06) 0%, rgba(168,232,76,0.03) 40%, transparent 70%)",
+          }}
+        />
 
         <div ref={ref} className="scroll-reveal relative z-10 mx-auto max-w-3xl px-4 sm:px-6 text-center">
           <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-4">

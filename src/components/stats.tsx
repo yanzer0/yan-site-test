@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useScrollReveal } from "@/lib/use-scroll-reveal";
+import { SectionCta } from "@/components/section-cta";
 
 export function AITeacher() {
   const ref = useScrollReveal();
@@ -72,6 +73,8 @@ export function AITeacher() {
               className="w-full h-auto"
             />
           </div>
+
+          <SectionCta />
         </div>
       </section>
     </>

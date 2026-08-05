@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { useScrollReveal } from "@/lib/use-scroll-reveal";
+import { SectionCta } from "@/components/section-cta";
 
 const QUESTIONS = [
   {
@@ -76,6 +77,8 @@ export function FAQ() {
             <FAQItem key={item.q} q={item.q} a={item.a} />
           ))}
         </div>
+
+        <SectionCta />
       </div>
     </section>
   );

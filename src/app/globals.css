@@ -131,6 +131,13 @@
   }
   html {
     overflow-x: clip;
+    /* scroll-behavior FICA em auto (salto instantaneo) de proposito.
+       Medido nesta pagina: com 'smooth', clicar no CTA do topo deixava o
+       scroll travado em 1px por ~1600ms antes de andar — o browser precisa
+       renderizar cada quadro dos ~8400px de conteudo no caminho, na main
+       thread. Com 'auto' o salto leva 4ms e so renderiza o destino.
+       Nao reative 'smooth' aqui sem medir de novo. */
+    scroll-behavior: auto;
   }
   body {
     @apply bg-background text-foreground;
@@ -220,13 +227,15 @@
   .delay-500 { animation-delay: 300ms; }
 }
 
-/* ── Scroll Reveal System ── */
+/* ── Scroll Reveal System ──
+   will-change NAO fica fixo aqui: mantido permanentemente ele promove uma
+   camada de GPU por bloco e come memoria de video em celular fraco. Duracoes
+   curtas (0.45s) pra animacao terminar antes do scroll continuar. */
 .scroll-reveal {
   opacity: 0;
-  transform: translateY(28px);
-  transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
-              transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
-  will-change: opacity, transform;
+  transform: translateY(16px);
+  transition: opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .scroll-reveal.revealed {
   opacity: 1;
@@ -234,9 +243,9 @@
 }
 .scroll-reveal-left {
   opacity: 0;
-  transform: translateX(-32px);
-  transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
-              transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  transform: translateX(-18px);
+  transition: opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .scroll-reveal-left.revealed {
   opacity: 1;
@@ -246,24 +255,23 @@
 /* Child stagger — apply alongside .scroll-reveal to fade children sequentially */
 .scroll-reveal-stagger > * {
   opacity: 0;
-  transform: translateY(18px);
-  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-              transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
-  will-change: opacity, transform;
+  transform: translateY(12px);
+  transition: opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .scroll-reveal-stagger.revealed > * {
   opacity: 1;
   transform: translateY(0);
 }
-.scroll-reveal-stagger.revealed > *:nth-child(1)  { transition-delay: 40ms; }
-.scroll-reveal-stagger.revealed > *:nth-child(2)  { transition-delay: 120ms; }
-.scroll-reveal-stagger.revealed > *:nth-child(3)  { transition-delay: 200ms; }
-.scroll-reveal-stagger.revealed > *:nth-child(4)  { transition-delay: 280ms; }
-.scroll-reveal-stagger.revealed > *:nth-child(5)  { transition-delay: 360ms; }
-.scroll-reveal-stagger.revealed > *:nth-child(6)  { transition-delay: 440ms; }
-.scroll-reveal-stagger.revealed > *:nth-child(7)  { transition-delay: 520ms; }
-.scroll-reveal-stagger.revealed > *:nth-child(8)  { transition-delay: 600ms; }
-.scroll-reveal-stagger.revealed > *:nth-child(n+9){ transition-delay: 680ms; }
+.scroll-reveal-stagger.revealed > *:nth-child(1)  { transition-delay: 20ms; }
+.scroll-reveal-stagger.revealed > *:nth-child(2)  { transition-delay: 60ms; }
+.scroll-reveal-stagger.revealed > *:nth-child(3)  { transition-delay: 100ms; }
+.scroll-reveal-stagger.revealed > *:nth-child(4)  { transition-delay: 140ms; }
+.scroll-reveal-stagger.revealed > *:nth-child(5)  { transition-delay: 180ms; }
+.scroll-reveal-stagger.revealed > *:nth-child(6)  { transition-delay: 220ms; }
+.scroll-reveal-stagger.revealed > *:nth-child(7)  { transition-delay: 260ms; }
+.scroll-reveal-stagger.revealed > *:nth-child(8)  { transition-delay: 300ms; }
+.scroll-reveal-stagger.revealed > *:nth-child(n+9){ transition-delay: 340ms; }
 
 /* ── Section Dividers ── */
 .section-divider {
