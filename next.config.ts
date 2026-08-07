@@ -11,6 +11,17 @@ const nextConfig: NextConfig = {
       { source: "/segundo-cerebro", destination: "/kit-segundo-cerebro", permanent: false },
     ];
   },
+  async rewrites() {
+    return [
+      // Guia "IA sem bajulacao" (isca do carrossel do @yangalasso, entregue no
+      // direct via ManyChat). E um HTML estatico self-contained em public/, o
+      // rewrite so tira o .html da URL que o lead ve.
+      {
+        source: "/guia-ia-sem-bajulacao",
+        destination: "/guia-ia-sem-bajulacao.html",
+      },
+    ];
+  },
   async headers() {
     return [
       {
