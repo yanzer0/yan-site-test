@@ -2,7 +2,9 @@
 
 import Script from "next/script";
 
-const PIXEL_ID = "6a036970f37fd8abe31a65ab";
+// Trocado em 11/08/2026. Anterior: 6a036970f37fd8abe31a65ab.
+// Um pixel por vez — dois setam window.pixelId em corrida e duplicam evento.
+const PIXEL_ID = "6a7b5b1fa84af65f86f23fc3";
 
 export function UtmifyPixel() {
   return (
