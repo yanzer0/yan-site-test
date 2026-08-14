@@ -152,8 +152,8 @@ Um visitante responde metade das perguntas e sai. O que ele já respondeu é pre
 
 **Requisitos com decisão pendente**
 
-- **FR-029**: O destino alternativo oferecido ao lead não-ICP é [NEEDS CLARIFICATION: qual produto leve ou conteúdo recebe esse lead? O ICP menciona "produto leve e autoatendido no futuro", que ainda não existe].
-- **FR-030**: A janela de horários oferecida no Cal.com é [NEEDS CLARIFICATION: quantos dias à frente, quais faixas do dia, e a agenda é do Yan, do Iago, ou uma agenda de time com round robin?].
+- **FR-029**: O destino alternativo oferecido ao lead não-ICP é [NEEDS CLARIFICATION: há mais de um caminho vivo e eles não servem ao mesmo perfil. Kit Segundo Cérebro, R$ 67 pagamento único, vivo em `useinfuser.com/kit-segundo-cerebro` com checkout Hubla ativo, mas exige Claude Code e Obsidian, o que é fricção para dono de empresa não-técnico. Mapa de IA, R$ 197, diagnóstico pago com PDF do mapeamento, desenhado em 24/06 como tripwire B2B e ainda no estado de ideia: é o encaixe certo para empresa real sem encaixe na call gratuita, e a feature 002 é justamente o gerador do PDF que falta nele. Infuser Club, R$ 97/mês, para quem quer aprender a construir. Decidir quantos destinos o formulário oferece e qual resposta roteia para qual].
+- **FR-030**: ✅ Resolvido em 14/08: a call vai para a agenda pessoal do Yan, já conectada ao Cal.com via Google. Sem round robin nesta versão. Falta definir a janela [NEEDS CLARIFICATION: quantos dias à frente e quais faixas do dia].
 - **FR-031**: O comportamento em preenchimento repetido pelo mesmo contato é [NEEDS CLARIFICATION: duplicata, atualização do registro anterior, ou lead novo?].
 
 ### Entidades
