@@ -51,11 +51,11 @@
 **Independent Test**: preencher com respostas de lead qualificado e ver o seletor de horários aparecer, com o registro gravado.
 
 - [x] T014 [US1] Criar `src/app/api/diagnostico/submit/route.ts`: valida consentimento no servidor, pontua, deduplica, persiste e devolve a faixa. Nunca devolve o score numérico. Segue o padrão de `kiwify-webhook/route.ts`
-- [ ] T015 [P] [US1] Criar `src/components/diagnostico/Conversa.tsx`, o componente de pergunta única por vez com a resposta anterior visível
-- [ ] T016 [P] [US1] Criar `src/components/diagnostico/Abertura.tsx` com o texto da tela inicial de `contracts/perguntas.md`, declarando quantas perguntas, quanto tempo e o que o lead ganha
-- [ ] T017 [P] [US1] Criar `src/components/diagnostico/Consentimento.tsx`: caixa não pré-marcada, link para a política, botão inativo sem a marca
-- [ ] T018 [US1] Criar `src/app/diagnostico/page.tsx` montando o fluxo, com a primeira pergunta renderizada no servidor para funcionar no webview do Instagram
-- [ ] T019 [US1] Criar `src/components/diagnostico/Agendamento.tsx` com o embed do Cal.com pré-preenchido, mais o caminho alternativo quando o provedor falhar
+- [x] T015 [P] [US1] Criar `src/components/diagnostico/Conversa.tsx`, o componente de pergunta única por vez com a resposta anterior visível
+- [x] T016 [P] [US1] Criar `src/components/diagnostico/Abertura.tsx` com o texto da tela inicial de `contracts/perguntas.md`, declarando quantas perguntas, quanto tempo e o que o lead ganha
+- [x] T017 [P] [US1] Criar `src/components/diagnostico/Consentimento.tsx`: caixa não pré-marcada, link para a política, botão inativo sem a marca
+- [x] T018 [US1] Criar `src/app/diagnostico/page.tsx` montando o fluxo, com a primeira pergunta renderizada no servidor para funcionar no webview do Instagram
+- [x] T019 [US1] Criar `src/components/diagnostico/Agendamento.tsx` com o embed do Cal.com pré-preenchido, mais o caminho alternativo quando o provedor falhar
 - [x] T020 [US1] Criar `src/app/api/diagnostico/cal-webhook/route.ts` com verificação HMAC-SHA256 em tempo constante contra `x-cal-signature-256`
 - [x] T021 [P] [US1] Criar `tests/diagnostico/webhook.test.ts` provando que assinatura inválida devolve 401 e não persiste nada
 - [ ] T022 [US1] Criar `src/app/diagnostico/obrigado/page.tsx` com a confirmação que explica que a call é diagnóstico, sem proposta nem preço
@@ -68,9 +68,9 @@
 
 **Goal**: quem não passa recebe destino honesto e fica gravado com o motivo.
 
-- [ ] T023 [US2] Implementar a ramificação de uso pessoal em `perguntas.ts`, encurtando o fluxo para 5 perguntas
-- [ ] T024 [US2] Criar `src/components/diagnostico/Desfecho.tsx` com os quatro textos finais de `contracts/score.md`, um por faixa
-- [ ] T025 [US2] Rotear o não-ICP de empresa para o Mapa de IA e o de uso pessoal para o Kit Segundo Cérebro. O sistema não pode oferecer o Kit a quem declarou empresa
+- [x] T023 [US2] Implementar a ramificação de uso pessoal em `perguntas.ts`, encurtando o fluxo para 5 perguntas
+- [x] T024 [US2] Criar `src/components/diagnostico/Desfecho.tsx` com os quatro textos finais de `contracts/score.md`, um por faixa
+- [x] T025 [US2] Rotear o não-ICP de empresa para o Mapa de IA e o de uso pessoal para o Kit Segundo Cérebro. O sistema não pode oferecer o Kit a quem declarou empresa
 - [ ] T026 [P] [US2] Criar `tests/diagnostico/desfecho.test.ts` provando que nenhum texto de nenhuma faixa contém as palavras de recusa proibidas por FR-017
 
 **Checkpoint**: as quatro faixas têm destino e nenhuma comunica desqualificação.

@@ -1,0 +1,332 @@
+/*
+ * Tokens da identidade v2 da Infuser, ESCOPADOS nesta rota.
+ *
+ * Por que escopado e não herdado do globals.css: o `globals.css` do site ainda
+ * carrega a identidade v1.1 (`--primary: #A8E84C`, `--font-cabinet`), e a regra
+ * da casa é que página web usa a v2 completa. Migrar o site inteiro é outra
+ * mudança, com outro dono. Aqui a rota cumpre a regra sem tocar no resto.
+ *
+ * Fonte: _knowledge/branding/infuser-v2/tokens.css no brain.
+ */
+
+.dg {
+  --onyx: #020202;
+  --carbon: #171717;
+  --warm: #f0f0e4;
+  --lime: #c6ff34;
+  --lime-deep: #a8e84c;
+  --teal-300: #3bd0a0;
+  --teal-700: #1f6f5f;
+  --amber: #f6c445;
+  --text-1: #f0f0e4;
+  --text-2: rgba(240, 240, 228, 0.78);
+  --text-3: rgba(240, 240, 228, 0.56);
+  --text-4: rgba(240, 240, 228, 0.42);
+  --border: rgba(240, 240, 228, 0.12);
+  --border-vis: rgba(240, 240, 228, 0.2);
+  --lime-dim: rgba(198, 255, 52, 0.1);
+
+  --fonte-display: "Inter", system-ui, sans-serif;
+  --fonte-corpo: "Onest", system-ui, sans-serif;
+  --fonte-mono: "Geist Mono", ui-monospace, monospace;
+
+  min-height: 100dvh;
+  background:
+    radial-gradient(ellipse at 12% 92%, rgba(31, 111, 95, 0.32) 0%, transparent 55%),
+    radial-gradient(ellipse at 92% 4%, rgba(198, 255, 52, 0.12) 0%, transparent 48%),
+    var(--onyx);
+  color: var(--text-1);
+  font-family: var(--fonte-corpo);
+  line-height: 1.6;
+  padding: 32px 20px 64px;
+  display: flex;
+  justify-content: center;
+}
+
+.dg-wrap {
+  width: 100%;
+  max-width: 640px;
+}
+
+/* ── marca ── */
+.dg-brand {
+  font: 500 11px/1 var(--fonte-mono);
+  letter-spacing: 0.36em;
+  text-transform: uppercase;
+  color: var(--lime);
+  margin-bottom: 40px;
+}
+
+/* ── abertura ── */
+.dg-eyebrow {
+  font: 500 11px/1 var(--fonte-mono);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--lime);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.dg-eyebrow::before {
+  content: "";
+  width: 28px;
+  height: 1px;
+  background: var(--lime);
+}
+.dg-h1 {
+  font: 800 clamp(30px, 7vw, 44px) / 1.08 var(--fonte-display);
+  letter-spacing: -0.035em;
+  margin-bottom: 20px;
+}
+.dg-h1 em {
+  font-style: italic;
+  font-weight: 600;
+  color: var(--lime);
+}
+.dg-lead {
+  font-size: 16px;
+  color: var(--text-2);
+  margin-bottom: 16px;
+}
+.dg-nota {
+  font-size: 14px;
+  color: var(--text-3);
+  border-left: 2px solid var(--teal-700);
+  padding-left: 14px;
+  margin-bottom: 32px;
+}
+
+/* ── progresso ── */
+.dg-progresso {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 28px;
+  font: 500 10px/1 var(--fonte-mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-4);
+}
+.dg-barra {
+  flex: 1;
+  height: 2px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.dg-barra span {
+  display: block;
+  height: 100%;
+  background: var(--lime);
+  transition: width 260ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* ── eco da resposta anterior ── */
+.dg-eco {
+  font-size: 13.5px;
+  color: var(--text-4);
+  margin-bottom: 20px;
+  padding-left: 14px;
+  border-left: 1px solid var(--border-vis);
+}
+.dg-eco b {
+  color: var(--text-3);
+  font-weight: 500;
+}
+
+/* ── pergunta ── */
+.dg-pergunta {
+  font: 700 clamp(21px, 4.6vw, 27px) / 1.25 var(--fonte-display);
+  letter-spacing: -0.02em;
+  margin-bottom: 10px;
+}
+.dg-ajuda {
+  font-size: 14px;
+  color: var(--text-3);
+  margin-bottom: 24px;
+}
+
+/* ── campos ── */
+.dg-input,
+.dg-textarea {
+  width: 100%;
+  background: rgba(23, 23, 23, 0.6);
+  border: 1px solid var(--border-vis);
+  border-radius: 10px;
+  padding: 15px 16px;
+  color: var(--text-1);
+  font: 400 16px/1.5 var(--fonte-corpo);
+  outline: none;
+  transition: border-color 160ms;
+}
+.dg-input::placeholder,
+.dg-textarea::placeholder {
+  color: var(--text-4);
+}
+.dg-input:focus,
+.dg-textarea:focus {
+  border-color: var(--lime);
+}
+.dg-textarea {
+  min-height: 130px;
+  resize: vertical;
+}
+.dg-campo + .dg-campo {
+  margin-top: 12px;
+}
+.dg-rotulo {
+  display: block;
+  font: 600 10px/1 var(--fonte-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-4);
+  margin-bottom: 8px;
+}
+
+/* ── opções ── */
+.dg-opcoes {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.dg-opcao {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  width: 100%;
+  text-align: left;
+  background: rgba(23, 23, 23, 0.5);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 15px 16px;
+  color: var(--text-2);
+  font: 400 15px/1.4 var(--fonte-corpo);
+  cursor: pointer;
+  transition:
+    border-color 160ms,
+    background 160ms;
+}
+.dg-opcao:hover {
+  border-color: rgba(198, 255, 52, 0.4);
+}
+.dg-opcao[aria-pressed="true"],
+.dg-opcao[data-marcada="true"] {
+  border-color: var(--lime);
+  background: var(--lime-dim);
+  color: var(--text-1);
+}
+.dg-marca {
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
+  border: 1px solid var(--border-vis);
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  font-size: 11px;
+  color: var(--onyx);
+}
+.dg-opcao[data-marcada="true"] .dg-marca {
+  background: var(--lime);
+  border-color: var(--lime);
+}
+
+/* ── ações ── */
+.dg-acoes {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 28px;
+  flex-wrap: wrap;
+}
+.dg-btn {
+  background: var(--lime);
+  color: var(--onyx);
+  border: none;
+  border-radius: 10px;
+  padding: 14px 26px;
+  font: 700 15px/1 var(--fonte-corpo);
+  cursor: pointer;
+  transition: opacity 160ms;
+}
+.dg-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+.dg-voltar {
+  background: none;
+  border: none;
+  color: var(--text-4);
+  font: 500 13px/1 var(--fonte-corpo);
+  cursor: pointer;
+  padding: 8px 0;
+}
+.dg-voltar:hover {
+  color: var(--text-2);
+}
+.dg-erro {
+  color: var(--amber);
+  font-size: 13.5px;
+  margin-top: 12px;
+}
+
+/* ── consentimento ── */
+.dg-consent {
+  display: flex;
+  gap: 13px;
+  align-items: flex-start;
+  background: rgba(23, 23, 23, 0.5);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px;
+  margin-top: 24px;
+  cursor: pointer;
+}
+.dg-consent p {
+  font-size: 13.5px;
+  color: var(--text-3);
+}
+.dg-consent a {
+  color: var(--lime);
+}
+
+/* ── desfecho ── */
+.dg-desfecho p {
+  font-size: 16px;
+  color: var(--text-2);
+  margin-bottom: 16px;
+}
+.dg-desfecho strong {
+  color: var(--text-1);
+  font-weight: 600;
+}
+.dg-oferta {
+  border: 1px solid rgba(198, 255, 52, 0.28);
+  background: var(--lime-dim);
+  border-radius: 14px;
+  padding: 24px;
+  margin-top: 8px;
+}
+.dg-oferta-nome {
+  font: 700 19px/1.2 var(--fonte-display);
+  letter-spacing: -0.02em;
+  margin-bottom: 10px;
+}
+.dg-cta {
+  display: inline-block;
+  margin-top: 16px;
+  background: var(--lime);
+  color: var(--onyx);
+  border-radius: 10px;
+  padding: 13px 22px;
+  font: 700 15px/1 var(--fonte-corpo);
+  text-decoration: none;
+}
+.dg-cal {
+  margin-top: 24px;
+  min-height: 520px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
