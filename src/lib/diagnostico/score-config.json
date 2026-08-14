@@ -1,0 +1,72 @@
+{
+  "versao": "2026-08-14.1",
+  "_nota": "Pesos calibráveis sem tocar em código (FR-018). São chute informado pelo ICP, não verdade medida: recalibrar contra os primeiros leads reais comparando a faixa dada com a leitura de quem conduziu a call. Fonte: specs/001-funil-diagnostico-captura/contracts/score.md",
+
+  "limiares": {
+    "qualificadoMin": 11,
+    "revisaoMin": 6
+  },
+
+  "tetos": {
+    "operacao_existente": 5,
+    "dor_relevante": 3,
+    "informacao_disponivel": 3,
+    "patrocinador": 2,
+    "caminho_decisao": 2,
+    "disposicao_colaborar": 2
+  },
+
+  "pontos": {
+    "frequencia": {
+      "varias_dia": 4,
+      "todo_dia": 4,
+      "algumas_semana": 3,
+      "semanal": 3,
+      "mensal": 2,
+      "esporadico": 0
+    },
+    "descricaoLongaMinChars": 120,
+    "descricaoLongaPontos": 1,
+
+    "consequenciaPorQuantidade": {
+      "3": 3,
+      "2": 2,
+      "1": 1,
+      "0": 0
+    },
+    "consequenciaBonus": ["dinheiro_errado", "perde_prazo"],
+
+    "fontesDigitais": ["planilha", "sistema_erp", "email", "sistema_proprio"],
+    "fonteUnicaDigital": 2,
+    "fonteMultiplaDigital": 3,
+    "fonteApenasWhatsapp": 1,
+
+    "patrocinador": {
+      "eu_mesmo": 2,
+      "alguem_do_time": 2,
+      "espalhado": 1,
+      "ninguem": 0
+    },
+
+    "decisao": {
+      "so_eu": 2,
+      "eu_e_socio": 2,
+      "diretoria": 1,
+      "outra_area": 1,
+      "nao_sou_eu": 0
+    },
+
+    "colaboracao": {
+      "sim_sem_problema": 2,
+      "sim_com_aprovacao": 1,
+      "dificil": 0,
+      "nao_sei": 1
+    }
+  },
+
+  "cortesDuros": {
+    "frequenciaEliminatoria": "esporadico",
+    "patrocinadorAusente": "ninguem",
+    "decisaoAusente": "nao_sou_eu"
+  }
+}

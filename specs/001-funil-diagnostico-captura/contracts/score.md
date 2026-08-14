@@ -10,9 +10,13 @@ Os valores abaixo vivem em `src/lib/diagnostico/score-config.json`, versionado e
 
 ## Pontuação por critério
 
-Máximo teórico: **16 pontos**.
+Máximo teórico: **17 pontos**.
 
-### Operação existente, peso até 4
+> Correção de 14/08, achada ao escrever os testes: a versão anterior deste documento dizia 16, somando os pesos de frequência (4) mais os outros cinco critérios (3+3+2+2+2). A conta esquecia o ponto do bônus de descrição detalhada, que pertence ao mesmo critério de operação. O teto de operação é **5**, não 4, e o total é 17.
+>
+> A alternativa seria manter o teto em 4 e deixar o bônus ser absorvido, mas aí ele perderia efeito justamente nos leads de maior frequência, que são os melhores. O teto subiu. Os limiares das faixas não mudaram.
+
+### Operação existente, peso até 5 (frequência até 4, mais 1 de descrição)
 
 Da pergunta 7, frequência:
 
