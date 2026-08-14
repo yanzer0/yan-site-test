@@ -8,7 +8,13 @@ Nenhum `NEEDS CLARIFICATION` restou na spec após o clarify de 14/08. O que este
 
 ## D1. Onde os leads ficam armazenados
 
-**Decisão**: Vercel Postgres (Neon), na mesma conta que já hospeda o site.
+**Decisão**: Postgres gerenciado pelo **Neon**, instalado como integração do Marketplace da Vercel, na mesma conta que já hospeda o site.
+
+> ⚠️ Correção de 14/08, ao ir provisionar: o produto **"Vercel Postgres" não existe mais**. A documentação oficial diz "Vercel Postgres is no longer available" e informa que as bases existentes foram movidas para o Neon em dezembro de 2024. Hoje o caminho é instalar uma integração de Postgres pelo Marketplace.
+>
+> A decisão técnica não muda, porque o Vercel Postgres já era Neon por baixo: continua sendo Postgres gerenciado, com credenciais injetadas no projeto e o cliente `@vercel/postgres` funcionando igual. O que muda é **como se provisiona**, e isso invalidava a instrução que este documento dava.
+>
+> Outra consequência prática: **não dá para provisionar por CLI de forma desassistida.** O `vercel integration accept-terms` declara exigir "an interactive terminal and human confirmation", e o login usa device code no navegador. É passo humano por desenho, não por falta de ferramenta.
 
 **Rationale**: os requisitos pedem consulta por origem, faixa e intervalo de data, separação entre concluído e parcial, e exclusão sob pedido do titular. Isso é trabalho de banco relacional. A Vercel já é a plataforma de deploy, então a conexão é gerenciada, a variável de ambiente entra no mesmo painel dos segredos que já existem, e não se cria conta, cobrança ou superfície de operação nova. O volume esperado, dezenas de leads por mês, cabe folgado em qualquer plano de entrada.
 
