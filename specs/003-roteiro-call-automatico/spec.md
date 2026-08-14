@@ -29,6 +29,15 @@ Decisão de 14/08: **roda na máquina do Yan**, onde o brain vive. O n8n na VPS 
 
 Consequência aceita: se a máquina estiver desligada quando a call for marcada, o roteiro sai atrasado. Isso é tolerável porque a call sempre acontece depois, nunca no instante do agendamento. O que não é tolerável é o trabalho sumir em silêncio.
 
+## Clarifications
+
+### Session 2026-08-14
+
+- Q: Quem conduz a Call 1? → A: **Iago e Pedro na maior parte das vezes, seguindo o roteiro, e o Yan pega algumas.** Round robin entre os três no Cal.com. Isso inverte o default do roteiro: o modo andaime, com falas literais, passa a ser o padrão.
+- Q: Por qual canal chega o aviso de falha da rotina? → A: Pelo **`OPS - alert`** que já existe e está ativo, workflow n8n `M0DVv7r86uqKUjnE`, que recebe `{source, severity, message}` e manda e-mail para o Yan via SMTP Hostinger. Não se cria canal novo.
+- Q: O que fazer em cancelamento e remarcação? → A: Cancelamento anota no card e não apaga nada, porque lead que cancelou continua sendo lead. Remarcação atualiza a data e **não** regera o roteiro, já que o conteúdo do diagnóstico não mudou.
+- Q: E quando quem preenche é de empresa que já é cliente ativo? → A: Não cria card novo. Avisa pelo `OPS - alert` e registra como interesse vinculado ao cliente existente, para virar conversa de expansão em vez de lead frio duplicado.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - O card do lead nasce sozinho (Priority: P1)
@@ -118,7 +127,10 @@ Quando qualquer etapa falha, alguém fica sabendo a tempo de agir antes da call.
 - **FR-012**: O roteiro MUST NOT conter oferta, faixa, SKU, preço, demo comercial ou negociação, conforme a regra 1 do comando.
 - **FR-013**: O PREP MUST separar o que o lead afirmou do que é hipótese da Infuser.
 - **FR-014**: Quando o formulário não der base para uma parte do PREP, o sistema MUST registrar a lacuna como pergunta a fazer na call, e MUST NOT preencher com suposição.
-- **FR-015**: O roteiro MUST sair no modo sem andaime por padrão, porque quem conduz a Call 1 é o Yan. O modo andaime é opção, não default.
+- **FR-015**: O roteiro MUST sair no **modo andaime por padrão**, com as falas literais, porque quem conduz a Call 1 na maior parte das vezes é Iago ou Pedro. O modo enxuto do Yan é a exceção.
+  - O sistema MUST identificar o host sorteado pelo round robin e MUST gerar o modo correspondente: andaime para Iago e Pedro, enxuto para o Yan.
+  - O andaime MUST trazer as falas prontas que o método de vendas prescreve para eles: abertura, ponte de assunto, as respostas das objeções conhecidas e a regra de perguntar de volta e calar.
+  - O roteiro MUST ir para o host sorteado, não para o time inteiro.
 
 **Propagação no brain**
 
@@ -132,11 +144,11 @@ Quando qualquer etapa falha, alguém fica sabendo a tempo de agir antes da call.
 - **FR-020**: O sistema MUST avisar quando existir call marcada em menos de 24 horas sem roteiro gerado.
 - **FR-021**: O sistema MUST NOT registrar dado pessoal do lead em log.
 
-**Requisitos com decisão pendente**
+**Resolvidos em 14/08**
 
-- **FR-022**: O comportamento em cancelamento e remarcação é [NEEDS CLARIFICATION: `BOOKING_CANCELLED` arquiva o card ou só anota? `BOOKING_RESCHEDULED` regera o roteiro ou mantém?].
-- **FR-023**: O canal do aviso de falha é [NEEDS CLARIFICATION: Slack, WhatsApp, e-mail ou o próprio painel? O Auto Select usa Slack, mas isso é canal de cliente].
-- **FR-024**: O tratamento de empresa que já é cliente ativo é [NEEDS CLARIFICATION: bloqueia a criação e avisa, ou cria como oportunidade nova vinculada ao cliente existente?].
+- **FR-022**: ✅ Em `BOOKING_CANCELLED`, o sistema MUST anotar o cancelamento no card e MUST NOT apagar card nem roteiro. Em `BOOKING_RESCHEDULED`, MUST atualizar a data e MUST NOT regerar o roteiro, porque o conteúdo do diagnóstico não mudou. Se a remarcação trocar o host, o sistema MUST regerar apenas o modo do roteiro, andaime ou enxuto, conforme quem passou a conduzir.
+- **FR-023**: ✅ O aviso de falha MUST usar o canal `OPS - alert` que já existe no n8n (`M0DVv7r86uqKUjnE`), enviando `{source, severity, message}`. O sistema MUST NOT criar canal de alerta novo.
+- **FR-024**: ✅ Quando o CNPJ ou o domínio de e-mail casar com cliente ativo, o sistema MUST NOT criar card novo. MUST avisar pelo `OPS - alert` e MUST registrar o interesse vinculado ao cliente existente, para virar conversa de expansão.
 
 ### Entidades
 
@@ -161,6 +173,7 @@ Quando qualquer etapa falha, alguém fica sabendo a tempo de agir antes da call.
 - O motor roda na máquina do Yan, onde o brain está clonado com acesso a `_empresa/`. Migrar para a VPS exigiria clonar o brain lá, o que é decisão separada e não está nesta spec.
 - O volume é baixo, poucas calls por semana, então o consumo da assinatura Max é irrelevante e não há necessidade de API key dedicada.
 - A qualidade do PREP é limitada pelo que o formulário coleta. Esta feature não compensa formulário raso, ela expõe a lacuna em vez de inventar. Quando a feature 002 existir, o mapa da Call 1 vira insumo do roteiro da Call 2.
-- A call vai para a agenda pessoal do Yan, que já está conectada ao Cal.com via Google.
+- A Call 1 é distribuída por round robin entre Yan, Iago e Pedro. A agenda do Yan já está conectada ao Cal.com via Google; as de Iago e Pedro ainda não, e conectá-las é pré-requisito operacional desta feature.
+- 🔴 Quem conduz o diagnóstico na maior parte das vezes não é técnico. O roteiro em modo andaime é o que sustenta a qualidade da call, e é por isso que ele deixa de ser opcional. O material que a feature `002` recebe depois é a transcrição dessa call, então a profundidade técnica do mapa fica limitada pela profundidade do que foi perguntado ao vivo.
 - O comando `/call-roteiro` é a fonte do formato e não é reimplementado aqui. Se o método de venda mudar, muda o comando, não esta feature.
 - O Claude Agent SDK se autodeclara alpha e quebra em versões menores, então a versão precisa ser fixada e testada antes de subir, do mesmo jeito que já se faz com o `@playwright/mcp` no worker do Auto Select.

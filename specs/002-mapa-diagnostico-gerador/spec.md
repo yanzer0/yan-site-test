@@ -22,6 +22,16 @@ Um documento com os processos mapeados e onde a IA encaixa é exatamente o que u
 
 A mitigação é de conteúdo, não de contrato: o mapa entrega o **o quê** e o **onde dói**, nunca o **como**. Ele nomeia os pontos de encaixe, as dependências e os limites. Ele não traz arquitetura, ferramenta específica por etapa, sequência de implementação nem estimativa de esforço. Isso é o que se compra.
 
+## Clarifications
+
+### Session 2026-08-14
+
+- Q: De onde vem a transcrição da Call 1? → A: A call continua no Google Meet, e a transcrição é feita na GPU local do Yan pelo `/video-gpu`, que já é hábito e roda offline. Não se depende da transcrição do Cal Video, cuja disponibilidade e custo a documentação não confirma.
+- Q: Quanto tempo depois da call o lead recebe o mapa? → A: No mesmo dia. Dá folga para transcrever, gerar e aprovar, e ainda chega com a conversa quente.
+- Q: Por onde o mapa chega ao lead? → A: Link para uma página própria no `useinfuser.com`, identidade v2. Permite medir abertura, que é sinal de temperatura antes da Call 2, e evita anexo pesado no celular.
+- Q: Qual o prazo de retenção da transcrição? → A: Enquanto o lead estiver no funil, mais 90 dias após a última interação. Depois disso, apaga-se a transcrição e mantém-se o mapa e os achados estruturados, que já não contêm áudio nem fala bruta.
+- Q: O mapa herda a identidade de qual canal? → A: Documento entregue ao cliente, portanto identidade v2 completa, e ele ganha template canônico próprio no registry do brain.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - O lead recebe o mapa e ele reflete a própria call (Priority: P1)
@@ -104,10 +114,20 @@ Quando a proposta da Call 2 é montada, o conteúdo do mapa está disponível co
 
 **Forma**
 
-- **FR-011**: O documento MUST usar a identidade visual v2 completa da Infuser.
-- **FR-012**: O documento MUST ser self-contained, com imagens embutidas, e legível em celular.
-- **FR-013**: O documento MUST ser produzido em formato adequado a envio e leitura pelo cliente, e o mesmo conteúdo MUST ficar disponível em forma estruturada para consumo interno.
-- **FR-014**: A copy MUST seguir as regras da casa: sem em-dash, sem palavra banida do tone-of-voice, sem urgência fabricada, sem mencionar que o material foi gerado por IA.
+- **FR-011**: O documento MUST usar a **identidade v2 completa** da Infuser, lida de `_knowledge/branding/infuser-v2/tokens.css` no brain. O canal é documento entregue ao cliente, e nesse canal a v2 é obrigatória.
+  - Tipografia da v2: `Inter` para display, `Onest` para corpo, `Geist Mono` para mono.
+  - O documento MUST NOT usar `Fraunces`, `JetBrains Mono` ou `Cabinet Grotesk`, nem declarar `--green: #A8E84C`. Essas são as assinaturas da identidade v1.1, superada para este canal, e são exatamente os fingerprints que o guard do brain rejeita.
+  - A identidade **não se herda do artefato vizinho**. Mesmo reaproveitando gerador existente, os tokens da v2 precisam ser confirmados na fonte antes de gerar.
+- **FR-011a**: O mapa MUST nascer de um **template canônico próprio**, registrado como classe nova em `scripts/lib/templates-registry.js` no brain, com o `legado` preenchido com os fingerprints da v1.1. Sem entrada no registry, o guard não cobre esta classe de documento e a identidade errada passa silenciosamente.
+  - 🔴 **A ordem importa e não pode ser invertida.** O guard 5 do `pretool-guardrails.js` só libera a escrita de um documento depois que o template canônico daquela classe foi **lido** na sessão. Registrar a classe apontando para um template que ainda não existe torna o arquivo impossível de ler, e portanto impossível de escrever: o guard trava a própria implementação, para sempre.
+  - Sequência obrigatória: criar `_knowledge/templates/mapa-diagnostico/mapa-diagnostico.template.html` com a identidade v2 **primeiro**, e só então adicionar a entrada no registry.
+  - `saida` sugerida para a entrada: `/_pipeline\/clientes\/.*mapa-diagnostico[^/]*\.html$/i`, coerente com as outras classes de deliverable de cliente.
+- **FR-012**: O documento MUST ser self-contained, com imagens embutidas em base64, e legível em celular sem rolagem horizontal.
+- **FR-012a**: O documento MUST ser **no-JS-safe**: todo o conteúdo visível por padrão, com animação apenas como realce progressivo. Visualizador sem JavaScript não pode resultar em página em branco.
+- **FR-013**: A entrega ao lead MUST ser por **link para página própria** no `useinfuser.com`, com a identidade v2. O mesmo conteúdo MUST ficar disponível em forma estruturada para consumo interno da Call 2.
+- **FR-013a**: A página do mapa MUST registrar abertura e número de visitas, porque isso é sinal de temperatura antes da Call 2. O registro MUST NOT expor dado pessoal na URL: o endereço da página usa identificador opaco, nunca nome, e-mail ou empresa.
+- **FR-013b**: A página do mapa MUST ser privada por link não listado e MUST NOT ser indexável por buscador.
+- **FR-014**: A copy MUST seguir as regras da casa: sem em-dash, sem palavra banida do tone-of-voice, sem urgência fabricada, sem mencionar que o material foi gerado por IA. Todo texto que o cliente lê MUST estar em português correto e acentuado.
 
 **Aprovação e envio**
 
@@ -121,12 +141,12 @@ Quando a proposta da Call 2 é montada, o conteúdo do mapa está disponível co
 - **FR-019**: Transcrição de call MUST ser tratada como dado sensível de cliente: não entra em repositório versionado, não vai para log, e tem prazo de retenção definido.
 - **FR-020**: O gerador MUST remover do documento nomes de terceiros, valores de contrato e identificadores que o cliente tenha citado de passagem e que não pertençam ao mapa do processo.
 
-**Requisitos com decisão pendente**
+**Resolvidos em 14/08**
 
-- **FR-021**: A origem da transcrição é [NEEDS CLARIFICATION: qual ferramenta grava e transcreve a Call 1? Meet, Zoom, Plaud, outra? O brain registra que o Plaud não tem chave de API nem login de robô, só OAuth com clique humano].
-- **FR-022**: O prazo entre o fim da call e a entrega do mapa é [NEEDS CLARIFICATION: minutos, mesmo dia, ou 24 horas? Muda o desenho do gate de aprovação e a promessa que a feature 001 pode fazer].
-- **FR-023**: O canal de entrega do mapa ao lead é [NEEDS CLARIFICATION: e-mail, WhatsApp, ou link em página própria? Link permite medir se o lead abriu, e-mail e WhatsApp não].
-- **FR-024**: O prazo de retenção da transcrição é [NEEDS CLARIFICATION: definir prazo e o que acontece com leads que nunca fecham].
+- **FR-021**: ✅ A call acontece no **Google Meet** e a transcrição é gerada na **GPU local do Yan** pelo `/video-gpu`, que roda offline e já é hábito. O sistema MUST aceitar a transcrição como arquivo de entrada, e MUST NOT depender de transcrição de provedor de vídeo. Consequência aceita: existe um passo humano entre a call e a geração, que é baixar a gravação e rodar a transcrição.
+- **FR-022**: ✅ O mapa MUST ser entregue ao lead **no mesmo dia da call**. O sistema MUST avisar quando o dia estiver acabando e um mapa ainda não tiver sido aprovado.
+- **FR-023**: ✅ A entrega é por link de página própria, ver FR-013.
+- **FR-024**: ✅ A transcrição MUST ser retida enquanto o lead estiver no funil, mais 90 dias após a última interação. Passado esse prazo, o sistema MUST apagar a transcrição e MUST preservar o mapa e os achados estruturados, que já não contêm fala bruta. O lead MUST poder pedir a exclusão antes do prazo.
 
 ### Entidades
 
@@ -149,6 +169,7 @@ Quando a proposta da Call 2 é montada, o conteúdo do mapa está disponível co
 ## Assumptions
 
 - A Call 1 é gravada e transcrita com consentimento do lead. Sem consentimento não há mapa, e isso precisa estar dito na confirmação de agendamento da feature 001.
+- 🔴 **A qualidade do mapa é limitada pela qualidade da call.** A decisão de 14/08 é que Iago e Pedro conduzem a maior parte dos diagnósticos, e nenhum dos dois é técnico. O gerador não inventa profundidade que não foi perguntada ao vivo: se a call não levantou sistemas, volumes e exceções, o mapa registra a lacuna em vez de preencher. Isso é o comportamento correto, mas significa que o mapa fica mais fino, e o gate de aprovação vai pegar mais correção no começo. A taxa de correção medida em FR-018 é o termômetro disso.
 - O volume inicial é baixo, na ordem de poucas calls por semana, o que torna o gate de aprovação humana barato agora. A premissa muda se o volume subir, e é por isso que a taxa de correção é medida desde o começo.
 - O mapa é entregue depois da Call 1 e antes da Call 2, e é insumo da proposta, não substituto dela.
 - A identidade v2 e o padrão de HTML self-contained já existem no brain e são reaproveitados, não redesenhados aqui.
