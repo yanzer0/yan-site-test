@@ -11,6 +11,13 @@
 
 import type { Pergunta, Trilha } from "./tipos";
 
+/**
+ * Versão do conjunto de perguntas, gravada em cada resposta.
+ * Sem ela, resposta antiga fica órfã de significado quando a copy muda.
+ * Subir sempre que uma pergunta for adicionada, removida ou tiver opção alterada.
+ */
+export const VERSAO_PERGUNTAS = "2026-08-14.1";
+
 /** Identificadores estáveis. Reescrever a copy de uma pergunta não pode invalidar histórico. */
 export const P = {
   NOME: "nome",

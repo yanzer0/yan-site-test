@@ -50,14 +50,14 @@
 
 **Independent Test**: preencher com respostas de lead qualificado e ver o seletor de horários aparecer, com o registro gravado.
 
-- [ ] T014 [US1] Criar `src/app/api/diagnostico/submit/route.ts`: valida consentimento no servidor, pontua, deduplica, persiste e devolve a faixa. Nunca devolve o score numérico. Segue o padrão de `kiwify-webhook/route.ts`
+- [x] T014 [US1] Criar `src/app/api/diagnostico/submit/route.ts`: valida consentimento no servidor, pontua, deduplica, persiste e devolve a faixa. Nunca devolve o score numérico. Segue o padrão de `kiwify-webhook/route.ts`
 - [ ] T015 [P] [US1] Criar `src/components/diagnostico/Conversa.tsx`, o componente de pergunta única por vez com a resposta anterior visível
 - [ ] T016 [P] [US1] Criar `src/components/diagnostico/Abertura.tsx` com o texto da tela inicial de `contracts/perguntas.md`, declarando quantas perguntas, quanto tempo e o que o lead ganha
 - [ ] T017 [P] [US1] Criar `src/components/diagnostico/Consentimento.tsx`: caixa não pré-marcada, link para a política, botão inativo sem a marca
 - [ ] T018 [US1] Criar `src/app/diagnostico/page.tsx` montando o fluxo, com a primeira pergunta renderizada no servidor para funcionar no webview do Instagram
 - [ ] T019 [US1] Criar `src/components/diagnostico/Agendamento.tsx` com o embed do Cal.com pré-preenchido, mais o caminho alternativo quando o provedor falhar
-- [ ] T020 [US1] Criar `src/app/api/diagnostico/cal-webhook/route.ts` com verificação HMAC-SHA256 em tempo constante contra `x-cal-signature-256`
-- [ ] T021 [P] [US1] Criar `tests/diagnostico/webhook.test.ts` provando que assinatura inválida devolve 401 e não persiste nada
+- [x] T020 [US1] Criar `src/app/api/diagnostico/cal-webhook/route.ts` com verificação HMAC-SHA256 em tempo constante contra `x-cal-signature-256`
+- [x] T021 [P] [US1] Criar `tests/diagnostico/webhook.test.ts` provando que assinatura inválida devolve 401 e não persiste nada
 - [ ] T022 [US1] Criar `src/app/diagnostico/obrigado/page.tsx` com a confirmação que explica que a call é diagnóstico, sem proposta nem preço
 
 **Checkpoint**: US1 funciona ponta a ponta. É o MVP.
