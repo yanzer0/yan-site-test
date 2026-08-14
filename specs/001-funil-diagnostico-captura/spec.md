@@ -111,7 +111,7 @@ Um visitante responde metade das perguntas e sai. O que ele já respondeu é pre
 
 - **FR-001**: O sistema MUST apresentar as perguntas uma por vez, em formato de conversa, com a resposta anterior visível.
 - **FR-002**: O sistema MUST funcionar dentro do navegador embutido do Instagram, em tela de celular, sem rolagem horizontal.
-- **FR-003**: O sistema MUST declarar ao lead, antes da primeira pergunta, quantas perguntas são, quanto tempo leva, e o que ele ganha ao terminar: uma hora de call de diagnóstico e o mapa da operação ao final.
+- **FR-003**: O sistema MUST declarar ao lead, antes da primeira pergunta, quantas perguntas são, quanto tempo leva, e o que ele ganha ao terminar. A promessa MUST respeitar o faseamento de FR-032: na fase A, uma hora de call de diagnóstico; na fase B, a call mais o mapa da operação ao final.
 - **FR-004**: O sistema MUST NOT exibir preço, faixa de preço, nome de plano ou tabela em nenhum ponto do fluxo.
 
 **Perguntas e ramificação**
@@ -152,8 +152,17 @@ Um visitante responde metade das perguntas e sai. O que ele já respondeu é pre
 
 **Requisitos com decisão pendente**
 
-- **FR-029**: O destino alternativo oferecido ao lead não-ICP é [NEEDS CLARIFICATION: há mais de um caminho vivo e eles não servem ao mesmo perfil. Kit Segundo Cérebro, R$ 67 pagamento único, vivo em `useinfuser.com/kit-segundo-cerebro` com checkout Hubla ativo, mas exige Claude Code e Obsidian, o que é fricção para dono de empresa não-técnico. Mapa de IA, R$ 197, diagnóstico pago com PDF do mapeamento, desenhado em 24/06 como tripwire B2B e ainda no estado de ideia: é o encaixe certo para empresa real sem encaixe na call gratuita, e a feature 002 é justamente o gerador do PDF que falta nele. Infuser Club, R$ 97/mês, para quem quer aprender a construir. Decidir quantos destinos o formulário oferece e qual resposta roteia para qual].
+- **FR-029**: ✅ Resolvido em 14/08. São **dois** destinos, roteados pela resposta de uso pessoal versus empresa, e nunca mais que isso, porque vitrine de produtos destrói a força da recusa.
+  - Quem declara **uso pessoal** recebe o **Kit Segundo Cérebro**, R$ 67 em pagamento único, vivo em `useinfuser.com/kit-segundo-cerebro` com checkout Hubla ativo. Encaixa porque quem quer organizar a própria rotina costuma aceitar a fricção de instalar Claude Code e Obsidian.
+  - Quem tem **empresa real mas fica fora do critério da call gratuita** recebe o **Mapa de IA**, R$ 197: o mesmo diagnóstico, pago. Ele quer saber onde a IA encaixa, não um kit de vault.
+  - O sistema MUST NOT oferecer o Kit de R$ 67 a lead que declarou empresa. Dono de empresa não-técnico recebendo um produto que exige terminal é reembolso e desgaste de marca.
+  - O sistema MUST NOT ofertar Infuser Club nem Esquadrão de Agentes neste fluxo. São de outro funil.
 - **FR-030**: ✅ Resolvido em 14/08: a call vai para a agenda pessoal do Yan, já conectada ao Cal.com via Google. Sem round robin nesta versão. Falta definir a janela [NEEDS CLARIFICATION: quantos dias à frente e quais faixas do dia].
+- **FR-032**: O lançamento MUST ser faseado, porque a ordem de construção decidida em 14/08 é 001, depois 003, depois 002, e tanto a promessa do mapa quanto o destino pago do não-ICP dependem da 002.
+  - **Fase A**, sem a 002 pronta: o formulário promete apenas a call de uma hora de diagnóstico, que já existe e é entregue hoje. O não-ICP de empresa recebe recusa honesta e nutrição, sem oferta paga. O de uso pessoal já pode receber o Kit de R$ 67, que está vivo.
+  - **Fase B**, com a 002 no ar: liga a promessa do mapa na abertura do formulário e liga a oferta do Mapa de IA de R$ 197 para o não-ICP de empresa.
+  - A transição entre as fases MUST ser um interruptor de configuração, não reescrita de copy espalhada pelo fluxo.
+  - O sistema MUST NOT prometer o mapa antes da 002 estar entregando de verdade. Promessa sem lastro é dívida com o lead e contraria o princípio V da constitution.
 - **FR-031**: O comportamento em preenchimento repetido pelo mesmo contato é [NEEDS CLARIFICATION: duplicata, atualização do registro anterior, ou lead novo?].
 
 ### Entidades
@@ -185,4 +194,6 @@ Um visitante responde metade das perguntas e sai. O que ele já respondeu é pre
 - O modelo de qualificação segue GPCT, e a spec de 16/07/2026, que usava BANT com âncora de preço, está superada pela decisão de 13/08/2026.
 - O questionário pré-call por WhatsApp de 13/08/2026 muda de papel quando esta feature entrar: as perguntas de situação passam a vir do formulário, e o WhatsApp fica para confirmação e vínculo humano. A spec não altera aquele documento, apenas assume a sobreposição.
 - Os pesos iniciais do score são chute informado pelo ICP e precisam de calibração com os primeiros leads reais. A spec exige que sejam configuráveis exatamente por isso.
-- O mapa de diagnóstico prometido na tela inicial é entregue pela feature `002-mapa-diagnostico-gerador`. Prometer sem ela pronta cria dívida com o lead.
+- O mapa de diagnóstico é entregue pela feature `002-mapa-diagnostico-gerador`. Como ela é a última da ordem de construção, o lançamento é faseado por FR-032 e a fase A não promete o mapa.
+- A feature `002` não é só entregável de call: ela é o que destrava o **Mapa de IA de R$ 197**, produto desenhado em 24/06 como tripwire B2B e parado desde então por falta do template do PDF. O mesmo gerador serve a call gratuita e ao produto pago.
+- A assimetria entre a call gratuita, que tem critério, e o diagnóstico pago, que é aberto a qualquer um, é a forma honesta de comunicar seletividade. Ela substitui a ideia de vagas limitadas, que cairia no anti-padrão de exclusividade fabricada, banido 5 a 5 pelo conselho de 12/06.
