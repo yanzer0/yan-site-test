@@ -31,7 +31,8 @@ A promessa de valor da call já está no título, mas não é vendida em lugar n
 
 ### Session 2026-08-14
 
-- Q: Que janela de horários o Cal.com oferece para a Call 1? → A: Todos os dias úteis do mês, blocos de 1 hora, com no mínimo 1 hora de intervalo entre calls. **Quem conduz é Iago e Pedro, seguindo o roteiro, e o Yan pega algumas.** Round robin entre os três, não agenda pessoal.
+- Q: Que janela de horários o Cal.com oferece para a Call 1? → A: Todos os dias úteis do mês, blocos de 1 hora, com no mínimo 1 hora de intervalo entre calls. **Quem conduz é Iago e Pedro, seguindo o roteiro, e o Yan pega algumas.**
+- Q: Como as calls são distribuídas entre os três? → A: **Não são.** Uma agenda só, a do Yan, que já é compartilhada com Iago e Pedro. Quem estiver disponível pega a call. Sem round robin, sem sorteio, sem atribuição de host pelo sistema.
 - Q: O que acontece quando o mesmo contato preenche o formulário duas vezes? → A: Atualiza o registro existente e preserva o histórico das respostas anteriores. Não cria lead duplicado nem descarta o que já havia.
 - Q: As duas fases de lançamento saem juntas ou uma depois da outra? → A: **Juntas.** Não existe fase A separada: o formulário só vai ao ar com a promessa do mapa e a oferta do Mapa de IA já funcionando.
 
@@ -165,12 +166,12 @@ Um visitante responde metade das perguntas e sai. O que ele já respondeu é pre
   - Quem tem **empresa real mas fica fora do critério da call gratuita** recebe o **Mapa de IA**, R$ 197: o mesmo diagnóstico, pago. Ele quer saber onde a IA encaixa, não um kit de vault.
   - O sistema MUST NOT oferecer o Kit de R$ 67 a lead que declarou empresa. Dono de empresa não-técnico recebendo um produto que exige terminal é reembolso e desgaste de marca.
   - O sistema MUST NOT ofertar Infuser Club nem Esquadrão de Agentes neste fluxo. São de outro funil.
-- **FR-030**: ✅ Resolvido em 14/08. A Call 1 é distribuída por **round robin entre Yan, Iago e Pedro**, não em agenda pessoal.
+- **FR-030**: ✅ Resolvido em 14/08. A Call 1 cai em **uma agenda única**, a do Yan, que já é compartilhada com Iago e Pedro. Quem estiver disponível pega a call.
   - Janela: todos os dias úteis do mês corrente, em horário comercial.
-  - Duração: 1 hora, com intervalo mínimo de 1 hora entre calls do mesmo host.
-  - O Cal.com suporta round robin nativamente, e emite `BOOKING_REASSIGNED` quando o host muda.
-  - O sistema MUST enviar ao host sorteado o roteiro e as respostas do lead, e não ao time inteiro.
-  - Consequência que a feature 003 herda: o roteiro passa a ser gerado no **modo andaime** por padrão, com falas literais, porque quem conduz na maior parte das vezes não é o Yan.
+  - Duração: 1 hora, com intervalo mínimo de 1 hora entre calls.
+  - O sistema MUST NOT implementar round robin, sorteio ou atribuição automática de host. A distribuição é combinada entre as pessoas, fora do software.
+  - Consequência aceita: a disponibilidade ofertada ao lead é a do calendário do Yan. Horário em que ele está ocupado não aparece como livre, mesmo que Iago ou Pedro estivessem disponíveis.
+  - Consequência que a feature 003 herda: como o sistema não sabe quem vai conduzir, o roteiro MUST sair **sempre no modo andaime**, com falas literais. É o modo que serve a Iago e Pedro, e o Yan simplesmente ignora as falas prontas.
 - **FR-032**: O lançamento é **único**. Decisão de 14/08: as duas fases saem juntas, e não existe versão intermediária no ar.
   - O formulário MUST ir a produção já prometendo o mapa e já oferecendo o Mapa de IA de R$ 197 ao não-ICP de empresa.
   - Consequência direta: a feature `002` é **pré-requisito de produção** da `001`. A ordem de construção (001, 003, 002) continua valendo para o trabalho, mas nada vai ao ar antes das três estarem prontas.
