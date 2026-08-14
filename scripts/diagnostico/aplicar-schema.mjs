@@ -51,7 +51,20 @@ function statementsDe(sql) {
 }
 
 async function main() {
-  const url = process.env.POSTGRES_URL || process.env.DATABASE_URL;
+  /**
+   * DDL vai pela conexão DIRETA, não pela pooled.
+   *
+   * A `POSTGRES_URL` do Neon aponta para o pgbouncer, e o próprio
+   * `@vercel/postgres` recusa `createClient()` com ela. Além disso, pooler em
+   * modo transação não é lugar de rodar CREATE TABLE. A `_NON_POOLING` é a
+   * conexão direta, que é o que migração pede.
+   */
+  const url =
+    process.env.POSTGRES_URL_NON_POOLING ||
+    process.env.DATABASE_URL_UNPOOLED ||
+    process.env.POSTGRES_URL ||
+    process.env.DATABASE_URL;
+
   if (!url) {
     console.error("\n  POSTGRES_URL nao esta no ambiente.\n");
     console.error("  Rode primeiro, na raiz do projeto:");
