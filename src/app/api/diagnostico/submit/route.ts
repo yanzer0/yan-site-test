@@ -21,6 +21,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { avaliar } from "@/lib/diagnostico/score";
 import { apagarParcial, gravarLead, ErroPersistencia } from "@/lib/diagnostico/db";
+import { avisarFalhaPersistencia, avisarRevisaoHumana } from "@/lib/diagnostico/alerta";
 import { validarSubmissao } from "@/lib/diagnostico/submissao";
 import { P, VERSAO_PERGUNTAS } from "@/lib/diagnostico/perguntas";
 import configBruto from "@/lib/diagnostico/score-config.json";
@@ -60,15 +61,29 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
   const avaliacao = avaliar(validacao.respostas, CONFIG);
 
-  try {
-    await gravarLead(validacao.dados, validacao.respostas, avaliacao, VERSAO_PERGUNTAS);
+  const sessaoId = typeof corpo.sessaoId === "string" ? corpo.sessaoId : "";
 
-    const sessaoId = typeof corpo.sessaoId === "string" ? corpo.sessaoId : null;
+  try {
+    const leadId = await gravarLead(
+      validacao.dados,
+      validacao.respostas,
+      avaliacao,
+      VERSAO_PERGUNTAS,
+    );
+
+    // O parcial some quando o completo existe: eles nunca coexistem (FR-025).
     if (sessaoId) await apagarParcial(sessaoId);
+
+    // Faixa de revisão é a única que depende de alguém olhar. Sem aviso, o lead
+    // fica parado no banco esperando uma decisão que ninguém sabe que existe.
+    if (avaliacao.faixa === "revisao") {
+      await avisarRevisaoHumana(leadId, validacao.dados.porte);
+    }
   } catch (erro) {
     // Log sem dado pessoal: só a operação que falhou (FR-026).
     const detalhe = erro instanceof ErroPersistencia ? erro.operacao : "desconhecida";
     console.error(`[diagnostico/submit] falha de persistencia: ${detalhe}`);
+    await avisarFalhaPersistencia(detalhe, sessaoId || "sem_sessao");
     return NextResponse.json({ erro: "storage_failed" }, { status: 500 });
   }
 

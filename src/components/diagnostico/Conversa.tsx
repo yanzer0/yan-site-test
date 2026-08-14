@@ -127,6 +127,29 @@ export function Conversa({ urlCal, urlMapa, urlPolitica }: ConversaProps) {
     [respostas, extras],
   );
 
+  /**
+   * Grava o rascunho no servidor a cada três perguntas.
+   *
+   * A cada pergunta seria uma escrita por clique sem comprar nada. A cada três
+   * dá granularidade suficiente para saber onde as pessoas desistem, que é o
+   * motivo do parcial existir. Falha aqui é ignorada de propósito: é telemetria,
+   * não pode atrapalhar quem está preenchendo.
+   */
+  function gravarRascunho(proximoIndice: number) {
+    if (!sessaoId || proximoIndice % 3 !== 0) return;
+    void fetch("/api/diagnostico/parcial", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        sessaoId,
+        respostas,
+        ultimaPergunta: atual?.id ?? "",
+        origem: extras.origem,
+      }),
+      keepalive: true,
+    }).catch(() => {});
+  }
+
   function avancar() {
     if (!atual) return;
     if (!respondida(atual)) {
@@ -134,7 +157,11 @@ export function Conversa({ urlCal, urlMapa, urlPolitica }: ConversaProps) {
       return;
     }
     setErro("");
-    if (!ehUltima) setPasso(indice + 1);
+    if (!ehUltima) {
+      const proximo = indice + 1;
+      gravarRascunho(proximo);
+      setPasso(proximo);
+    }
   }
 
   async function enviar() {

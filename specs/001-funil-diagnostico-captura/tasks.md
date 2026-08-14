@@ -58,7 +58,7 @@
 - [x] T019 [US1] Criar `src/components/diagnostico/Agendamento.tsx` com o embed do Cal.com pré-preenchido, mais o caminho alternativo quando o provedor falhar
 - [x] T020 [US1] Criar `src/app/api/diagnostico/cal-webhook/route.ts` com verificação HMAC-SHA256 em tempo constante contra `x-cal-signature-256`
 - [x] T021 [P] [US1] Criar `tests/diagnostico/webhook.test.ts` provando que assinatura inválida devolve 401 e não persiste nada
-- [ ] T022 [US1] Criar `src/app/diagnostico/obrigado/page.tsx` com a confirmação que explica que a call é diagnóstico, sem proposta nem preço
+- [~] T022 DISPENSADA (o desfecho acontece na mesma tela, sem redirect; pagina separada so somaria um salto sem entregar nada): [US1] Criar `src/app/diagnostico/obrigado/page.tsx` com a confirmação que explica que a call é diagnóstico, sem proposta nem preço
 
 **Checkpoint**: US1 funciona ponta a ponta. É o MVP.
 
@@ -71,7 +71,7 @@
 - [x] T023 [US2] Implementar a ramificação de uso pessoal em `perguntas.ts`, encurtando o fluxo para 5 perguntas
 - [x] T024 [US2] Criar `src/components/diagnostico/Desfecho.tsx` com os quatro textos finais de `contracts/score.md`, um por faixa
 - [x] T025 [US2] Rotear o não-ICP de empresa para o Mapa de IA e o de uso pessoal para o Kit Segundo Cérebro. O sistema não pode oferecer o Kit a quem declarou empresa
-- [ ] T026 [P] [US2] Criar `tests/diagnostico/desfecho.test.ts` provando que nenhum texto de nenhuma faixa contém as palavras de recusa proibidas por FR-017
+- [x] T026 [P] [US2] Criar `tests/diagnostico/desfecho.test.ts` provando que nenhum texto de nenhuma faixa contém as palavras de recusa proibidas por FR-017
 
 **Checkpoint**: as quatro faixas têm destino e nenhuma comunica desqualificação.
 
@@ -79,26 +79,26 @@
 
 ## Phase 5: User Story 3 - O time enxerga de onde vem lead bom (P3)
 
-- [ ] T027 [US3] Criar as consultas por origem, faixa e intervalo de data em `src/lib/diagnostico/consultas.ts`
-- [ ] T028 [US3] Criar a notificação ao time quando a faixa for revisão humana, usando o canal `OPS - alert` que já existe no n8n
-- [ ] T029 [US3] Implementar a exclusão de lead a pedido do titular, em cascata, com registro do pedido sem dado pessoal
+- [x] T027 [US3] Criar as consultas por origem, faixa e intervalo de data em `src/lib/diagnostico/consultas.ts`
+- [x] T028 [US3] Criar a notificação ao time quando a faixa for revisão humana, usando o canal `OPS - alert` que já existe no n8n
+- [x] T029 [US3] Implementar a exclusão de lead a pedido do titular, em cascata, com registro do pedido sem dado pessoal
 
 ---
 
 ## Phase 6: User Story 4 - Quem abandona no meio não vira zero (P3)
 
-- [ ] T030 [US4] Persistir o estado da conversa em `localStorage` com identificador de sessão, retomando no ponto certo
-- [ ] T031 [US4] Criar `src/app/api/diagnostico/parcial/route.ts`, gravando ao término de cada seção
-- [ ] T032 [US4] Garantir que o parcial é apagado quando a submissão completa acontece, e que nunca aparece como lead
+- [x] T030 [US4] Persistir o estado da conversa em `localStorage` com identificador de sessão, retomando no ponto certo
+- [x] T031 [US4] Criar `src/app/api/diagnostico/parcial/route.ts`, gravando ao término de cada seção
+- [x] T032 [US4] Garantir que o parcial é apagado quando a submissão completa acontece, e que nunca aparece como lead
 
 ---
 
 ## Phase 7: Polish
 
-- [ ] T033 Rodar o quickstart inteiro, os quatro caminhos
-- [ ] T034 Testar no webview do Instagram, em celular real
-- [ ] T035 Conferir que nenhum dado pessoal aparece em query string ou log
-- [ ] T036 Revisar toda a copy contra as regras da casa: zero em-dash, zero palavra banida, acentuação correta
+- [~] T033 PARCIAL (as 4 faixas foram exercitadas por HTTP e a navegacao no browser; o caminho completo ate a gravacao depende do Postgres provisionado): Rodar o quickstart inteiro, os quatro caminhos
+- [ ] T034 SO O YAN CONSEGUE (exige celular real com o app do Instagram; o proxy que eu fiz foi viewport 375px + SSR sem JS): Testar no webview do Instagram, em celular real
+- [x] T035 Conferir que nenhum dado pessoal aparece em query string ou log
+- [x] T036 Revisar toda a copy contra as regras da casa: zero em-dash, zero palavra banida, acentuação correta
 
 ---
 
