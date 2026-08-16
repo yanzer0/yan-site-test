@@ -23,7 +23,13 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const AQUI = dirname(fileURLToPath(import.meta.url));
-const SCHEMA = join(AQUI, "..", "..", "src", "lib", "diagnostico", "schema.sql");
+const LIB = join(AQUI, "..", "..", "src", "lib", "diagnostico");
+
+/**
+ * Os arquivos entram nesta ordem e ela importa: `mapa-sql.sql` tem chave
+ * estrangeira para `leads`, que nasce no `schema.sql`.
+ */
+const ARQUIVOS = [join(LIB, "schema.sql"), join(LIB, "mapa-sql.sql")];
 
 const TABELAS_ESPERADAS = [
   "leads",
@@ -32,6 +38,8 @@ const TABELAS_ESPERADAS = [
   "parciais",
   "agendamentos",
   "exclusoes",
+  "mapas",
+  "mapa_achados",
 ];
 
 /**
@@ -81,8 +89,8 @@ async function main() {
   await cliente.connect();
 
   try {
-    const statements = statementsDe(readFileSync(SCHEMA, "utf8"));
-    console.log(`\n  Aplicando ${statements.length} statements...\n`);
+    const statements = ARQUIVOS.flatMap((arquivo) => statementsDe(readFileSync(arquivo, "utf8")));
+    console.log(`\n  Aplicando ${statements.length} statements de ${ARQUIVOS.length} arquivos...\n`);
 
     let aplicados = 0;
     for (const statement of statements) {
