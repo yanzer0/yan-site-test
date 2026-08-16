@@ -115,10 +115,23 @@ async function main() {
     .replace("{{TRANSCRICAO}}", transcricao);
 
   console.log(`\n  Chamando o modelo. Isso leva um tempo...`);
-  const execucao = spawnSync("claude", ["-p", prompt], {
+
+  /**
+   * O prompt vai por STDIN, não como argumento.
+   *
+   * O Windows limita a linha de comando a cerca de 8 mil caracteres, e só a
+   * transcrição já passa disso. Como argumento, o processo nem chega a nascer:
+   * morre com "Linha de comando muito longa" antes de o modelo ver qualquer
+   * coisa. Por stdin não há limite prático.
+   *
+   * `shell: false` de propósito: com shell, o conteúdo da transcrição passaria
+   * pelo interpretador de comandos, e transcrição é texto de terceiro.
+   */
+  const execucao = spawnSync("claude", ["-p"], {
+    input: prompt,
     encoding: "utf8",
     maxBuffer: 32 * 1024 * 1024,
-    shell: true,
+    shell: false,
   });
 
   if (execucao.status !== 0) {

@@ -31,12 +31,32 @@ const FERRAMENTAS_DE_SOLUCAO = [
   "banco de dados", "postgres", "supabase", "airtable",
 ];
 
-/** Estimativa, prazo e preço: as três formas de o documento virar proposta. */
-const MARCAS_DE_ORCAMENTO = [
-  "r$", "reais", "sprint", "fase 1", "fase 2", "semanas de", "dias de trabalho",
+/**
+ * Vocabulário que só existe em proposta. Proibido em QUALQUER achado.
+ *
+ * Nenhuma destas palavras descreve a operação do cliente: todas descrevem um
+ * projeto sendo vendido.
+ */
+const MARCAS_DE_PROPOSTA = [
+  "sprint", "fase 1", "fase 2", "semanas de", "dias de trabalho",
   "horas de desenvolvimento", "prazo de entrega", "cronograma", "custo estimado",
-  "investimento de",
+  "investimento de", "orcamento do projeto", "orçamento do projeto",
 ];
+
+/**
+ * Valor em dinheiro. Proibido só onde seria PRECIFICAR A SOLUÇÃO.
+ *
+ * A distinção custou um falso positivo real: o validador reprovou o achado
+ * "um protesto de doze mil reais perdeu o prazo", que é o custo da dor do
+ * cliente, dito por ele na call. Registrar esse número é exatamente o que um
+ * diagnóstico honesto faz, e é o que dá dimensão ao problema.
+ *
+ * O que não pode é valor aparecer no encaixe ou no próximo passo, onde ele
+ * viraria preço do que estamos propondo. Mesma lógica da ferramenta: a etapa
+ * cita o que o cliente já usa, o encaixe não cita o que nós usaríamos.
+ */
+const MARCAS_DE_DINHEIRO = ["r$", "reais"];
+const ONDE_DINHEIRO_E_PROPOSTA: readonly string[] = ["encaixe"];
 
 function texto(valor: unknown): string {
   return typeof valor === "string" ? valor.trim() : "";
@@ -101,9 +121,18 @@ function validarAchado(achado: unknown, indice: number, problemas: Problema[]): 
   if (ferramenta && a.tipo === "encaixe") {
     problemas.push({ onde, porque: `encaixe cita ferramenta de solucao: "${ferramenta}"` });
   }
-  const orcamento = contemAlguma(corpo, MARCAS_DE_ORCAMENTO);
-  if (orcamento) {
-    problemas.push({ onde, porque: `contem marca de orcamento ou prazo: "${orcamento}"` });
+  const proposta = contemAlguma(corpo, MARCAS_DE_PROPOSTA);
+  if (proposta) {
+    problemas.push({ onde, porque: `contem vocabulario de proposta: "${proposta}"` });
+  }
+
+  // Valor em dinheiro só é problema onde ele precificaria a solução. No atrito
+  // e no limite, ele é o custo da dor que o cliente relatou, e deve ficar.
+  if (ONDE_DINHEIRO_E_PROPOSTA.includes(a.tipo)) {
+    const dinheiro = contemAlguma(corpo, MARCAS_DE_DINHEIRO);
+    if (dinheiro) {
+      problemas.push({ onde, porque: `encaixe nao pode citar valor: "${dinheiro}"` });
+    }
   }
 
   if (a.tipo === "encaixe" && !texto(a.oQueMuda)) {
@@ -180,5 +209,6 @@ export function validarMapa(bruto: unknown): Validacao {
 
 export const TERMOS_PROIBIDOS = {
   ferramentas: FERRAMENTAS_DE_SOLUCAO,
-  orcamento: MARCAS_DE_ORCAMENTO,
+  proposta: MARCAS_DE_PROPOSTA,
+  dinheiro: MARCAS_DE_DINHEIRO,
 } as const;

@@ -121,14 +121,60 @@ describe("FR-008: o COMO nao entra no documento", () => {
     },
   );
 
-  it.each(["R$ 5.000", "sprint de duas semanas", "prazo de entrega curto", "cronograma fechado"])(
-    "rejeita marca de orcamento ou prazo: '%s'",
+  it.each(["sprint de duas semanas", "prazo de entrega curto", "cronograma fechado"])(
+    "rejeita vocabulario de proposta em qualquer achado: '%s'",
     (marca) => {
       const r = validarMapa(comEncaixe(`Isso resolve rapido, ${marca}.`));
       expect(r.ok).toBe(false);
-      if (!r.ok) expect(r.problemas.some((p) => p.porque.includes("orcamento ou prazo"))).toBe(true);
+      if (!r.ok) expect(r.problemas.some((p) => p.porque.includes("vocabulario de proposta"))).toBe(true);
     },
   );
+
+  it("rejeita valor em dinheiro no ENCAIXE, onde ele precificaria a solucao", () => {
+    const r = validarMapa(comEncaixe("Isso custa uns R$ 5.000 pra montar."));
+    expect(r.ok).toBe(false);
+    if (!r.ok) expect(r.problemas.some((p) => p.porque.includes("nao pode citar valor"))).toBe(true);
+  });
+
+  it("PERMITE valor no atrito, porque ali e o custo da dor do cliente", () => {
+    // Caso real: "um protesto de doze mil reais perdeu o prazo" e o numero que
+    // o proprio cliente deu na call. Registrar isso e o que um diagnostico
+    // honesto faz, e o validador chegou a reprovar por engano.
+    const r = validarMapa(
+      mapaValido({
+        achados: [
+          {
+            tipo: "atrito",
+            classificacao: "fato",
+            titulo: "Perdemos o prazo do protesto",
+            descricao: "Um protesto de doze mil reais perdeu o prazo e o valor nao foi recuperado.",
+            origem: "Era uns doze mil reais. A gente nao recuperou.",
+          },
+          { tipo: "encaixe", classificacao: "leitura", titulo: "X", descricao: "Y", oQueMuda: "Z" },
+          { tipo: "limite", classificacao: "limite", titulo: "L", descricao: "M" },
+        ] as never,
+      }),
+    );
+    expect(r.ok, r.ok ? "" : JSON.stringify(r.problemas)).toBe(true);
+  });
+
+  it("PERMITE valor no limite, que tambem descreve a realidade do cliente", () => {
+    const r = validarMapa(
+      mapaValido({
+        achados: [
+          { tipo: "atrito", classificacao: "leitura", titulo: "A", descricao: "B" },
+          { tipo: "encaixe", classificacao: "leitura", titulo: "X", descricao: "Y", oQueMuda: "Z" },
+          {
+            tipo: "limite",
+            classificacao: "limite",
+            titulo: "Aprovacao acima de cinco mil reais",
+            descricao: "Acima de R$ 5.000 a decisao e do dono, e isso nao se automatiza.",
+          },
+        ] as never,
+      }),
+    );
+    expect(r.ok, r.ok ? "" : JSON.stringify(r.problemas)).toBe(true);
+  });
 
   it("permite que a ETAPA cite a ferramenta que o cliente ja usa hoje", () => {
     // A etapa descreve o processo do cliente. Dizer que ele usa Excel e fato,

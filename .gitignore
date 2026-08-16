@@ -47,3 +47,7 @@ design-system/infuser/**/*.png
 public/*.bak
 build.log
 dev.log
+
+# transcricoes de call: dado sensivel de cliente, nunca versionado (FR-019 da spec 002)
+transcricoes/
+saidas/
