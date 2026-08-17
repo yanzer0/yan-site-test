@@ -29,9 +29,6 @@ import { JWT } from "google-auth-library";
 const ESCOPO = "https://www.googleapis.com/auth/calendar.events";
 const RAIZ = "https://www.googleapis.com/calendar/v3/calendars";
 
-/** Janela em torno do horário de início para localizar o evento criado pelo Cal.com. */
-const TOLERANCIA_MS = 2 * 60 * 1000;
-
 export class ErroAgenda extends Error {
   constructor(
     readonly operacao: string,
@@ -111,69 +108,13 @@ async function chamar<T>(caminho: string, opcoes: RequestInit, operacao: string)
 }
 
 /**
- * Sufixo que o Cal.com usa no `iCalUID` do evento que cria no Google.
- *
- * Verificado em 17/08/2026 num booking real: o booking `rdbMSePKJxKoNHZKyqhP7r`
- * virou o evento de `iCalUID: rdbMSePKJxKoNHZKyqhP7r@Cal.com`. É chave exata, e
- * o Google aceita filtrar por ela direto na listagem.
+ * Nota do que se descobriu e deixou de ser necessário: o Cal.com grava o uid do
+ * booking no `iCalUID` do evento, na forma `<uid>@Cal.com` (verificado em
+ * 17/08/2026 com booking real). Servia para localizar o evento da call e
+ * escrever nele. Não se escreve mais nele — ver o bloco vermelho abaixo — então
+ * a busca saiu daqui em vez de virar código morto. O achado fica registrado em
+ * `_projetos/funil-diagnostico-captura.md` no brain, caso volte a ser útil.
  */
-export const SUFIXO_ICAL_DO_CAL = "@Cal.com";
-
-/** `<uid do booking>@Cal.com`. */
-export function icalUidDoBooking(bookingId: string): string {
-  return `${bookingId}${SUFIXO_ICAL_DO_CAL}`;
-}
-
-/**
- * Acha o evento que o Cal.com criou para este agendamento.
- *
- * Duas passadas, nesta ordem:
- *
- *   1. Filtro por `iCalUID`. É identificação exata e não depende de horário nem
- *      de texto. É o caminho normal.
- *   2. Só se a primeira não achar: janela de dois minutos em torno do início,
- *      filtrando pelo e-mail de quem agendou. Existe para o dia em que o
- *      Cal.com mudar o formato do uid — aí o roteiro ainda chega, e o que
- *      quebra é a via rápida, não a feature.
- *
- * Se a segunda passada devolver mais de um candidato, este módulo NÃO escolhe.
- * Escrever roteiro no evento errado é pior que não escrever: some o roteiro
- * certo e polui o card de outra pessoa. Falha em voz alta e o alerta avisa.
- */
-export async function acharEvento(
-  bookingId: string,
-  inicioEm: Date,
-  emailDoLead: string,
-): Promise<string> {
-  const porUid = await listar({ iCalUID: icalUidDoBooking(bookingId) });
-  if (porUid.length === 1) return porUid[0].id;
-
-  const naJanela = await listar({
-    timeMin: janela(inicioEm, -1),
-    timeMax: janela(inicioEm, 1),
-  });
-
-  const alvo = emailDoLead.trim().toLowerCase();
-  const comOLead = naJanela.filter((evento) =>
-    (evento.attendees ?? []).some((quem) => quem.email?.trim().toLowerCase() === alvo),
-  );
-
-  if (comOLead.length === 1) return comOLead[0].id;
-  if (comOLead.length === 0) {
-    throw new ErroAgenda(
-      "achar evento",
-      `nenhum evento na agenda casa com o booking ${bookingId}, nem por iCalUID nem por horario`,
-    );
-  }
-  throw new ErroAgenda(
-    "achar evento",
-    `${comOLead.length} eventos candidatos para o booking ${bookingId}; nao escrevo em nenhum para nao acertar o errado`,
-  );
-}
-
-function janela(inicio: Date, sentido: -1 | 1): string {
-  return new Date(inicio.getTime() + sentido * TOLERANCIA_MS).toISOString();
-}
 
 async function listar(parametros: Record<string, string>): Promise<readonly EventoGoogle[]> {
   const busca = new URLSearchParams({ singleEvents: "true", maxResults: "10", ...parametros });
@@ -186,15 +127,83 @@ async function listar(parametros: Record<string, string>): Promise<readonly Even
 }
 
 /**
- * Escreve a descrição do evento.
+ * 🔴 O roteiro NUNCA vai na descrição do evento do Cal.com.
  *
- * PATCH e não PUT de propósito: PUT substituiria o recurso inteiro e apagaria o
- * link da reunião, os convidados e o lembrete que o Cal.com configurou.
+ * O lead é convidado daquele evento, e a documentação do Google é explícita:
+ * `visibility: "private"` significa "only event attendees may view event
+ * details". Ou seja, `private` esconde de quem NÃO é convidado — o convidado
+ * sempre vê a descrição, e não existe campo que esconda dela só ele.
+ *
+ * O andaime contém "revela trauma e o que NÃO propor", "a resposta DELE é o
+ * fechamento", "cala depois do ta certo". Material interno de condução de
+ * venda. Na agenda do prospect, isso queima a call.
+ *
+ * Então o roteiro vai num evento PRÓPRIO, no calendário INFUSER, sem convidado
+ * nenhum. Quem enxerga é quem tem o calendário: Yan, Pedro e Iago. O evento do
+ * Cal.com fica intocado, com o link da reunião e os convidados que ele criou.
  */
-export async function escreverDescricao(eventoId: string, descricao: string): Promise<void> {
-  await chamar(
-    `/events/${encodeURIComponent(eventoId)}`,
-    { method: "PATCH", body: JSON.stringify({ description: descricao }) },
-    "escrever descricao",
+const PREFIXO_DO_ROTEIRO = "Roteiro:";
+
+/** Marca o evento como nosso, para achar de novo sem depender de título. */
+function chaveDoRoteiro(bookingId: string): string {
+  return `roteiro-${bookingId}`;
+}
+
+interface EventoDeRoteiro {
+  readonly bookingId: string;
+  readonly nomeDoLead: string;
+  readonly inicioEm: Date;
+  readonly descricao: string;
+}
+
+/**
+ * Cria (ou atualiza) o evento de roteiro. Devolve o id.
+ *
+ * `transparency: "transparent"` para não ocupar o horário: o evento da call já
+ * ocupa, e dois blocos sólidos no mesmo slot fariam o Cal.com e as pessoas
+ * lerem a agenda como duas reuniões.
+ *
+ * `extendedProperties.private` guarda a chave do booking. É a forma de
+ * reencontrar o evento sem depender do título, que uma pessoa pode editar —
+ * e `private` aqui é do Google, significa "não replicado para as cópias dos
+ * convidados", que neste evento nem existem.
+ */
+export async function publicarRoteiro(evento: EventoDeRoteiro): Promise<string> {
+  const existente = await acharEventoDeRoteiro(evento.bookingId);
+
+  const fim = new Date(evento.inicioEm.getTime() + 30 * 60 * 1000);
+  const corpo = {
+    summary: `${PREFIXO_DO_ROTEIRO} ${evento.nomeDoLead}`,
+    description: evento.descricao,
+    start: { dateTime: evento.inicioEm.toISOString() },
+    end: { dateTime: fim.toISOString() },
+    transparency: "transparent",
+    visibility: "private",
+    reminders: { useDefault: false, overrides: [] },
+    extendedProperties: { private: { infuserRoteiro: chaveDoRoteiro(evento.bookingId) } },
+  };
+
+  if (existente) {
+    await chamar(
+      `/events/${encodeURIComponent(existente)}`,
+      { method: "PATCH", body: JSON.stringify(corpo) },
+      "atualizar evento de roteiro",
+    );
+    return existente;
+  }
+
+  const criado = await chamar<{ id: string }>(
+    "/events?sendUpdates=none",
+    { method: "POST", body: JSON.stringify(corpo) },
+    "criar evento de roteiro",
   );
+  return criado.id;
+}
+
+/** O evento de roteiro deste booking, se já existir. Idempotência do reprocesso. */
+async function acharEventoDeRoteiro(bookingId: string): Promise<string | null> {
+  const achados = await listar({
+    privateExtendedProperty: `infuserRoteiro=${chaveDoRoteiro(bookingId)}`,
+  });
+  return achados[0]?.id ?? null;
 }

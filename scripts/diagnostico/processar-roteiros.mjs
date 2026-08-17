@@ -138,8 +138,19 @@ function gerarRoteiro(slug) {
       "--allowedTools",
       "Read,Write,Glob,Grep,Bash(node scripts/validate-call-card.mjs:*)",
     ],
-    { cwd: BRAIN, encoding: "utf8", maxBuffer: 32 * 1024 * 1024, shell: false },
+    // Teto de 20 minutos. Sem timeout, uma travada do modelo deixa o processo
+    // pendurado para sempre — e num agendamento periódico isso empilha um
+    // zumbi por disparo até a máquina engasgar. 20 min é folgado: as execuções
+    // medidas ficaram bem abaixo disso.
+    { cwd: BRAIN, encoding: "utf8", maxBuffer: 32 * 1024 * 1024, shell: false, timeout: 20 * 60_000 },
   );
+
+  // `timeout` mata por sinal e devolve status null, não um código de saída.
+  // Sem este ramo, a mensagem seria "o modelo falhou: sem saida", que esconde
+  // a única informação que importa: que estourou o tempo.
+  if (execucao.signal) {
+    throw new Error(`o modelo estourou o teto de 20 min (sinal ${execucao.signal})`);
+  }
 
   if (execucao.status !== 0) {
     // O CLI escreve erro de autenticação no stdout, não no stderr: olhar só o
@@ -194,10 +205,8 @@ async function processar(trabalho) {
     body: JSON.stringify({
       calBookingId: trabalho.calBookingId,
       inicioEm: trabalho.inicioEm,
-      email: trabalho.lead.email,
       nome: trabalho.lead.nome,
       empresa: trabalho.lead.empresa,
-      googleEventId: trabalho.googleEventId,
       roteiroHtml: readFileSync(roteiro.absoluto, "utf8"),
       caminhoRoteiro: roteiro.relativo,
     }),
@@ -206,7 +215,7 @@ async function processar(trabalho) {
   if (!conclusao.ok) {
     throw new Error(`a rota recusou: ${conclusao.status} ${conclusao.corpo.erro ?? ""}`);
   }
-  console.log(`     card do evento escrito (${conclusao.corpo.caracteres} caracteres)`);
+  console.log(`     roteiro publicado na agenda (${conclusao.corpo.caracteres} caracteres)`);
 }
 
 async function main() {
