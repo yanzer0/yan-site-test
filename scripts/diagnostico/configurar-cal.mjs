@@ -8,7 +8,17 @@
  *   node scripts/diagnostico/configurar-cal.mjs
  *
  * A chave sai de: Cal.com -> Settings -> Developer -> API keys -> Add.
- * Ela NUNCA é gravada em arquivo por este script.
+ *
+ * 🔴 Este script não grava a chave, mas ela NÃO é descartável: o webhook de
+ * reembolso chama a API do Cal.com para cancelar a call. GUARDE ANTES de fechar
+ * o terminal, senão ela morre com a sessão:
+ *
+ *   npx vercel env add CAL_API_KEY production
+ *
+ * Já se perdeu uma assim, em 17/08. O cabeçalho dizia só "nunca é gravada", que
+ * é meia decisão: quando o cancelamento passou a precisar dela, não havia cópia
+ * em lugar nenhum (nem .env, nem variável do Windows, nem Vercel, nem git), e
+ * foi preciso gerar outra.
  *
  * É idempotente no que dá: se o tipo de evento com o mesmo slug já existir,
  * ele reaproveita em vez de criar um segundo. Webhook duplicado é detectado
