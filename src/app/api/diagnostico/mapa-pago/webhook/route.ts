@@ -40,6 +40,8 @@ import {
   assinaturaStripeConfere,
   EVENTO_PAGAMENTO,
   EVENTO_REEMBOLSO,
+  reembolsouTudo,
+  type CobrancaReembolsada,
   type EventoStripe,
 } from "@/lib/diagnostico/stripe";
 
@@ -56,12 +58,6 @@ interface SessaoDoEvento {
   readonly customer_email?: string | null;
 }
 
-interface CobrancaDoEvento {
-  readonly id?: string;
-  readonly payment_intent?: string | null;
-  readonly amount_refunded?: number;
-  readonly refunded?: boolean;
-}
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const segredo = process.env.STRIPE_WEBHOOK_SECRET;
@@ -86,7 +82,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   }
 
   if (evento.type === EVENTO_REEMBOLSO) {
-    return processarReembolso(evento.data?.object as CobrancaDoEvento | undefined);
+    return processarReembolso(evento.data?.object as CobrancaReembolsada | undefined);
   }
 
   if (evento.type !== EVENTO_PAGAMENTO) {
@@ -153,11 +149,21 @@ const ORIGEM_ALERTA = "funil-diagnostico/mapa-pago";
  * Sempre 200: a esta altura o dinheiro já voltou ao cliente pelo Stripe. Retry
  * não desfaz reembolso, e o que falta é trabalho humano, não reentrega.
  */
-async function processarReembolso(cobranca: CobrancaDoEvento | undefined): Promise<NextResponse> {
+async function processarReembolso(cobranca: CobrancaReembolsada | undefined): Promise<NextResponse> {
   const paymentIntent = cobranca?.payment_intent;
   if (!paymentIntent) {
     console.error("[mapa-pago/webhook] charge.refunded sem payment_intent");
     return NextResponse.json({ ok: false, erro: "sem_payment_intent" });
+  }
+
+  if (!reembolsouTudo(cobranca)) {
+    // Devolução parcial não desfaz a compra. Alguém decide o que fazer.
+    await alertar({
+      source: ORIGEM_ALERTA,
+      severity: "warning",
+      message: `Reembolso PARCIAL no Mapa de IA. pagamento=${paymentIntent} devolvido=${((cobranca.amount_refunded ?? 0) / 100).toFixed(2)} de ${((cobranca.amount ?? 0) / 100).toFixed(2)}. A call NAO foi cancelada, decidir a mao.`,
+    });
+    return NextResponse.json({ ok: true, ignorado: "reembolso_parcial" });
   }
 
   let pedido = await reembolsarPedido(paymentIntent);

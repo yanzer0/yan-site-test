@@ -1,7 +1,11 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
 import { cancelarBooking } from "@/lib/diagnostico/cal-api";
-import { acharSessaoDoPagamento, EVENTO_REEMBOLSO } from "@/lib/diagnostico/stripe";
+import {
+  acharSessaoDoPagamento,
+  EVENTO_REEMBOLSO,
+  reembolsouTudo,
+} from "@/lib/diagnostico/stripe";
 
 /**
  * O reembolso desfaz o pedido: dinheiro devolvido, call cancelada, horário
@@ -46,6 +50,37 @@ describe("evento que o Stripe precisa mandar", () => {
     // Cancelar a call de alguem por um reembolso que falhou seria pior que nao
     // cancelar: o cliente fica sem a call E sem o dinheiro de volta.
     expect(EVENTO_REEMBOLSO).toBe("charge.refunded");
+  });
+});
+
+describe("reembolso parcial nao cancela a call", () => {
+  // O proprio painel do Stripe avisa: charge.refunded ocorre "including partial
+  // refunds". Devolver R$ 50 de R$ 197 e tirar a call da pessoa seria pior que
+  // nao cancelar nada: ela pagou a maior parte e perderia a hora.
+  const CHEIO = 19700;
+
+  it("devolucao integral desfaz", () => {
+    expect(reembolsouTudo({ amount: CHEIO, amount_refunded: CHEIO, refunded: true })).toBe(true);
+  });
+
+  it("devolucao parcial NAO desfaz", () => {
+    expect(reembolsouTudo({ amount: CHEIO, amount_refunded: 5000, refunded: false })).toBe(false);
+  });
+
+  it("confia no campo refunded do Stripe quando ele vem", () => {
+    expect(reembolsouTudo({ refunded: true })).toBe(true);
+  });
+
+  it("sem o campo refunded, compara os valores", () => {
+    expect(reembolsouTudo({ amount: CHEIO, amount_refunded: CHEIO })).toBe(true);
+    expect(reembolsouTudo({ amount: CHEIO, amount_refunded: CHEIO - 1 })).toBe(false);
+  });
+
+  it("payload vazio nao e tratado como reembolso total", () => {
+    // Cancelar a call de alguem por um payload que nao diz nada seria destruir
+    // com base em ausencia de informacao.
+    expect(reembolsouTudo({})).toBe(false);
+    expect(reembolsouTudo({ amount: 0, amount_refunded: 0 })).toBe(false);
   });
 });
 

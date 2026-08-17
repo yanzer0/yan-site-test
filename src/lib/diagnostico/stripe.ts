@@ -151,6 +151,35 @@ export const EVENTO_PAGAMENTO = "checkout.session.completed";
  */
 export const EVENTO_REEMBOLSO = "charge.refunded";
 
+/** A cobrança como o `charge.refunded` a entrega. */
+export interface CobrancaReembolsada {
+  readonly id?: string;
+  readonly payment_intent?: string | null;
+  readonly amount?: number;
+  readonly amount_refunded?: number;
+  readonly refunded?: boolean;
+}
+
+/**
+ * O reembolso devolveu TUDO?
+ *
+ * `charge.refunded` dispara também em reembolso PARCIAL — está escrito na
+ * descrição do próprio evento no painel do Stripe: "including partial refunds".
+ * Devolver R$ 50 de um pedido de R$ 197 e cancelar a call inteira por isso seria
+ * pior do que não cancelar: o cliente pagou a maior parte e perderia a hora.
+ *
+ * `refunded` é o campo que o Stripe só marca `true` quando a cobrança foi
+ * inteiramente devolvida. A comparação de valores fica como segunda via, para o
+ * caso do campo não vir no payload.
+ */
+export function reembolsouTudo(cobranca: CobrancaReembolsada): boolean {
+  if (cobranca.refunded === true) return true;
+
+  const cobrado = cobranca.amount ?? 0;
+  const devolvido = cobranca.amount_refunded ?? 0;
+  return cobrado > 0 && devolvido >= cobrado;
+}
+
 interface RespostaBusca {
   readonly data?: readonly { readonly id?: string }[];
   readonly error?: { readonly message?: string };
