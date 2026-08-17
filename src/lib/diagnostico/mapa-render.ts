@@ -23,6 +23,15 @@ import type { Achado, Classificacao, Etapa, MapaConteudo } from "./mapa-tipos";
  */
 export const VERSAO_TEMPLATE = "2026-08-14.1";
 
+/**
+ * Quem assina o mapa. Sempre a empresa, nunca a pessoa.
+ *
+ * A Call 1 pode ser conduzida por qualquer um do time, e o documento é da
+ * Infuser. Assinar com nome individual criaria um vínculo pessoal que o
+ * processo não tem, e envelheceria mal quando quem conduziu sair ou trocar.
+ */
+export const REPRESENTANTE = "Infuser";
+
 /** Rótulo e classe CSS de cada selo, na ordem em que o template os declara. */
 const SELO: Readonly<Record<Classificacao, { classe: string; rotulo: string }>> = {
   fato: { classe: "seal-fato", rotulo: "Fato" },

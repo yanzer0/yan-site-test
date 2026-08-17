@@ -40,7 +40,9 @@ function morrer(mensagem) {
 const email = arg("email");
 const caminhoTranscricao = arg("transcricao");
 const base = arg("base") ?? "http://localhost:3100";
-const representante = arg("de") ?? "Infuser";
+
+// Não existe `--de`, e é de propósito: quem assina o mapa é sempre a Infuser,
+// nunca a pessoa que conduziu a call. A rota fixa isso e ignora o que vier.
 
 if (!email || !caminhoTranscricao) {
   morrer(
@@ -154,7 +156,7 @@ async function main() {
   const publicar = await fetch(`${base}/api/diagnostico/mapa/publicar`, {
     method: "POST",
     headers: { "Content-Type": "application/json", "x-mapa-secret": segredo },
-    body: JSON.stringify({ email, conteudo, representante, data, dataCurta }),
+    body: JSON.stringify({ email, conteudo, data, dataCurta }),
   });
 
   const resposta = await publicar.json();

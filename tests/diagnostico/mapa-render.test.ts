@@ -1,7 +1,12 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync, existsSync } from "node:fs";
 
-import { renderizarMapa, escaparHtml, tokensNaoPreenchidos } from "@/lib/diagnostico/mapa-render";
+import {
+  renderizarMapa,
+  escaparHtml,
+  tokensNaoPreenchidos,
+  REPRESENTANTE,
+} from "@/lib/diagnostico/mapa-render";
 import type { MapaConteudo } from "@/lib/diagnostico/mapa-tipos";
 
 /**
@@ -104,7 +109,7 @@ const CONTEUDO: MapaConteudo = {
 
 const DADOS = {
   conteudo: CONTEUDO,
-  representante: "Infuser · Yan Galasso",
+  representante: REPRESENTANTE,
   data: "14 de agosto de 2026",
   dataCurta: "14.08.2026",
 };
@@ -171,6 +176,17 @@ describe.skipIf(!temTemplate)("renderizacao do mapa", () => {
 
   it("nao contem em-dash", () => {
     expect(html).not.toContain("—");
+  });
+
+  it("o campo DE traz so a empresa, nunca o nome de quem conduziu", () => {
+    // O documento e da Infuser. A Call 1 pode ser conduzida por qualquer um do
+    // time, entao assinar com nome individual cria um vinculo que o processo
+    // nao tem, e envelhece mal quando a pessoa sai ou troca.
+    const html = renderizarMapa(template, { ...DADOS, representante: REPRESENTANTE });
+    expect(html).toContain(">Infuser<");
+    for (const pessoa of ["Yan", "Galasso", "Iago", "Soares", "Pedro"]) {
+      expect(html, `nome de pessoa vazou: ${pessoa}`).not.toContain(pessoa);
+    }
   });
 
   it("nao contem preco em lugar nenhum", () => {

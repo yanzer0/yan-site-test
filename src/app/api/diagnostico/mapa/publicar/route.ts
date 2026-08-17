@@ -24,6 +24,7 @@ import { validarMapa } from "@/lib/diagnostico/mapa-schema";
 import {
   renderizarMapa,
   tokensNaoPreenchidos,
+  REPRESENTANTE,
   VERSAO_TEMPLATE,
 } from "@/lib/diagnostico/mapa-render";
 import { gravarMapa } from "@/lib/diagnostico/mapa-db";
@@ -54,7 +55,6 @@ function segredoConfere(recebido: string, esperado: string): boolean {
 interface CorpoPublicar {
   readonly email?: unknown;
   readonly conteudo?: unknown;
-  readonly representante?: unknown;
   readonly data?: unknown;
   readonly dataCurta?: unknown;
 }
@@ -97,7 +97,11 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   try {
     html = renderizarMapa(TEMPLATE, {
       conteudo: validacao.conteudo,
-      representante: typeof corpo.representante === "string" ? corpo.representante : "Infuser",
+      // Sempre a empresa, nunca a pessoa. O documento é da Infuser, e a Call 1
+      // pode ser conduzida por qualquer um do time, então assinar com nome
+      // individual criaria um vínculo que o processo não tem. Fixado aqui, e
+      // não vindo do corpo, para não depender de quem chama passar certo.
+      representante: REPRESENTANTE,
       data: typeof corpo.data === "string" ? corpo.data : "",
       dataCurta: typeof corpo.dataCurta === "string" ? corpo.dataCurta : "",
     });
