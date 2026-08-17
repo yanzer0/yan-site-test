@@ -98,21 +98,6 @@ export function Desfecho({ faixa, nome, processo, email, urlCal, urlMapa }: Desf
     );
   }
 
-  if (faixa === "revisao") {
-    // Sem oferta de propósito: vender para quem ainda pode virar call gratuita queima a call.
-    return (
-      <div className="dg-desfecho">
-        <h2 className="dg-h1">
-          Recebi, <em>{eu}</em>. Obrigado pelo tempo.
-        </h2>
-        <p>
-          Pelo que você descreveu, faz sentido a gente olhar com calma antes de marcar. Alguém do
-          time te chama no WhatsApp em até um dia útil para entender dois ou três pontos.
-        </p>
-      </div>
-    );
-  }
-
   if (faixa === "nao_icp_pessoal") {
     return (
       <div className="dg-desfecho">
@@ -137,26 +122,47 @@ export function Desfecho({ faixa, nome, processo, email, urlCal, urlMapa }: Desf
     );
   }
 
-  // nao_icp_empresa
+  // `nao_icp_empresa` e `revisao`, os dois no mesmo destino.
+  //
+  // Regra do Yan, 17/08: empresa que não passa no critério da call gratuita
+  // compra o mesmo diagnóstico por R$ 197. A faixa `revisao` ficava sem oferta
+  // nenhuma e prometia "alguém te chama em um dia útil" — exatamente a espera
+  // de 24 horas que este funil existe para matar. As faixas continuam
+  // separadas no banco, porque é delas que sai a calibração dos pesos; o que
+  // se unifica é só o que o lead vê.
   return (
     <div className="dg-desfecho">
       <h2 className="dg-h1">
         Vou ser direto com você, <em>{eu}</em>.
       </h2>
       <p>
-        Pelo que descreveu, a call de diagnóstico não é o melhor caminho agora, e a gente não vai
-        ocupar uma hora sua com uma conversa que não vai te servir.
+        Pelo que descreveu, a call gratuita de diagnóstico não é o melhor caminho agora, e a gente
+        não vai ocupar uma hora sua com uma conversa que não vai te servir.
       </p>
       <div className="dg-oferta">
         <div className="dg-oferta-nome">Mapa de IA</div>
         <p>
-          É o mesmo diagnóstico, feito em cima do seu processo, e você sai com o mapa por escrito
-          de onde a IA encaixa na sua operação. Custa <strong>R$ 197</strong>.
+          É o mesmo diagnóstico de uma hora, feito em cima do{" "}
+          <strong>{processo || "seu processo"}</strong>, e você sai com o mapa por escrito de onde
+          a IA encaixa na sua operação.
+          {/* 🔴 O PREÇO só entra junto com o caminho de compra. Card que anuncia
+              R$ 197 sem botão é pior que card nenhum: o lead decide comprar e
+              bate numa parede. Foi o estado real do funil entre 16 e 17/08. */}
+          {urlMapa ? (
+            <>
+              {" "}
+              Custa <strong>R$ 197</strong>.
+            </>
+          ) : null}
         </p>
-        {urlMapa && (
+        {urlMapa ? (
           <a className="dg-cta" href={urlMapa} target="_blank" rel="noopener noreferrer">
             Quero o mapa
           </a>
+        ) : (
+          <p style={{ marginTop: 12, opacity: 0.7 }}>
+            Me chama no e-mail que você deixou e eu te passo o caminho.
+          </p>
         )}
       </div>
       <p style={{ marginTop: 20 }}>Se em algum momento o cenário aí mudar, é só voltar aqui.</p>

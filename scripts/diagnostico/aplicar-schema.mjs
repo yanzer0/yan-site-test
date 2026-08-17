@@ -30,7 +30,12 @@ const LIB = join(AQUI, "..", "..", "src", "lib", "diagnostico");
  * estrangeira para `leads` e `roteiro-sql.sql` para `agendamentos`, e as duas
  * nascem no `schema.sql`.
  */
-const ARQUIVOS = [join(LIB, "schema.sql"), join(LIB, "mapa-sql.sql"), join(LIB, "roteiro-sql.sql")];
+const ARQUIVOS = [
+  join(LIB, "schema.sql"),
+  join(LIB, "mapa-sql.sql"),
+  join(LIB, "roteiro-sql.sql"),
+  join(LIB, "pagamento-sql.sql"),
+];
 
 const TABELAS_ESPERADAS = [
   "leads",
@@ -42,6 +47,7 @@ const TABELAS_ESPERADAS = [
   "mapas",
   "mapa_achados",
   "roteiros",
+  "pedidos_mapa",
 ];
 
 /**
