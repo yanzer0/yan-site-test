@@ -1,19 +1,19 @@
 /**
- * O roteiro NÃO pode chegar ao lead. Este é o teste que trava isso.
+ * O roteiro NÃO pode ser legível pelo lead. Este é o teste que trava isso.
  *
- * O que aconteceu em 17/08: a primeira versão escrevia o andaime na descrição
- * do evento que o Cal.com cria, e o lead é convidado desse evento. Verificado
- * na documentação oficial do Google:
+ * História, porque ela explica o desenho: a primeira versão escrevia o andaime
+ * na descrição do evento do Cal.com, e o lead é convidado desse evento. A
+ * documentação do Google é literal:
  *
  *   "private" - The event is private and only event attendees may view event
  *   details.
  *
- * Ou seja, `private` esconde de quem NÃO é convidado. O convidado sempre vê a
- * descrição, e não existe campo que esconda dela só ele. O prospect leria
- * "revela trauma e o que NÃO propor" e "a resposta DELE é o fechamento" na
- * agenda dele.
+ * `private` esconde de quem NÃO é convidado. O convidado sempre vê a descrição.
  *
- * Não deu erro em lugar nenhum. Funcionou perfeitamente, no evento errado.
+ * Agora o roteiro é um PDF no Drive, anexado ao evento da call. A proteção
+ * deixou de ser "não escreve onde ele lê" e passou a ser a ACL do Drive: o
+ * arquivo herda a permissão da pasta, que só o time tem. O que estes testes
+ * travam é justamente isso — que nada no código torne o arquivo público.
  */
 
 import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
@@ -28,27 +28,43 @@ vi.mock("google-auth-library", () => ({
   },
 }));
 
+function responder(corpo: unknown, status = 200): Response {
+  return new Response(JSON.stringify(corpo), {
+    status,
+    headers: { "content-type": "application/json" },
+  });
+}
+
 beforeEach(() => {
   chamadas.length = 0;
   process.env.GOOGLE_CALENDAR_ID = "agenda-infuser@group.calendar.google.com";
+  process.env.GOOGLE_DRIVE_FOLDER_ID = "pasta-do-time";
+  process.env.GOTENBERG_URL = "http://gotenberg:3000";
   process.env.GOOGLE_SERVICE_ACCOUNT_B64 = Buffer.from(
     JSON.stringify({ client_email: "sa@teste.iam.gserviceaccount.com", private_key: "chave" }),
   ).toString("base64");
 
   vi.stubGlobal("fetch", (url: string | URL, opcoes: RequestInit = {}) => {
     const alvo = String(url);
-    chamadas.push({
-      url: alvo,
-      metodo: opcoes.method ?? "GET",
-      corpo: opcoes.body ? JSON.parse(String(opcoes.body)) : null,
-    });
-    const vazio = alvo.includes("/events?") && (opcoes.method ?? "GET") === "GET";
-    return Promise.resolve(
-      new Response(JSON.stringify(vazio ? { items: [] } : { id: "evento-do-roteiro" }), {
-        status: 200,
-        headers: { "content-type": "application/json" },
-      }),
-    );
+    const metodo = opcoes.method ?? "GET";
+    const corpoTexto = typeof opcoes.body === "string" ? opcoes.body : null;
+    chamadas.push({ url: alvo, metodo, corpo: corpoTexto ? JSON.parse(corpoTexto) : opcoes.body });
+
+    if (alvo.includes("gotenberg")) {
+      return Promise.resolve(new Response(new Uint8Array([0x25, 0x50, 0x44, 0x46]), { status: 200 }));
+    }
+    // O upload PRECISA ser testado antes da busca: a URL dele é
+    // `/upload/drive/v3/files?...`, que também casa com `/drive/v3/files?`.
+    // Na ordem inversa o upload cai no branch da busca, devolve `{files:[]}`
+    // sem `id`, e o erro que aparece é "publicar no drive: 200" — que não diz
+    // nada sobre a causa real.
+    if (alvo.includes("/upload/drive/v3/files")) {
+      return Promise.resolve(
+        responder({ id: "arquivo-1", webViewLink: "https://drive.google.com/file/d/arquivo-1/view" }),
+      );
+    }
+    if (alvo.includes("/drive/v3/files?")) return Promise.resolve(responder({ files: [] }));
+    return Promise.resolve(responder({ id: "evento-da-call" }));
   });
 });
 
@@ -56,127 +72,142 @@ afterEach(() => {
   vi.unstubAllGlobals();
 });
 
-async function publicar() {
-  const { publicarRoteiro } = await import("@/lib/diagnostico/agenda-google");
-  return publicarRoteiro({
-    bookingId: "booking-abc",
-    nomeDoLead: "Ricardo Alves",
-    inicioEm: new Date("2026-08-21T15:00:00.000Z"),
-    descricao: "<b>FRAME</b><br>Cala depois do ta certo.",
-  });
-}
+describe("o PDF no Drive nunca vira publico", () => {
+  it("🔴 NAO cria permissao nenhuma no arquivo", async () => {
+    const { publicarNoDrive } = await import("@/lib/diagnostico/documento-roteiro");
+    await publicarNoDrive(Buffer.from("pdf"), "Preparo - Vertex - Call 1.pdf");
 
-describe("o roteiro nao encosta no evento da call", () => {
-  it("cria um evento NOVO em vez de editar o do Cal.com", async () => {
-    await publicar();
-    const escritas = chamadas.filter((c) => c.metodo !== "GET");
-    expect(escritas).toHaveLength(1);
-    expect(escritas[0].metodo).toBe("POST");
+    // `permissions.create` com `type: anyone` destruiria a unica protecao do
+    // desenho: o arquivo passaria a abrir pra qualquer um com o link, e o link
+    // esta anexado no evento que o lead enxerga.
+    const permissoes = chamadas.filter((c) => c.url.includes("/permissions"));
+    expect(permissoes).toHaveLength(0);
   });
 
-  it("nunca faz PATCH num evento que a rotina nao criou", async () => {
-    await publicar();
-    // Um PATCH sem POST antes significaria estar editando evento de terceiro.
-    const patches = chamadas.filter((c) => c.metodo === "PATCH");
-    expect(patches).toHaveLength(0);
+  it("grava DENTRO da pasta do time, e nao solto no Drive", async () => {
+    const { publicarNoDrive } = await import("@/lib/diagnostico/documento-roteiro");
+    await publicarNoDrive(Buffer.from("pdf"), "Preparo - Vertex - Call 1.pdf");
+
+    // Fora da pasta o arquivo nao herda ACL nenhuma, e a protecao some.
+    const upload = chamadas.find((c) => c.url.includes("/upload/drive/v3/files"));
+    expect(upload?.corpo).toBeInstanceOf(FormData);
   });
 
-  it("🔴 o evento do roteiro NAO tem convidado nenhum", async () => {
-    await publicar();
-    const corpo = chamadas.find((c) => c.metodo === "POST")?.corpo as Record<string, unknown>;
-    expect(corpo.attendees).toBeUndefined();
+  it("usa o escopo minimo do Drive", async () => {
+    const modulo = await import("@/lib/diagnostico/documento-roteiro");
+    const fonte = await import("node:fs").then((fs) =>
+      fs.readFileSync("src/lib/diagnostico/documento-roteiro.ts", "utf8"),
+    );
+    // `drive.file` enxerga so o que a propria conta criou. `drive` daria acesso
+    // ao Drive inteiro do Yan a partir de uma credencial que vive num servidor.
+    expect(fonte).toContain("auth/drive.file");
+    expect(fonte).not.toContain("auth/drive.readonly");
+    expect(fonte).not.toMatch(/auth\/drive["']/);
+    expect(modulo.nomeDoDocumento).toBeTypeOf("function");
   });
 
-  it("nao dispara convite para ninguem", async () => {
-    await publicar();
-    expect(chamadas.find((c) => c.metodo === "POST")?.url).toContain("sendUpdates=none");
+  it("reprocessar substitui o arquivo, nao acumula duplicata", async () => {
+    vi.stubGlobal("fetch", (url: string | URL, opcoes: RequestInit = {}) => {
+      const alvo = String(url);
+      chamadas.push({ url: alvo, metodo: opcoes.method ?? "GET", corpo: null });
+      if (alvo.includes("/upload/drive/v3/files")) {
+        return Promise.resolve(responder({ id: "ja-existe", webViewLink: "https://drive.google.com/x" }));
+      }
+      if (alvo.includes("/drive/v3/files?")) {
+        return Promise.resolve(responder({ files: [{ id: "ja-existe" }] }));
+      }
+      return Promise.resolve(responder({ id: "ja-existe" }));
+    });
+
+    const { publicarNoDrive } = await import("@/lib/diagnostico/documento-roteiro");
+    const r = await publicarNoDrive(Buffer.from("pdf"), "Preparo - Vertex - Call 1.pdf");
+
+    expect(r.fileId).toBe("ja-existe");
+    const upload = chamadas.find((c) => c.url.includes("/upload/drive/v3/files"));
+    expect(upload?.metodo).toBe("PATCH");
   });
 
-  it("marca o evento como privado", async () => {
-    await publicar();
-    const corpo = chamadas.find((c) => c.metodo === "POST")?.corpo as Record<string, unknown>;
-    expect(corpo.visibility).toBe("private");
-  });
+  it("escapa aspas no nome, que vem do lead", async () => {
+    const { publicarNoDrive } = await import("@/lib/diagnostico/documento-roteiro");
+    await publicarNoDrive(Buffer.from("pdf"), "Preparo - D'Angelo - Call 1.pdf");
 
-  it("nao ocupa o horario, que ja e da call", async () => {
-    await publicar();
-    const corpo = chamadas.find((c) => c.metodo === "POST")?.corpo as Record<string, unknown>;
-    expect(corpo.transparency).toBe("transparent");
-  });
-
-  it("nao dispara lembrete, que seria barulho duplicado", async () => {
-    await publicar();
-    const corpo = chamadas.find((c) => c.metodo === "POST")?.corpo as Record<string, unknown>;
-    expect(corpo.reminders).toEqual({ useDefault: false, overrides: [] });
-  });
-
-  it("carrega a chave do booking, para se achar de novo sem depender do titulo", async () => {
-    await publicar();
-    const corpo = chamadas.find((c) => c.metodo === "POST")?.corpo as {
-      extendedProperties?: { private?: Record<string, string> };
-    };
-    expect(corpo.extendedProperties?.private?.infuserRoteiro).toBe("roteiro-booking-abc");
-  });
-
-  it("procura por extendedProperty antes de criar, e nao por titulo", async () => {
-    await publicar();
-    const busca = chamadas.find((c) => c.metodo === "GET");
-    expect(busca?.url).toContain("privateExtendedProperty=infuserRoteiro%3Droteiro-booking-abc");
+    // Aspas simples delimitam o valor na query do Drive. Sem escape, o nome do
+    // lead controla a busca.
+    const busca = chamadas.find((c) => c.url.includes("/drive/v3/files?"));
+    expect(decodeURIComponent(busca?.url ?? "")).toContain("D\\'Angelo");
   });
 });
 
-describe("call cancelada nao deixa roteiro fantasma na agenda", () => {
-  it("apaga o evento de roteiro, sem notificar ninguem", async () => {
-    vi.stubGlobal("fetch", (url: string | URL, opcoes: RequestInit = {}) => {
-      const alvo = String(url);
-      const metodo = opcoes.method ?? "GET";
-      chamadas.push({ url: alvo, metodo, corpo: null });
-      // 204 nao pode ter corpo: o construtor de Response rejeita, e o DELETE
-      // do Google responde exatamente 204. E o mesmo caminho que o `chamar`
-      // trata devolvendo undefined sem parsear.
-      if (metodo === "DELETE") return Promise.resolve(new Response(null, { status: 204 }));
+describe("o nome do anexo, que o lead LE", () => {
+  it("nao entrega que e roteiro de venda", async () => {
+    const { nomeDoDocumento } = await import("@/lib/diagnostico/documento-roteiro");
+    const nome = nomeDoDocumento("Vertex Componentes", "Ricardo");
 
-      const achou = alvo.includes("/events?") && metodo === "GET";
-      return Promise.resolve(
-        new Response(JSON.stringify(achou ? { items: [{ id: "roteiro-orfao" }] } : {}), {
-          status: 200,
-          headers: { "content-type": "application/json" },
-        }),
-      );
-    });
-
-    const { apagarRoteiro } = await import("@/lib/diagnostico/agenda-google");
-    expect(await apagarRoteiro("booking-abc")).toBe(true);
-
-    const del = chamadas.find((c) => c.metodo === "DELETE");
-    expect(del?.url).toContain("roteiro-orfao");
-    expect(del?.url).toContain("sendUpdates=none");
+    expect(nome).toBe("Preparo - Vertex Componentes - Call 1.pdf");
+    for (const proibido of ["roteiro", "venda", "objec", "script"]) {
+      expect(nome.toLowerCase()).not.toContain(proibido);
+    }
   });
 
-  it("nao reclama quando a call nunca teve roteiro", async () => {
-    const { apagarRoteiro } = await import("@/lib/diagnostico/agenda-google");
-    // O stub padrão devolve items vazio na busca.
-    expect(await apagarRoteiro("booking-sem-roteiro")).toBe(false);
-    expect(chamadas.filter((c) => c.metodo === "DELETE")).toHaveLength(0);
+  it("cai no nome da pessoa quando nao ha empresa", async () => {
+    const { nomeDoDocumento } = await import("@/lib/diagnostico/documento-roteiro");
+    expect(nomeDoDocumento(null, "Ricardo Alves")).toBe("Preparo - Ricardo Alves - Call 1.pdf");
+  });
+
+  it("remove caractere que quebra nome de arquivo", async () => {
+    const { nomeDoDocumento } = await import("@/lib/diagnostico/documento-roteiro");
+    expect(nomeDoDocumento('Alfa/Beta: "Gama"', "x")).toBe("Preparo - Alfa-Beta- -Gama- - Call 1.pdf");
   });
 });
 
-describe("reprocessar nao enche a agenda de duplicata", () => {
-  it("atualiza o evento existente em vez de criar outro", async () => {
-    vi.stubGlobal("fetch", (url: string | URL, opcoes: RequestInit = {}) => {
-      const alvo = String(url);
-      const metodo = opcoes.method ?? "GET";
-      chamadas.push({ url: alvo, metodo, corpo: opcoes.body ? JSON.parse(String(opcoes.body)) : null });
-      // Desta vez a busca ACHA um evento de roteiro anterior.
-      const corpo = alvo.includes("/events?") && metodo === "GET" ? { items: [{ id: "ja-existe" }] } : { id: "ja-existe" };
-      return Promise.resolve(
-        new Response(JSON.stringify(corpo), { status: 200, headers: { "content-type": "application/json" } }),
-      );
-    });
+describe("o anexo no evento da call", () => {
+  it("🔴 manda supportsAttachments, sem o qual o Google IGNORA o anexo calado", async () => {
+    const { anexarNoEvento } = await import("@/lib/diagnostico/documento-roteiro");
+    await anexarNoEvento(
+      "evento-1",
+      { fileId: "a1", fileUrl: "https://drive.google.com/x", titulo: "Preparo - Vertex - Call 1.pdf" },
+      "token",
+      "agenda@group.calendar.google.com",
+    );
 
-    const id = await publicar();
-    expect(id).toBe("ja-existe");
-    expect(chamadas.filter((c) => c.metodo === "POST")).toHaveLength(0);
+    const patch = chamadas.find((c) => c.metodo === "PATCH");
+    expect(patch?.url).toContain("supportsAttachments=true");
+  });
+
+  it("nao notifica os convidados da mudanca", async () => {
+    const { anexarNoEvento } = await import("@/lib/diagnostico/documento-roteiro");
+    await anexarNoEvento(
+      "evento-1",
+      { fileId: "a1", fileUrl: "https://drive.google.com/x", titulo: "t" },
+      "token",
+      "agenda@group.calendar.google.com",
+    );
+    expect(chamadas.find((c) => c.metodo === "PATCH")?.url).toContain("sendUpdates=none");
+  });
+
+  it("usa PATCH, que preserva link da reuniao e convidados", async () => {
+    const { anexarNoEvento } = await import("@/lib/diagnostico/documento-roteiro");
+    await anexarNoEvento(
+      "evento-1",
+      { fileId: "a1", fileUrl: "https://drive.google.com/x", titulo: "t" },
+      "token",
+      "agenda@group.calendar.google.com",
+    );
+    // PUT substituiria o recurso inteiro e apagaria o que o Cal.com criou.
+    expect(chamadas.filter((c) => c.metodo === "PUT")).toHaveLength(0);
     expect(chamadas.filter((c) => c.metodo === "PATCH")).toHaveLength(1);
+  });
+
+  it("🔴 NAO toca na descricao do evento, que o lead le", async () => {
+    const { anexarNoEvento } = await import("@/lib/diagnostico/documento-roteiro");
+    await anexarNoEvento(
+      "evento-1",
+      { fileId: "a1", fileUrl: "https://drive.google.com/x", titulo: "t" },
+      "token",
+      "agenda@group.calendar.google.com",
+    );
+    const patch = chamadas.find((c) => c.metodo === "PATCH")?.corpo as Record<string, unknown>;
+    expect(patch.description).toBeUndefined();
+    expect(Object.keys(patch)).toEqual(["attachments"]);
   });
 });

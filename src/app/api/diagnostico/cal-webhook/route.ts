@@ -34,7 +34,6 @@ import {
   buscarLeadPorContato,
   vincularAgendamento,
 } from "@/lib/diagnostico/db";
-import { apagarRoteiro } from "@/lib/diagnostico/agenda-google";
 import { enfileirarRoteiro } from "@/lib/diagnostico/roteiro-db";
 
 export const runtime = "nodejs";
@@ -73,22 +72,11 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
   try {
     if (corpo.triggerEvent === "BOOKING_CANCELLED") {
+      // Não há limpeza a fazer na agenda: o roteiro é ANEXO do evento da call,
+      // e o Cal.com apaga o evento inteiro ao cancelar. O PDF fica no Drive de
+      // propósito — lead que cancelou continua sendo lead, e o diagnóstico
+      // continua valendo (FR-022).
       await atualizarEstadoAgendamento(agendamento.bookingId, "cancelado");
-
-      // O cancelamento do Cal.com apaga o evento da call, e não alcança o
-      // evento de roteiro, que a rotina criou por conta própria. Sem isto,
-      // cada call cancelada deixa um bloco fantasma na agenda.
-      //
-      // Falhar aqui NÃO derruba o webhook: o estado já foi gravado, que é o que
-      // importa, e um evento sobrando na agenda é sujeira visual, não perda de
-      // dado. O contrário, devolver erro, faria o Cal.com entrar em retry por
-      // um problema que não é dele.
-      try {
-        await apagarRoteiro(agendamento.bookingId);
-      } catch {
-        console.error(`[diagnostico/cal-webhook] roteiro orfao em ${agendamento.bookingId}`);
-      }
-
       return NextResponse.json({ ok: true });
     }
 

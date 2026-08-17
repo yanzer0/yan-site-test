@@ -1,19 +1,17 @@
 /**
- * Escrita na agenda INFUSER pela API do Google Calendar.
- *
- * Por que este módulo existe: o Cal.com não tem endpoint para editar a
- * descrição de um booking já criado. Verificado na API v2 em 17/08/2026 —
- * existe reagendar, cancelar, confirmar, trocar local e adicionar convidado,
- * mas não editar o corpo do evento. Quem escreve o roteiro no card é o Google,
- * direto.
+ * Acesso à agenda INFUSER pela API do Google Calendar.
  *
  * Autenticação por service account (`infuser-agenda@infuser-painel`), com o
  * calendário compartilhado com ela. Sem Workspace, sem domain-wide delegation,
- * sem refresh token que expira. O passo a passo está em
+ * sem refresh token que expira. Passo a passo em
  * `specs/003-roteiro-call-automatico/setup-google.md`.
  *
- * Escopo `calendar.events`: edita evento, e não consegue apagar o calendário
- * nem mexer em compartilhamento.
+ * 🔴 O que este módulo NÃO faz mais, e por quê: ele já escreveu o roteiro na
+ * descrição do evento. Não pode. O lead é convidado do evento da call, e a
+ * documentação do Google é literal — `visibility: "private"` significa "only
+ * event attendees may view event details". `private` esconde de quem NÃO é
+ * convidado; o convidado sempre lê a descrição. O roteiro agora vai como ANEXO
+ * de um arquivo no Drive, cuja permissão o lead não tem. Ver `documento-roteiro.ts`.
  *
  * Envs:
  *   GOOGLE_SERVICE_ACCOUNT_B64  (sensível) — o JSON da chave, em base64
@@ -28,6 +26,9 @@ import { JWT } from "google-auth-library";
 
 const ESCOPO = "https://www.googleapis.com/auth/calendar.events";
 const RAIZ = "https://www.googleapis.com/calendar/v3/calendars";
+
+/** Nenhuma chamada remota sem teto. Um Google lento não pendura o worker. */
+const TIMEOUT_MS = 30_000;
 
 export class ErroAgenda extends Error {
   constructor(
@@ -47,8 +48,6 @@ interface CredencialServiceAccount {
 interface EventoGoogle {
   readonly id: string;
   readonly summary?: string;
-  readonly description?: string;
-  readonly start?: { readonly dateTime?: string };
   readonly attendees?: readonly { readonly email?: string }[];
 }
 
@@ -62,13 +61,13 @@ function lerCredencial(): CredencialServiceAccount {
   }
 }
 
-function idDoCalendario(): string {
+export function idDoCalendario(): string {
   const id = process.env.GOOGLE_CALENDAR_ID;
   if (!id) throw new ErroAgenda("acessar agenda", "GOOGLE_CALENDAR_ID ausente");
   return id;
 }
 
-async function obterToken(): Promise<string> {
+export async function obterToken(): Promise<string> {
   const credencial = lerCredencial();
   const cliente = new JWT({
     email: credencial.client_email,
@@ -80,9 +79,19 @@ async function obterToken(): Promise<string> {
   return token;
 }
 
+async function comTimeout(url: string, opcoes: RequestInit): Promise<Response> {
+  const controle = new AbortController();
+  const alarme = setTimeout(() => controle.abort(), TIMEOUT_MS);
+  try {
+    return await fetch(url, { ...opcoes, signal: controle.signal });
+  } finally {
+    clearTimeout(alarme);
+  }
+}
+
 async function chamar<T>(caminho: string, opcoes: RequestInit, operacao: string): Promise<T> {
   const token = await obterToken();
-  const resposta = await fetch(`${RAIZ}/${encodeURIComponent(idDoCalendario())}${caminho}`, {
+  const resposta = await comTimeout(`${RAIZ}/${encodeURIComponent(idDoCalendario())}${caminho}`, {
     ...opcoes,
     headers: {
       ...opcoes.headers,
@@ -107,15 +116,6 @@ async function chamar<T>(caminho: string, opcoes: RequestInit, operacao: string)
   return corpo;
 }
 
-/**
- * Nota do que se descobriu e deixou de ser necessário: o Cal.com grava o uid do
- * booking no `iCalUID` do evento, na forma `<uid>@Cal.com` (verificado em
- * 17/08/2026 com booking real). Servia para localizar o evento da call e
- * escrever nele. Não se escreve mais nele — ver o bloco vermelho abaixo — então
- * a busca saiu daqui em vez de virar código morto. O achado fica registrado em
- * `_projetos/funil-diagnostico-captura.md` no brain, caso volte a ser útil.
- */
-
 async function listar(parametros: Record<string, string>): Promise<readonly EventoGoogle[]> {
   const busca = new URLSearchParams({ singleEvents: "true", maxResults: "10", ...parametros });
   const resposta = await chamar<{ items?: readonly EventoGoogle[] }>(
@@ -127,110 +127,58 @@ async function listar(parametros: Record<string, string>): Promise<readonly Even
 }
 
 /**
- * 🔴 O roteiro NUNCA vai na descrição do evento do Cal.com.
+ * Sufixo que o Cal.com usa no `iCalUID` do evento que cria no Google.
  *
- * O lead é convidado daquele evento, e a documentação do Google é explícita:
- * `visibility: "private"` significa "only event attendees may view event
- * details". Ou seja, `private` esconde de quem NÃO é convidado — o convidado
- * sempre vê a descrição, e não existe campo que esconda dela só ele.
- *
- * O andaime contém "revela trauma e o que NÃO propor", "a resposta DELE é o
- * fechamento", "cala depois do ta certo". Material interno de condução de
- * venda. Na agenda do prospect, isso queima a call.
- *
- * Então o roteiro vai num evento PRÓPRIO, no calendário INFUSER, sem convidado
- * nenhum. Quem enxerga é quem tem o calendário: Yan, Pedro e Iago. O evento do
- * Cal.com fica intocado, com o link da reunião e os convidados que ele criou.
+ * Verificado em 17/08/2026 num booking real: o booking `rdbMSePKJxKoNHZKyqhP7r`
+ * virou o evento de `iCalUID: rdbMSePKJxKoNHZKyqhP7r@Cal.com`. Chave exata, e o
+ * Google filtra por ela direto na listagem.
  */
-const PREFIXO_DO_ROTEIRO = "Roteiro:";
+export const SUFIXO_ICAL_DO_CAL = "@Cal.com";
 
-/** Marca o evento como nosso, para achar de novo sem depender de título. */
-function chaveDoRoteiro(bookingId: string): string {
-  return `roteiro-${bookingId}`;
-}
-
-interface EventoDeRoteiro {
-  readonly bookingId: string;
-  readonly nomeDoLead: string;
-  readonly inicioEm: Date;
-  readonly descricao: string;
+/** `<uid do booking>@Cal.com`. */
+export function icalUidDoBooking(bookingId: string): string {
+  return `${bookingId}${SUFIXO_ICAL_DO_CAL}`;
 }
 
 /**
- * Cria (ou atualiza) o evento de roteiro. Devolve o id.
+ * Acha o evento que o Cal.com criou para este agendamento.
  *
- * `transparency: "transparent"` para não ocupar o horário: o evento da call já
- * ocupa, e dois blocos sólidos no mesmo slot fariam o Cal.com e as pessoas
- * lerem a agenda como duas reuniões.
+ * Duas passadas: `iCalUID` (exato, o caminho normal) e, se falhar, janela de
+ * dois minutos em torno do início cruzada com o e-mail de quem agendou. A
+ * segunda existe para o dia em que o Cal.com mudar o formato do uid — aí o
+ * roteiro ainda chega, e o que quebra é a via rápida, não a feature.
  *
- * `extendedProperties.private` guarda a chave do booking. É a forma de
- * reencontrar o evento sem depender do título, que uma pessoa pode editar —
- * e `private` aqui é do Google, significa "não replicado para as cópias dos
- * convidados", que neste evento nem existem.
+ * Com mais de um candidato, este módulo NÃO escolhe. Anexar no evento errado
+ * entrega material interno para outra pessoa.
  */
-export async function publicarRoteiro(evento: EventoDeRoteiro): Promise<string> {
-  const existente = await acharEventoDeRoteiro(evento.bookingId);
+export async function acharEventoDaCall(
+  bookingId: string,
+  inicioEm: Date,
+  emailDoLead: string,
+): Promise<string> {
+  const porUid = await listar({ iCalUID: icalUidDoBooking(bookingId) });
+  if (porUid.length === 1) return porUid[0].id;
 
-  const fim = new Date(evento.inicioEm.getTime() + 30 * 60 * 1000);
-  const corpo = {
-    summary: `${PREFIXO_DO_ROTEIRO} ${evento.nomeDoLead}`,
-    description: evento.descricao,
-    start: { dateTime: evento.inicioEm.toISOString() },
-    end: { dateTime: fim.toISOString() },
-    transparency: "transparent",
-    visibility: "private",
-    reminders: { useDefault: false, overrides: [] },
-    extendedProperties: { private: { infuserRoteiro: chaveDoRoteiro(evento.bookingId) } },
-  };
-
-  if (existente) {
-    await chamar(
-      `/events/${encodeURIComponent(existente)}`,
-      { method: "PATCH", body: JSON.stringify(corpo) },
-      "atualizar evento de roteiro",
-    );
-    return existente;
-  }
-
-  const criado = await chamar<{ id: string }>(
-    "/events?sendUpdates=none",
-    { method: "POST", body: JSON.stringify(corpo) },
-    "criar evento de roteiro",
-  );
-  return criado.id;
-}
-
-/** O evento de roteiro deste booking, se já existir. Idempotência do reprocesso. */
-async function acharEventoDeRoteiro(bookingId: string): Promise<string | null> {
-  const achados = await listar({
-    privateExtendedProperty: `infuserRoteiro=${chaveDoRoteiro(bookingId)}`,
+  const tolerancia = 2 * 60 * 1000;
+  const naJanela = await listar({
+    timeMin: new Date(inicioEm.getTime() - tolerancia).toISOString(),
+    timeMax: new Date(inicioEm.getTime() + tolerancia).toISOString(),
   });
-  return achados[0]?.id ?? null;
-}
 
-/**
- * Apaga o evento de roteiro quando a call é cancelada.
- *
- * Necessário porque o cancelamento no Cal.com apaga o evento da call e não
- * alcança este, que a rotina criou por conta própria. Sem isto, cada call
- * cancelada deixa um "Roteiro: Fulano" fantasma na agenda, para sempre.
- *
- * Não confundir com FR-022, que manda preservar o card e o HTML do roteiro: o
- * lead que cancelou continua sendo lead e o diagnóstico continua valendo. O que
- * sai é só o bloco na agenda, que existe para uma conversa que não vai
- * acontecer.
- *
- * Devolve se havia algo para apagar. Não lançar quando não há é deliberado:
- * cancelamento de call que nunca teve roteiro é caso normal, não erro.
- */
-export async function apagarRoteiro(bookingId: string): Promise<boolean> {
-  const eventoId = await acharEventoDeRoteiro(bookingId);
-  if (!eventoId) return false;
-
-  await chamar(
-    `/events/${encodeURIComponent(eventoId)}?sendUpdates=none`,
-    { method: "DELETE" },
-    "apagar evento de roteiro",
+  const alvo = emailDoLead.trim().toLowerCase();
+  const comOLead = naJanela.filter((evento) =>
+    (evento.attendees ?? []).some((quem) => quem.email?.trim().toLowerCase() === alvo),
   );
-  return true;
+
+  if (comOLead.length === 1) return comOLead[0].id;
+  if (comOLead.length === 0) {
+    throw new ErroAgenda(
+      "achar evento da call",
+      `nenhum evento casa com o booking ${bookingId}, nem por iCalUID nem por horario`,
+    );
+  }
+  throw new ErroAgenda(
+    "achar evento da call",
+    `${comOLead.length} candidatos para o booking ${bookingId}; nao anexo em nenhum para nao acertar o errado`,
+  );
 }

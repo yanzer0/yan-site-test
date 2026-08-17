@@ -1,20 +1,18 @@
 /**
- * Recebe o roteiro pronto do worker, publica na agenda e fecha a fila.
+ * Recebe o roteiro pronto do worker, anexa no evento da call e fecha a fila.
  *
- * 🔴 O roteiro vai num evento PRÓPRIO no calendário INFUSER, sem convidados, e
- * NUNCA na descrição do evento da call. O lead é convidado daquele evento, e a
- * documentação do Google é explícita: `visibility: "private"` quer dizer "only
- * event attendees may view event details" — esconde de quem não é convidado, e
- * o convidado sempre vê. Não existe campo que esconda a descrição dele.
+ * 🔴 O roteiro vai como ANEXO de um arquivo no Google Drive, nunca como texto
+ * na descrição do evento. O lead é convidado do evento, e a documentação do
+ * Google é literal: `visibility: "private"` quer dizer "only event attendees
+ * may view event details" — esconde de quem não é convidado, e o convidado
+ * sempre lê a descrição. Não existe campo que esconda a descrição dele.
  *
- * Por que a escrita no Google acontece AQUI e não no worker: a credencial da
- * service account é a mesma em produção e no ambiente local, e ter dois lugares
- * escrevendo no calendário significa dois lugares para consertar quando o
- * formato mudar. O worker faz o que só ele pode fazer, que é rodar o
- * `/call-roteiro` dentro do brain; o resto é desta rota.
+ * Com o anexo, quem barra é a ACL do Drive: o lead vê que há um anexo, clica, e
+ * recebe "você precisa de permissão". O arquivo herda o compartilhamento da
+ * pasta, que só o time tem.
  *
- * Ordem deliberada: publica no Google PRIMEIRO, marca concluído depois. Se a
- * publicação falhar, o item continua na fila e é tentado de novo. O inverso
+ * Ordem deliberada: PDF → Drive → anexo → só então marca concluído. Falhou em
+ * qualquer ponto, o item continua na fila e é tentado de novo. O inverso
  * deixaria a fila dizendo "pronto" sem roteiro em lugar nenhum, que é o tipo de
  * mentira que só aparece cinco minutos antes da call.
  *
@@ -22,33 +20,45 @@
  *   ROTEIRO_WORKER_SECRET       (sensível)
  *   GOOGLE_SERVICE_ACCOUNT_B64  (sensível)
  *   GOOGLE_CALENDAR_ID
+ *   GOOGLE_DRIVE_FOLDER_ID
+ *   GOTENBERG_URL
  *   POSTGRES_URL                (sensível)
  */
 
 import { NextRequest, NextResponse } from "next/server";
 
 import { alertar } from "@/lib/diagnostico/alerta";
-import { montarDescricao, RoteiroSemZonaAoVivo } from "@/lib/diagnostico/andaime";
-import { ErroAgenda, publicarRoteiro } from "@/lib/diagnostico/agenda-google";
+import { limparComentarios } from "@/lib/diagnostico/mapa-render";
+import {
+  acharEventoDaCall,
+  ErroAgenda,
+  idDoCalendario,
+  obterToken,
+} from "@/lib/diagnostico/agenda-google";
+import {
+  anexarNoEvento,
+  converterEmPdf,
+  ErroDocumento,
+  nomeDoDocumento,
+  publicarNoDrive,
+} from "@/lib/diagnostico/documento-roteiro";
 import { concluirRoteiro, registrarFalha } from "@/lib/diagnostico/roteiro-db";
 import { segredoConfere } from "@/lib/diagnostico/segredo";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+export const maxDuration = 60;
 
 interface CorpoDaConclusao {
   readonly calBookingId?: string;
   readonly inicioEm?: string;
+  readonly email?: string;
   readonly nome?: string;
   readonly empresa?: string | null;
   /** O HTML do call-card já aprovado pelo `validate-call-card.mjs` no worker. */
   readonly roteiroHtml?: string;
   readonly caminhoRoteiro?: string;
-  /**
-   * Preenchido quando a quebra foi do lado do worker (modelo, validador, disco).
-   * Sem este caminho a tentativa não seria contada, e o item voltaria amanhã com
-   * o mesmo problema, para sempre.
-   */
+  /** Preenchido quando a quebra foi do lado do worker (modelo, validador, disco). */
   readonly falha?: string;
 }
 
@@ -66,9 +76,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ erro: "invalid_json" }, { status: 400 });
   }
 
-  // O e-mail do lead não entra mais: era usado para localizar o evento da call,
-  // e o roteiro deixou de ser escrito nele. Menos PII trafegando (FR-021).
-  const { calBookingId, inicioEm, nome, roteiroHtml, caminhoRoteiro } = corpo;
+  const { calBookingId, inicioEm, email, nome, roteiroHtml, caminhoRoteiro } = corpo;
 
   if (corpo.falha) {
     if (!calBookingId) return NextResponse.json({ erro: "calBookingId_ausente" }, { status: 400 });
@@ -80,7 +88,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     });
     return NextResponse.json({ ok: true, registrado: "falha" });
   }
-  if (!calBookingId || !inicioEm || !nome || !roteiroHtml || !caminhoRoteiro) {
+
+  if (!calBookingId || !inicioEm || !email || !nome || !roteiroHtml || !caminhoRoteiro) {
     return NextResponse.json({ erro: "campos_obrigatorios_ausentes" }, { status: 400 });
   }
 
@@ -89,41 +98,27 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ erro: "inicioEm_invalido" }, { status: 400 });
   }
 
-  let descricao: string;
   try {
-    descricao = montarDescricao({
-      html: roteiroHtml,
-      nomeDoLead: nome,
-      empresa: corpo.empresa ?? null,
-    });
-  } catch (causa) {
-    if (causa instanceof RoteiroSemZonaAoVivo) {
-      // Não é falha de infraestrutura, é roteiro malformado. Retentar não
-      // conserta, então diz o que houve e devolve 422 em vez de 500.
-      await registrarFalha(calBookingId, "roteiro sem CALL-ZONE");
-      return NextResponse.json({ erro: "roteiro_sem_zona_ao_vivo" }, { status: 422 });
-    }
-    throw causa;
-  }
+    // Os comentários HTML do template carregam instrução interna de geração.
+    // Não vão para um documento que sai daqui.
+    const pdf = await converterEmPdf(limparComentarios(roteiroHtml));
+    const documento = await publicarNoDrive(pdf, nomeDoDocumento(corpo.empresa ?? null, nome));
 
-  try {
-    // `publicarRoteiro` é idempotente pelo booking: reprocessar atualiza o
-    // mesmo evento em vez de encher a agenda de duplicatas.
-    const eventoId = await publicarRoteiro({
-      bookingId: calBookingId,
-      nomeDoLead: nome,
-      inicioEm: inicio,
-      descricao,
-    });
+    const eventoId = await acharEventoDaCall(calBookingId, inicio, email);
+    await anexarNoEvento(
+      eventoId,
+      { ...documento, titulo: nomeDoDocumento(corpo.empresa ?? null, nome) },
+      await obterToken(),
+      idDoCalendario(),
+    );
+
     await concluirRoteiro(calBookingId, eventoId, caminhoRoteiro);
-
-    return NextResponse.json({ ok: true, eventoId, caracteres: descricao.length });
+    return NextResponse.json({ ok: true, eventoId, fileId: documento.fileId, bytes: pdf.length });
   } catch (causa) {
-    // A mensagem real vai junto mesmo quando não é ErroAgenda. Trocar por um
-    // texto genérico já custou uma rodada de depuração às cegas: o log dizia
-    // "falha ao concluir roteiro" e não dizia por quê.
+    const conhecido = causa instanceof ErroAgenda || causa instanceof ErroDocumento;
     const detalhe = causa instanceof Error ? `${causa.name}: ${causa.message}` : String(causa);
-    const motivo = causa instanceof ErroAgenda ? causa.message : `falha ao concluir: ${detalhe}`;
+    const motivo = conhecido ? (causa as Error).message : `falha ao concluir: ${detalhe}`;
+
     // O identificador do booking pode ir para o log; nome e e-mail não (FR-021).
     console.error(`[roteiro/concluir] ${calBookingId}: ${motivo}`);
     await registrarFalha(calBookingId, motivo);

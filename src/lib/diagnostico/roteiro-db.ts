@@ -176,6 +176,46 @@ export interface CallSemRoteiro {
 }
 
 /**
+ * Itens que ESGOTARAM as tentativas. A fila morta.
+ *
+ * Existe porque `lerFila` filtra `tentativas < MAX_TENTATIVAS`: ao estourar o
+ * teto, o item simplesmente para de aparecer. Sem esta consulta ele some em
+ * silêncio, que é o "DLQ como cemitério" — o pior estado possível, porque a
+ * ausência de erro parece sucesso.
+ *
+ * Só interessa call que ainda vai acontecer: roteiro de call passada não tem
+ * mais o que salvar, e alertar sobre ela seria barulho permanente.
+ */
+export async function filaMorta(): Promise<readonly CallSemRoteiro[]> {
+  try {
+    const resultado = await sql<{
+      cal_booking_id: string;
+      inicio_em: Date;
+      tentativas: number;
+      ultimo_erro: string | null;
+    }>`
+      SELECT r.cal_booking_id, a.inicio_em, r.tentativas, r.ultimo_erro
+        FROM roteiros r
+        JOIN agendamentos a ON a.cal_booking_id = r.cal_booking_id
+       WHERE r.estado = 'falhou'
+         AND r.tentativas >= ${MAX_TENTATIVAS}
+         AND a.estado <> 'cancelado'
+         AND a.inicio_em > now()
+       ORDER BY a.inicio_em
+    `;
+
+    return resultado.rows.map((linha) => ({
+      calBookingId: linha.cal_booking_id,
+      inicioEm: linha.inicio_em,
+      tentativas: linha.tentativas,
+      ultimoErro: linha.ultimo_erro,
+    }));
+  } catch (causa) {
+    throw new ErroPersistencia("consultar fila morta", causa);
+  }
+}
+
+/**
  * FR-020: call em menos de 24 horas cujo roteiro ainda não saiu.
  *
  * Roteiro que chega depois da call não serve, então esta consulta é o que
