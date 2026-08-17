@@ -28,7 +28,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import { alertar } from "@/lib/diagnostico/alerta";
-import { limparComentarios } from "@/lib/diagnostico/mapa-render";
 import {
   acharEventoDaCall,
   ErroAgenda,
@@ -37,7 +36,6 @@ import {
 } from "@/lib/diagnostico/agenda-google";
 import {
   anexarNoEvento,
-  converterEmPdf,
   ErroDocumento,
   nomeDoDocumento,
   publicarNoDrive,
@@ -55,8 +53,15 @@ interface CorpoDaConclusao {
   readonly email?: string;
   readonly nome?: string;
   readonly empresa?: string | null;
-  /** O HTML do call-card já aprovado pelo `validate-call-card.mjs` no worker. */
-  readonly roteiroHtml?: string;
+  /**
+   * O PDF do roteiro, em base64.
+   *
+   * 🔴 Quem converte é o serviço na VPS, não esta rota. O Gotenberg vive na
+   * rede `infuser-net` da VPS, sem porta pública — a Vercel simplesmente não o
+   * alcança. Expor o Gotenberg para a internet só para esta chamada seria abrir
+   * um conversor de documentos ao mundo por conveniência de arquitetura.
+   */
+  readonly pdfBase64?: string;
   readonly caminhoRoteiro?: string;
   /** Preenchido quando a quebra foi do lado do worker (modelo, validador, disco). */
   readonly falha?: string;
@@ -76,7 +81,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ erro: "invalid_json" }, { status: 400 });
   }
 
-  const { calBookingId, inicioEm, email, nome, roteiroHtml, caminhoRoteiro } = corpo;
+  const { calBookingId, inicioEm, email, nome, pdfBase64, caminhoRoteiro } = corpo;
 
   if (corpo.falha) {
     if (!calBookingId) return NextResponse.json({ erro: "calBookingId_ausente" }, { status: 400 });
@@ -89,7 +94,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ ok: true, registrado: "falha" });
   }
 
-  if (!calBookingId || !inicioEm || !email || !nome || !roteiroHtml || !caminhoRoteiro) {
+  if (!calBookingId || !inicioEm || !email || !nome || !pdfBase64 || !caminhoRoteiro) {
     return NextResponse.json({ erro: "campos_obrigatorios_ausentes" }, { status: 400 });
   }
 
@@ -98,10 +103,15 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ erro: "inicioEm_invalido" }, { status: 400 });
   }
 
+  const pdf = Buffer.from(pdfBase64, "base64");
+  // `%PDF` é a assinatura do formato. Um base64 truncado ou de outro tipo
+  // decodifica sem erro e viraria um anexo corrompido no evento — falha que só
+  // apareceria quando alguém tentasse abrir, minutos antes da call.
+  if (pdf.length < 1024 || pdf.subarray(0, 4).toString("latin1") !== "%PDF") {
+    return NextResponse.json({ erro: "pdf_invalido" }, { status: 400 });
+  }
+
   try {
-    // Os comentários HTML do template carregam instrução interna de geração.
-    // Não vão para um documento que sai daqui.
-    const pdf = await converterEmPdf(limparComentarios(roteiroHtml));
     const documento = await publicarNoDrive(pdf, nomeDoDocumento(corpo.empresa ?? null, nome));
 
     const eventoId = await acharEventoDaCall(calBookingId, inicio, email);

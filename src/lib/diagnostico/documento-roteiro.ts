@@ -15,7 +15,6 @@
  * Envs:
  *   GOOGLE_SERVICE_ACCOUNT_B64  (sensível)
  *   GOOGLE_DRIVE_FOLDER_ID      pasta compartilhada com a service account
- *   GOTENBERG_URL               conversor HTML→PDF (só existe na VPS)
  */
 
 import { JWT } from "google-auth-library";
@@ -25,8 +24,7 @@ import { ErroAgenda } from "./agenda-google";
 /** Escopo mínimo: cria e enxerga só o que ela mesma criou. Não lê o Drive todo. */
 const ESCOPO_DRIVE = "https://www.googleapis.com/auth/drive.file";
 
-/** Teto de espera do Gotenberg. Sem timeout, um conversor travado pendura o worker. */
-const TIMEOUT_PDF_MS = 60_000;
+/** Sem timeout, um Google lento pendura a função inteira. */
 const TIMEOUT_DRIVE_MS = 60_000;
 
 export class ErroDocumento extends Error {
@@ -59,40 +57,6 @@ async function comTimeout(url: string, opcoes: RequestInit, ms: number): Promise
   } finally {
     clearTimeout(alarme);
   }
-}
-
-/**
- * HTML para PDF pelo Gotenberg.
- *
- * O arquivo precisa se chamar `index.html`: é o nome que o Chromium do
- * Gotenberg abre. Qualquer outro nome devolve 400 sem explicar o porquê.
- */
-export async function converterEmPdf(html: string): Promise<Buffer> {
-  const base = process.env.GOTENBERG_URL;
-  if (!base) throw new ErroDocumento("converter em pdf", "GOTENBERG_URL ausente");
-
-  const forma = new FormData();
-  forma.append("files", new Blob([html], { type: "text/html" }), "index.html");
-  forma.append("printBackground", "true");
-  forma.append("marginTop", "0.4");
-  forma.append("marginBottom", "0.4");
-
-  let resposta: Response;
-  try {
-    resposta = await comTimeout(
-      `${base.replace(/\/+$/, "")}/forms/chromium/convert/html`,
-      { method: "POST", body: forma },
-      TIMEOUT_PDF_MS,
-    );
-  } catch (causa) {
-    const motivo = causa instanceof Error ? causa.message : String(causa);
-    throw new ErroDocumento("converter em pdf", `gotenberg inalcancavel: ${motivo}`);
-  }
-
-  if (!resposta.ok) {
-    throw new ErroDocumento("converter em pdf", `gotenberg respondeu ${resposta.status}`);
-  }
-  return Buffer.from(await resposta.arrayBuffer());
 }
 
 async function tokenDoDrive(): Promise<string> {

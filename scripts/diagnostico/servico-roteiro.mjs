@@ -169,6 +169,79 @@ function gerarRoteiro(slug) {
   return { relativo, absoluto };
 }
 
+/**
+ * Endereço do Gotenberg, descoberto no Docker.
+ *
+ * O container está na rede `infuser-net` e NÃO publica porta no host, então
+ * `localhost:3000` não resolve. Publicar a porta seria mexer no compose de um
+ * serviço de produção; perguntar o IP ao Docker não mexe em nada.
+ *
+ * O IP muda quando o container é recriado (raro), por isso é resolvido a cada
+ * conversão em vez de ficar guardado.
+ */
+function enderecoDoGotenberg() {
+  if (process.env.GOTENBERG_URL) return process.env.GOTENBERG_URL;
+
+  const consulta = spawnSync(
+    "docker",
+    ["inspect", "-f", "{{range .NetworkSettings.Networks}}{{.IPAddress}} {{end}}", "gotenberg"],
+    { encoding: "utf8", shell: false, timeout: 15_000 },
+  );
+  const ip = (consulta.stdout ?? "").trim().split(/\s+/)[0];
+  if (consulta.status !== 0 || !ip) {
+    throw new Error("nao consegui descobrir o IP do container gotenberg");
+  }
+  return `http://${ip}:3000`;
+}
+
+/**
+ * HTML para PDF pelo Gotenberg.
+ *
+ * Roda AQUI e não na rota da API porque o Gotenberg vive na rede interna da
+ * VPS. A alternativa seria expor um conversor de documentos à internet só para
+ * a Vercel alcançar, o que é abrir superfície por conveniência de arquitetura.
+ *
+ * O arquivo precisa se chamar `index.html`: é o nome que o Chromium do
+ * Gotenberg abre. Outro nome devolve 400 sem dizer por quê.
+ */
+async function converterEmPdf(html) {
+  const forma = new FormData();
+  forma.append("files", new Blob([html], { type: "text/html" }), "index.html");
+  forma.append("printBackground", "true");
+  forma.append("marginTop", "0.4");
+  forma.append("marginBottom", "0.4");
+
+  const controle = new AbortController();
+  const alarme = setTimeout(() => controle.abort(), 60_000);
+  try {
+    const resposta = await fetch(`${enderecoDoGotenberg()}/forms/chromium/convert/html`, {
+      method: "POST",
+      body: forma,
+      signal: controle.signal,
+    });
+    if (!resposta.ok) throw new Error(`gotenberg respondeu ${resposta.status}`);
+
+    const pdf = Buffer.from(await resposta.arrayBuffer());
+    if (pdf.subarray(0, 4).toString("latin1") !== "%PDF") {
+      throw new Error("gotenberg devolveu algo que nao e PDF");
+    }
+    return pdf;
+  } finally {
+    clearTimeout(alarme);
+  }
+}
+
+/**
+ * Tira os comentários HTML antes de virar documento.
+ *
+ * O template do roteiro carrega instrução de geração em comentário, e comentário
+ * viaja no arquivo mesmo sem aparecer na tela. Documento que sai daqui não leva
+ * instrução interna junto.
+ */
+function limparComentarios(html) {
+  return html.replace(/<!--[\s\S]*?-->/g, "");
+}
+
 /** O validador do brain. Exit 0 é obrigatório (FR-011), e este serviço não confia no modelo. */
 function validar(absoluto) {
   const execucao = spawnSync(
@@ -219,6 +292,9 @@ async function processar(trabalho) {
   const roteiro = gerarRoteiro(trabalho.slug);
   registrar("info", validar(roteiro.absoluto));
 
+  const pdf = await converterEmPdf(limparComentarios(readFileSync(roteiro.absoluto, "utf8")));
+  registrar("info", `pdf gerado: ${Math.round(pdf.length / 1024)} kB`);
+
   const conclusao = await chamarApi("/api/diagnostico/roteiro/concluir", {
     method: "POST",
     body: JSON.stringify({
@@ -227,7 +303,7 @@ async function processar(trabalho) {
       email: trabalho.lead.email,
       nome: trabalho.lead.nome,
       empresa: trabalho.lead.empresa,
-      roteiroHtml: readFileSync(roteiro.absoluto, "utf8"),
+      pdfBase64: pdf.toString("base64"),
       caminhoRoteiro: roteiro.relativo,
     }),
   });
