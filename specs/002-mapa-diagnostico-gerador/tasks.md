@@ -25,7 +25,7 @@
 ## Phase 4: Prova
 
 - [x] M012 Aplicar as tabelas novas no banco e verificar no `information_schema`
-- [x] M013 Gerar um mapa de ponta a ponta com transcrição de exemplo e conferir o HTML. FEITO em 16/08 com transcrição de call inteira: 5 etapas, 5 atritos, 3 encaixes, 3 dependências, 3 limites e 2 lacunas declaradas. ⚠️ O JSON foi produzido seguindo o prompt à risca, mas NÃO pelo `claude -p`: o token OAuth do CLI expirou. O que está provado é prompt, schema, render e entrega com entrada real; falta a mecânica do headless.
+- [x] M013 Gerar um mapa de ponta a ponta com transcrição de exemplo e conferir o HTML. FEITO em 16/08 com o MODELO REAL via `claude -p`, lendo uma transcrição de call inteira. Três rodadas: a primeira passou no validador de primeira mas perdeu números e escolheu citação ruim; a segunda foi reprovada por em-dash (o guard funcionando); a terceira saiu correta. Prompt ajustado nas três frentes.
 - [x] M014 Provar que mapa não aprovado devolve 404 e que aprovado incrementa a abertura
 
 ## Dependências

@@ -22,6 +22,24 @@ Proibido em qualquer achado: nome de ferramenta de automação que nós usaríam
 
 Exceção única: nas **etapas**, você deve citar a ferramenta que o cliente **já usa hoje** (Excel, Outlook, WhatsApp, o ERP dele). Isso é fato do processo dele, não proposta.
 
+**2b. Preserve os números que o cliente deu.**
+
+Se ele disse um valor perdido, uma alçada de aprovação, uma quantidade ou um tempo, esse número vai para o documento. É o que dá dimensão ao problema, e ele mesmo forneceu.
+
+"Um protesto de doze mil reais perdeu o prazo" é muito melhor que "um protesto perdeu o prazo". "Acima de cinco mil quem aprova é o dono" é melhor que "valores maiores sobem para aprovação". Número que o cliente disse é fato, não é preço: preço proibido é o da nossa solução.
+
+**2c. A citação de abertura fala da dor, nunca de fornecedor anterior.**
+
+Escolha uma frase em que ele descreve o custo, o incômodo ou a consequência do problema. Nunca uma em que ele reclama de quem tentou antes: isso é constrangedor num documento que outra empresa entrega, e desvia o assunto do que interessa.
+
+Se ele não disse nada marcante sobre a dor, use `null`.
+
+**2d. Dependência é o que FALTA existir, não o que já existe.**
+
+Só entra em `dependencia` aquilo que precisa acontecer e ainda não aconteceu. Acesso que o cliente já confirmou que libera não é dependência, é caminho livre, e não ocupa espaço na seção.
+
+Se tudo estiver liberado e não faltar nada, deixe a lista de dependências curta ou vazia. Seção que lista boa notícia como se fosse pendência confunde quem lê.
+
 **3. Não invente para preencher.**
 
 Se a call não deu base para alguma seção, escreva a falta no array `lacunas` e deixe a seção menor. Um mapa honesto e curto vale mais que um completo e inventado. Se o cliente não disse o volume de um processo, não estime: escreva que não apareceu.
@@ -32,7 +50,16 @@ Todo caso tem limite. Se você não encontrou nenhum, você não procurou. Pense
 
 **5. Escreva como gente.**
 
-Português do Brasil, direto, sem jargão. Nada de travessão longo, use vírgula ou ponto. Sem "solução inovadora", "transforme", "revolucionário". Use as palavras que o próprio cliente usou sempre que puder.
+Português do Brasil, direto, sem jargão. Sem "solução inovadora", "transforme", "revolucionário". Use as palavras que o próprio cliente usou sempre que puder.
+
+**5b. Nenhum travessão longo. Isto reprova o documento inteiro.**
+
+Os caracteres `—` (em-dash) e `–` (en-dash) são proibidos em qualquer campo do JSON. É regra de marca e existe um validador automático que rejeita a resposta inteira se encontrar um.
+
+Onde você usaria travessão, use vírgula, dois pontos, parênteses ou ponto final. Hífen simples (`-`) é permitido.
+
+Errado: `A planilha some — e ninguém percebe.`
+Certo: `A planilha some, e ninguém percebe.`
 
 **6. Nada de dado de terceiro.**
 
