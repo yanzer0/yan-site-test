@@ -272,9 +272,19 @@ function publicarNoGit(slug) {
 
   git("add", `_pipeline/clientes/${slug}`);
   const commit = git("commit", "-m", `brain: card e roteiro da Call 1 de ${slug}`, "--no-verify");
-  if (commit.status !== 0 && !/nothing to commit/i.test(commit.stdout ?? "")) {
+
+  // "Nada mudou" NÃO é falha: acontece sempre que o card é reprocessado sem
+  // alteração. O git tem DUAS frases para isso e eu só cobria uma — com algo
+  // staged diz "nothing to commit", sem nada staged diz "no changes added to
+  // commit". A segunda virou um aviso de erro falso no log da primeira
+  // execução real.
+  const nadaMudou = /nothing to commit|no changes added to commit/i.test(
+    `${commit.stdout ?? ""}${commit.stderr ?? ""}`,
+  );
+  if (commit.status !== 0 && !nadaMudou) {
     throw new Error(`commit falhou: ${(commit.stderr || commit.stdout).slice(0, 200)}`);
   }
+  if (nadaMudou) return;
 
   git("pull", "--rebase", "--autostash");
   const push = git("push", "origin", "HEAD");
