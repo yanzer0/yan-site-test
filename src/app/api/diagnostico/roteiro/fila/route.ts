@@ -148,10 +148,16 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
           respostas,
           hoje,
         }),
+        // O que o worker devolve para a rota de conclusão escrever no evento.
+        // `papel` e `whatsapp` entram porque a descrição do evento carrega o
+        // contato: sem eles, quem conduz a call abre o CRM em outra aba para
+        // saber para onde chamar se o vídeo cair.
         lead: {
           nome: item.nome,
           empresa: item.empresa,
+          papel: item.papel,
           email: item.email,
+          whatsapp: item.whatsapp,
         },
       };
     });

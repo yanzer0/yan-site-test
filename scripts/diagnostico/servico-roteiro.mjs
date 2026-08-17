@@ -313,6 +313,10 @@ async function processar(trabalho) {
       email: trabalho.lead.email,
       nome: trabalho.lead.nome,
       empresa: trabalho.lead.empresa,
+      // Vão para a descrição do evento: quem conduz a call precisa saber para
+      // onde chamar se o vídeo cair, sem abrir o CRM em outra aba.
+      papel: trabalho.lead.papel ?? null,
+      whatsapp: trabalho.lead.whatsapp ?? null,
       pdfBase64: pdf.toString("base64"),
       caminhoRoteiro: roteiro.relativo,
     }),

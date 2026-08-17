@@ -48,7 +48,18 @@ interface CredencialServiceAccount {
 interface EventoGoogle {
   readonly id: string;
   readonly summary?: string;
-  readonly attendees?: readonly { readonly email?: string }[];
+  readonly description?: string;
+  readonly attendees?: readonly {
+    readonly email?: string;
+    readonly organizer?: boolean;
+  }[];
+}
+
+/** O evento como precisamos dele para reescrever sem apagar o que já estava lá. */
+export interface EventoDaCall {
+  readonly id: string;
+  readonly descricao: string | null;
+  readonly convidados: readonly { readonly email: string; readonly organizador: boolean }[];
 }
 
 function lerCredencial(): CredencialServiceAccount {
@@ -114,6 +125,50 @@ async function chamar<T>(caminho: string, opcoes: RequestInit, operacao: string)
     throw new ErroAgenda(operacao, `${resposta.status} ${corpo.error?.message ?? ""}${dica}`);
   }
   return corpo;
+}
+
+/**
+ * Lê o evento antes de reescrevê-lo.
+ *
+ * Existe porque as duas coisas que este sistema escreve no evento dependem do
+ * que já está lá: a descrição é somada à que o Cal.com escreveu, e a lista de
+ * convidados precisa ser conhecida para tirar o lead SEM tirar o organizador
+ * junto. Escrever sem ler seria sobrescrever no escuro.
+ */
+export async function lerEvento(eventoId: string): Promise<EventoDaCall> {
+  const evento = await chamar<EventoGoogle>(
+    `/events/${encodeURIComponent(eventoId)}`,
+    { method: "GET" },
+    "ler evento da call",
+  );
+
+  return {
+    id: evento.id,
+    descricao: evento.description ?? null,
+    convidados: (evento.attendees ?? [])
+      .filter((quem): quem is { email: string; organizer?: boolean } => Boolean(quem.email))
+      .map((quem) => ({ email: quem.email, organizador: quem.organizer === true })),
+  };
+}
+
+/**
+ * A lista de convidados sem o lead, preservando o resto.
+ *
+ * Nunca remove quem está marcado como organizador: tirar o organizador da
+ * própria reunião quebraria o evento, e o alvo aqui é só o lead. Devolve `null`
+ * quando não há o que mudar, para o chamador não gastar um PATCH à toa.
+ */
+export function convidadosSemOLead(
+  convidados: readonly { readonly email: string; readonly organizador: boolean }[],
+  emailDoLead: string,
+): readonly { readonly email: string }[] | null {
+  const alvo = emailDoLead.trim().toLowerCase();
+  const ficam = convidados.filter(
+    (quem) => quem.organizador || quem.email.trim().toLowerCase() !== alvo,
+  );
+
+  if (ficam.length === convidados.length) return null;
+  return ficam.map((quem) => ({ email: quem.email }));
 }
 
 async function listar(parametros: Record<string, string>): Promise<readonly EventoGoogle[]> {

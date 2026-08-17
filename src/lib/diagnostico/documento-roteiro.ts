@@ -201,6 +201,59 @@ export async function anexarNoEvento(
   tokenDoCalendario: string,
   calendarId: string,
 ): Promise<void> {
+  await prepararEvento(eventoId, { anexo }, tokenDoCalendario, calendarId);
+}
+
+/** Tudo que este sistema escreve no evento da call. */
+export interface PreparoDoEvento {
+  readonly anexo?: AnexoDoRoteiro;
+  /** Já montada. Quem decide o que pode entrar é `contato-no-evento.ts`. */
+  readonly descricao?: string;
+  /**
+   * Os convidados que FICAM no evento.
+   *
+   * Passar a lista sem o lead é o que o tira dali. Não existe opção no Cal.com
+   * que separe "manda o convite por e-mail" de "adiciona como convidado no
+   * Google": as sete opções de Privacidade e segurança do event type foram
+   * conferidas uma a uma em 17/08 e nenhuma faz isso. Como já editamos o evento
+   * para anexar o roteiro, a remoção sai no mesmo PATCH.
+   *
+   * Lista vazia é diferente de campo ausente: `[]` limpa os convidados,
+   * `undefined` deixa como está.
+   */
+  readonly convidados?: readonly { readonly email: string }[];
+}
+
+/**
+ * Escreve no evento da call: anexo, descrição e lista de convidados.
+ *
+ * Um PATCH só, e não três, porque cada chamada a mais é uma chance de o evento
+ * ficar meio pronto. O estado que não pode existir nem por um instante é
+ * "roteiro anexado com o lead ainda convidado", e é justamente o que aconteceria
+ * se o anexo fosse numa chamada e a remoção em outra que falhasse.
+ *
+ * `sendUpdates=none` é deliberado: sem ele o Google avisa os convidados a cada
+ * alteração, e o lead receberia "evento atualizado" antes da call, além de um
+ * "você foi removido" ao sair da lista.
+ */
+export async function prepararEvento(
+  eventoId: string,
+  preparo: PreparoDoEvento,
+  tokenDoCalendario: string,
+  calendarId: string,
+): Promise<void> {
+  const corpo: Record<string, unknown> = {};
+
+  if (preparo.anexo) {
+    corpo.attachments = [
+      { fileUrl: preparo.anexo.fileUrl, title: preparo.anexo.titulo, mimeType: "application/pdf" },
+    ];
+  }
+  if (preparo.descricao !== undefined) corpo.description = preparo.descricao;
+  if (preparo.convidados !== undefined) corpo.attendees = preparo.convidados;
+
+  if (Object.keys(corpo).length === 0) return;
+
   const url =
     `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calendarId)}` +
     `/events/${encodeURIComponent(eventoId)}?supportsAttachments=true&sendUpdates=none`;
@@ -210,17 +263,13 @@ export async function anexarNoEvento(
     {
       method: "PATCH",
       headers: { Authorization: `Bearer ${tokenDoCalendario}`, "Content-Type": "application/json" },
-      body: JSON.stringify({
-        attachments: [
-          { fileUrl: anexo.fileUrl, title: anexo.titulo, mimeType: "application/pdf" },
-        ],
-      }),
+      body: JSON.stringify(corpo),
     },
     TIMEOUT_DRIVE_MS,
   );
 
   if (!resposta.ok) {
-    const corpo = (await resposta.json().catch(() => ({}))) as { error?: { message?: string } };
-    throw new ErroAgenda("anexar no evento", `${resposta.status} ${corpo.error?.message ?? ""}`);
+    const detalhe = (await resposta.json().catch(() => ({}))) as { error?: { message?: string } };
+    throw new ErroAgenda("preparar evento", `${resposta.status} ${detalhe.error?.message ?? ""}`);
   }
 }

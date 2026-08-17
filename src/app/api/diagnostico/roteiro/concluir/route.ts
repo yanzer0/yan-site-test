@@ -35,11 +35,14 @@ import { NextRequest, NextResponse } from "next/server";
 import { alertar } from "@/lib/diagnostico/alerta";
 import {
   acharEventoDaCall,
+  convidadosSemOLead,
   ErroAgenda,
   idDoCalendario,
+  lerEvento,
   obterToken,
 } from "@/lib/diagnostico/agenda-google";
-import { anexarNoEvento, ErroDocumento, nomeDoDocumento } from "@/lib/diagnostico/documento-roteiro";
+import { descricaoComContato } from "@/lib/diagnostico/contato-no-evento";
+import { ErroDocumento, nomeDoDocumento, prepararEvento } from "@/lib/diagnostico/documento-roteiro";
 import {
   concluirRoteiro,
   guardarPdfDoRoteiro,
@@ -57,6 +60,9 @@ interface CorpoDaConclusao {
   readonly email?: string;
   readonly nome?: string;
   readonly empresa?: string | null;
+  readonly papel?: string | null;
+  /** Vai para a descrição do evento, para quem conduz a call ter onde chamar. */
+  readonly whatsapp?: string | null;
   /**
    * O PDF do roteiro, em base64.
    *
@@ -127,10 +133,42 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     const url = new URL(`/roteiro/${token}`, req.nextUrl.origin).toString();
 
     const eventoId = await acharEventoDaCall(calBookingId, inicio, email);
-    await anexarNoEvento(eventoId, { fileUrl: url, titulo }, await obterToken(), idDoCalendario());
+
+    // Lê antes de escrever: a descrição do Cal.com é preservada e a lista de
+    // convidados precisa ser conhecida para tirar o lead sem levar junto o
+    // organizador.
+    const evento = await lerEvento(eventoId);
+
+    // 🔴 Só o que é DO LEAD entra na descrição. Score, faixa e motivo de corte
+    // ficam de fora por regra, não por esquecimento: ver `contato-no-evento.ts`.
+    const descricao = descricaoComContato(evento.descricao, {
+      nome,
+      email,
+      whatsapp: corpo.whatsapp ?? null,
+      empresa: corpo.empresa ?? null,
+      papel: corpo.papel ?? null,
+    });
+
+    // O Cal.com não sabe criar o evento sem pôr o lead como convidado, então a
+    // remoção é aqui. `null` quer dizer que ele já não estava na lista, e nesse
+    // caso o campo nem entra no PATCH.
+    const convidados = convidadosSemOLead(evento.convidados, email);
+
+    await prepararEvento(
+      eventoId,
+      { anexo: { fileUrl: url, titulo }, descricao, convidados: convidados ?? undefined },
+      await obterToken(),
+      idDoCalendario(),
+    );
 
     await concluirRoteiro(calBookingId, eventoId, caminhoRoteiro);
-    return NextResponse.json({ ok: true, eventoId, url, bytes: pdf.length });
+    return NextResponse.json({
+      ok: true,
+      eventoId,
+      url,
+      bytes: pdf.length,
+      leadRemovidoDoEvento: convidados !== null,
+    });
   } catch (causa) {
     const conhecido = causa instanceof ErroAgenda || causa instanceof ErroDocumento;
     const detalhe = causa instanceof Error ? `${causa.name}: ${causa.message}` : String(causa);
