@@ -38,19 +38,28 @@ export default function DiagnosticoPage() {
         <h1 className="dg-h1">
           Uma hora para mapear onde a IA <em>encaixa de verdade</em> na sua operação
         </h1>
-        <p className="dg-lead">
-          São 14 perguntas e leva uns 3 minutos. Se fizer sentido pros dois lados, você escolhe o
-          horário aqui mesmo no final.
-        </p>
-        <p className="dg-lead">
-          Na call a gente mapeia como o seu processo funciona hoje e onde IA e automação encaixam.
-          Depois você recebe esse mapa por escrito, para usar com a gente ou sem a gente.
-        </p>
-        <p className="dg-nota">
-          Não é apresentação comercial. Não tem proposta nem preço nessa conversa.
-        </p>
 
-        <Conversa urlCal={urlCal} urlMapa={urlMapa} urlPolitica="/privacidade" />
+        {/* A abertura vai COMO CHILDREN, não solta acima do formulário: quem
+            decide mostrá-la é a Conversa, e só na primeira pergunta. Ela vende
+            a call para quem ainda não começou; da segunda em diante rouba a
+            tela da pergunta e da barra de progresso, e no celular empurra o
+            campo para baixo da dobra (medido no print do Yan, 17/08).
+
+            Continua sendo markup de server component, então segue chegando no
+            HTML inicial — o que importa no webview do Instagram. */}
+        <Conversa urlCal={urlCal} urlMapa={urlMapa} urlPolitica="/privacidade">
+          <p className="dg-lead">
+            São 14 perguntas e leva uns 3 minutos. Se fizer sentido pros dois lados, você escolhe o
+            horário aqui mesmo no final.
+          </p>
+          <p className="dg-lead">
+            Na call a gente mapeia como o seu processo funciona hoje e onde IA e automação encaixam.
+            Depois você recebe esse mapa por escrito, para usar com a gente ou sem a gente.
+          </p>
+          <p className="dg-nota">
+            Não é apresentação comercial. Não tem proposta nem preço nessa conversa.
+          </p>
+        </Conversa>
       </div>
     </main>
   );

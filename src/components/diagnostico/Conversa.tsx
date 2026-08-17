@@ -50,6 +50,14 @@ interface ConversaProps {
   readonly urlCal?: string;
   readonly urlMapa?: string;
   readonly urlPolitica: string;
+  /**
+   * A abertura que explica a call. Só aparece na PRIMEIRA pergunta.
+   *
+   * Vem de fora, e não escrita aqui dentro, porque a página é server component:
+   * assim o texto continua no HTML inicial, que é o que o webview do Instagram
+   * consegue mostrar antes do JavaScript rodar.
+   */
+  readonly children?: React.ReactNode;
 }
 
 function novaSessao(): string {
@@ -57,7 +65,7 @@ function novaSessao(): string {
   return `s-${Math.random().toString(36).slice(2)}-${Date.now()}`;
 }
 
-export function Conversa({ urlCal, urlMapa, urlPolitica }: ConversaProps) {
+export function Conversa({ urlCal, urlMapa, urlPolitica, children }: ConversaProps) {
   const [passo, setPasso] = useState(0);
   const [respostas, setRespostas] = useState<Record<string, ValorResposta>>({});
   const [extras, setExtras] = useState<Extras>(EXTRAS_VAZIO);
@@ -234,6 +242,8 @@ export function Conversa({ urlCal, urlMapa, urlPolitica }: ConversaProps) {
 
   return (
     <div>
+      {indice === 0 && children}
+
       <div className="dg-progresso">
         <span>
           {indice + 1} de {total}
