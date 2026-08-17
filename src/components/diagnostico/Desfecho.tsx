@@ -13,6 +13,7 @@
 import { useState } from "react";
 
 import type { Faixa } from "@/lib/diagnostico/tipos";
+import { CalAgenda } from "./CalAgenda";
 
 const LINK_KIT = "https://useinfuser.com/kit-segundo-cerebro";
 
@@ -31,14 +32,32 @@ function primeiroNome(nome: string): string {
   return nome.trim().split(/\s+/)[0] ?? nome;
 }
 
+/**
+ * De `https://cal.com/infuser/diagnostico` para `infuser/diagnostico`.
+ *
+ * A variável de ambiente guarda a URL pública, que é o que se manda para uma
+ * pessoa. O embed quer só o caminho. Converter aqui evita ter duas variáveis
+ * dizendo a mesma coisa em formatos diferentes, que é onde uma delas envelhece.
+ */
+export function caminhoDoCal(url: string): string | null {
+  try {
+    const { hostname, pathname } = new URL(url);
+    if (!hostname.endsWith("cal.com")) return null;
+    const caminho = pathname.replace(/^\/+|\/+$/g, "");
+    return caminho.length > 0 ? caminho : null;
+  } catch {
+    return null;
+  }
+}
+
 export function Desfecho({ faixa, nome, processo, email, urlCal, urlMapa }: DesfechoProps) {
   const [calFalhou, setCalFalhou] = useState(false);
   const eu = primeiroNome(nome);
 
   if (faixa === "qualificado") {
-    const embed = urlCal
-      ? `${urlCal}?embed=true&name=${encodeURIComponent(nome)}&email=${encodeURIComponent(email)}`
-      : null;
+    // O embed oficial quer `usuario/evento`, não a URL inteira. Nome e e-mail
+    // vão pela config do componente, não na query string.
+    const embed = urlCal ? caminhoDoCal(urlCal) : null;
 
     return (
       <div className="dg-desfecho">
@@ -57,13 +76,11 @@ export function Desfecho({ faixa, nome, processo, email, urlCal, urlMapa }: Desf
 
         {embed && !calFalhou ? (
           <div className="dg-cal">
-            <iframe
-              src={embed}
-              title="Escolha o horário da call de diagnóstico"
-              width="100%"
-              height="520"
-              style={{ border: "none" }}
-              onError={() => setCalFalhou(true)}
+            <CalAgenda
+              link={embed}
+              nome={nome}
+              email={email}
+              aoFalhar={() => setCalFalhou(true)}
             />
           </div>
         ) : (

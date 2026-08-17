@@ -323,10 +323,38 @@
   font: 700 15px/1 var(--fonte-corpo);
   text-decoration: none;
 }
+/* O calendario cresce com o conteudo, nao numa caixa de altura fixa.
+   Antes era min-height 520px com overflow hidden, e o lead tinha que rolar
+   dentro da caixa pra achar as datas. O embed oficial informa a propria altura
+   por postMessage, entao aqui so se garante que nada corte.
+   O min-height que sobrou e reserva de espaco enquanto carrega, pra pagina nao
+   dar um salto quando o calendario aparece. */
 .dg-cal {
   margin-top: 24px;
-  min-height: 520px;
+  min-height: 480px;
   border: 1px solid var(--border);
   border-radius: 12px;
-  overflow: hidden;
+  overflow: visible;
+}
+
+/* O embed injeta um wrapper proprio: ele tambem nao pode ser cortado. */
+.dg-cal > * {
+  width: 100%;
+  border-radius: 12px;
+  overflow: visible !important;
+}
+
+/* No celular o Cal.com empilha e fica bem mais alto. Sangrando o container ate
+   a borda, o calendario ganha a largura inteira em vez de ficar espremido. */
+@media (max-width: 640px) {
+  .dg-cal {
+    margin-left: -18px;
+    margin-right: -18px;
+    border-left: none;
+    border-right: none;
+    border-radius: 0;
+  }
+  .dg-cal > * {
+    border-radius: 0;
+  }
 }
