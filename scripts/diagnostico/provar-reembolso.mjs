@@ -160,7 +160,16 @@ try {
 
   if (cancelamento === "cancelado" || cancelamento === "ja_cancelado") {
     console.log(ok(`cancelou no Cal.com: ${cancelamento}`));
-  } else if (cancelamento === "falhou" && /nao configurada/i.test(motivo ?? "")) {
+  } else if (cancelamento === "falhou" && !motivo) {
+    // 🔴 Sem `motivo` não dá para distinguir credencial ausente de booking
+    // inexistente, e as duas exigem ação diferente. Passar aqui seria aprovar
+    // por FALTA de informação: foi o que este script fez uma vez, quando o
+    // deploy que introduziu o campo ainda não tinha subido e a comparação com
+    // `undefined` caiu no ramo de sucesso.
+    console.log(nao("resposta sem `motivo`: nao da para saber se a credencial chegou"));
+    console.log("     Provavelmente o deploy com o campo ainda nao subiu. Rodar de novo.");
+    falhou = true;
+  } else if (cancelamento === "falhou" && /nao configurada/i.test(motivo)) {
     console.log(nao("CAL_API_KEY NAO chegou ao runtime: reembolso nao libera horario"));
     console.log("     Conferir `vercel env ls production` e se houve deploy DEPOIS de adicionar.");
     falhou = true;
