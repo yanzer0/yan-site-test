@@ -34,6 +34,7 @@ import {
   buscarLeadPorContato,
   vincularAgendamento,
 } from "@/lib/diagnostico/db";
+import { vincularAgendamentoPago } from "@/lib/diagnostico/pagamento-db";
 import { enfileirarRoteiro } from "@/lib/diagnostico/roteiro-db";
 
 export const runtime = "nodejs";
@@ -96,8 +97,14 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       return NextResponse.json({ ok: true });
     }
 
+    // Consome o pedido pago, se houver. `pagamentoLiberaAgendamento` só libera
+    // quem está em `pago`, então sem esta linha o pedido ficava em `pago` para
+    // sempre e a mesma compra agendava quantas calls quisesse. Devolve false
+    // para o lead qualificado, que agenda de graça e não tem pedido nenhum.
+    const eraPaga = await vincularAgendamentoPago(agendamento.email, agendamento.bookingId);
+
     await enfileirarRoteiro(agendamento.bookingId);
-    return NextResponse.json({ ok: true, enfileirado: true });
+    return NextResponse.json({ ok: true, enfileirado: true, paga: eraPaga });
   } catch {
     console.error(`[diagnostico/cal-webhook] falha ao vincular ${agendamento.bookingId}`);
     return NextResponse.json({ ok: false, erro: "vinculo_falhou" });

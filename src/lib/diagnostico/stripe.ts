@@ -134,5 +134,54 @@ export interface EventoStripe {
   readonly data?: { readonly object?: Record<string, unknown> };
 }
 
-/** Só este evento interessa: é o que garante pagamento concluído. */
+/** Garante pagamento concluído. É o que cria o pedido. */
 export const EVENTO_PAGAMENTO = "checkout.session.completed";
+
+/**
+ * Desfaz o pedido: dinheiro devolvido, call cancelada, horário liberado.
+ *
+ * É `charge.refunded` e não `refund.created` porque `charge.refunded` só dispara
+ * quando o reembolso foi de fato efetivado. `refund.created` dispara antes de
+ * saber se vai dar certo, e cancelar a call de alguém por um reembolso que
+ * falhou seria o pior dos dois mundos.
+ *
+ * 🔴 Este evento precisa estar INSCRITO no destino do webhook no painel do
+ * Stripe. Código que trata evento não inscrito nunca roda, e o silêncio parece
+ * sucesso: o reembolso acontece, o dinheiro volta, e a call fica de pé.
+ */
+export const EVENTO_REEMBOLSO = "charge.refunded";
+
+interface RespostaBusca {
+  readonly data?: readonly { readonly id?: string }[];
+  readonly error?: { readonly message?: string };
+}
+
+/**
+ * Acha a sessão de checkout de um PaymentIntent.
+ *
+ * Só é chamada no caminho de exceção: quando um reembolso chega para um pedido
+ * gravado antes de guardarmos o PaymentIntent. Sem ela, esses pedidos ficariam
+ * para sempre sem como ser reembolsados automaticamente.
+ *
+ * Devolve `null` quando o Stripe não conhece esse PaymentIntent ou quando a
+ * chamada falha. Quem chama já está num caminho degradado e trata os dois casos
+ * do mesmo jeito: alerta um humano.
+ */
+export async function acharSessaoDoPagamento(paymentIntent: string): Promise<string | null> {
+  const chave = process.env.STRIPE_SECRET_KEY;
+  if (!chave) return null;
+
+  try {
+    const resposta = await fetch(
+      `https://api.stripe.com/v1/checkout/sessions?payment_intent=${encodeURIComponent(paymentIntent)}&limit=1`,
+      { headers: { Authorization: `Bearer ${chave}` } },
+    );
+
+    if (!resposta.ok) return null;
+
+    const corpo = (await resposta.json()) as RespostaBusca;
+    return corpo.data?.[0]?.id ?? null;
+  } catch {
+    return null;
+  }
+}
