@@ -16,10 +16,10 @@
 
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { timingSafeEqual } from "node:crypto";
 
 import { NextRequest, NextResponse } from "next/server";
 
+import { segredoConfere } from "@/lib/diagnostico/segredo";
 import { validarMapa } from "@/lib/diagnostico/mapa-schema";
 import {
   renderizarMapa,
@@ -44,13 +44,6 @@ const TEMPLATE = readFileSync(
   join(process.cwd(), "src", "lib", "diagnostico", "mapa-template.html"),
   "utf8",
 );
-
-function segredoConfere(recebido: string, esperado: string): boolean {
-  const a = Buffer.from(recebido);
-  const b = Buffer.from(esperado);
-  if (a.length !== b.length) return false;
-  return timingSafeEqual(a, b);
-}
 
 interface CorpoPublicar {
   readonly email?: unknown;

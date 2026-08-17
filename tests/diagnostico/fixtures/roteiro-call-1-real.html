@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<!--
+  GERADO POR: /call-roteiro v3.0 · modo: ANDAIME (falas literais para Iago)
+  Cliente: Ricardo Alves - Vertex Componentes
+  Call: 1 (diagnóstico puro) - 21/08/2026 12h
+  CSS: template canônico roteiro-call v2.0 (identidade v2 Infuser)
+  Zona ao vivo: frame -> diagnosis -> decision -> door-1 -> advance
+-->
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Call-Card — Ricardo / Vertex Componentes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600;700&family=Inter:ital,opsz,wght@0,14..32,400..900;1,14..32,400..900&family=Onest:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #020202;
+    --surface: #0C0C0A;
+    --card: #171717;
+    --card-2: #1E1E1C;
+    --card-3: #262624;
+    --border: rgba(240,240,228,0.10);
+    --border-strong: rgba(240,240,228,0.16);
+    --text: #F0F0E4;
+    --text-soft: rgba(240,240,228,0.80);
+    --muted: rgba(240,240,228,0.56);
+    --muted-dim: rgba(240,240,228,0.40);
+    --green: #C6FF34;
+    --green-dim: #A8E84C; --teal: #3BD0A0; --teal-deep: #1F6F5F; --teal-bg: rgba(59,208,160,0.10);
+    --green-bg: rgba(198,255,52,0.09);
+    --green-strong: rgba(198,255,52,0.16);
+    --warn: #F6C445;
+    --warn-bg: rgba(246,196,69,0.09);
+    --blue: #5BA8FF;
+    --blue-bg: rgba(91,168,255,0.10);
+    --red: #FF5247;
+    --red-bg: rgba(255,82,71,0.10);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--bg); }
+  body {
+    color: var(--text);
+    font-family: 'Onest', system-ui, sans-serif;
+    line-height: 1.6;
+    padding: 48px 24px 96px;
+    max-width: 960px;
+    margin: 0 auto;
+    font-size: 15px;
+    -webkit-font-smoothing: antialiased;
+  }
+  header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 32px;
+    margin-bottom: 36px;
+    position: relative;
+  }
+  .brand {
+    font-family: 'Geist Mono', ui-monospace, monospace;
+    font-size: 11px;
+    letter-spacing: 5px;
+    color: var(--green);
+    font-weight: 500;
+    margin-bottom: 14px;
+    text-transform: uppercase;
+  }
+  h1 {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 44px;
+    font-weight: 500;
+    letter-spacing: -1.2px;
+    line-height: 1.05;
+    margin-bottom: 10px;
+  }
+  h1 em { font-style: italic; color: var(--green); font-weight: 400; }
+  .subtitle { color: var(--muted); font-size: 14px; letter-spacing: 0.2px; }
+  .meta-strip {
+    margin-top: 20px;
+    display: flex;
+    gap: 28px;
+    flex-wrap: wrap;
+    font-family: 'Geist Mono', ui-monospace, monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+  .meta-strip span b { color: var(--text-soft); font-weight: 500; margin-left: 6px; }
+
+  .context {
+    background: var(--card);
+    border: 1px solid var(--border-strong);
+    border-radius: 12px;
+    padding: 24px 26px;
+    margin-bottom: 40px;
+    position: relative;
+  }
+  .context::before {
+    content: "CONTEXTO";
+    position: absolute;
+    top: -8px;
+    left: 22px;
+    background: var(--bg);
+    padding: 0 10px;
+    font-family: 'Geist Mono', ui-monospace, monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--green);
+    font-weight: 600;
+  }
+  .ctx-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px 32px;
+    margin-bottom: 22px;
+  }
+  .ctx-item .label {
+    font-family: 'Geist Mono', ui-monospace, monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .ctx-item .value { font-size: 14px; color: var(--text-soft); line-height: 1.5; }
+  .ctx-item .value b { color: var(--green); font-weight: 600; }
+
+  .signals {
+    background: var(--card-2);
+    border-radius: 8px;
+    padding: 18px 20px;
+    margin-top: 12px;
+    border-left: 3px solid var(--green);
+  }
+  .signals .label {
+    font-family: 'Geist Mono', ui-monospace, monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--green);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    font-weight: 600;
+  }
+  .signals ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .signals li {
+    padding-left: 18px;
+    position: relative;
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--text-soft);
+  }
+  .signals li::before { content: "->"; position: absolute; left: 0; color: var(--green); font-weight: 700; }
+  .signals li b { color: var(--green); }
+  .signals li i { font-style: italic; color: var(--muted); }
+
+  .quotes-strip {
+    margin-top: 22px;
+    padding: 16px 18px;
+    background: var(--card-2);
+    border-radius: 8px;
+    border: 1px dashed var(--border-strong);
+  }
+  .quotes-strip .label {
+    font-family: 'Geist Mono', ui-monospace, monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .quotes-strip .q {
+    display: inline-block;
+    padding: 5px 11px;
+    margin: 3px 5px 3px 0;
+    background: var(--card-3);
+    color: var(--text-soft);
+    border-radius: 4px;
+    font-size: 13px;
+    border: 1px solid var(--border);
+    font-style: italic;
+  }
+
+  .phase {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    margin-bottom: 24px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .phase:hover { border-color: var(--border-strong); }
+  .phase-header {
+    display: grid;
+    grid-template-columns: 56px 1fr auto;
+    align-items: center;
+    padding: 22px 24px;
+    gap: 18px;
+    background: linear-gradient(180deg, var(--card-2) 0%, var(--card) 100%);
+    border-bottom: 1px solid var(--border);
+  }
+  .phase-number {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--green-bg);
+    color: var(--green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Geist Mono', ui-monospace, monospace;
+    font-weight: 700;
+    font-size: 17px;
+    border: 1px solid rgba(198,255,52,0.3);
+  }
+  .phase-title-block .phase-title {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 21px;
+    font-weight: 500;
+    letter-spacing: -0.3px;
+    color: var(--text);
+    margin-bottom: 3px;
+  }
+  .phase-title-block .phase-subtitle {
+    font-family: 'Geist Mono', ui-monospace, monospace;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .phase-time {
+    font-family: 'Geist Mono', ui-monospace, monospace;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    color: var(--muted);
+    text-transform: uppercase;
+    padding: 6px 12px;
+    background: var(--card-3);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+  }
+  .phase-body { padding: 22px 24px 26px; }
+
+  .section-label {
+    font-family: 'Geist Mono', ui-monospace, monospace;
+    font-size: 10px;
+    letter-spacing: 2.5px;
+    color: var(--green);
+    text-transform: uppercase;
+    font-weight: 600;
+    margin: 22px 0 12px;
+    padding-bottom: 6px;
+    border-bottom: 1px dashed var(--border-strong);
+  }
+  .section-label:first-child { margin-top: 0; }
+
+  .speak {
+    background: var(--card-2);
+    border-left: 3px solid var(--green);
+    padding: 16px 18px;
+    margin: 10px 0 14px;
+    border-radius: 0 8px 8px 0;
+  }
+  .speak-label {
+    font-family: 'Geist Mono', ui-monospace, monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--green);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  .speak-text { font-size: 15px; color: var(--text-soft); line-height: 1.65; font-style: italic; }
+  .speak-text b { color: var(--text); font-style: normal; font-weight: 600; }
+
+  .question-list {
+    list-style: none;
+    counter-reset: q;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin: 12px 0;
+  }
+  .question-list li {
+    padding-left: 38px;
+    position: relative;
+    font-size: 14.5px;
+    color: var(--text-soft);
+    line-height: 1.55;
+    counter-increment: q;
+  }
+  .question-list li::before {
+    content: counter(q, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-family: 'Geist Mono', ui-monospace, monospace;
+    font-size: 11px;
+    color: var(--green);
+    font-weight: 600;
+    padding-top: 2px;
+  }
+  .question-list li i { color: var(--muted); font-style: italic; font-size: 13px; }
+  .question-list li .speak-text { font-size: 14.5px; font-style: italic; color: var(--text-soft); }
+  .question-list li .speak-text b { color: var(--text); font-style: normal; }
+
+  .tip {
+    background: var(--warn-bg);
+    border: 1px solid rgba(246,196,69,0.2);
+    border-radius: 8px;
+    padding: 13px 16px;
+    margin: 16px 0;
+    font-size: 13.5px;
+    color: var(--text-soft);
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .tip::before { content: "◆"; color: var(--warn); font-size: 13px; margin-top: 2px; flex-shrink: 0; }
+  .tip b { color: var(--warn); font-weight: 600; }
+
+  .insight {
+    background: var(--blue-bg);
+    border: 1px solid rgba(91,168,255,0.2);
+    border-radius: 8px;
+    padding: 13px 16px;
+    margin: 16px 0;
+    font-size: 13.5px;
+    color: var(--text-soft);
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .insight::before { content: "▶"; color: var(--blue); font-size: 11px; margin-top: 4px; flex-shrink: 0; }
+  .insight b { color: var(--blue); font-weight: 600; }
+
+  .golden {
+    background: linear-gradient(135deg, rgba(198,255,52,0.12), rgba(198,255,52,0.04));
+    border: 1px solid rgba(198,255,52,0.4);
+    border-radius: 12px;
+    padding: 24px 26px;
+    margin: 18px 0;
+    position: relative;
+  }
+  .golden::before {
+    content: "★ FALA-CHAVE";
+    position: absolute;
+    top: -10px;
+    left: 22px;
+    background: var(--bg);
+    padding: 0 12px;
+    font-family: 'Geist Mono', ui-monospace, monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--green);
+    font-weight: 700;
+  }
+  .golden p {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 21px;
+    font-weight: 400;
+    color: var(--text);
+    line-height: 1.4;
+    font-style: italic;
+    letter-spacing: -0.3px;
+  }
+  .golden small {
+    display: block;
+    margin-top: 12px;
+    font-family: 'Geist Mono', ui-monospace, monospace;
+    font-size: 11px;
+    color: var(--muted);
+    font-style: normal;
+    letter-spacing: 0.8px;
+  }
+
+  .price-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin: 18px 0 20px;
+  }
+  .price-box {
+    background: var(--card-2);
+    border: 1px solid var(--border-strong);
+    border-radius: 10px;
+    padding: 20px 18px;
+  }
+  .price-box .tier-label {
+    font-family: 'Geist Mono', ui-monospace, monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .price-box .price {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 30px;
+    font-weight: 500;
+    color: var(--text);
+    letter-spacing: -1px;
+    margin-bottom: 8px;
+    line-height: 1;
+  }
+  .price-box .price-desc { font-size: 12.5px; color: var(--muted); line-height: 1.45; }
+
+  .danger {
+    background: var(--red-bg);
+    border-radius: 8px;
+    padding: 18px 20px;
+    margin: 16px 0;
+    border-left: 3px solid var(--red);
+  }
+  .danger .label {
+    font-family: 'Geist Mono', ui-monospace, monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--red);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    font-weight: 600;
+  }
+  .danger ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .danger li { padding-left: 20px; position: relative; font-size: 14px; line-height: 1.55; color: var(--text-soft); }
+  .danger li::before { content: "X"; position: absolute; left: 0; color: var(--red); font-weight: 700; }
+  .danger li b { color: var(--red); }
+
+  .divider { height: 1px; background: linear-gradient(90deg, transparent, var(--border-strong), transparent); margin: 40px 0; }
+
+  .section-heading {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 28px;
+    font-weight: 500;
+    margin: 56px 0 22px;
+    letter-spacing: -0.6px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .section-heading::after { content: ""; flex: 1; height: 1px; background: var(--border-strong); }
+  .section-heading .sub {
+    font-family: 'Geist Mono', ui-monospace, monospace;
+    font-size: 11px;
+    color: var(--green);
+    letter-spacing: 3px;
+    font-weight: 500;
+    text-transform: uppercase;
+    background: var(--green-bg);
+    padding: 4px 10px;
+    border-radius: 4px;
+    border: 1px solid rgba(198,255,52,0.2);
+  }
+
+  footer {
+    margin-top: 60px;
+    padding-top: 28px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    font-family: 'Geist Mono', ui-monospace, monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--muted-dim);
+    text-transform: uppercase;
+  }
+  footer .green { color: var(--green); }
+
+  @media (max-width: 720px) {
+    body { padding: 32px 16px 64px; }
+    h1 { font-size: 32px; }
+    .ctx-grid { grid-template-columns: 1fr; }
+    .price-grid { grid-template-columns: 1fr; }
+    .phase-header { grid-template-columns: 44px 1fr; }
+    .phase-time { grid-column: 2; justify-self: start; margin-top: 4px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">Infuser · Call-Card · call-roteiro v3.0 · ANDAIME (Iago)</div>
+  <h1>Ricardo / Vertex Componentes - <em>diagnostico de orcamento</em></h1>
+  <div class="subtitle">Distribuicao de componentes · Instagram / funil diagnostico · Dono, 6-20 pessoas, decide com socio</div>
+  <div class="meta-strip">
+    <span>Data <b>21/08/2026 12h</b></span>
+    <span>Com <b>Iago</b></span>
+    <span>Formato <b>Call 1 · diagnostico puro</b></span>
+    <span>Saida <b>material + Call 2 marcada</b></span>
+  </div>
+</header>
+
+<!-- CONTEXTO (fora da zona ao vivo) -->
+<div class="context">
+  <div class="ctx-grid">
+    <div class="ctx-item">
+      <div class="label">Quem e</div>
+      <div class="value">Ricardo Alves, <b>dono</b> da Vertex Componentes. 6-20 pessoas. Decide com mais um socio (nome a confirmar).</div>
+    </div>
+    <div class="ctx-item">
+      <div class="label">Dor declarada</div>
+      <div class="value">Orcamento a mao: planilha + Word. <b>3 versoes por orcamento</b>, varias vezes ao dia. Cliente percebe o atraso.</div>
+    </div>
+    <div class="ctx-item">
+      <div class="label">Categoria</div>
+      <div class="value"><b>Execucao</b> - processo recorrente, retrabalho alto. Acesso: confirmado.</div>
+    </div>
+    <div class="ctx-item">
+      <div class="label">Objetivo desta call</div>
+      <div class="value">Cavar custo real. Confirmar o socio. Sair com material: planilha de preco + exemplo de orcamento.</div>
+    </div>
+  </div>
+  <div class="quotes-strip">
+    <div class="label">Palavras dele no formulario</div>
+    <span class="q">"Tres versoes antes de fechar"</span>
+    <span class="q">"A gente perde prazo, cliente reclama"</span>
+    <span class="q">"ChatGPT sem metodo, nao funcionou"</span>
+    <span class="q">"Acesso: sim, sem problema"</span>
+  </div>
+</div>
+
+<!-- CALL-ZONE:START -->
+<div data-call-format="diagnostic">
+
+  <div class="phase" data-stage="frame">
+    <div class="phase-header">
+      <div class="phase-number">00</div>
+      <div class="phase-title-block">
+        <div class="phase-title">Frame</div>
+        <div class="phase-subtitle">Intenção honesta no minuto 1</div>
+      </div>
+    </div>
+    <div class="phase-body">
+      <div class="speak">
+        <div class="speak-text">"Ricardo, bom dia. Meu objetivo aqui e entender como a Vertex funciona. Se fizer sentido encaixar IA, la no final vou te propor algo. Ta certo?"</div>
+      </div>
+      <div class="tip"><span><b>Cala depois do "ta certo".</b></span></div>
+    </div>
+  </div>
+
+  <div class="phase" data-stage="diagnosis">
+    <div class="phase-header">
+      <div class="phase-number">01</div>
+      <div class="phase-title-block">
+        <div class="phase-title">Diagnostico</div>
+        <div class="phase-subtitle">Um de cada vez. Cala depois de cada pergunta.</div>
+      </div>
+    </div>
+    <div class="phase-body">
+      <ul class="question-list">
+        <li><div class="speak-text">"Quando um orcamento atrasa ou sai errado, o que voce sente? Qual e o impacto no time e no cliente?"</div><i>Cava: "me da um exemplo real".</i></li>
+        <li><div class="speak-text">"Quantas vezes por semana voces refazem um orcamento do zero? Quanto tempo leva cada rodada?"</div><i>Se nao souber: "Quanto vale uma hora do seu vendedor?"</i></li>
+        <li><div class="speak-text">"Voce tentou com ChatGPT mas nao foi. O que aconteceu?"</div><i>Revela trauma e o que NAO propor.</i></li>
+        <li><div class="speak-text">"Se nada mudar nos proximos 6 meses, o que acontece?"</div><i>A resposta DELE e o fechamento.</i></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="phase" data-stage="decision">
+    <div class="phase-header">
+      <div class="phase-number">02</div>
+      <div class="phase-title-block">
+        <div class="phase-title">Desejo, honestidade e decisores</div>
+        <div class="phase-subtitle">Desejo + feedback sincero + confirmar quem assina</div>
+      </div>
+    </div>
+    <div class="phase-body">
+      <div class="speak">
+        <div class="speak-text">"Se o orcamento saisse certo na primeira versao, o que muda pra voce e pro time?"</div>
+      </div>
+      <div class="speak">
+        <div class="speak-text">"Preciso ser honesto: IA nao resolve cliente indeciso. O que ela resolve e o esforco manual - entrar na planilha, procurar, montar no Word. E mais esse esforco ou e o comportamento do cliente?"</div>
+      </div>
+      <div class="insight"><span>"Voce mencionou um socio. Se a gente encontrar um caminho, ele estaria na proxima conversa?" Anota o nome.</span></div>
+    </div>
+  </div>
+
+  <div class="golden" data-stage="door-1">
+    <p>"Antes de ir mais fundo: resolver isso e prioridade real agora ou fica pra depois?"</p>
+    <small>Nao abriu: "Entendi. Quando subir de prioridade, me chama." Fim da call.</small>
+  </div>
+
+  <div class="phase" data-stage="advance">
+    <div class="phase-header">
+      <div class="phase-number">03</div>
+      <div class="phase-title-block">
+        <div class="phase-title">Advance</div>
+        <div class="phase-subtitle">Material + Call 2 - sai com dono e data</div>
+      </div>
+    </div>
+    <div class="phase-body">
+      <div class="speak">
+        <div class="speak-text">"O que eu preciso e: a planilha de preco e um ou dois orcamentos ja feitos - sem nome de cliente, so o formato. Com isso monto algo real pra voces. Conseguem mandar ate quinta, dia 22? A gente ja marca a proxima conversa."</div>
+      </div>
+      <div class="tip"><span><b>Se hesitar:</b> "Manda do jeito que ta." Sai da call com: prazo do material + data da Call 2.</span></div>
+    </div>
+  </div>
+
+</div>
+<!-- CALL-ZONE:END -->
+
+<div class="divider"></div>
+
+<div class="section-heading"><span class="sub">Ler antes</span> PREP</div>
+
+<div class="context">
+  <div class="ctx-grid">
+    <div class="ctx-item">
+      <div class="label">Hipoteses a validar</div>
+      <div class="value">
+        1. Planilha com muitos itens - vendedor <b>procura</b> manualmente, lento.<br>
+        2. Sem template fixo de Word - cada vendedor formata diferente.<br>
+        3. "Tres versoes" = pedido incompleto do cliente (sem especificacao) ou quantidade mudada pos-preco.<br>
+        4. Com 6-20 pessoas provavelmente 2-4 vendedores fazem orcamento em paralelo - problema multiplicado.<br>
+        5. ChatGPT falhou porque nao tinha a tabela de precos como contexto.
+      </div>
+    </div>
+    <div class="ctx-item">
+      <div class="label">Lacunas criticas (coletar na call)</div>
+      <div class="value">
+        - Quantos itens tem a planilha?<br>
+        - Formato da planilha: Excel? Google Sheets?<br>
+        - Ha template de Word ou cada um formata?<br>
+        - Alteracoes sao de produto, quantidade ou prazo/condicao?<br>
+        - Quem e o socio? Participaria da Call 2?<br>
+        - Orcamento vai por e-mail ou WhatsApp?<br>
+        - Quantos vendedores fazem orcamento?
+      </div>
+    </div>
+    <div class="ctx-item">
+      <div class="label">Mapa de gasto (estimativa)</div>
+      <div class="value">
+        5 orcamentos/dia x 3 versoes x 20min = <b>~5h/dia</b> em orcamento.<br>
+        2 vendedores = 10h/dia.<br>
+        Custo a calcular com o numero real que ele der na call.<br>
+        Mais: prazo perdido, cliente que reclama, oportunidade perdida.
+      </div>
+    </div>
+    <div class="ctx-item">
+      <div class="label">Cases comparaveis</div>
+      <div class="value">
+        <b>Helukabel:</b> planilha como fonte de produto, processo de e-mail operacional, equipe de 6+ pessoas. Analogia forte para B2B de produto fisico.<br>
+        <b>Prime Traffos:</b> processo comercial com dados em planilha, automacao de apoio ao time de vendas. Analogia parcial.
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="phase">
+  <div class="phase-header">
+    <div class="phase-number">P</div>
+    <div class="phase-title-block">
+      <div class="phase-title">Matriz de capacidades</div>
+      <div class="phase-subtitle">Prometer apenas o verificado</div>
+    </div>
+  </div>
+  <div class="phase-body">
+    <div class="section-label">Verificado e executavel</div>
+    <div class="insight"><span>Agente que consulta base de precos (planilha indexada) e monta texto de orcamento com dados variaveis. Upload de planilha Excel/CSV como fonte no cerebro. Chat no painel para vendedor consultar preco de item especifico. Geracao de documento estruturado (conteudo do orcamento em texto).</span></div>
+    <div class="section-label">Ilustrativo (rotular como exemplo)</div>
+    <div class="tip"><span>Demo com planilha ficticia de componentes eletronicos. Mockup de orcamento gerado pelo agente. Rotular sempre: "isso e um exemplo com dados ficticios - com a sua tabela, o resultado e esse aqui."</span></div>
+    <div class="section-label">Hipotese tecnica</div>
+    <div class="danger">
+      <div class="label">Nao prometer como pronto</div>
+      <ul>
+        <li><b>Integracao com WhatsApp Business</b> (leitura automatica de pedido): depende de conta BSP - validar antes.</li>
+        <li><b>Leitura automatica de e-mail</b>: depende de servidor e acesso - validar antes.</li>
+        <li><b>Envio automatico ao cliente sem revisao</b>: acao externa - nunca no escopo inicial R$5k. Sempre aprovacao humana.</li>
+        <li><b>Integracao com ERP ou sistema de gestao</b>: fora do escopo da Fundacao.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="phase">
+  <div class="phase-header">
+    <div class="phase-number">R$</div>
+    <div class="phase-title-block">
+      <div class="phase-title">Arvore interna de SKU</div>
+      <div class="phase-subtitle">O lead nao ve este menu - decisao interna pos-call</div>
+    </div>
+  </div>
+  <div class="phase-body">
+    <div class="tip"><span><b>Call 1 e diagnostico puro.</b> Sem oferta, sem precos, sem faixa na call. Esta arvore e lida DEPOIS da call para montar a proposta.</span></div>
+    <div class="price-grid">
+      <div class="price-box">
+        <div class="tier-label">Oferta inicial (hipotese)</div>
+        <div class="price">R$ 5.000</div>
+        <div class="price-desc">Setup + R$ 500/mês. Um processo (orcamento), ate 2 fontes (planilha + pedido), equipe ate 5. Inclui: base de precos indexada, agente de montagem de orcamento, painel de consulta para vendedores, aprovacao humana antes de enviar. Fora: envio automatico ao cliente, integracao WhatsApp/email, CRM.</div>
+      </div>
+      <div class="price-box">
+        <div class="tier-label">Degrau abaixo</div>
+        <div class="price">R$ 3.000</div>
+        <div class="price-desc">Fundacao Essencial + R$ 500/mês. O que sai: automacao de montagem. Vira consulta ao cerebro - vendedor consulta o preco, monta o documento manualmente. Resolve o "procurar na planilha", nao o "montar o Word".</div>
+      </div>
+      <div class="price-box">
+        <div class="tier-label">Piso</div>
+        <div class="price">R$ 2.500</div>
+        <div class="price-desc">Agente standalone. Sem painel, sem fonte indexada permanente, sem historico de clientes. Resolve uma consulta de preco pontual, nao o processo. Frase do nao: "Isso nao resolve o processo - quando o volume justificar o sistema completo, voce me chama."</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="danger">
+  <div class="label">Sinais vermelhos condicionais</div>
+  <ul>
+    <li><b>"Quero que o orcamento va direto pro cliente sem ninguem ver"</b> - acao externa automatica, fora do R$5k. Resposta: "Entendo a necessidade, mas IA precisa de um olho humano antes de enviar proposta comercial. Isso e escopo maior - posso dimensionar depois de entender o processo completo."</li>
+    <li><b>Socio se recusa a participar da Call 2</b> - risco alto de nao fechar. Acao: entender quem realmente decide e garantir o decisor na proxima call antes de montar proposta.</li>
+    <li><b>"Preciso disso em 15 dias"</b> - prazo justo mas apertado. Depende de quando o material chega. Nao prometer data sem ver a planilha e o exemplo de orcamento.</li>
+  </ul>
+</div>
+
+<footer>
+  Infuser · <span class="green">call-roteiro v3.0</span> · Diagnostico vende, apresentacao nao · Call 1 de diagnostico puro · Ricardo / Vertex Componentes · 21/08/2026
+</footer>
+
+</body>
+</html>

@@ -11,23 +11,15 @@
  *   MAPA_PUBLICAR_SECRET  (sensível)
  */
 
-import { timingSafeEqual } from "node:crypto";
-
 import { NextRequest, NextResponse } from "next/server";
 import { sql } from "@vercel/postgres";
 
 import { normalizarEmail } from "@/lib/diagnostico/normalizar";
 import { perguntaPorId } from "@/lib/diagnostico/perguntas";
+import { segredoConfere } from "@/lib/diagnostico/segredo";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
-
-function segredoConfere(recebido: string, esperado: string): boolean {
-  const a = Buffer.from(recebido);
-  const b = Buffer.from(esperado);
-  if (a.length !== b.length) return false;
-  return timingSafeEqual(a, b);
-}
 
 export async function GET(req: NextRequest): Promise<NextResponse> {
   const esperado = process.env.MAPA_PUBLICAR_SECRET;

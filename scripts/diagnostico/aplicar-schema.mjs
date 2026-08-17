@@ -27,9 +27,10 @@ const LIB = join(AQUI, "..", "..", "src", "lib", "diagnostico");
 
 /**
  * Os arquivos entram nesta ordem e ela importa: `mapa-sql.sql` tem chave
- * estrangeira para `leads`, que nasce no `schema.sql`.
+ * estrangeira para `leads` e `roteiro-sql.sql` para `agendamentos`, e as duas
+ * nascem no `schema.sql`.
  */
-const ARQUIVOS = [join(LIB, "schema.sql"), join(LIB, "mapa-sql.sql")];
+const ARQUIVOS = [join(LIB, "schema.sql"), join(LIB, "mapa-sql.sql"), join(LIB, "roteiro-sql.sql")];
 
 const TABELAS_ESPERADAS = [
   "leads",
@@ -40,6 +41,7 @@ const TABELAS_ESPERADAS = [
   "exclusoes",
   "mapas",
   "mapa_achados",
+  "roteiros",
 ];
 
 /**

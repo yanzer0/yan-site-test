@@ -15,8 +15,10 @@
  *   CAL_WEBHOOK_SECRET  (sensível, o mesmo configurado no painel do Cal.com)
  *   POSTGRES_URL        (sensível)
  *
- * Consumidor adicional: a feature 003 escuta o mesmo evento para gerar o
- * roteiro da call. Uma integração, dois consumidores. Não embutir a 003 aqui.
+ * Consumidor adicional: a feature 003 gera o roteiro da call. Aqui só se
+ * ENFILEIRA — quem gera é o worker que roda na máquina do Yan, onde o brain
+ * vive. O webhook precisa responder em milissegundos e o `/call-roteiro` leva
+ * minutos, então acoplar os dois faria o Cal.com dar timeout e reentregar.
  */
 
 import { NextRequest, NextResponse } from "next/server";
@@ -32,6 +34,7 @@ import {
   buscarLeadPorContato,
   vincularAgendamento,
 } from "@/lib/diagnostico/db";
+import { enfileirarRoteiro } from "@/lib/diagnostico/roteiro-db";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -81,11 +84,16 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     }
 
     await vincularAgendamento(leadId, agendamento.bookingId, agendamento.inicioEm);
+
     if (corpo.triggerEvent === "BOOKING_RESCHEDULED") {
+      // FR-022: remarcação muda a data e NÃO regera o roteiro. O diagnóstico é
+      // o mesmo, e o modo é único, então o conteúdo não mudaria em nada.
       await atualizarEstadoAgendamento(agendamento.bookingId, "remarcado");
+      return NextResponse.json({ ok: true });
     }
 
-    return NextResponse.json({ ok: true });
+    await enfileirarRoteiro(agendamento.bookingId);
+    return NextResponse.json({ ok: true, enfileirado: true });
   } catch {
     console.error(`[diagnostico/cal-webhook] falha ao vincular ${agendamento.bookingId}`);
     return NextResponse.json({ ok: false, erro: "vinculo_falhou" });
