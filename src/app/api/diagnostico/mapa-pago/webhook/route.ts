@@ -226,5 +226,9 @@ async function processarReembolso(cobranca: CobrancaReembolsada | undefined): Pr
     message: `REEMBOLSOU E A CALL CONTINUA DE PE. sessao=${pedido.stripeSessionId} booking=${pedido.calBookingId}. Motivo: ${porque}. CANCELAR A MAO no Cal.com, senao o horario fica bloqueado.`,
   });
 
-  return NextResponse.json({ ok: true, cancelamento: "falhou" });
+  // O motivo volta no corpo, e não só no alerta, porque "falhou" sozinho não
+  // distingue credencial ausente de booking que não existe mais. Quem opera
+  // precisa saber qual dos dois é sem abrir o e-mail, e é o que permite provar
+  // que a CAL_API_KEY chegou ao runtime sem imprimir a chave em lugar nenhum.
+  return NextResponse.json({ ok: true, cancelamento: "falhou", motivo: porque });
 }
