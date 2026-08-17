@@ -1,17 +1,24 @@
 /**
  * Recebe o roteiro pronto do worker, anexa no evento da call e fecha a fila.
  *
- * 🔴 O roteiro vai como ANEXO de um arquivo no Google Drive, nunca como texto
- * na descrição do evento. O lead é convidado do evento, e a documentação do
- * Google é literal: `visibility: "private"` quer dizer "only event attendees
- * may view event details" — esconde de quem não é convidado, e o convidado
- * sempre lê a descrição. Não existe campo que esconda a descrição dele.
+ * 🔴 O roteiro NUNCA vai como texto na descrição do evento. O lead é convidado,
+ * e a documentação do Google é literal: `visibility: "private"` quer dizer
+ * "only event attendees may view event details" — esconde de quem não é
+ * convidado, e o convidado sempre lê a descrição. Não há campo que esconda dele.
  *
- * Com o anexo, quem barra é a ACL do Drive: o lead vê que há um anexo, clica, e
- * recebe "você precisa de permissão". O arquivo herda o compartilhamento da
- * pasta, que só o time tem.
+ * Vai como ANEXO, apontando para `/roteiro/<token>` no nosso domínio.
  *
- * Ordem deliberada: PDF → Drive → anexo → só então marca concluído. Falhou em
+ * Por que não o Google Drive, que seria o caminho óbvio: service account não
+ * tem quota de armazenamento, nem mesmo criando dentro de pasta compartilhada
+ * — o arquivo pertence a quem o cria. Verificado em 17/08:
+ *
+ *   403 Service Accounts do not have storage quota. Leverage shared drives,
+ *       or use OAuth delegation instead.
+ *
+ * As duas saídas sugeridas exigem Google Workspace, e a conta é Gmail pessoal.
+ * Então o documento é nosso, e quem barra o lead é o cookie da rota que o serve.
+ *
+ * Ordem deliberada: guarda o PDF → anexa → só então marca concluído. Falhou em
  * qualquer ponto, o item continua na fila e é tentado de novo. O inverso
  * deixaria a fila dizendo "pronto" sem roteiro em lugar nenhum, que é o tipo de
  * mentira que só aparece cinco minutos antes da call.
@@ -20,8 +27,6 @@
  *   ROTEIRO_WORKER_SECRET       (sensível)
  *   GOOGLE_SERVICE_ACCOUNT_B64  (sensível)
  *   GOOGLE_CALENDAR_ID
- *   GOOGLE_DRIVE_FOLDER_ID
- *   GOTENBERG_URL
  *   POSTGRES_URL                (sensível)
  */
 
@@ -34,13 +39,12 @@ import {
   idDoCalendario,
   obterToken,
 } from "@/lib/diagnostico/agenda-google";
+import { anexarNoEvento, ErroDocumento, nomeDoDocumento } from "@/lib/diagnostico/documento-roteiro";
 import {
-  anexarNoEvento,
-  ErroDocumento,
-  nomeDoDocumento,
-  publicarNoDrive,
-} from "@/lib/diagnostico/documento-roteiro";
-import { concluirRoteiro, registrarFalha } from "@/lib/diagnostico/roteiro-db";
+  concluirRoteiro,
+  guardarPdfDoRoteiro,
+  registrarFalha,
+} from "@/lib/diagnostico/roteiro-db";
 import { segredoConfere } from "@/lib/diagnostico/segredo";
 
 export const runtime = "nodejs";
@@ -111,19 +115,22 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ erro: "pdf_invalido" }, { status: 400 });
   }
 
+  const titulo = nomeDoDocumento(corpo.empresa ?? null, nome);
+
   try {
-    const documento = await publicarNoDrive(pdf, nomeDoDocumento(corpo.empresa ?? null, nome));
+    // O PDF fica conosco e é servido por `/roteiro/<token>`, porque service
+    // account não tem quota de Drive nem dentro de pasta compartilhada (403
+    // "Service Accounts do not have storage quota"), e as saídas que o Google
+    // oferece exigem Workspace. Quem barra o lead é o cookie da rota, não a ACL
+    // do Google.
+    const token = await guardarPdfDoRoteiro(calBookingId, pdf, titulo);
+    const url = new URL(`/roteiro/${token}`, req.nextUrl.origin).toString();
 
     const eventoId = await acharEventoDaCall(calBookingId, inicio, email);
-    await anexarNoEvento(
-      eventoId,
-      { ...documento, titulo: nomeDoDocumento(corpo.empresa ?? null, nome) },
-      await obterToken(),
-      idDoCalendario(),
-    );
+    await anexarNoEvento(eventoId, { fileUrl: url, titulo }, await obterToken(), idDoCalendario());
 
     await concluirRoteiro(calBookingId, eventoId, caminhoRoteiro);
-    return NextResponse.json({ ok: true, eventoId, fileId: documento.fileId, bytes: pdf.length });
+    return NextResponse.json({ ok: true, eventoId, url, bytes: pdf.length });
   } catch (causa) {
     const conhecido = causa instanceof ErroAgenda || causa instanceof ErroDocumento;
     const detalhe = causa instanceof Error ? `${causa.name}: ${causa.message}` : String(causa);

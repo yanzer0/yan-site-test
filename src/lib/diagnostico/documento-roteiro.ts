@@ -174,7 +174,13 @@ async function acharPorNome(
 }
 
 export interface AnexoDoRoteiro {
-  readonly fileId: string;
+  /**
+   * O endereço do documento em `useinfuser.com`, e não um arquivo do Drive.
+   *
+   * O Calendar aceita anexo de terceiro (testado em 17/08: grava e mostra o
+   * ícone). Isso é o que viabiliza servir o PDF por conta própria — necessário
+   * porque service account não tem quota de Drive sem Workspace.
+   */
   readonly fileUrl: string;
   readonly titulo: string;
 }
@@ -206,12 +212,7 @@ export async function anexarNoEvento(
       headers: { Authorization: `Bearer ${tokenDoCalendario}`, "Content-Type": "application/json" },
       body: JSON.stringify({
         attachments: [
-          {
-            fileId: anexo.fileId,
-            fileUrl: anexo.fileUrl,
-            title: anexo.titulo,
-            mimeType: "application/pdf",
-          },
+          { fileUrl: anexo.fileUrl, title: anexo.titulo, mimeType: "application/pdf" },
         ],
       }),
     },

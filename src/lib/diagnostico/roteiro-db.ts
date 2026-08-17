@@ -148,6 +148,69 @@ export async function concluirRoteiro(
 }
 
 /**
+ * Guarda o PDF e devolve o token pelo qual ele será servido.
+ *
+ * O token é estável por agendamento: reprocessar atualiza o documento no mesmo
+ * endereço, e o anexo que já está no evento continua apontando para o certo.
+ * Gerar token novo a cada execução deixaria anexos mortos na agenda.
+ */
+export async function guardarPdfDoRoteiro(
+  calBookingId: string,
+  pdf: Buffer,
+  nomeArquivo: string,
+): Promise<string> {
+  try {
+    const r = await sql<{ token: string }>`
+      UPDATE roteiros
+         SET pdf = ${`\\x${pdf.toString("hex")}`}::bytea,
+             nome_arquivo = ${nomeArquivo},
+             token = COALESCE(token, encode(gen_random_bytes(16), 'hex')),
+             atualizado_em = now()
+       WHERE cal_booking_id = ${calBookingId}
+       RETURNING token
+    `;
+    const token = r.rows[0]?.token;
+    if (!token) throw new Error("agendamento nao esta na fila de roteiros");
+    return token;
+  } catch (causa) {
+    throw new ErroPersistencia("guardar pdf do roteiro", causa);
+  }
+}
+
+export interface RoteiroServido {
+  readonly pdf: Buffer;
+  readonly nomeArquivo: string;
+}
+
+/** O documento por token. `null` quando não existe ou ainda não tem PDF. */
+export async function abrirRoteiroPorToken(token: string): Promise<RoteiroServido | null> {
+  try {
+    const r = await sql<{ pdf: Buffer; nome_arquivo: string | null }>`
+      SELECT pdf, nome_arquivo FROM roteiros
+       WHERE token = ${token} AND pdf IS NOT NULL
+       LIMIT 1
+    `;
+    const linha = r.rows[0];
+    if (!linha) return null;
+    return {
+      pdf: Buffer.isBuffer(linha.pdf) ? linha.pdf : Buffer.from(linha.pdf),
+      nomeArquivo: linha.nome_arquivo ?? "Preparo - Call 1.pdf",
+    };
+  } catch (causa) {
+    throw new ErroPersistencia("abrir roteiro por token", causa);
+  }
+}
+
+/** Conta a abertura. Sinal de que o time leu antes da call, não trava a entrega. */
+export async function registrarAberturaDoRoteiro(token: string): Promise<void> {
+  await sql`
+    UPDATE roteiros
+       SET aberturas = aberturas + 1, aberto_em = COALESCE(aberto_em, now())
+     WHERE token = ${token}
+  `;
+}
+
+/**
  * Registra a falha e incrementa a tentativa.
  *
  * O motivo é truncado: mensagem de erro de terceiro pode ser enorme e não vale

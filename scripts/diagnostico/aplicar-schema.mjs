@@ -35,6 +35,7 @@ const ARQUIVOS = [
   join(LIB, "mapa-sql.sql"),
   join(LIB, "roteiro-sql.sql"),
   join(LIB, "pagamento-sql.sql"),
+  join(LIB, "roteiro-pdf-sql.sql"),
 ];
 
 const TABELAS_ESPERADAS = [
