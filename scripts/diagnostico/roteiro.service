@@ -1,0 +1,65 @@
+# Serviço do roteiro da Call 1, na VPS da Infuser.
+#
+# Instalar como unit de USUÁRIO (não do sistema):
+#   scp roteiro.service vps-infuser:~/.config/systemd/user/roteiro.service
+#   ssh vps-infuser 'systemctl --user daemon-reload && systemctl --user enable --now roteiro'
+#   ssh vps-infuser 'sudo loginctl enable-linger infuser'   # sobrevive ao logout
+#
+# Unit de usuário de propósito: este serviço não precisa de root, e a VPS roda
+# 15 containers de cliente. Menos privilégio, menos raio de alcance.
+
+[Unit]
+Description=Infuser - roteiro da Call 1 (drena a fila por long-poll)
+Documentation=https://github.com/yanzer0/yan-site-test/tree/main/specs/005-roteiro-instantaneo
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/infuser/yan-site-funil
+
+# PATH explícito. O ~/.bashrc da VPS faz `return` no topo para shell não
+# interativo, e quem adiciona ~/.local/bin é o ~/.profile, que systemd não lê.
+# Sem esta linha, `node` e `claude` simplesmente não existem para o serviço.
+Environment=PATH=/home/infuser/.local/bin:/usr/local/bin:/usr/bin:/bin
+Environment=BRAIN_PATH=/home/infuser/brain-roteiro
+Environment=ROTEIRO_BASE_URL=https://useinfuser.com
+Environment=NODE_ENV=production
+
+# Segredos vêm de arquivo 600, nunca de `Environment=` no unit: `systemctl cat`
+# é legível por qualquer usuário da máquina.
+EnvironmentFile=/home/infuser/.config/roteiro/roteiro.env
+
+ExecStart=/home/infuser/.local/bin/node /home/infuser/yan-site-funil/scripts/diagnostico/servico-roteiro.mjs
+
+# O serviço trata SIGTERM terminando o item em voo. 90s cobre o POST final e o
+# push; o gerador em si já tem teto próprio de 20 min e é interrompido antes.
+KillSignal=SIGTERM
+TimeoutStopSec=90
+
+Restart=always
+RestartSec=15
+# Se reiniciar 5 vezes em 10 min, para de tentar: laço de crash não pode virar
+# martelo na API nem consumo de token.
+StartLimitBurst=5
+StartLimitIntervalSec=600
+
+# Teto de recursos. O gerador é I/O, não CPU, e a VPS tem 4 cores servindo
+# cliente: um pico aqui não pode competir com o painel do Helukabel.
+MemoryMax=1G
+CPUQuota=100%
+
+# Endurecimento. O serviço só precisa ler o repo do site e escrever no clone do
+# brain; nada mais da máquina é assunto dele.
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=read-only
+ReadWritePaths=/home/infuser/brain-roteiro /home/infuser/.claude /home/infuser/.config/claude
+
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=infuser-roteiro
+
+[Install]
+WantedBy=default.target

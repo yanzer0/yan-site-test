@@ -145,6 +145,10 @@ function gerarRoteiro(slug) {
       maxBuffer: 32 * 1024 * 1024,
       shell: false,
       timeout: TIMEOUT_MODELO_MS,
+      // stdin fechado explicitamente. Como serviço systemd o stdin fica aberto
+      // e nunca entrega nada; o CLI espera 3 segundos por dado que não vem e
+      // avisa "no stdin data received". Fechar tira a espera e o ruído do log.
+      input: "",
     },
   );
 
