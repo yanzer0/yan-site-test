@@ -7,7 +7,7 @@
  *
  * 🔴 O QUE NUNCA PODE ENTRAR AQUI, e por quê: enquanto o Cal.com adicionar o
  * lead como convidado do evento, ele LÊ esta descrição. Não existe campo de
- * evento que o Google esconda de convidado — `visibility: "private"` significa
+ * evento que o Google esconda de convidado: `visibility: "private"` significa
  * "only event attendees may view event details", ou seja, esconde de quem NÃO
  * é convidado. Já custou um vazamento nesta base: o roteiro da call foi escrito
  * na descrição e ficou legível para o próprio lead.

@@ -8,14 +8,14 @@
  *
  * 🔴 O que este módulo NÃO faz mais, e por quê: ele já escreveu o roteiro na
  * descrição do evento. Não pode. O lead é convidado do evento da call, e a
- * documentação do Google é literal — `visibility: "private"` significa "only
+ * documentação do Google é literal: `visibility: "private"` significa "only
  * event attendees may view event details". `private` esconde de quem NÃO é
  * convidado; o convidado sempre lê a descrição. O roteiro agora vai como ANEXO
  * de um arquivo no Drive, cuja permissão o lead não tem. Ver `documento-roteiro.ts`.
  *
  * Envs:
- *   GOOGLE_SERVICE_ACCOUNT_B64  (sensível) — o JSON da chave, em base64
- *   GOOGLE_CALENDAR_ID          — o id do calendário INFUSER
+ *   GOOGLE_SERVICE_ACCOUNT_B64  (sensível), o JSON da chave, em base64
+ *   GOOGLE_CALENDAR_ID          o id do calendário INFUSER
  *
  * 🔴 A credencial vai em base64 e não como JSON cru. A chave privada tem `\n`
  * literais, e num arquivo `.env` eles não sobrevivem: o `JSON.parse` morre em
@@ -200,7 +200,7 @@ export function icalUidDoBooking(bookingId: string): string {
  *
  * Duas passadas: `iCalUID` (exato, o caminho normal) e, se falhar, janela de
  * dois minutos em torno do início cruzada com o e-mail de quem agendou. A
- * segunda existe para o dia em que o Cal.com mudar o formato do uid — aí o
+ * segunda existe para o dia em que o Cal.com mudar o formato do uid, e aí o
  * roteiro ainda chega, e o que quebra é a via rápida, não a feature.
  *
  * Com mais de um candidato, este módulo NÃO escolhe. Anexar no evento errado
