@@ -49,12 +49,20 @@
 }
 
 /* ── marca ── */
+/* Era a palavra "INFUSER" em mono espacado. Virou o lockup v2, o mesmo dos
+   deliverables. A altura fixa e a largura automatica preservam a proporcao do
+   SVG em qualquer tela. */
 .dg-brand {
-  font: 500 11px/1 var(--fonte-mono);
-  letter-spacing: 0.36em;
-  text-transform: uppercase;
-  color: var(--lime);
+  display: block;
+  height: 30px;
+  width: auto;
   margin-bottom: 40px;
+}
+@media (max-width: 640px) {
+  .dg-brand {
+    height: 26px;
+    margin-bottom: 32px;
+  }
 }
 
 /* ── abertura ── */

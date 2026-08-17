@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { Conversa } from "@/components/diagnostico/Conversa";
+import { LOGO_INFUSER_V2 } from "./logo-infuser";
 import "./diagnostico.css";
 
 export const metadata: Metadata = {
@@ -25,7 +26,13 @@ export default function DiagnosticoPage() {
   return (
     <main className="dg">
       <div className="dg-wrap">
-        <div className="dg-brand">INFUSER</div>
+        {/* Logo v2, o mesmo lockup dos deliverables. Substituiu a palavra
+            "INFUSER" escrita: marca de verdade, nao nome em texto.
+            Fica como <img> com data URI em vez de next/image porque e SVG
+            embutido: nao ha o que otimizar e evita uma requisicao a mais na
+            primeira tela, que e a que carrega no webview do Instagram. */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img className="dg-brand" src={LOGO_INFUSER_V2} alt="Infuser" width={132} height={30} />
 
         <div className="dg-eyebrow">Diagnóstico sem custo</div>
         <h1 className="dg-h1">
