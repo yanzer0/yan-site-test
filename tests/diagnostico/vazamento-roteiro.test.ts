@@ -125,6 +125,42 @@ describe("o roteiro nao encosta no evento da call", () => {
   });
 });
 
+describe("call cancelada nao deixa roteiro fantasma na agenda", () => {
+  it("apaga o evento de roteiro, sem notificar ninguem", async () => {
+    vi.stubGlobal("fetch", (url: string | URL, opcoes: RequestInit = {}) => {
+      const alvo = String(url);
+      const metodo = opcoes.method ?? "GET";
+      chamadas.push({ url: alvo, metodo, corpo: null });
+      // 204 nao pode ter corpo: o construtor de Response rejeita, e o DELETE
+      // do Google responde exatamente 204. E o mesmo caminho que o `chamar`
+      // trata devolvendo undefined sem parsear.
+      if (metodo === "DELETE") return Promise.resolve(new Response(null, { status: 204 }));
+
+      const achou = alvo.includes("/events?") && metodo === "GET";
+      return Promise.resolve(
+        new Response(JSON.stringify(achou ? { items: [{ id: "roteiro-orfao" }] } : {}), {
+          status: 200,
+          headers: { "content-type": "application/json" },
+        }),
+      );
+    });
+
+    const { apagarRoteiro } = await import("@/lib/diagnostico/agenda-google");
+    expect(await apagarRoteiro("booking-abc")).toBe(true);
+
+    const del = chamadas.find((c) => c.metodo === "DELETE");
+    expect(del?.url).toContain("roteiro-orfao");
+    expect(del?.url).toContain("sendUpdates=none");
+  });
+
+  it("nao reclama quando a call nunca teve roteiro", async () => {
+    const { apagarRoteiro } = await import("@/lib/diagnostico/agenda-google");
+    // O stub padrão devolve items vazio na busca.
+    expect(await apagarRoteiro("booking-sem-roteiro")).toBe(false);
+    expect(chamadas.filter((c) => c.metodo === "DELETE")).toHaveLength(0);
+  });
+});
+
 describe("reprocessar nao enche a agenda de duplicata", () => {
   it("atualiza o evento existente em vez de criar outro", async () => {
     vi.stubGlobal("fetch", (url: string | URL, opcoes: RequestInit = {}) => {

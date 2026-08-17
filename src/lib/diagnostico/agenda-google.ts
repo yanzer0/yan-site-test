@@ -207,3 +207,30 @@ async function acharEventoDeRoteiro(bookingId: string): Promise<string | null> {
   });
   return achados[0]?.id ?? null;
 }
+
+/**
+ * Apaga o evento de roteiro quando a call é cancelada.
+ *
+ * Necessário porque o cancelamento no Cal.com apaga o evento da call e não
+ * alcança este, que a rotina criou por conta própria. Sem isto, cada call
+ * cancelada deixa um "Roteiro: Fulano" fantasma na agenda, para sempre.
+ *
+ * Não confundir com FR-022, que manda preservar o card e o HTML do roteiro: o
+ * lead que cancelou continua sendo lead e o diagnóstico continua valendo. O que
+ * sai é só o bloco na agenda, que existe para uma conversa que não vai
+ * acontecer.
+ *
+ * Devolve se havia algo para apagar. Não lançar quando não há é deliberado:
+ * cancelamento de call que nunca teve roteiro é caso normal, não erro.
+ */
+export async function apagarRoteiro(bookingId: string): Promise<boolean> {
+  const eventoId = await acharEventoDeRoteiro(bookingId);
+  if (!eventoId) return false;
+
+  await chamar(
+    `/events/${encodeURIComponent(eventoId)}?sendUpdates=none`,
+    { method: "DELETE" },
+    "apagar evento de roteiro",
+  );
+  return true;
+}
