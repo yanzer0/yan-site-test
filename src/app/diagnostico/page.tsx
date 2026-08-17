@@ -5,7 +5,7 @@ import { LOGO_INFUSER_V2 } from "./logo-infuser";
 import "./diagnostico.css";
 
 export const metadata: Metadata = {
-  title: "Diagnóstico gratuito da sua operação | Infuser",
+  title: "Diagnóstico da sua operação | Infuser",
   description:
     "Uma hora de diagnóstico com o time da Infuser para mapear onde IA e automação encaixam na sua operação. São 14 perguntas e leva uns 3 minutos.",
   robots: { index: true, follow: true },
@@ -34,7 +34,12 @@ export default function DiagnosticoPage() {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img className="dg-brand" src={LOGO_INFUSER_V2} alt="Infuser" width={132} height={30} />
 
-        <div className="dg-eyebrow">Diagnóstico sem custo</div>
+        {/* 🔴 Não promete preço aqui. Dizia "Diagnóstico sem custo", e desde
+            17/08 quem não passa no corte paga R$ 197 pela mesma call: prometer
+            grátis na entrada e cobrar no fim é isca, e queima mais confiança do
+            que o gancho de gratuidade compra. Quem é qualificado descobre que
+            não paga no desfecho, o que é surpresa boa. */}
+        <div className="dg-eyebrow">Diagnóstico de operação</div>
         <h1 className="dg-h1">
           Uma hora para mapear onde a IA <em>encaixa de verdade</em> na sua operação
         </h1>
@@ -56,8 +61,11 @@ export default function DiagnosticoPage() {
             Na call a gente mapeia como o seu processo funciona hoje e onde IA e automação encaixam.
             Depois você recebe esse mapa por escrito, para usar com a gente ou sem a gente.
           </p>
+          {/* "Não tem preço nessa conversa" virava contradição para quem paga
+              pela call. A promessa que continua de pé, e que é a que importa, é
+              que DENTRO da hora ninguém vai empurrar orçamento. */}
           <p className="dg-nota">
-            Não é apresentação comercial. Não tem proposta nem preço nessa conversa.
+            Não é apresentação comercial: na call não tem pitch nem orçamento.
           </p>
         </Conversa>
       </div>

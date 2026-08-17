@@ -50,6 +50,63 @@ export function caminhoDoCal(url: string): string | null {
   }
 }
 
+/**
+ * O convite para a call, idêntico para quem paga e para quem não paga.
+ *
+ * 🔴 Decisão do Yan, 17/08: a call é o PRODUTO, e o Mapa é o bônus que ela
+ * entrega. Antes, quem não passava no corte lia "a call gratuita não é o melhor
+ * caminho agora" e logo abaixo era cobrado R$ 197 pela mesma hora. Desqualificar
+ * e cobrar na mesma tela derruba a venda: ninguém paga por aquilo que acabaram
+ * de dizer que não serve para ele.
+ *
+ * Por isso a promessa é uma só, e a ÚNICA diferença entre as faixas é o bloco de
+ * ação embaixo: calendário direto, ou pagamento antes do calendário.
+ *
+ * Sobre a copy: o que sustenta o preço é a lista do que vem no documento, não
+ * adjetivo. Em nenhum lugar está escrito que o Mapa "vale mais que isso" ou que
+ * a call "não é reunião comercial" — os dois são conclusões que o lead monta
+ * sozinho a partir de fatos verificáveis, e conclusão própria não gera reatância.
+ * O fato que mais trabalha é o de que o documento é PROIBIDO de citar ferramenta
+ * nossa, prazo ou valor: isso não é promessa de vendedor, é regra do validador
+ * (`mapa-schema.ts`), e é o que responde sozinho a objeção "isso é orçamento
+ * disfarçado".
+ */
+function ConviteDaCall({ processo }: { readonly processo: string }) {
+  const oProcesso = processo || "o processo que você descreveu";
+
+  return (
+    <>
+      <p>
+        Uma hora, por vídeo. A gente percorre <strong>{oProcesso}</strong> do começo ao fim: quem
+        faz cada passo, onde ele trava hoje, e onde IA e automação encaixam de verdade.
+      </p>
+      <p>No fim da call você recebe o Mapa da sua operação, por escrito.</p>
+
+      <div className="dg-oferta">
+        <div className="dg-oferta-nome">O que vem no Mapa</div>
+        <ul className="dg-inclui">
+          <li>
+            Seu processo desenhado etapa por etapa, com responsável, ferramenta e volume de cada
+            uma
+          </li>
+          <li>Onde ele trava, e o trecho da nossa conversa que sustenta cada ponto</li>
+          <li>Onde a IA encaixa, e o que muda na prática em cada encaixe</li>
+          <li>O que não dá para automatizar aí dentro</li>
+          <li>O que a gente não conseguiu cobrir em uma hora, dito com todas as letras</li>
+          <li>O próximo passo, destrinchado em passos</li>
+        </ul>
+        <p>
+          O documento separa o que <strong>você disse</strong> do que{" "}
+          <strong>a gente concluiu</strong>, então você lê sabendo o que é o seu relato e o que é
+          leitura nossa. Por regra, ele não cita ferramenta nossa, prazo nem valor de projeto: o
+          que ele descreve é a sua operação.
+        </p>
+        <p>Ele é seu. Se a gente não trabalhar junto, ele continua valendo.</p>
+      </div>
+    </>
+  );
+}
+
 export function Desfecho({ faixa, nome, processo, email, urlCal, urlMapa }: DesfechoProps) {
   const [calFalhou, setCalFalhou] = useState(false);
   const eu = primeiroNome(nome);
@@ -62,17 +119,10 @@ export function Desfecho({ faixa, nome, processo, email, urlCal, urlMapa }: Desf
     return (
       <div className="dg-desfecho">
         <h2 className="dg-h1">
-          Fecha bem com o que a gente faz, <em>{eu}</em>.
+          Então vamos marcar, <em>{eu}</em>.
         </h2>
-        <p>
-          A conversa é de uma hora, por vídeo. É diagnóstico: a gente quer entender como o{" "}
-          <strong>{processo || "seu processo"}</strong> funciona aí dentro e te dizer com
-          sinceridade o que dá e o que não dá para automatizar.
-        </p>
-        <p>
-          Não tem apresentação, proposta nem preço nessa call. No fim dela você recebe o mapa da
-          operação por escrito.
-        </p>
+
+        <ConviteDaCall processo={processo} />
 
         {embed && !calFalhou ? (
           <div className="dg-cal">
@@ -122,50 +172,41 @@ export function Desfecho({ faixa, nome, processo, email, urlCal, urlMapa }: Desf
     );
   }
 
-  // `nao_icp_empresa` e `revisao`, os dois no mesmo destino.
+  // `nao_icp_empresa` e `revisao`, os dois no mesmo destino: a MESMA call, paga.
   //
-  // Regra do Yan, 17/08: empresa que não passa no critério da call gratuita
-  // compra o mesmo diagnóstico por R$ 197. A faixa `revisao` ficava sem oferta
-  // nenhuma e prometia "alguém te chama em um dia útil" — exatamente a espera
-  // de 24 horas que este funil existe para matar. As faixas continuam
-  // separadas no banco, porque é delas que sai a calibração dos pesos; o que
-  // se unifica é só o que o lead vê.
+  // As faixas continuam separadas no banco, porque é delas que sai a calibração
+  // dos pesos. O que se unifica é o que o lead vê, e ele não vê faixa nenhuma:
+  // vê o mesmo convite que o qualificado, com o preço no lugar do calendário.
   return (
     <div className="dg-desfecho">
       <h2 className="dg-h1">
-        Vou ser direto com você, <em>{eu}</em>.
+        Então vamos marcar, <em>{eu}</em>.
       </h2>
-      <p>
-        Pelo que descreveu, a call gratuita de diagnóstico não é o melhor caminho agora, e a gente
-        não vai ocupar uma hora sua com uma conversa que não vai te servir.
-      </p>
-      <div className="dg-oferta">
-        <div className="dg-oferta-nome">Mapa de IA</div>
-        <p>
-          É o mesmo diagnóstico de uma hora, feito em cima do{" "}
-          <strong>{processo || "seu processo"}</strong>, e você sai com o mapa por escrito de onde
-          a IA encaixa na sua operação.
-          {/* 🔴 O PREÇO só entra junto com o caminho de compra. Card que anuncia
-              R$ 197 sem botão é pior que card nenhum: o lead decide comprar e
-              bate numa parede. Foi o estado real do funil entre 16 e 17/08. */}
-          {urlMapa ? (
-            <>
-              {" "}
-              Custa <strong>R$ 197</strong>.
-            </>
-          ) : null}
-        </p>
-        {urlMapa ? (
+
+      <ConviteDaCall processo={processo} />
+
+      {/* 🔴 O PREÇO só existe junto com o caminho de compra. Card que anuncia
+          R$ 197 sem botão é pior que card nenhum: o lead decide comprar e bate
+          numa parede. Foi o estado real do funil entre 16 e 17/08. */}
+      {urlMapa ? (
+        <div className="dg-oferta dg-oferta-fechamento">
+          <div className="dg-oferta-nome">
+            A call custa <strong>R$ 197</strong>
+          </div>
+          <p>Você escolhe o horário logo depois do pagamento.</p>
           <a className="dg-cta" href={urlMapa} target="_blank" rel="noopener noreferrer">
-            Quero o mapa
+            Agendar a call
           </a>
-        ) : (
-          <p style={{ marginTop: 12, opacity: 0.7 }}>
-            Me chama no e-mail que você deixou e eu te passo o caminho.
+        </div>
+      ) : (
+        <div className="dg-oferta dg-oferta-fechamento">
+          <div className="dg-oferta-nome">A gente te chama para marcar</div>
+          <p>
+            O caminho de pagamento não abriu agora, mas seu cadastro está salvo. Alguém do time
+            entra em contato no WhatsApp que você deixou.
           </p>
-        )}
-      </div>
-      <p style={{ marginTop: 20 }}>Se em algum momento o cenário aí mudar, é só voltar aqui.</p>
+        </div>
+      )}
     </div>
   );
 }

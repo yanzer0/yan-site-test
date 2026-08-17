@@ -75,12 +75,31 @@ describe("FR-017: nenhuma faixa comunica desqualificacao", () => {
     expect(desfecho.toLowerCase()).not.toContain(proibida);
   });
 
-  it("o texto de nao-ICP oferece caminho, nao veredito", () => {
-    // A frase que abre a recusa precisa continuar existindo: ela é o contrato de
-    // honestidade da faixa. Se sumir, alguém trocou por um "não se encaixa".
-    expect(desfecho).toContain("não vai te servir");
-    // E a recusa vem acompanhada de um destino, nunca sozinha.
-    expect(desfecho).toContain("Mapa de IA");
+  it("nao-ICP recebe o MESMO convite do qualificado, nao uma recusa", () => {
+    // Este teste já exigiu a frase "não vai te servir", que abria a recusa. Ela
+    // era lida aqui como contrato de honestidade e era, na prática, o problema:
+    // o lead lia que a call não servia para ele e logo abaixo era cobrado
+    // R$ 197 pela mesma call. Desqualificar e cobrar na mesma tela derruba a
+    // venda, e a call é o produto (decisão do Yan, 17/08).
+    //
+    // O que se cobra agora é o inverso: nenhuma faixa recebe veredito sobre o
+    // próprio encaixe.
+    for (const veredito of [
+      "não é o melhor caminho",
+      "não vai te servir",
+      "não se encaixa",
+      "não é para você",
+    ]) {
+      expect(desfecho, `voltou a dar veredito ao lead: "${veredito}"`).not.toContain(veredito);
+    }
+  });
+
+  it("as duas faixas compartilham o convite, em vez de textos paralelos", () => {
+    // Um componente só para os dois desfechos. Se alguém duplicar o texto por
+    // faixa, elas voltam a divergir com o tempo sem ninguém perceber, que é
+    // exatamente como a recusa nasceu.
+    expect(desfecho).toContain("ConviteDaCall");
+    expect(desfecho).toContain("Agendar a call");
   });
 });
 
@@ -138,9 +157,24 @@ describe("principio I: nenhum preco antes do diagnostico", () => {
     }
   });
 
-  it("a tela de abertura promete diagnostico e nega proposta e preco", () => {
+  it("a abertura promete que a call nao e pitch", () => {
+    // Dizia "não tem proposta nem preço nessa conversa", o que virou contradição
+    // quando a call passou a ser paga para parte dos leads. A promessa que
+    // continua de pé, e que é a que importa, é sobre o que acontece DENTRO da
+    // hora: ninguém empurra orçamento.
     const abertura = ler("src/app/diagnostico/page.tsx");
-    expect(abertura).toContain("Não tem proposta nem preço");
+    expect(abertura).toMatch(/não tem pitch nem orçamento/i);
+  });
+
+  it("a abertura nao promete gratuidade que o desfecho vai desmentir", () => {
+    // Metade dos leads paga R$ 197 no fim. Anunciar "sem custo" na entrada é
+    // isca, e queima mais confiança do que o gancho de gratuidade compra.
+    const abertura = ler("src/app/diagnostico/page.tsx");
+    for (const promessa of ["sem custo", "gratuito", "gratuita", "de graça"]) {
+      expect(abertura.toLowerCase(), `a abertura voltou a prometer "${promessa}"`).not.toContain(
+        promessa,
+      );
+    }
   });
 
   it("preco so aparece no desfecho, e so nas faixas de nao-ICP", () => {

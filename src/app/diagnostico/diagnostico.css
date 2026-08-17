@@ -321,6 +321,41 @@
   letter-spacing: -0.02em;
   margin-bottom: 10px;
 }
+
+/* "O que vem no Mapa". E a lista que sustenta o preco, entao precisa ser
+   escaneavel: o lead corre os marcadores antes de ler as frases. */
+.dg-inclui {
+  list-style: none;
+  margin: 0 0 16px;
+  padding: 0;
+}
+.dg-inclui li {
+  position: relative;
+  padding-left: 22px;
+  margin-bottom: 9px;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--text-2);
+}
+.dg-inclui li::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 8px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--lime);
+}
+
+/* O card de preco vem depois do card do Mapa: precisa de respiro pros dois nao
+   lerem como um bloco so. */
+.dg-oferta-fechamento {
+  margin-top: 20px;
+}
+.dg-oferta-fechamento p {
+  margin-bottom: 0;
+}
 .dg-cta {
   display: inline-block;
   margin-top: 16px;
