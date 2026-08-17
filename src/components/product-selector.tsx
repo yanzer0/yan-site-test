@@ -49,14 +49,14 @@ const PRODUCTS = [
   },
   {
     id: "servico",
-    href: "https://forms.gle/9Jk6ZjaMFC3fgfbt6",
+    href: "/diagnostico",
     cover: "/capa-servico-personalizado.webp",
     eyebrow: "Serviço personalizado · Sob aplicação",
     title:
       "Contrate meu serviço para criar seu segundo cérebro e automatizar seus processos",
     description:
-      "Preencha uma pesquisa rápida de qualificação. Em até 24h a equipe do Yan entra em contato pra entender seu processo e montar o segundo cérebro sob medida pra você.",
-    cta: "Responder a pesquisa",
+      "São 14 perguntas e leva uns 3 minutos. Se fizer sentido pros dois lados, você escolhe na hora o horário de uma call de uma hora, e depois recebe o mapa da sua operação por escrito.",
+    cta: "Fazer o diagnóstico",
   },
 ];
 
