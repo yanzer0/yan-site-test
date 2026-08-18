@@ -20,7 +20,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { dataIso, montarCard, slugDaEmpresa } from "@/lib/diagnostico/card-lead";
 import { PERGUNTAS, perguntaPorId } from "@/lib/diagnostico/perguntas";
-import { callsEmRisco, filaMorta, lerFila } from "@/lib/diagnostico/roteiro-db";
+import { callsEmRisco, filaMorta, reservarTrabalho } from "@/lib/diagnostico/roteiro-db";
 import { segredoConfere } from "@/lib/diagnostico/segredo";
 
 /**
@@ -104,12 +104,12 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
       ESPERA_MAXIMA_S,
     );
 
-    let fila = await lerFila();
+    let fila = await reservarTrabalho();
     if (esperar > 0 && fila.length === 0) {
       const limite = Date.now() + esperar * 1000;
       while (fila.length === 0 && Date.now() < limite) {
         await dormir(INTERVALO_DA_ESPERA_MS);
-        fila = await lerFila();
+        fila = await reservarTrabalho();
       }
     }
 

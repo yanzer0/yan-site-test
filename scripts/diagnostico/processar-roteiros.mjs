@@ -1,15 +1,27 @@
 #!/usr/bin/env node
 /**
- * Worker do roteiro da Call 1 (feature 003).
+ * Worker do roteiro da Call 1, em modo MANUAL. Ferramenta de emergência.
+ *
+ * 🔴 O DONO DESTE TRABALHO É A VPS, não esta máquina. Quem roda em produção é o
+ * `servico-roteiro.mjs`, de pé na VPS por long-poll, com o brain clonado em
+ * `/home/infuser/brain-roteiro`. Este script existe para quando for preciso
+ * drenar a fila à mão, e nada mais.
+ *
+ * Rodar isto com a VPS de pé faz DOIS consumidores disputarem a mesma fila. Em
+ * 17/08 uma tarefa agendada do Windows chamava este arquivo a cada 5 minutos e
+ * gerou o mesmo roteiro que a VPS já estava gerando, além de abrir um CMD na
+ * tela do Yan o dia inteiro. A tarefa foi desabilitada, e a fila ganhou trava
+ * (`reservarTrabalho` com `FOR UPDATE SKIP LOCKED`), então hoje o segundo
+ * consumidor sai de mãos vazias em vez de duplicar o trabalho. Ainda assim:
+ * rode este script sabendo que ele é a exceção.
  *
  * Uso:
  *   node --env-file=.env.local scripts/diagnostico/processar-roteiros.mjs
  *   node --env-file=.env.local scripts/diagnostico/processar-roteiros.mjs --seco
  *
- * Por que este script roda AQUI e não na Vercel: o `/call-roteiro` lê
+ * Por que o trabalho não roda na Vercel: o `/call-roteiro` lê
  * `_empresa/identidade/pricing.md`, `services.md`, `icp.md` e `positioning.md`.
- * A pasta `_empresa/` é confidencial e só existe na máquina do Yan. Não há
- * clone do brain na VPS nem na Vercel, e clonar seria decisão separada.
+ * A pasta `_empresa/` é confidencial e não existe no ambiente serverless.
  *
  * O worker faz exatamente o que só ele pode fazer: escrever no disco do brain e
  * rodar o Claude Code dentro dele. Tudo que não exige o brain — montar o card,

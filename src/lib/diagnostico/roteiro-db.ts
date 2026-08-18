@@ -44,8 +44,27 @@ export interface TrabalhoDaFila {
   readonly respostas: Readonly<Record<string, unknown>>;
 }
 
+/** Quanto tempo um item entregue fica reservado antes de voltar para a fila. */
+export const RESERVA_MINUTOS = 30;
+
 /**
- * O que está aberto, mais antigo primeiro, com tudo que o worker precisa.
+ * Entrega trabalho a UM consumidor e reserva o item para ele.
+ *
+ * 🔴 Isto NÃO é uma leitura: é um `UPDATE ... RETURNING`, e o nome diz isso de
+ * propósito. Antes era um `SELECT`, e nada marcava "alguém já pegou": dois
+ * consumidores recebiam o mesmo item e geravam o mesmo roteiro duas vezes.
+ * Aconteceu em 17/08, quando a VPS e uma tarefa agendada no PC do Yan pegaram o
+ * mesmo booking. O `flock` do supervisor protege contra dois processos no mesmo
+ * host, e não contra dois hosts.
+ *
+ * `FOR UPDATE SKIP LOCKED` é o que torna isso seguro sob concorrência real: o
+ * segundo consumidor PULA a linha que o primeiro travou, em vez de esperar por
+ * ela e receber a mesma. Sem `SKIP LOCKED`, dois workers simultâneos ainda
+ * serializariam e o segundo levaria o item assim que o primeiro soltasse.
+ *
+ * A reserva EXPIRA (`RESERVA_MINUTOS`) porque worker morre: se ficasse
+ * `processando` para sempre, uma máquina desligada no meio do trabalho
+ * prenderia a call para sempre, e ninguém receberia o roteiro.
  *
  * Traz as respostas já agregadas em um objeto: a alternativa seria o worker
  * fazer uma chamada por lead, e a fila existe justamente para ele processar em
@@ -55,7 +74,7 @@ export interface TrabalhoDaFila {
  * (FR-022), mas gerar roteiro novo para uma call que não vai acontecer é
  * trabalho jogado fora.
  */
-export async function lerFila(limite = 10): Promise<readonly TrabalhoDaFila[]> {
+export async function reservarTrabalho(limite = 10): Promise<readonly TrabalhoDaFila[]> {
   try {
     const resultado = await sql<{
       cal_booking_id: string;
@@ -73,12 +92,42 @@ export async function lerFila(limite = 10): Promise<readonly TrabalhoDaFila[]> {
       faixa: string;
       respostas: Record<string, unknown>;
     }>`
+      WITH reservados AS (
+        -- Reserva primeiro, com trava de linha. SKIP LOCKED faz o segundo
+        -- consumidor pular o que o primeiro já pegou em vez de esperar por ele.
+        UPDATE roteiros
+           SET estado = 'processando',
+               -- Conta a ENTREGA, não a falha registrada. Worker que morre sem
+               -- chamar registrarFalha (crash, maquina desligada, SIGKILL)
+               -- devolveria o item à fila com o contador intacto, e uma falha
+               -- determinística viraria laço infinito que o teto nunca pega.
+               tentativas = roteiros.tentativas + 1,
+               entregue_em = now(),
+               atualizado_em = now()
+         WHERE id IN (
+           SELECT r2.id
+             FROM roteiros r2
+             JOIN agendamentos a2 ON a2.cal_booking_id = r2.cal_booking_id
+            WHERE a2.estado <> 'cancelado'
+              AND r2.tentativas < ${MAX_TENTATIVAS}
+              AND (
+                r2.estado IN ('pendente', 'falhou')
+                -- Reserva vencida: o worker que pegou morreu no meio.
+                OR (r2.estado = 'processando'
+                    AND r2.entregue_em < now() - (${RESERVA_MINUTOS} || ' minutes')::interval)
+              )
+            ORDER BY r2.enfileirado_em
+            LIMIT ${limite}
+            FOR UPDATE OF r2 SKIP LOCKED
+         )
+        RETURNING cal_booking_id, tentativas, google_event_id
+      )
       SELECT r.cal_booking_id, r.tentativas, r.google_event_id,
              a.inicio_em,
              l.nome, l.empresa, l.papel, l.porte, l.email, l.whatsapp, l.origem,
              av.score, av.faixa,
              COALESCE(resp.mapa, '{}'::jsonb) AS respostas
-        FROM roteiros r
+        FROM reservados r
         JOIN agendamentos a ON a.cal_booking_id = r.cal_booking_id
         JOIN leads l        ON l.id = a.lead_id
         JOIN LATERAL (
@@ -97,11 +146,7 @@ export async function lerFila(limite = 10): Promise<readonly TrabalhoDaFila[]> {
                ORDER BY pergunta_id, criado_em DESC
             ) ultima
         ) resp ON TRUE
-       WHERE r.estado IN ('pendente', 'falhou')
-         AND r.tentativas < ${MAX_TENTATIVAS}
-         AND a.estado <> 'cancelado'
-       ORDER BY r.enfileirado_em
-       LIMIT ${limite}
+       ORDER BY a.inicio_em
     `;
 
     return resultado.rows.map((linha) => ({
@@ -221,7 +266,8 @@ export async function registrarFalha(calBookingId: string, motivo: string): Prom
     await sql`
       UPDATE roteiros
          SET estado = 'falhou',
-             tentativas = tentativas + 1,
+             -- NÃO incrementa: quem conta é a reserva, para que entrega
+             -- interrompida por morte do worker também conte.
              ultimo_erro = ${motivo.slice(0, 500)},
              atualizado_em = now()
        WHERE cal_booking_id = ${calBookingId}
@@ -241,7 +287,7 @@ export interface CallSemRoteiro {
 /**
  * Itens que ESGOTARAM as tentativas. A fila morta.
  *
- * Existe porque `lerFila` filtra `tentativas < MAX_TENTATIVAS`: ao estourar o
+ * Existe porque `reservarTrabalho` filtra `tentativas < MAX_TENTATIVAS`: ao estourar o
  * teto, o item simplesmente para de aparecer. Sem esta consulta ele some em
  * silêncio, que é o "DLQ como cemitério" — o pior estado possível, porque a
  * ausência de erro parece sucesso.
