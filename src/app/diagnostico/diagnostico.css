@@ -387,6 +387,24 @@
   overflow: visible !important;
 }
 
+/* No DESKTOP o calendario sangra para fora do container de leitura.
+
+   O `month_view` do Cal.com poe o cartao do evento a esquerda e o calendario a
+   direita, mas so quando tem largura: dentro dos 640px do `.dg-wrap` ele
+   empilha, e foi o que o Yan viu em 17/08. Alargar o `.dg-wrap` inteiro
+   resolveria o calendario e estragaria o resto, porque linha de texto com mais
+   de 75 caracteres cansa de ler.
+
+   Entao quem alarga e so o calendario. A margem negativa e calculada a partir
+   da largura final para ele continuar centralizado em relacao ao texto. */
+@media (min-width: 1024px) {
+  .dg-cal {
+    --largura-do-calendario: min(1040px, calc(100vw - 48px));
+    width: var(--largura-do-calendario);
+    margin-left: calc((100% - var(--largura-do-calendario)) / 2);
+  }
+}
+
 /* No celular o Cal.com empilha e fica bem mais alto. Sangrando o container ate
    a borda, o calendario ganha a largura inteira em vez de ficar espremido. */
 @media (max-width: 640px) {
