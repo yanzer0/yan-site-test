@@ -15,8 +15,8 @@ const nextConfig: NextConfig = {
     return [
       // O Escritorio continua sendo servido pelo Mission Control, mas o
       // visitante o acessa pelo dominio principal. As chamadas internas da
-      // pagina usam /admin/api/aos/*; por isso o mesmo proxy limitado tambem
-      // e necessario para o quadro e para as atualizacoes ao vivo.
+      // pagina usam a observabilidade e os documentos do tenant Infuser; por
+      // isso as duas superficies autenticadas precisam do mesmo proxy limitado.
       {
         source: "/time",
         destination: "https://mcp.useinfuser.com/mc?view=agents",
@@ -25,6 +25,11 @@ const nextConfig: NextConfig = {
       {
         source: "/admin/api/aos/:path*",
         destination: "https://mcp.useinfuser.com/admin/api/aos/:path*",
+        basePath: false,
+      },
+      {
+        source: "/admin/api/tenants/:path*",
+        destination: "https://mcp.useinfuser.com/admin/api/tenants/:path*",
         basePath: false,
       },
       // Guia "IA sem bajulacao" (isca do carrossel do @yangalasso, entregue no
