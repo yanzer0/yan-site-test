@@ -13,6 +13,20 @@ const nextConfig: NextConfig = {
   },
   async rewrites() {
     return [
+      // O Escritorio continua sendo servido pelo Mission Control, mas o
+      // visitante o acessa pelo dominio principal. As chamadas internas da
+      // pagina usam /admin/api/aos/*; por isso o mesmo proxy limitado tambem
+      // e necessario para o quadro e para as atualizacoes ao vivo.
+      {
+        source: "/time",
+        destination: "https://mcp.useinfuser.com/mc?view=agents",
+        basePath: false,
+      },
+      {
+        source: "/admin/api/aos/:path*",
+        destination: "https://mcp.useinfuser.com/admin/api/aos/:path*",
+        basePath: false,
+      },
       // Guia "IA sem bajulacao" (isca do carrossel do @yangalasso, entregue no
       // direct via ManyChat). E um HTML estatico self-contained em public/, o
       // rewrite so tira o .html da URL que o lead ve.
