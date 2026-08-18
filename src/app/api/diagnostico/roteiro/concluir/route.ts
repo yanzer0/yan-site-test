@@ -18,7 +18,7 @@
  * As duas saídas sugeridas exigem Google Workspace, e a conta é Gmail pessoal.
  * Então o documento é nosso, e quem barra o lead é o cookie da rota que o serve.
  *
- * Ordem deliberada: guarda o PDF → anexa → só então marca concluído. Falhou em
+ * Ordem deliberada: guarda o documento, anexa, e só então marca concluído. Falhou em
  * qualquer ponto, o item continua na fila e é tentado de novo. O inverso
  * deixaria a fila dizendo "pronto" sem roteiro em lugar nenhum, que é o tipo de
  * mentira que só aparece cinco minutos antes da call.
@@ -45,7 +45,7 @@ import { descricaoComContato } from "@/lib/diagnostico/contato-no-evento";
 import { ErroDocumento, nomeDoDocumento, prepararEvento } from "@/lib/diagnostico/documento-roteiro";
 import {
   concluirRoteiro,
-  guardarPdfDoRoteiro,
+  guardarDocumentoDoRoteiro,
   registrarFalha,
 } from "@/lib/diagnostico/roteiro-db";
 import { segredoConfere } from "@/lib/diagnostico/segredo";
@@ -64,14 +64,13 @@ interface CorpoDaConclusao {
   /** Vai para a descrição do evento, para quem conduz a call ter onde chamar. */
   readonly whatsapp?: string | null;
   /**
-   * O PDF do roteiro, em base64.
+   * O HTML do roteiro, em base64.
    *
-   * 🔴 Quem converte é o serviço na VPS, não esta rota. O Gotenberg vive na
-   * rede `infuser-net` da VPS, sem porta pública — a Vercel simplesmente não o
-   * alcança. Expor o Gotenberg para a internet só para esta chamada seria abrir
-   * um conversor de documentos ao mundo por conveniência de arquitetura.
+   * Era PDF até 18/08, convertido pelo Gotenberg da VPS só para virar anexo. O
+   * roteiro sempre nasceu HTML, então servir o HTML tirou o conversor do
+   * caminho entre o roteiro pronto e a call, e abre melhor no celular.
    */
-  readonly pdfBase64?: string;
+  readonly documentoBase64?: string;
   readonly caminhoRoteiro?: string;
   /** Preenchido quando a quebra foi do lado do worker (modelo, validador, disco). */
   readonly falha?: string;
@@ -91,7 +90,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ erro: "invalid_json" }, { status: 400 });
   }
 
-  const { calBookingId, inicioEm, email, nome, pdfBase64, caminhoRoteiro } = corpo;
+  const { calBookingId, inicioEm, email, nome, documentoBase64, caminhoRoteiro } = corpo;
 
   if (corpo.falha) {
     if (!calBookingId) return NextResponse.json({ erro: "calBookingId_ausente" }, { status: 400 });
@@ -104,7 +103,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ ok: true, registrado: "falha" });
   }
 
-  if (!calBookingId || !inicioEm || !email || !nome || !pdfBase64 || !caminhoRoteiro) {
+  if (!calBookingId || !inicioEm || !email || !nome || !documentoBase64 || !caminhoRoteiro) {
     return NextResponse.json({ erro: "campos_obrigatorios_ausentes" }, { status: 400 });
   }
 
@@ -113,23 +112,27 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ erro: "inicioEm_invalido" }, { status: 400 });
   }
 
-  const pdf = Buffer.from(pdfBase64, "base64");
-  // `%PDF` é a assinatura do formato. Um base64 truncado ou de outro tipo
-  // decodifica sem erro e viraria um anexo corrompido no evento — falha que só
-  // apareceria quando alguém tentasse abrir, minutos antes da call.
-  if (pdf.length < 1024 || pdf.subarray(0, 4).toString("latin1") !== "%PDF") {
-    return NextResponse.json({ erro: "pdf_invalido" }, { status: 400 });
+  const documento = Buffer.from(documentoBase64, "base64");
+  // Base64 truncado ou de outro tipo decodifica sem erro nenhum e viraria um
+  // anexo corrompido no evento, falha que so apareceria quando alguem tentasse
+  // abrir, minutos antes da call. Entao se confere que o que chegou e mesmo o
+  // documento: tamanho plausivel e a marca de HTML.
+  const abertura = documento.subarray(0, 512).toString("utf8").trimStart().toLowerCase();
+  if (
+    documento.length < 1024 ||
+    !(abertura.startsWith("<!doctype html") || abertura.startsWith("<html"))
+  ) {
+    return NextResponse.json({ erro: "documento_invalido" }, { status: 400 });
   }
 
   const titulo = nomeDoDocumento(corpo.empresa ?? null, nome);
 
   try {
-    // O PDF fica conosco e é servido por `/roteiro/<token>`, porque service
-    // account não tem quota de Drive nem dentro de pasta compartilhada (403
-    // "Service Accounts do not have storage quota"), e as saídas que o Google
-    // oferece exigem Workspace. Quem barra o lead é o cookie da rota, não a ACL
-    // do Google.
-    const token = await guardarPdfDoRoteiro(calBookingId, pdf, titulo);
+    // O documento fica conosco e é servido por `/roteiro/<token>`: service
+    // account não tem quota de Drive nem dentro de pasta compartilhada, e as
+    // saídas que o Google oferece exigem Workspace. Quem barra o lead é o
+    // cookie da rota, não a ACL do Google.
+    const token = await guardarDocumentoDoRoteiro(calBookingId, documento, titulo);
     const url = new URL(`/roteiro/${token}`, req.nextUrl.origin).toString();
 
     const eventoId = await acharEventoDaCall(calBookingId, inicio, email);
@@ -166,7 +169,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       ok: true,
       eventoId,
       url,
-      bytes: pdf.length,
+      bytes: documento.length,
       leadRemovidoDoEvento: convidados !== null,
     });
   } catch (causa) {

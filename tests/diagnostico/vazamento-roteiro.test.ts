@@ -114,7 +114,7 @@ describe("o nome do anexo, que o lead LE", () => {
     const { nomeDoDocumento } = await import("@/lib/diagnostico/documento-roteiro");
     const nome = nomeDoDocumento("Vertex Componentes", "Ricardo");
 
-    expect(nome).toBe("Preparo - Vertex Componentes - Call 1.pdf");
+    expect(nome).toBe("Preparo - Vertex Componentes - Call 1.html");
     for (const proibido of ["roteiro", "venda", "objec", "script"]) {
       expect(nome.toLowerCase()).not.toContain(proibido);
     }
@@ -122,12 +122,12 @@ describe("o nome do anexo, que o lead LE", () => {
 
   it("cai no nome da pessoa quando nao ha empresa", async () => {
     const { nomeDoDocumento } = await import("@/lib/diagnostico/documento-roteiro");
-    expect(nomeDoDocumento(null, "Ricardo Alves")).toBe("Preparo - Ricardo Alves - Call 1.pdf");
+    expect(nomeDoDocumento(null, "Ricardo Alves")).toBe("Preparo - Ricardo Alves - Call 1.html");
   });
 
   it("remove caractere que quebra nome de arquivo", async () => {
     const { nomeDoDocumento } = await import("@/lib/diagnostico/documento-roteiro");
-    expect(nomeDoDocumento('Alfa/Beta: "Gama"', "x")).toBe("Preparo - Alfa-Beta- -Gama- - Call 1.pdf");
+    expect(nomeDoDocumento('Alfa/Beta: "Gama"', "x")).toBe("Preparo - Alfa-Beta- -Gama- - Call 1.html");
   });
 });
 
@@ -136,7 +136,7 @@ describe("o anexo no evento da call", () => {
     const { anexarNoEvento } = await import("@/lib/diagnostico/documento-roteiro");
     await anexarNoEvento(
       "evento-1",
-      { fileUrl: "https://useinfuser.com/roteiro/abc123", titulo: "Preparo - Vertex - Call 1.pdf" },
+      { fileUrl: "https://useinfuser.com/roteiro/abc123", titulo: "Preparo - Vertex - Call 1.html" },
       "token",
       "agenda@group.calendar.google.com",
     );

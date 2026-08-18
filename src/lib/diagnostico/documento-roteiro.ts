@@ -3,7 +3,7 @@
  *
  * ONDE O ROTEIRO MORA, já que o nome "documento" sugere Drive e NÃO é isso:
  *   - o markdown fonte, no brain, commitado pelo worker
- *   - o PDF, na coluna `pdf` da tabela `roteiros`, no nosso Postgres
+ *   - o documento, na coluna `pdf` da tabela `roteiros`, no nosso Postgres
  *   - no evento, apenas um LINK para `/roteiro/<token>` em useinfuser.com
  *
  * O Google Drive foi o desenho original e não é mais usado. Ele caiu por
@@ -51,7 +51,7 @@ export class ErroDocumento extends Error {
  */
 export function nomeDoDocumento(empresa: string | null, nomeDoLead: string): string {
   const quem = (empresa?.trim() || nomeDoLead.trim() || "lead").replace(/[\\/:*?"<>|]/g, "-");
-  return `Preparo - ${quem} - Call 1.pdf`;
+  return `Preparo - ${quem} - Call 1.html`;
 }
 
 async function comTimeout(url: string, opcoes: RequestInit, ms: number): Promise<Response> {
@@ -138,7 +138,7 @@ export async function prepararEvento(
 
   if (preparo.anexo) {
     corpo.attachments = [
-      { fileUrl: preparo.anexo.fileUrl, title: preparo.anexo.titulo, mimeType: "application/pdf" },
+      { fileUrl: preparo.anexo.fileUrl, title: preparo.anexo.titulo, mimeType: "text/html" },
     ];
   }
   if (preparo.descricao !== undefined) corpo.description = preparo.descricao;

@@ -85,14 +85,21 @@ export async function GET(
   // entrega se falhar.
   void registrarAberturaDoRoteiro(token).catch(() => {});
 
-  return new Response(new Uint8Array(roteiro.pdf), {
+  return new Response(new Uint8Array(roteiro.conteudo), {
     status: 200,
     headers: {
-      "Content-Type": "application/pdf",
-      // `inline` para abrir no visualizador do celular em vez de baixar.
+      // O tipo vem do banco, nao fixo aqui: o roteiro virou HTML em 18/08, mas
+      // documento gerado antes disso e PDF e continua sendo servido como PDF.
+      "Content-Type": roteiro.mime,
+      // `inline` para abrir na tela em vez de baixar, no celular inclusive.
       "Content-Disposition": `inline; filename="${roteiro.nomeArquivo.replace(/"/g, "")}"`,
       "Cache-Control": "private, no-store",
       "X-Robots-Tag": "noindex, nofollow",
+      // O roteiro e HTML nosso, servido no nosso dominio. Sem isto ele herda o
+      // CSP do site e qualquer estilo ou imagem embutida no documento pode ser
+      // bloqueada; com isto, ele nao pode buscar nada de fora tambem.
+      "Content-Security-Policy":
+        "default-src 'none'; style-src 'unsafe-inline'; img-src data:; font-src data:",
     },
   });
 }

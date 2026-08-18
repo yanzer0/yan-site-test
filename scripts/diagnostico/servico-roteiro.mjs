@@ -22,8 +22,8 @@
  * ## O que este serviço faz que a API não pode fazer
  *
  * Só duas coisas, e é por isso que ele existe: escrever no disco do brain e
- * rodar o Claude Code dentro dele. Montar o card, converter em PDF, subir no
- * Drive, anexar no evento e mexer na fila é tudo da API, que tem uma
+ * rodar o Claude Code dentro dele. Montar o card, escrever no Google Agenda e
+ * mexer na fila é tudo da API, que tem uma
  * implementação e testes.
  *
  * 🔴 Nada aqui grava nome, e-mail ou telefone em log.
@@ -170,68 +170,6 @@ function gerarRoteiro(slug) {
 }
 
 /**
- * Endereço do Gotenberg, descoberto no Docker.
- *
- * O container está na rede `infuser-net` e NÃO publica porta no host, então
- * `localhost:3000` não resolve. Publicar a porta seria mexer no compose de um
- * serviço de produção; perguntar o IP ao Docker não mexe em nada.
- *
- * O IP muda quando o container é recriado (raro), por isso é resolvido a cada
- * conversão em vez de ficar guardado.
- */
-function enderecoDoGotenberg() {
-  if (process.env.GOTENBERG_URL) return process.env.GOTENBERG_URL;
-
-  const consulta = spawnSync(
-    "docker",
-    ["inspect", "-f", "{{range .NetworkSettings.Networks}}{{.IPAddress}} {{end}}", "gotenberg"],
-    { encoding: "utf8", shell: false, timeout: 15_000 },
-  );
-  const ip = (consulta.stdout ?? "").trim().split(/\s+/)[0];
-  if (consulta.status !== 0 || !ip) {
-    throw new Error("nao consegui descobrir o IP do container gotenberg");
-  }
-  return `http://${ip}:3000`;
-}
-
-/**
- * HTML para PDF pelo Gotenberg.
- *
- * Roda AQUI e não na rota da API porque o Gotenberg vive na rede interna da
- * VPS. A alternativa seria expor um conversor de documentos à internet só para
- * a Vercel alcançar, o que é abrir superfície por conveniência de arquitetura.
- *
- * O arquivo precisa se chamar `index.html`: é o nome que o Chromium do
- * Gotenberg abre. Outro nome devolve 400 sem dizer por quê.
- */
-async function converterEmPdf(html) {
-  const forma = new FormData();
-  forma.append("files", new Blob([html], { type: "text/html" }), "index.html");
-  forma.append("printBackground", "true");
-  forma.append("marginTop", "0.4");
-  forma.append("marginBottom", "0.4");
-
-  const controle = new AbortController();
-  const alarme = setTimeout(() => controle.abort(), 60_000);
-  try {
-    const resposta = await fetch(`${enderecoDoGotenberg()}/forms/chromium/convert/html`, {
-      method: "POST",
-      body: forma,
-      signal: controle.signal,
-    });
-    if (!resposta.ok) throw new Error(`gotenberg respondeu ${resposta.status}`);
-
-    const pdf = Buffer.from(await resposta.arrayBuffer());
-    if (pdf.subarray(0, 4).toString("latin1") !== "%PDF") {
-      throw new Error("gotenberg devolveu algo que nao e PDF");
-    }
-    return pdf;
-  } finally {
-    clearTimeout(alarme);
-  }
-}
-
-/**
  * Tira os comentários HTML antes de virar documento.
  *
  * O template do roteiro carrega instrução de geração em comentário, e comentário
@@ -302,8 +240,11 @@ async function processar(trabalho) {
   const roteiro = gerarRoteiro(trabalho.slug);
   registrar("info", validar(roteiro.absoluto));
 
-  const pdf = await converterEmPdf(limparComentarios(readFileSync(roteiro.absoluto, "utf8")));
-  registrar("info", `pdf gerado: ${Math.round(pdf.length / 1024)} kB`);
+  // O roteiro vai como HTML, do jeito que nasce. Ate 18/08 ele passava pelo
+  // Gotenberg so para virar PDF anexavel; tirar o conversor tirou uma peca que
+  // podia cair entre o roteiro pronto e a call.
+  const documento = Buffer.from(limparComentarios(readFileSync(roteiro.absoluto, "utf8")), "utf8");
+  registrar("info", `documento pronto: ${Math.round(documento.length / 1024)} kB de HTML`);
 
   const conclusao = await chamarApi("/api/diagnostico/roteiro/concluir", {
     method: "POST",
@@ -317,7 +258,7 @@ async function processar(trabalho) {
       // onde chamar se o vídeo cair, sem abrir o CRM em outra aba.
       papel: trabalho.lead.papel ?? null,
       whatsapp: trabalho.lead.whatsapp ?? null,
-      pdfBase64: pdf.toString("base64"),
+      documentoBase64: documento.toString("base64"),
       caminhoRoteiro: roteiro.relativo,
     }),
   });
@@ -325,7 +266,7 @@ async function processar(trabalho) {
   if (!conclusao.ok) {
     throw new Error(`a rota recusou: ${conclusao.status} ${conclusao.corpo.erro ?? ""}`);
   }
-  registrar("info", `anexado no evento ${conclusao.corpo.eventoId} (${conclusao.corpo.bytes} bytes de PDF)`);
+  registrar("info", `anexado no evento ${conclusao.corpo.eventoId} (${conclusao.corpo.bytes} bytes de HTML)`);
 
   try {
     publicarNoGit(trabalho.slug);

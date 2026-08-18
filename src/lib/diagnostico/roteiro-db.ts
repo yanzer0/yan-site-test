@@ -192,23 +192,33 @@ export async function concluirRoteiro(
   }
 }
 
+/** HTML desde 18/08. A coluna guarda bytes, e o `mime` diz o que eles sao. */
+export const MIME_DO_ROTEIRO = "text/html; charset=utf-8";
+
 /**
- * Guarda o PDF e devolve o token pelo qual ele será servido.
+ * Guarda o documento e devolve o token pelo qual ele sera servido.
  *
  * O token é estável por agendamento: reprocessar atualiza o documento no mesmo
  * endereço, e o anexo que já está no evento continua apontando para o certo.
- * Gerar token novo a cada execução deixaria anexos mortos na agenda.
+ * Gerar token novo a cada execucao deixaria anexos mortos na agenda.
+ *
+ * A coluna se chama `pdf` por heranca: o roteiro ja foi convertido em PDF pelo
+ * Gotenberg so para virar anexo. Hoje se guarda o HTML que o worker gera, e
+ * quem manda no tipo e o `mime`. Renomear coluna com dado dentro e migracao de
+ * duas fases para um ganho cosmetico.
  */
-export async function guardarPdfDoRoteiro(
+export async function guardarDocumentoDoRoteiro(
   calBookingId: string,
-  pdf: Buffer,
+  documento: Buffer,
   nomeArquivo: string,
+  mime: string = MIME_DO_ROTEIRO,
 ): Promise<string> {
   try {
     const r = await sql<{ token: string }>`
       UPDATE roteiros
-         SET pdf = ${`\\x${pdf.toString("hex")}`}::bytea,
+         SET pdf = ${`\\x${documento.toString("hex")}`}::bytea,
              nome_arquivo = ${nomeArquivo},
+             mime = ${mime},
              token = COALESCE(token, encode(gen_random_bytes(16), 'hex')),
              atualizado_em = now()
        WHERE cal_booking_id = ${calBookingId}
@@ -218,28 +228,36 @@ export async function guardarPdfDoRoteiro(
     if (!token) throw new Error("agendamento nao esta na fila de roteiros");
     return token;
   } catch (causa) {
-    throw new ErroPersistencia("guardar pdf do roteiro", causa);
+    throw new ErroPersistencia("guardar documento do roteiro", causa);
   }
 }
 
 export interface RoteiroServido {
-  readonly pdf: Buffer;
+  readonly conteudo: Buffer;
   readonly nomeArquivo: string;
+  readonly mime: string;
 }
 
-/** O documento por token. `null` quando não existe ou ainda não tem PDF. */
+/**
+ * O documento por token. `null` quando nao existe ou ainda nao foi gerado.
+ *
+ * Devolve o `mime` GRAVADO, e nao um fixo: documento de antes de 18/08 e PDF e
+ * continua sendo servido como PDF. Assumir HTML aqui faria o navegador tentar
+ * renderizar bytes de PDF como pagina.
+ */
 export async function abrirRoteiroPorToken(token: string): Promise<RoteiroServido | null> {
   try {
-    const r = await sql<{ pdf: Buffer; nome_arquivo: string | null }>`
-      SELECT pdf, nome_arquivo FROM roteiros
+    const r = await sql<{ pdf: Buffer; nome_arquivo: string | null; mime: string | null }>`
+      SELECT pdf, nome_arquivo, mime FROM roteiros
        WHERE token = ${token} AND pdf IS NOT NULL
        LIMIT 1
     `;
     const linha = r.rows[0];
     if (!linha) return null;
     return {
-      pdf: Buffer.isBuffer(linha.pdf) ? linha.pdf : Buffer.from(linha.pdf),
-      nomeArquivo: linha.nome_arquivo ?? "Preparo - Call 1.pdf",
+      conteudo: Buffer.isBuffer(linha.pdf) ? linha.pdf : Buffer.from(linha.pdf),
+      nomeArquivo: linha.nome_arquivo ?? "Preparo - Call 1.html",
+      mime: linha.mime ?? "application/pdf",
     };
   } catch (causa) {
     throw new ErroPersistencia("abrir roteiro por token", causa);
