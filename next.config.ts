@@ -41,17 +41,21 @@ const nextConfig: NextConfig = {
         basePath: false as const,
       })),
       {
-        source: "/skilltree-assets/:file",
-        destination: "https://mcp.useinfuser.com/st/skilltree-assets/:file",
+        // :path* e nao :file -- os 33 retratos moram em agent-portraits/, ou seja, mais de um
+        // segmento. Com :file eles davam 404. O upstream e uma allowlist explicita, entao o
+        // curinga aqui nao vira proxy aberto: so os arquivos que o container declara existem.
+        source: "/skilltree-assets/:path*",
+        destination: "https://mcp.useinfuser.com/st/skilltree-assets/:path*",
         basePath: false,
       },
-      // Dado do SkillTree. Exige token de admin do infuser-mcp: o container
-      // devolve 401 sem ele, entao este proxy nao expoe nada por si so.
-      {
-        source: "/api/agentes",
-        destination: "https://mcp.useinfuser.com/st/api/agentes",
-        basePath: false,
-      },
+      // Dado do SkillTree, as duas portas que a tela consome. Exigem token: o
+      // container devolve 401 sem ele, entao estes proxies nao expoem nada por si
+      // so. O gate la e por prefixo /api/, entao rota nova nasce fechada.
+      ...["agentes", "organization"].map((recurso) => ({
+        source: `/api/${recurso}`,
+        destination: `https://mcp.useinfuser.com/st/api/${recurso}`,
+        basePath: false as const,
+      })),
       // Guia "IA sem bajulacao" (isca do carrossel do @yangalasso, entregue no
       // direct via ManyChat). E um HTML estatico self-contained em public/, o
       // rewrite so tira o .html da URL que o lead ve.
