@@ -13,23 +13,43 @@ const nextConfig: NextConfig = {
   },
   async rewrites() {
     return [
-      // O Escritorio continua sendo servido pelo Mission Control, mas o
-      // visitante o acessa pelo dominio principal. As chamadas internas da
-      // pagina usam a observabilidade e os documentos do tenant Infuser; por
-      // isso as duas superficies autenticadas precisam do mesmo proxy limitado.
+      // /time = Infuser SkillTree (decisao Yan 21/08/2026). Antes daqui saia o
+      // Mission Control (?view=agents); o MC inteiro vive agora so em
+      // mcp.useinfuser.com/mc, e por isso os proxies de /admin/api sairam: nao
+      // ha mais superficie autenticada do MC neste dominio.
+      //
+      // O SkillTree e servido por um container proprio na VPS, pendurado em
+      // mcp.useinfuser.com/st (Caddy remove o prefixo). Os caminhos abaixo sao
+      // EXATAMENTE os que a pagina pede -- listados um a um de proposito, pra
+      // nao virar proxy aberto pra dentro da rede.
       {
         source: "/time",
-        destination: "https://mcp.useinfuser.com/mc?view=agents",
+        destination: "https://mcp.useinfuser.com/st/skilltree",
         basePath: false,
       },
+      ...[
+        "skilltree.css",
+        "skilltree.js",
+        "skilltree-auth.js",
+        "skilltree-model.js",
+        "skilltree-route.js",
+        "skilltree-standalone.css",
+        "skilltree-standalone.js",
+      ].map((file) => ({
+        source: `/${file}`,
+        destination: `https://mcp.useinfuser.com/st/${file}`,
+        basePath: false as const,
+      })),
       {
-        source: "/admin/api/aos/:path*",
-        destination: "https://mcp.useinfuser.com/admin/api/aos/:path*",
+        source: "/skilltree-assets/:file",
+        destination: "https://mcp.useinfuser.com/st/skilltree-assets/:file",
         basePath: false,
       },
+      // Dado do SkillTree. Exige token de admin do infuser-mcp: o container
+      // devolve 401 sem ele, entao este proxy nao expoe nada por si so.
       {
-        source: "/admin/api/tenants/:path*",
-        destination: "https://mcp.useinfuser.com/admin/api/tenants/:path*",
+        source: "/api/agentes",
+        destination: "https://mcp.useinfuser.com/st/api/agentes",
         basePath: false,
       },
       // Guia "IA sem bajulacao" (isca do carrossel do @yangalasso, entregue no
