@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<!--
+  DEMO NAVEGÁVEL · MARJA APP · Infuser (identidade v2, decisão Yan 21/08)
+  Arquivo único, sem servidor. Dados 100% FICTÍCIOS (pacientes por iniciais de propósito: LGPD by design).
+  Vai junto com a proposta. Crua de propósito: o desenho fino é entregável da Definição Técnica.
+  v2 (21/08 noite): guia de uso (overlay + "como usar esta tela" por view) + tela de Agendamento com criação viva.
+-->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marja App · demo navegável · Infuser</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600;700&family=Inter:ital,opsz,wght@0,14..32,400..900&family=Onest:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --onyx:#020202; --carbon:#171717; --warm:#F0F0E4;
+    --lime:#C6FF34; --teal-300:#3BD0A0; --teal-500:#2FA084; --teal-700:#1F6F5F; --teal-900:#143A31;
+    --t1:#F0F0E4; --t2:rgba(240,240,228,.78); --t3:rgba(240,240,228,.58); --t4:rgba(240,240,228,.42);
+    --border:rgba(240,240,228,.10); --border-vis:rgba(240,240,228,.16);
+    --red:#FF6B57; --amber:#FFC65C;
+    --fd:'Inter',system-ui,sans-serif; --fb:'Onest',system-ui,sans-serif; --fm:'Geist Mono',ui-monospace,monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:var(--fb);background:radial-gradient(ellipse at 85% -10%, rgba(31,111,95,.25) 0%, transparent 50%),var(--onyx);color:var(--t1);line-height:1.6;min-height:100vh}
+  .app{display:grid;grid-template-columns:228px 1fr;min-height:100vh}
+  /* sidebar */
+  .side{border-right:1px solid var(--border);background:rgba(2,2,2,.7);padding:22px 14px;display:flex;flex-direction:column;gap:4px;position:sticky;top:0;height:100vh;overflow:auto}
+  .brand{display:flex;align-items:center;gap:10px;padding:4px 10px 18px}
+  .brand .dot{width:30px;height:30px;border-radius:9px;background:var(--lime);display:flex;align-items:center;justify-content:center;color:#020202;font:800 15px/1 var(--fd)}
+  .brand .nm{font:800 17px/1.1 var(--fd);letter-spacing:-.02em}
+  .brand .nm span{display:block;font:500 8.5px/1.4 var(--fm);letter-spacing:.14em;text-transform:uppercase;color:var(--t4)}
+  .nav-a{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:9px;color:var(--t3);font:500 13.5px/1 var(--fb);text-decoration:none;border-left:2px solid transparent;cursor:pointer}
+  .nav-a:hover{color:var(--t1);background:rgba(255,255,255,.04)}
+  .nav-a.on{color:var(--lime);background:rgba(198,255,52,.07);border-left-color:var(--lime)}
+  .nav-a .ic{font-family:var(--fm);font-size:12px;width:16px;text-align:center}
+  .side .foot{margin-top:auto;padding:14px 10px 4px;border-top:1px solid var(--border)}
+  .side .foot .cid{font:500 10px/1.6 var(--fm);color:var(--t4);letter-spacing:.06em}
+  .demo-badge{position:fixed;right:14px;bottom:12px;z-index:60;background:rgba(2,2,2,.85);border:1px solid rgba(198,255,52,.4);color:var(--lime);font:600 9.5px/1 var(--fm);letter-spacing:.12em;text-transform:uppercase;padding:7px 12px;border-radius:20px;backdrop-filter:blur(4px)}
+  /* main */
+  .main{padding:26px 30px 60px;max-width:1200px}
+  .top{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:22px}
+  h1{font:800 clamp(21px,2.4vw,29px)/1.1 var(--fd);letter-spacing:-.03em}
+  .sub{font:400 13.5px/1.5 var(--fb);color:var(--t3);margin-top:5px;max-width:640px}
+  .chips{display:flex;gap:8px;flex-wrap:wrap}
+  .chip{font:600 10px/1 var(--fm);letter-spacing:.08em;text-transform:uppercase;padding:7px 11px;border-radius:16px;border:1px solid var(--border-vis);color:var(--t3);cursor:pointer}
+  .chip.on{border-color:rgba(198,255,52,.5);color:var(--lime);background:rgba(198,255,52,.06)}
+  /* cards & grids */
+  .grid{display:grid;gap:14px}
+  .g4{grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}
+  .g3{grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+  .card{background:linear-gradient(160deg,#0D0D0C 0%,#0A140F 140%);border:1px solid var(--border);border-radius:14px;padding:18px}
+  .kpi .v{font:800 30px/1 var(--fd);letter-spacing:-.02em;color:var(--lime)}
+  .kpi .v.warn{color:var(--amber)} .kpi .v.bad{color:var(--red)} .kpi .v.ok{color:var(--teal-300)}
+  .kpi .l{font:500 11px/1.5 var(--fb);color:var(--t4);margin-top:6px}
+  .sec-t{font:700 10.5px/1 var(--fm);letter-spacing:.14em;text-transform:uppercase;color:var(--lime);margin:26px 0 12px}
+  /* alerts */
+  .alert{display:flex;gap:12px;align-items:flex-start;border:1px solid rgba(255,107,87,.35);background:rgba(255,107,87,.06);border-radius:12px;padding:13px 15px;margin-bottom:10px}
+  .alert.amber{border-color:rgba(255,198,92,.35);background:rgba(255,198,92,.05)}
+  .alert .tg{font:700 9px/1 var(--fm);letter-spacing:.1em;text-transform:uppercase;color:var(--red);border:1px solid rgba(255,107,87,.4);padding:4px 8px;border-radius:5px;white-space:nowrap;margin-top:2px}
+  .alert.amber .tg{color:var(--amber);border-color:rgba(255,198,92,.4)}
+  .alert .tx{font:400 13px/1.55 var(--fb);color:var(--t2)} .alert .tx b{color:var(--t1)}
+  .alert .act{margin-left:auto;flex-shrink:0}
+  .btn{font:600 11px/1 var(--fm);letter-spacing:.05em;padding:9px 14px;border-radius:8px;border:1px solid rgba(198,255,52,.45);background:rgba(198,255,52,.08);color:var(--lime);cursor:pointer}
+  .btn:hover{background:rgba(198,255,52,.16)}
+  .btn.solid{background:var(--lime);color:#020202;border-color:var(--lime);font-weight:700}
+  .btn.ghost{border-color:var(--border-vis);color:var(--t3);background:transparent}
+  .btn:disabled{opacity:.35;cursor:not-allowed}
+  /* kanban */
+  .kb{display:grid;grid-template-columns:repeat(6,minmax(200px,1fr));gap:12px;overflow-x:auto;align-items:start}
+  .kb-col{background:rgba(13,13,12,.55);border:1px solid var(--border);border-radius:12px;padding:12px;min-width:210px}
+  .kb-h{font:700 9.5px/1 var(--fm);letter-spacing:.1em;text-transform:uppercase;color:var(--t3);display:flex;justify-content:space-between;margin-bottom:10px}
+  .kb-h b{color:var(--lime)}
+  .ci{background:#0D0D0C;border:1px solid var(--border-vis);border-radius:10px;padding:11px 12px;margin-bottom:9px;cursor:pointer}
+  .ci:hover{border-color:rgba(198,255,52,.45)}
+  .ci .h{font:700 13px/1.25 var(--fd);letter-spacing:-.01em}
+  .ci .m{font:500 10.5px/1.6 var(--fm);color:var(--t4);margin-top:4px}
+  .ci .fl{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+  .pill{font:600 8.5px/1 var(--fm);letter-spacing:.06em;text-transform:uppercase;padding:4px 7px;border-radius:5px;border:1px solid var(--border-vis);color:var(--t3)}
+  .pill.urg{color:var(--red);border-color:rgba(255,107,87,.45)}
+  .pill.lime{color:var(--lime);border-color:rgba(198,255,52,.4)}
+  .pill.teal{color:var(--teal-300);border-color:rgba(59,208,160,.4)}
+  .pill.amber{color:var(--amber);border-color:rgba(255,198,92,.45)}
+  /* detail / timeline */
+  .bk{font:600 11px/1 var(--fm);color:var(--t3);cursor:pointer;margin-bottom:14px;display:inline-block}
+  .bk:hover{color:var(--lime)}
+  .det{display:grid;grid-template-columns:1.25fr .75fr;gap:16px}
+  @media(max-width:900px){.det{grid-template-columns:1fr}}
+  .tl{list-style:none}
+  .tl li{display:grid;grid-template-columns:26px 1fr;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)}
+  .tl li:last-child{border-bottom:none}
+  .tl .st{width:22px;height:22px;border-radius:50%;border:2px solid var(--border-vis);display:flex;align-items:center;justify-content:center;font:800 10px/1 var(--fm);color:var(--t4);margin-top:2px}
+  .tl li.done .st{border-color:var(--lime);color:#020202;background:var(--lime)}
+  .tl li.now .st{border-color:var(--lime);color:var(--lime)}
+  .tl .tt{font:600 13.5px/1.3 var(--fd)} .tl li.done .tt{color:var(--t2)}
+  .tl .ts{font:500 10.5px/1.5 var(--fm);color:var(--t4)}
+  .kv{display:grid;grid-template-columns:auto 1fr;gap:5px 14px;font:400 12.5px/1.7 var(--fb)}
+  .kv b{font:600 10px/2.1 var(--fm);letter-spacing:.08em;text-transform:uppercase;color:var(--t4)}
+  .kv span{color:var(--t2)}
+  .ph{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+  .ph .p{width:74px;height:56px;border-radius:8px;border:1px dashed var(--border-vis);display:flex;align-items:center;justify-content:center;font:500 8.5px/1.3 var(--fm);color:var(--t4);text-align:center;background:rgba(255,255,255,.02)}
+  .ph .p.got{border-style:solid;border-color:rgba(59,208,160,.5);color:var(--teal-300)}
+  /* switch RI consignado */
+  .sw{display:flex;align-items:center;gap:10px;padding:12px;border:1px solid var(--border-vis);border-radius:10px;margin:10px 0;cursor:pointer}
+  .sw .tk{width:38px;height:22px;border-radius:12px;border:1px solid var(--border-vis);position:relative;flex-shrink:0;transition:.15s}
+  .sw .tk::after{content:'';position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:var(--t3);transition:.15s}
+  .sw.on .tk{background:rgba(198,255,52,.25);border-color:var(--lime)} .sw.on .tk::after{left:18px;background:var(--lime)}
+  .sw .lb{font:500 13px/1.4 var(--fb);color:var(--t2)}
+  .note{font:400 11.5px/1.6 var(--fb);color:var(--t4);border-left:2px solid var(--teal-700);padding-left:10px;margin-top:10px}
+  /* fila expedição */
+  .row{display:grid;grid-template-columns:auto 1fr auto auto;gap:14px;align-items:center;background:#0D0D0C;border:1px solid var(--border-vis);border-radius:11px;padding:13px 15px;margin-bottom:9px}
+  .row .pr{font:800 15px/1 var(--fm);color:var(--lime);width:30px}
+  .row .h{font:700 13.5px/1.3 var(--fd)} .row .m{font:500 10.5px/1.6 var(--fm);color:var(--t4)}
+  .cd{font:700 12px/1 var(--fm)} .cd.ok{color:var(--teal-300)} .cd.warn{color:var(--amber)} .cd.bad{color:var(--red)}
+  /* phone */
+  .phone-wrap{display:flex;gap:26px;align-items:flex-start;flex-wrap:wrap}
+  .phone{width:290px;border:1px solid var(--border-vis);border-radius:26px;background:#0A0A09;padding:14px 12px 18px;box-shadow:0 30px 80px rgba(0,0,0,.5)}
+  .phone .notch{width:80px;height:5px;border-radius:3px;background:var(--border-vis);margin:0 auto 12px}
+  .stop{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;background:#111110;border:1px solid var(--border);border-radius:12px;padding:11px;margin-bottom:8px}
+  .stop .h{font:700 12.5px/1.3 var(--fd)} .stop .m{font:500 9.5px/1.6 var(--fm);color:var(--t4)}
+  .stop .b{font:600 9.5px/1 var(--fm);padding:8px 10px;border-radius:7px;border:1px solid rgba(198,255,52,.45);color:var(--lime);background:rgba(198,255,52,.07);cursor:pointer;white-space:nowrap}
+  .stop.done{opacity:.55} .stop.done .b{border-color:rgba(59,208,160,.5);color:var(--teal-300)}
+  /* escala */
+  .tbl{width:100%;border-collapse:collapse;font:400 12.5px/1.5 var(--fb)}
+  .tbl th{font:600 9.5px/1.4 var(--fm);letter-spacing:.08em;text-transform:uppercase;color:var(--t4);text-align:left;padding:8px 10px;border-bottom:1px solid var(--border-vis)}
+  .tbl td{padding:9px 10px;border-bottom:1px solid var(--border);color:var(--t2)}
+  .lv{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:3px;background:var(--border-vis)}
+  .lv.s1{background:var(--teal-900)} .lv.s2{background:var(--teal-700)} .lv.s3{background:var(--teal-300)} .lv.s4{background:var(--lime)}
+  /* toast */
+  #toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:#0D0D0C;border:1px solid rgba(198,255,52,.5);color:var(--t1);font:500 13px/1.4 var(--fb);padding:12px 18px;border-radius:11px;opacity:0;pointer-events:none;transition:.25s;z-index:80;max-width:88vw}
+  #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  #toast b{color:var(--lime)}
+  @media(max-width:860px){.app{grid-template-columns:1fr}.side{position:relative;height:auto;flex-direction:row;flex-wrap:wrap;align-items:center}.side .foot{display:none}.main{padding:20px 16px 70px}.kb{grid-template-columns:repeat(6,240px)}}
+  /* ── guia de uso ── */
+  #ov{position:fixed;inset:0;background:rgba(2,2,2,.84);backdrop-filter:blur(6px);z-index:100;display:flex;align-items:center;justify-content:center;padding:20px;overflow:auto}
+  #ov.hide{display:none}
+  .ov-c{max-width:560px;background:linear-gradient(160deg,#0D0D0C,#0A140F);border:1px solid rgba(198,255,52,.35);border-radius:18px;padding:30px 28px;box-shadow:0 40px 120px rgba(0,0,0,.6)}
+  .ov-c h2{font:800 22px/1.15 var(--fd);letter-spacing:-.02em;margin-bottom:6px}
+  .ov-c h2 em{font-style:italic;color:var(--lime)}
+  .ov-c .s{font:400 13.5px/1.6 var(--fb);color:var(--t3);margin-bottom:14px}
+  .ov-step{display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-top:1px solid var(--border)}
+  .ov-step .n{width:24px;height:24px;border-radius:50%;background:rgba(198,255,52,.12);border:1px solid rgba(198,255,52,.4);color:var(--lime);font:800 11px/22px var(--fm);text-align:center;flex-shrink:0}
+  .ov-step .t{font:400 13px/1.55 var(--fb);color:var(--t2)} .ov-step .t b{color:var(--t1)}
+  .guide{border:1px solid rgba(59,208,160,.35);background:rgba(20,58,49,.16);border-radius:12px;margin:0 0 18px;overflow:hidden}
+  .guide-h{display:flex;justify-content:space-between;align-items:center;padding:11px 15px;cursor:pointer;font:700 10px/1 var(--fm);letter-spacing:.12em;text-transform:uppercase;color:var(--teal-300)}
+  .guide-h .cx{color:var(--t4)}
+  .guide-b{padding:0 15px 13px;display:grid;gap:14px;grid-template-columns:1fr 1fr}
+  @media(max-width:760px){.guide-b{grid-template-columns:1fr}}
+  .guide.closed .guide-b{display:none}
+  .guide h4{font:700 9.5px/1 var(--fm);letter-spacing:.1em;text-transform:uppercase;color:var(--t4);margin-bottom:7px}
+  .guide li{font:400 12.5px/1.6 var(--fb);color:var(--t2);list-style:none;padding:3px 0 3px 16px;position:relative}
+  .guide li::before{content:'→';position:absolute;left:0;color:var(--teal-300);font-family:var(--fm);font-size:11px}
+  .guide li b{color:var(--lime);font-weight:600}
+  #help{position:fixed;right:14px;bottom:52px;z-index:70;width:42px;height:42px;border-radius:50%;background:var(--lime);color:#020202;font:800 18px/42px var(--fd);text-align:center;cursor:pointer;box-shadow:0 12px 34px rgba(198,255,52,.3);border:none}
+  .fld{display:flex;flex-direction:column;gap:5px;margin-bottom:11px}
+  .fld label{font:600 9.5px/1 var(--fm);letter-spacing:.1em;text-transform:uppercase;color:var(--t4)}
+  .fld input,.fld select{background:#0D0D0C;border:1px solid var(--border-vis);border-radius:9px;color:var(--t1);font:400 13.5px/1.4 var(--fb);padding:10px 12px;outline:none;width:100%}
+  .fld input:focus,.fld select:focus{border-color:rgba(198,255,52,.5)}
+  .f2{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
+  @media(max-width:640px){.f2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <div class="brand"><div class="dot">M</div><div class="nm">Marja App<span>sistema da rua · demo</span></div></div>
+    <a class="nav-a" data-v="home"><span class="ic">◈</span> Visão do dia</a>
+    <a class="nav-a" data-v="agenda"><span class="ic">✎</span> Agendamento</a>
+    <a class="nav-a" data-v="cirurgias"><span class="ic">▤</span> Cirurgias</a>
+    <a class="nav-a" data-v="expedicao"><span class="ic">⇪</span> Expedição</a>
+    <a class="nav-a" data-v="rua"><span class="ic">▣</span> Rua · motorista</a>
+    <a class="nav-a" data-v="ri"><span class="ic">✚</span> Cirurgia e RI</a>
+    <a class="nav-a" data-v="retorno"><span class="ic">⇄</span> Retorno</a>
+    <a class="nav-a" data-v="escala"><span class="ic">≡</span> Escala</a>
+    <div class="foot">
+      <div class="cid">JUIZ DE FORA · UBÁ · +1<br>50 usuários · dados fictícios</div>
+    </div>
+  </aside>
+  <main class="main" id="view"></main>
+</div>
+<div class="demo-badge">Demo navegável · dados ilustrativos · por Infuser</div>
+<button id="help" onclick="showOv()" title="Reabrir o guia">?</button>
+<div id="ov" class="hide">
+  <div class="ov-c">
+    <h2>Bem-vindo à demo do <em>Marja App</em></h2>
+    <div class="s">Uma prévia navegável do sistema da rua, construída em cima do fluxo e das travas que vocês mesmos mapearam. Tudo aqui é ilustrativo e nada quebra: clique à vontade.</div>
+    <div class="ov-step"><div class="n">1</div><div class="t"><b>Navegue pelo menu à esquerda.</b> Cada item é uma tela do sistema, na ordem do processo real: do agendamento ao retorno.</div></div>
+    <div class="ov-step"><div class="n">2</div><div class="t"><b>Toda tela tem um guia "Como usar esta tela"</b> logo abaixo do título, explicando cada número, cor e botão. Dá pra recolher e reabrir.</div></div>
+    <div class="ov-step"><div class="n">3</div><div class="t"><b>Os botões funcionam de verdade.</b> Experimente: criar uma cirurgia no Agendamento, escalar o instrumentador na Visão do dia, e tentar enviar um RI sem marcar o consignado (o sistema trava, de propósito).</div></div>
+    <div class="ov-step"><div class="n">?</div><div class="t"><b>Perdeu este guia?</b> O botão redondo <b>?</b> no canto inferior direito reabre a qualquer momento.</div></div>
+    <button class="btn solid" style="margin-top:18px;width:100%;padding:13px" onclick="hideOv()">Começar pela Visão do dia</button>
+  </div>
+</div>
+<div id="toast"></div>
+
+<script>
+// ─── dados FICTÍCIOS (pacientes por iniciais de propósito: LGPD by design) ───
+const S = {
+  cirurgias: [
+    {id:'C-1042', pac:'A. S. M.', proc:'Artroplastia total de quadril', med:'Dr. Álvares', hosp:'Hosp. São Miguel · JF', conv:'Unimed', tipo:'eletiva', etapa:4, hora:'07:30', instr:'Camila R.', fotos:{exp:true, entrega:true, ri:false}, consig:null, riOk:false},
+    {id:'C-1043', pac:'J. P. O.', proc:'Osteossíntese de fêmur', med:'Dra. Campos', hosp:'Sta. Helena · Ubá', conv:'IPSM', tipo:'urgência', etapa:2, hora:'11:00', instr:'— sem escala —', fotos:{exp:true, entrega:false, ri:false}, consig:null, riOk:false},
+    {id:'C-1044', pac:'M. C. F.', proc:'Artroscopia de joelho', med:'Dr. Nogueira', hosp:'Hosp. São Miguel · JF', conv:'Bradesco', tipo:'eletiva', etapa:1, hora:'14:00', instr:'Rafael T.', fotos:{exp:false, entrega:false, ri:false}, consig:null, riOk:false},
+    {id:'C-1045', pac:'R. L. B.', proc:'Coluna · fixação pedicular', med:'Dra. Siqueira', hosp:'Monte Verde · JF', conv:'SUS · tabela fixa', tipo:'eletiva', etapa:5, hora:'08:00', instr:'Paula V.', fotos:{exp:true, entrega:true, ri:true}, consig:true, riOk:true},
+    {id:'C-1046', pac:'T. A. G.', proc:'Prótese parcial de ombro', med:'Dr. Álvares', hosp:'Sta. Helena · Ubá', conv:'Unimed', tipo:'eletiva', etapa:3, hora:'16:30', instr:'Camila R.', fotos:{exp:true, entrega:false, ri:false}, consig:null, riOk:false},
+  ],
+  etapas: ['Agendada','Separação','Em rota','Conferido no hospital','Cirurgia · RI pendente','Retorno e conferência'],
+  fila: [
+    {p:1, c:'C-1043', kit:'Kit trauma fêmur + placa', prazo:'2h 10min', cls:'bad', urg:true},
+    {p:2, c:'C-1044', kit:'Kit artroscopia 4.0', prazo:'8h 40min', cls:'warn', urg:false},
+    {p:3, c:'C-1046', kit:'Kit ombro + glenoide', prazo:'26h', cls:'ok', urg:false},
+  ],
+  rota: [
+    {h:'Hosp. São Miguel · JF', m:'Entregar kit C-1042 · caixa 2/2', done:true},
+    {h:'Sta. Helena · Ubá', m:'Entregar kit C-1043 · URGÊNCIA', done:false},
+    {h:'Monte Verde · JF', m:'Recolher usado C-1045 · 3 caixas', done:false},
+  ],
+  escala: [
+    {n:'Camila R.', v:'CLT · manhã', q:[4,4,3,2], carga:'2 cirurgias hoje'},
+    {n:'Rafael T.', v:'CLT · tarde', q:[4,3,2,4], carga:'1 cirurgia hoje'},
+    {n:'Paula V.', v:'Freelancer', q:[3,4,4,1], carga:'1 cirurgia hoje · ontem: 6h30 em campo'},
+    {n:'Diego M.', v:'CLT · manhã', q:[2,2,4,3], carga:'livre'},
+  ],
+  divergencia: {aberta:true, texto:'C-1043 · faltou acetábulo tam. 50 na conferência do hospital', resolvida:false},
+};
+let cur = {v:'home', cir:null, gClosed:{}};
+
+const $=s=>document.querySelector(s);
+function toast(h){const t=$('#toast');t.innerHTML=h;t.classList.add('show');clearTimeout(t._x);t._x=setTimeout(()=>t.classList.remove('show'),3400)}
+function pill(c){return c.tipo==='urgência'?'<span class="pill urg">urgência</span>':'<span class="pill">eletiva</span>'}
+function nav(v){cur.v=v;cur.cir=null;render()}
+document.querySelectorAll('.nav-a').forEach(a=>a.addEventListener('click',()=>nav(a.dataset.v)));
+
+function head(t,s){return `<div class="top"><div><h1>${t}</h1><div class="sub">${s}</div></div><div class="chips"><span class="chip on">Hoje · 5 cirurgias</span><span class="chip">JF</span><span class="chip">Ubá</span></div></div>`}
+
+// ─── VISÃO DO DIA ───
+function vHome(){
+  const semEscala = S.cirurgias.filter(c=>c.instr.includes('sem')).length;
+  const riPend = S.cirurgias.filter(c=>c.etapa===4&&!c.riOk).length;
+  const divg = S.divergencia.aberta&&!S.divergencia.resolvida?1:0;
+  return head('Visão do dia','O que precisa da sua atenção agora. Nada mora em grupo de WhatsApp: cada pendência aparece aqui, com dono e prazo.')+`
+  <div class="grid g4">
+    <div class="card kpi"><div class="v">5</div><div class="l">cirurgias hoje · JF e Ubá</div></div>
+    <div class="card kpi"><div class="v ${divg?'bad':'ok'}">${divg}</div><div class="l">divergência de material aberta</div></div>
+    <div class="card kpi"><div class="v ${semEscala?'warn':'ok'}">${semEscala}</div><div class="l">cirurgia sem instrumentador escalado</div></div>
+    <div class="card kpi"><div class="v ${riPend?'warn':'ok'}">${riPend}</div><div class="l">RI pendente (prazo: 12h após a cirurgia)</div></div>
+  </div>
+  <div class="sec-t">Travas de agora · o que no WhatsApp passaria batido</div>
+  ${divg?`<div class="alert"><span class="tg">Divergência</span><div class="tx"><b>${S.divergencia.texto}.</b> Registrada pela instrumentadora na conferência. A expedição já foi acionada pra envio imediato.</div><div class="act"><button class="btn" onclick="resolveDiv()">Marcar resolvida</button></div></div>`:''}
+  ${semEscala?`<div class="alert amber"><span class="tg">Escala</span><div class="tx"><b>C-1043 (11h00, urgência) está sem instrumentador.</b> Sugestão do sistema: Diego M. (livre, sabe o procedimento). A decisão é sempre humana.</div><div class="act"><button class="btn" onclick="escalar()">Escalar Diego M.</button></div></div>`:''}
+  <div class="alert amber"><span class="tg">RI</span><div class="tx"><b>C-1042 terminou às 10h40 e o RI ainda não chegou.</b> O sistema cobra a instrumentadora sozinho às 14h40. Sem RI, o faturamento não anda.</div><div class="act"><button class="btn ghost" onclick="toast('Lembrete automático programado. <b>Ninguém precisou cobrar no grupo.</b>')">Ver cobrança</button></div></div>
+  <div class="sec-t">Linha do dia</div>
+  <div class="grid g3">${S.cirurgias.map(c=>`
+    <div class="card ci" onclick="openCir('${c.id}')">
+      <div class="h">${c.id} · ${c.proc}</div>
+      <div class="m">${c.hora} · ${c.hosp} · ${c.med}</div>
+      <div class="fl">${pill(c)}<span class="pill teal">${S.etapas[c.etapa]}</span>${c.instr.includes('sem')?'<span class="pill amber">sem escala</span>':''}</div>
+    </div>`).join('')}
+  </div>`;
+}
+
+// ─── AGENDAMENTO ───
+function vAgenda(){
+  return head('Agendamento · a cirurgia entra UMA vez','Na versão real, o médico (ou residente) abre um link e preenche isto sozinho, do celular. Aqui você faz o papel dele. Depois disso, ninguém redigita nada: nem Google Agenda, nem lançamento manual.')+`
+  <div class="det">
+    <div class="card">
+      <div class="sec-t" style="margin-top:0">Nova solicitação de cirurgia</div>
+      <div class="f2">
+        <div class="fld"><label>Médico</label><select id="fMed"><option>Dr. Álvares</option><option>Dra. Campos</option><option>Dr. Nogueira</option><option>Dra. Siqueira</option><option>Outro (residente digita o nome)</option></select></div>
+        <div class="fld"><label>Hospital · cidade</label><select id="fHosp"><option>Hosp. São Miguel · JF</option><option>Sta. Helena · Ubá</option><option>Monte Verde · JF</option></select></div>
+      </div>
+      <div class="fld"><label>Procedimento</label><input id="fProc" placeholder="ex: Artroplastia total de joelho" value="Artroplastia total de joelho"></div>
+      <div class="f2">
+        <div class="fld"><label>Paciente (só iniciais nesta demo)</label><input id="fPac" placeholder="ex: L. F. C." value="L. F. C."></div>
+        <div class="fld"><label>Convênio</label><select id="fConv"><option>Unimed</option><option>IPSM</option><option>Bradesco</option><option>SUS · tabela fixa</option></select></div>
+      </div>
+      <div class="f2">
+        <div class="fld"><label>Data e hora</label><input id="fHora" value="amanhã · 09:00"></div>
+        <div class="fld"><label>Tipo</label><select id="fTipo"><option>eletiva</option><option>urgência</option></select></div>
+      </div>
+      <button class="btn solid" style="margin-top:6px" onclick="criar()">Criar cirurgia</button>
+      <p class="note">Ao criar: e-mail automático pro médico e pra equipe, e a cirurgia já nasce na fila com o prazo certo (urgência 4h · eletiva 24h · outra cidade 36h).</p>
+    </div>
+    <div class="card"><div class="sec-t" style="margin-top:0">O que isso substitui</div>
+      <div class="kv"><b>Hoje</b><span>marcação por WhatsApp → Google Agenda em texto livre → alguém redigita no sistema depois, na mão</span><b>Com o app</b><span>o dado entra UMA vez, já estruturado. Convênio SUS pula a etapa de orçamento sozinho. Campo livre vira cadastro na triagem interna.</span></div>
+    </div>
+  </div>`;
+}
+
+// ─── CIRURGIAS (kanban) ───
+function vCirurgias(){
+  const cols=[0,1,2,3,4,5];
+  return head('Cirurgias','A mesma informação em kanban ou calendário. Cada perfil vê só o que é do papel dele: motorista não vê valores, instrumentador não vê orçamento.')+`
+  <div class="kb">${cols.map(i=>{
+    const cs=S.cirurgias.filter(c=>c.etapa===i);
+    return `<div class="kb-col"><div class="kb-h">${S.etapas[i]} <b>${cs.length}</b></div>${cs.map(c=>`
+      <div class="ci" onclick="openCir('${c.id}')"><div class="h">${c.id}</div><div class="m">${c.proc}</div><div class="m">${c.hora} · ${c.hosp.split('·')[1]||''}</div><div class="fl">${pill(c)}</div></div>`).join('')||'<div class="m" style="color:var(--t4);font:500 10.5px/1.5 var(--fm)">vazio</div>'}</div>`;
+  }).join('')}</div>
+  <p class="note" style="margin-top:16px">Na versão real: arrastar entre colunas respeita as permissões por perfil e por etapa, e cada mudança fica no histórico com autor e horário.</p>`;
+}
+
+// ─── DETALHE ───
+function vDet(){
+  const c=S.cirurgias.find(x=>x.id===cur.cir);
+  return `<span class="bk" onclick="nav('cirurgias')">← voltar pra cirurgias</span>
+  <div class="top"><div><h1>${c.id} · ${c.proc}</h1><div class="sub">${c.hora} · ${c.hosp} · ${c.med} · convênio ${c.conv}</div></div><div class="chips">${pill(c)}</div></div>
+  <div class="det">
+    <div class="card"><div class="sec-t" style="margin-top:0">Linha do tempo · rastro completo</div>
+      <ul class="tl">${S.etapas.map((e,i)=>`
+        <li class="${i<c.etapa?'done':i===c.etapa?'now':''}"><div class="st">${i<c.etapa?'✓':i+1}</div>
+        <div><div class="tt">${e}</div><div class="ts">${i<c.etapa?'concluída · com foto e autor registrados':i===c.etapa?'agora · aguardando a próxima ação':'a seguir'}</div></div></li>`).join('')}
+      </ul></div>
+    <div>
+      <div class="card"><div class="sec-t" style="margin-top:0">Dados</div>
+        <div class="kv"><b>Paciente</b><span>${c.pac} · <em style="color:var(--teal-300);font-style:normal">iniciais de propósito: LGPD</em></span><b>Instrumentador</b><span>${c.instr}</span><b>Kit</b><span>separado por template do procedimento</span></div>
+        <div class="sec-t">Fotos · prova em cada etapa</div>
+        <div class="ph">
+          <div class="p ${c.fotos.exp?'got':''}">${c.fotos.exp?'✓ expedição':'expedição'}</div>
+          <div class="p ${c.fotos.entrega?'got':''}">${c.fotos.entrega?'✓ entrega':'entrega'}</div>
+          <div class="p ${c.fotos.ri?'got':''}">${c.fotos.ri?'✓ RI':'RI'}</div>
+        </div>
+        <p class="note">Cada foto carrega quem tirou, onde e quando. Funciona offline dentro do hospital e sobe quando a rede volta.</p>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ─── EXPEDIÇÃO ───
+function vExp(){
+  return head('Expedição · fila de separação','Priorizada sozinha por urgência e prazo de envio: urgência 4h, eletiva 24h, outra cidade 36h. Foto obrigatória antes de fechar a caixa.')+`
+  ${S.fila.map(f=>`<div class="row"><div class="pr">${f.p}º</div><div><div class="h">${f.c} · ${f.kit}</div><div class="m">${f.urg?'URGÊNCIA · ':''}foto da caixa aberta obrigatória antes do lacre</div></div><div class="cd ${f.cls}">${f.prazo}</div><button class="btn" onclick="toast('Caixa separada com foto. <b>Etiqueta e vale gerados.</b> Rota do motorista atualizada sozinha.')">Separar + foto</button></div>`).join('')}
+  <p class="note">A regra que hoje mora na cabeça vira fila: quem entra primeiro é decidido pelo prazo da cirurgia, não por quem gritou mais alto no grupo.</p>`;
+}
+
+// ─── RUA ───
+function vRua(){
+  return head('Rua · a tela do motorista','Duas ações e uma foto. O motorista não vê orçamento nem dado clínico: só a rota dele. Funciona offline e sincroniza quando a rede volta.')+`
+  <div class="phone-wrap">
+    <div class="phone"><div class="notch"></div>
+      <div style="font:800 15px/1.2 var(--fd);margin-bottom:2px">Rota de hoje</div>
+      <div style="font:500 9.5px/1.6 var(--fm);color:var(--t4);margin-bottom:10px">3 paradas · JF → Ubá · atualizada 07:12</div>
+      ${S.rota.map((r,i)=>`<div class="stop ${r.done?'done':''}" id="stop${i}"><div><div class="h">${r.h}</div><div class="m">${r.m}</div></div><button class="b" onclick="rua(${i})">${r.done?'✓ feito':'Entreguei + foto'}</button></div>`).join('')}
+      <div style="font:500 9px/1.6 var(--fm);color:var(--t4);margin-top:10px;text-align:center">offline OK · sincroniza sozinho</div>
+    </div>
+    <div class="card" style="max-width:330px"><div class="sec-t" style="margin-top:0">O que muda</div>
+      <div class="kv"><b>Hoje</b><span>rota de cabeça, prova = foto solta no grupo</span><b>Com o app</b><span>cada parada com hora, foto e quem fez. A central enxerga a rota andando em tempo real.</span></div>
+    </div>
+  </div>`;
+}
+
+// ─── RI ───
+function vRi(){
+  const c=S.cirurgias[0];
+  return head('Cirurgia e RI · a tela da instrumentadora','Conferência com horário, "escovando" respeitado (nada é exigido em campo estéril) e a regra que destrava o faturamento: consignado é marcação obrigatória.')+`
+  <div class="det">
+    <div class="card"><div class="sec-t" style="margin-top:0">${c.id} · RI pós-cirurgia</div>
+      <div class="kv"><b>Conferência</b><span>feita 06:31 · 59min antes · ✓ com foto</span><b>Escovando</b><span>07:25 → 10:12 · sistema em silêncio</span><b>Consumo</b><span>3 itens lançados do template do kit</span></div>
+      <div class="sw ${c.consig===true?'on':''}" id="swc" onclick="togCons()"><div class="tk"></div><div class="lb"><b>Teve material consignado?</b> Marcação obrigatória. É ela que diz ao faturamento: repor ou aguardar retorno.</div></div>
+      <div class="ph"><div class="p got">✓ foto consumido</div><div class="p ${c.consig?'got':''}">${c.consig?'✓ foto consignado':'foto consignado'}</div></div>
+      <button class="btn solid" style="margin-top:14px" id="riBtn" onclick="enviaRI()">Enviar RI</button>
+      <p class="note" id="riNote">O botão só libera com a marcação de consignado feita. <b>A trava que hoje segura o faturamento por dias, resolvida no fluxo.</b></p>
+    </div>
+    <div class="card"><div class="sec-t" style="margin-top:0">Por que isso importa</div>
+      <div class="kv"><b>Hoje</b><span>"instrumentador não marca consignado — trava o faturamento" (do mapa de vocês)</span><b>Com o app</b><span>é impossível enviar o RI sem responder. O faturamento recebe a informação no minuto, não na semana.</span></div>
+    </div>
+  </div>`;
+}
+
+// ─── RETORNO ───
+function vRet(){
+  return head('Retorno · confere o que voltou','O que foi enviado contra o que voltou, caixa a caixa. Divergência vira alerta na hora, não descoberta no fim do mês.')+`
+  <div class="grid g3">
+    <div class="card"><div class="sec-t" style="margin-top:0">C-1045 · 3 caixas</div>
+      <div class="kv"><b>Enviado</b><span>47 itens · 3 caixas</span><b>Voltou</b><span>44 itens · consumo lançado no RI: 3</span><b>Estado</b><span style="color:var(--teal-300)">✓ bate · sem pendência</span></div></div>
+    <div class="card"><div class="sec-t" style="margin-top:0">C-1042 · aguardando coleta</div>
+      <div class="kv"><b>Enviado</b><span>32 itens · 2 caixas</span><b>Coleta</b><span>motorista a caminho · parada 3</span><b>Estado</b><span style="color:var(--amber)">em rota de volta</span></div></div>
+    <div class="card"><div class="sec-t" style="margin-top:0">Regras do retorno</div>
+      <div class="kv"><b>Não voltou</b><span>= consumido · confere contra o RI</span><b>Danificado</b><span>vai pra manutenção com foto</span><b>Sem reposição</b><span>entra em quarentena</span></div></div>
+  </div>
+  <p class="note" style="margin-top:14px">Some o romaneio manual: a conferência nasce do que a expedição registrou na saída.</p>`;
+}
+
+// ─── ESCALA ───
+function vEsc(){
+  return head('Escala de instrumentadores','O critério sai da cabeça e vira dado: habilidade por procedimento, vínculo, carga do dia. O sistema sugere, o humano decide.')+`
+  <div class="card" style="overflow-x:auto"><table class="tbl">
+    <tr><th>Instrumentador</th><th>Vínculo</th><th>Quadril</th><th>Trauma</th><th>Coluna</th><th>Ombro</th><th>Hoje</th></tr>
+    ${S.escala.map(e=>`<tr><td><b style="color:var(--t1)">${e.n}</b></td><td>${e.v}</td>${e.q.map(q=>`<td>${[1,2,3,4].map(i=>`<span class="lv ${i<=q?'s'+q:''}"></span>`).join('')}</td>`).join('')}<td>${e.carga}</td></tr>`).join('')}
+  </table></div>
+  <p class="note" style="margin-top:14px">Freelancer com cirurgia longa ontem aparece sinalizado. Escala de manhã fecha na noite anterior: o sistema cobra sozinho enquanto estiver aberta.</p>`;
+}
+
+// ─── guia por tela ───
+const GUIDE = {
+  home: {ler:[ 'Os <b>4 números do topo</b> são o pulso do dia: verde-limão = normal, <b>âmbar = precisa de atenção</b>, <b>vermelho = trava agora</b>.', 'Os cartões de alerta abaixo são as travas do dia. Cada um diz O QUE aconteceu, QUEM registrou e o que o sistema já fez sozinho.', 'Na "Linha do dia", cada cartão é uma cirurgia: código, procedimento, hora, hospital e a etapa atual na etiqueta verde-água.'],
+  fazer:[ 'Clique em <b>"Escalar Diego M."</b> no alerta âmbar: a escala fecha e ele é notificado.', 'Clique em <b>"Marcar resolvida"</b> na divergência: ela sai da tela e vai pro histórico.', 'Clique em <b>qualquer cirurgia</b> pra abrir a linha do tempo completa dela.']},
+  agenda: {ler:[ 'Este formulário é o que o <b>médico ou residente</b> preenche sozinho, por um link, do celular. Você está fazendo o papel dele.', 'Convênio <b>SUS · tabela fixa</b> pula a etapa de orçamento automaticamente, como no processo de vocês.', 'Nesta demo o paciente entra <b>só por iniciais</b>: proteção de dado de saúde desde o desenho.'],
+  fazer:[ 'Preencha o que quiser (já vem pronto) e clique em <b>"Criar cirurgia"</b>.', 'Depois, abra <b>Cirurgias</b> no menu: ela estará lá, na coluna "Agendada", sem ninguém redigitar nada.']},
+  cirurgias: {ler:[ 'Cada <b>coluna é uma etapa</b> do processo, da esquerda pra direita. O número verde é quantas cirurgias estão nela.', 'Cada cartão mostra código, procedimento, hora e cidade. Etiqueta <b>vermelha = urgência</b>.', 'Perfil de acesso muda o que se vê aqui: motorista não vê valores, instrumentador não vê orçamento.'],
+  fazer:[ 'Clique em <b>qualquer cartão</b> pra abrir o detalhe com a linha do tempo e as fotos.', 'Se você criou uma cirurgia no Agendamento, procure ela na <b>primeira coluna</b>.']},
+  det: {ler:[ 'A <b>linha do tempo</b> mostra as etapas: bolinha verde preenchida = concluída (com foto e autor), contorno verde = etapa atual.', 'No painel da direita, as <b>3 fotos de prova</b>: expedição (caixa aberta), entrega (caixa lacrada) e RI (pós-cirurgia). Verde-água = já registrada.', 'O paciente aparece <b>por iniciais</b>: LGPD desde o desenho.'],
+  fazer:[ 'Use o <b>"← voltar"</b> no topo pra retornar ao kanban.']},
+  expedicao: {ler:[ 'A fila é <b>ordenada pelo sistema</b>: 1º quem tem menos prazo. Ninguém decide "no grito".', 'O <b>relógio da direita</b> é o tempo até o limite de envio: verde = folga, âmbar = apertando, <b>vermelho = urgência de 4h</b>.', 'Cada linha diz o kit e a regra: foto da caixa aberta é obrigatória antes do lacre.'],
+  fazer:[ 'Clique em <b>"Separar + foto"</b> em qualquer linha: a caixa é registrada, etiqueta e vale saem, e a rota do motorista atualiza sozinha.']},
+  rua: {ler:[ 'A moldura de celular é a <b>tela real do motorista</b>: só a rota dele, sem valores nem dado clínico.', 'Cada parada diz o hospital e a ação (entregar ou recolher). <b>URGÊNCIA</b> aparece destacada.', 'O rodapé lembra: funciona <b>offline</b> e sincroniza quando a rede volta.'],
+  fazer:[ 'Clique em <b>"Entreguei + foto"</b> numa parada: ela fica riscada e a central "enxerga" na hora. Nada vai pra grupo de WhatsApp.']},
+  ri: {ler:[ 'À esquerda, o <b>RI da instrumentadora</b>: conferência com horário, o período "escovando" (em que o sistema NÃO exige nada dela) e o consumo.', 'O <b>interruptor do consignado</b> é a regra de ouro: é ele que diz ao faturamento se lança reposição ou espera retorno.', 'À direita, o porquê: a frase da trava veio do <b>mapa de vocês</b>.'],
+  fazer:[ 'Tente clicar em <b>"Enviar RI" SEM mexer no interruptor</b>: o sistema trava e explica.', 'Agora <b>ligue o interruptor</b> e envie: o faturamento é notificado no ato, com a instrução certa.']},
+  retorno: {ler:[ 'Cada cartão compara <b>o que saiu contra o que voltou</b>, caixa a caixa, usando o registro da expedição (sem romaneio manual).', 'Verde-água = bateu. Âmbar = ainda em rota. <b>Divergência viraria alerta vermelho na Visão do dia</b>, na hora.', 'O terceiro cartão resume as regras: não voltou = consumido · danificado = manutenção com foto · sem reposição = quarentena.'],
+  fazer:[ 'Volte à <b>Visão do dia</b> e veja como a divergência aparece por lá (se ainda não a resolveu).']},
+  escala: {ler:[ 'Cada linha é um instrumentador; as colunas são as competências. Os <b>quadradinhos são o nível</b>: 1 escuro = não sabe · 2 = aprendendo · 3 verde-água = sabe · <b>4 verde-limão = domina</b>.', 'A coluna "Hoje" mostra a carga do dia. Freelancer com plantão longo ontem aparece <b>sinalizado</b>.', 'O critério que hoje mora na cabeça vira dado: o sistema <b>sugere</b>, o humano sempre decide.'],
+  fazer:[ 'Compare a linha do Diego M. (livre) com a sugestão que apareceu na <b>Visão do dia</b>: é assim que a sugestão nasce.']},
+};
+function guideBox(v){
+  const g=GUIDE[v]; if(!g) return '';
+  const closed = cur.gClosed[v] ? ' closed' : '';
+  return `<div class="guide${closed}" id="gd"><div class="guide-h" onclick="togGuide('${v}')"><span>Como usar esta tela</span><span class="cx">${cur.gClosed[v]?'abrir ▾':'recolher ▴'}</span></div><div class="guide-b"><div><h4>Como ler</h4>${g.ler.map(x=>`<li>${x}</li>`).join('')}</div><div><h4>Experimente</h4>${g.fazer.map(x=>`<li>${x}</li>`).join('')}</div></div></div>`;
+}
+function togGuide(v){cur.gClosed[v]=!cur.gClosed[v];render()}
+function showOv(){document.getElementById('ov').classList.remove('hide')}
+function hideOv(){document.getElementById('ov').classList.add('hide')}
+
+// ─── ações ───
+function criar(){
+  const proc=$('#fProc').value.trim(), pac=$('#fPac').value.trim()||'—';
+  if(!proc){toast('<b>Informe o procedimento</b> pra criar a cirurgia.');return}
+  const id='C-'+(1047+S.cirurgias.filter(c=>+c.id.slice(2)>=1047).length);
+  S.cirurgias.push({id, pac, proc, med:$('#fMed').value, hosp:$('#fHosp').value, conv:$('#fConv').value, tipo:$('#fTipo').value, etapa:0, hora:$('#fHora').value, instr:'— sem escala —', fotos:{exp:false,entrega:false,ri:false}, consig:null, riOk:false});
+  toast(`<b>${id} criada.</b> Médico e equipe avisados por e-mail, e ela já entrou na fila com o prazo certo. Veja em Cirurgias.`);
+  nav('cirurgias');
+}
+function openCir(id){cur.cir=id;cur.v='det';render()}
+function resolveDiv(){S.divergencia.resolvida=true;S.divergencia.aberta=false;toast('Divergência resolvida. <b>Registrada no histórico com autor e hora</b> e no relatório do setor.');render()}
+function escalar(){S.cirurgias[1].instr='Diego M.';toast('Diego M. escalado pra C-1043. <b>Ele recebeu a notificação agora.</b>');render()}
+function rua(i){S.rota[i].done=true;toast('Parada concluída com foto. <b>A central já enxerga.</b> Nada foi pro grupo de WhatsApp.');render()}
+function togCons(){const c=S.cirurgias[0];c.consig=c.consig===true?false:true;render()}
+function enviaRI(){const c=S.cirurgias[0];
+  if(c.consig===null){toast('<b>O RI não vai sem a marcação de consignado.</b> É a regra que protege o faturamento.');return}
+  c.riOk=true;c.fotos.ri=true;c.etapa=5;toast('RI enviado. <b>Faturamento notificado no ato:</b> '+(c.consig?'lançar reposição do consignado.':'aguardar retorno físico.'));render()}
+
+function render(){
+  document.querySelectorAll('.nav-a').forEach(a=>a.classList.toggle('on',a.dataset.v===cur.v));
+  const v=cur.v;
+  $('#view').innerHTML = v==='home'?vHome():v==='agenda'?vAgenda():v==='cirurgias'?vCirurgias():v==='det'?vDet():v==='expedicao'?vExp():v==='rua'?vRua():v==='ri'?vRi():v==='retorno'?vRet():vEsc();
+  const top=$('#view .top'); if(top) top.insertAdjacentHTML('afterend', guideBox(v));
+  window.scrollTo(0,0);
+}
+render();
+showOv();
+</script>
+<noscript><div style="padding:40px;font-family:system-ui;color:#F0F0E4;background:#020202;min-height:100vh"><h1 style="color:#C6FF34">Marja App · demo navegável</h1><p style="max-width:520px;margin-top:12px">Esta demonstração é interativa e precisa abrir no navegador (Chrome, Safari ou Edge). Se você está vendo esta mensagem dentro de um visualizador de arquivos, toque em "Abrir no navegador".</p></div></noscript>
+</body>
+</html>

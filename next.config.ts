@@ -63,6 +63,14 @@ const nextConfig: NextConfig = {
         source: "/guia-ia-sem-bajulacao",
         destination: "/guia-ia-sem-bajulacao.html",
       },
+      // Demo navegavel do Marja App, enviada junto da proposta (prospect Marja
+      // Ortopedia, 21/08/2026). Mesmo padrao dos guias: HTML self-contained em
+      // public/, o rewrite so tira o .html da URL. A diferenca e que esta rota
+      // exige senha -- ver src/middleware.ts, que cobre /demomarja E o .html.
+      {
+        source: "/demomarja",
+        destination: "/demomarja.html",
+      },
     ];
   },
   async headers() {
