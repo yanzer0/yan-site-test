@@ -38,6 +38,9 @@
   .side .foot{margin-top:auto;padding:14px 10px 4px;border-top:1px solid var(--border)}
   .side .foot .cid{font:500 10px/1.6 var(--fm);color:var(--t4);letter-spacing:.06em}
   .demo-badge{position:fixed;right:14px;bottom:12px;z-index:60;background:rgba(2,2,2,.85);border:1px solid rgba(198,255,52,.4);color:var(--lime);font:600 9.5px/1 var(--fm);letter-spacing:.12em;text-transform:uppercase;padding:7px 12px;border-radius:20px;backdrop-filter:blur(4px)}
+  /* ── topo mobile + drawer ── */
+  .topbar{display:none}
+  .scrim{display:none}
   /* main */
   .main{padding:26px 30px 60px;max-width:1200px}
   .top{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:22px}
@@ -131,7 +134,37 @@
   #toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:#0D0D0C;border:1px solid rgba(198,255,52,.5);color:var(--t1);font:500 13px/1.4 var(--fb);padding:12px 18px;border-radius:11px;opacity:0;pointer-events:none;transition:.25s;z-index:80;max-width:88vw}
   #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
   #toast b{color:var(--lime)}
-  @media(max-width:860px){.app{grid-template-columns:1fr}.side{position:relative;height:auto;flex-direction:row;flex-wrap:wrap;align-items:center}.side .foot{display:none}.main{padding:20px 16px 70px}.kb{grid-template-columns:repeat(6,240px)}}
+  @media(max-width:860px){
+    .app{grid-template-columns:1fr}
+    /* Topo fixo com o botao Menu escrito por extenso: no celular as abas em linha
+       viravam um amontoado, e icone sozinho nao diz o que faz. */
+    .topbar{display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:70;
+      padding:11px 14px;background:rgba(2,2,2,.92);border-bottom:1px solid var(--border);backdrop-filter:blur(8px)}
+    .menu-btn{display:flex;align-items:center;gap:8px;background:rgba(198,255,52,.10);border:1px solid rgba(198,255,52,.45);
+      color:var(--lime);font:700 12px/1 var(--fm);letter-spacing:.1em;text-transform:uppercase;padding:11px 15px;border-radius:10px;cursor:pointer}
+    .menu-btn .bars{display:inline-flex;flex-direction:column;gap:3px}
+    .menu-btn .bars i{width:14px;height:2px;background:var(--lime);border-radius:1px}
+    .tb-t{font:800 14px/1.1 var(--fd);letter-spacing:-.02em}
+    .tb-t span{display:block;font:500 8px/1.5 var(--fm);letter-spacing:.12em;text-transform:uppercase;color:var(--t4)}
+    /* Gaveta: fora da tela ate abrir. */
+    .side{position:fixed;top:0;left:0;height:100dvh;width:270px;z-index:90;flex-direction:column;flex-wrap:nowrap;
+      transform:translateX(-102%);transition:transform .22s ease;box-shadow:0 0 60px rgba(0,0,0,.6);background:#050505;overflow-y:auto}
+    /* translateX(0) e nao `none`: interpolar entre dois translateX e bem definido
+       em qualquer motor; pra `none` alguns pulam a animacao. */
+    .side.open{transform:translateX(0)}
+    .side .foot{display:block}
+    .side .close-x{display:flex;align-items:center;justify-content:center;gap:8px;margin:2px 4px 10px;padding:10px;
+      border:1px solid var(--border-vis);border-radius:9px;color:var(--t3);font:600 10.5px/1 var(--fm);letter-spacing:.1em;text-transform:uppercase;cursor:pointer}
+    .nav-a{padding:13px 12px;font-size:14.5px}
+    .scrim{display:block;position:fixed;inset:0;z-index:85;background:rgba(2,2,2,.6);backdrop-filter:blur(2px);opacity:0;pointer-events:none;transition:opacity .22s}
+    .scrim.on{opacity:1;pointer-events:auto}
+    .main{padding:18px 16px 40px}
+    .kb{grid-template-columns:repeat(6,240px)}
+    /* Estatico no fim da pagina: fixo, o selo tapava o texto no celular. */
+    .demo-badge{position:static;display:block;text-align:center;margin:26px 16px 0;backdrop-filter:none}
+    #help{bottom:16px;right:16px}
+  }
+  .side .close-x{display:none}
   /* ── guia de uso ── */
   #ov{position:fixed;inset:0;background:rgba(2,2,2,.84);backdrop-filter:blur(6px);z-index:100;display:flex;align-items:center;justify-content:center;padding:20px;overflow:auto}
   #ov.hide{display:none}
@@ -162,9 +195,15 @@
 </style>
 </head>
 <body>
+<div class="topbar">
+  <button class="menu-btn" onclick="toggleMenu()" aria-label="Abrir menu"><span class="bars"><i></i><i></i><i></i></span> Menu</button>
+  <div class="tb-t">Marja App<span>sistema da rua · demo</span></div>
+</div>
+<div class="scrim" id="scrim" onclick="closeMenu()"></div>
 <div class="app">
-  <aside class="side">
+  <aside class="side" id="side">
     <div class="brand"><div class="dot">M</div><div class="nm">Marja App<span>sistema da rua · demo</span></div></div>
+    <div class="close-x" onclick="closeMenu()">✕ Fechar menu</div>
     <a class="nav-a" data-v="home"><span class="ic">◈</span> Visão do dia</a>
     <a class="nav-a" data-v="agenda"><span class="ic">✎</span> Agendamento</a>
     <a class="nav-a" data-v="cirurgias"><span class="ic">▤</span> Cirurgias</a>
@@ -228,7 +267,9 @@ let cur = {v:'home', cir:null, gClosed:{}};
 const $=s=>document.querySelector(s);
 function toast(h){const t=$('#toast');t.innerHTML=h;t.classList.add('show');clearTimeout(t._x);t._x=setTimeout(()=>t.classList.remove('show'),3400)}
 function pill(c){return c.tipo==='urgência'?'<span class="pill urg">urgência</span>':'<span class="pill">eletiva</span>'}
-function nav(v){cur.v=v;cur.cir=null;render()}
+function nav(v){cur.v=v;cur.cir=null;closeMenu();render()}
+function toggleMenu(){const s=document.getElementById('side');s.classList.toggle('open');document.getElementById('scrim').classList.toggle('on',s.classList.contains('open'))}
+function closeMenu(){const s=document.getElementById('side');if(!s)return;s.classList.remove('open');document.getElementById('scrim').classList.remove('on')}
 document.querySelectorAll('.nav-a').forEach(a=>a.addEventListener('click',()=>nav(a.dataset.v)));
 
 function head(t,s){return `<div class="top"><div><h1>${t}</h1><div class="sub">${s}</div></div><div class="chips"><span class="chip on">Hoje · 5 cirurgias</span><span class="chip">JF</span><span class="chip">Ubá</span></div></div>`}
