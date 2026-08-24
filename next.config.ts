@@ -89,9 +89,13 @@ const nextConfig: NextConfig = {
         // inteiro quebraria as landing pages, os embeds e o SkillTree, e isso
         // seria outra mudanca, com outro dono e outro teste.
         //
-        // frame-ancestors 'none' mata clickjacking; a CSP sem 'unsafe-eval'
-        // limita o estrago de um XSS; nostore impede que a lista de leads fique
-        // no cache do navegador de quem usou um computador emprestado.
+        // A CSP NAO mora aqui: ela precisa de um nonce diferente por resposta,
+        // entao e montada no middleware (`painelComCsp`). Um header estatico com
+        // `script-src 'self'` bloqueia os scripts inline onde o Next entrega o
+        // payload dos Server Components, e a pagina fica preta - ja aconteceu.
+        //
+        // `no-store` impede que a lista de leads fique no cache do navegador de
+        // quem usou um computador emprestado.
         source: "/leads/:path*",
         headers: [
           { key: "X-Robots-Tag", value: "noindex, nofollow" },
@@ -110,23 +114,6 @@ const nextConfig: NextConfig = {
           {
             key: "Permissions-Policy",
             value: "camera=(), microphone=(), geolocation=(), payment=()",
-          },
-          {
-            key: "Content-Security-Policy",
-            value: [
-              "default-src 'self'",
-              // 'unsafe-inline' em style porque o Next injeta CSS inline no SSR.
-              // Em script ele NAO entra: o que roda aqui vem de /_next.
-              "style-src 'self' 'unsafe-inline'",
-              "script-src 'self'",
-              "img-src 'self' data:",
-              "font-src 'self' data:",
-              "connect-src 'self'",
-              "form-action 'self'",
-              "frame-ancestors 'none'",
-              "base-uri 'none'",
-              "object-src 'none'",
-            ].join("; "),
           },
         ],
       },
