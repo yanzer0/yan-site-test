@@ -55,8 +55,19 @@ export const LIMITE_LOGIN_CONTA: Limite = { tentativas: 5, janelaMinutos: 15 };
 /** Mais alto que o da conta: um escritório inteiro pode sair pelo mesmo IP. */
 export const LIMITE_LOGIN_ORIGEM: Limite = { tentativas: 20, janelaMinutos: 15 };
 
-/** Cadastro conta ACERTOS também: o abuso aqui é criar contas, não errar senha. */
-export const LIMITE_CADASTRO_ORIGEM: Limite = { tentativas: 3, janelaMinutos: 60 };
+/**
+ * Cadastro conta ACERTOS também: o abuso aqui é criar contas, não errar senha.
+ *
+ * Dez e não três: o time inteiro sai pelo mesmo IP do escritório, e três é o
+ * tamanho do time - uma senha recusada por ser curta já estouraria a cota e
+ * travaria o cadastro de todo mundo por uma hora. Com o teto baixo o freio
+ * atrapalharia exatamente quem ele deveria proteger.
+ *
+ * O teto mais alto custa pouco porque conta criada aqui nasce `pendente` e não
+ * abre nada: o pior abuso possível é encher uma tabela de contas inúteis, não
+ * entrar no painel.
+ */
+export const LIMITE_CADASTRO_ORIGEM: Limite = { tentativas: 10, janelaMinutos: 60 };
 
 /**
  * Cache por processo. A instância serverless atende várias requisições, então

@@ -40,6 +40,7 @@ const ERROS: Record<string, string> = {
 
 const AVISOS: Record<string, string> = {
   cadastro: "Cadastro recebido. Assim que for aprovado, você entra com esse e-mail e senha.",
+  dono: "Conta criada como dona do painel, já aprovada. Entre com esse e-mail e senha.",
   saiu: "Você saiu.",
 };
 

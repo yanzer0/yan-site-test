@@ -48,16 +48,67 @@ export interface NovaConta {
   readonly estado: EstadoUsuario;
 }
 
-export async function criarUsuario(conta: NovaConta): Promise<string> {
+export interface ContaCriada {
+  readonly id: string;
+  readonly papel: PapelUsuario;
+  readonly estado: EstadoUsuario;
+}
+
+/**
+ * Cria a conta, decidindo NO BANCO se ela é a primeira.
+ *
+ * O gatilho é "o painel está SEM DONO", e não "a tabela está vazia". A diferença
+ * importa num caso real: se a conta de admin for apagada e sobrarem só contas
+ * pendentes, a tabela não está vazia, ninguém pode aprovar ninguém e o painel
+ * trava sem saída pela interface. Com "sem dono", o próximo cadastro reassume e
+ * o sistema se recupera sozinho.
+ *
+ * Isso não afrouxa nada: chegar a zero admins aprovados exige mexer no banco, e
+ * quem consegue apagar o admin já consegue se inserir como um. A ação de
+ * aprovação recusa que alguém mude o próprio acesso, então o último dono não
+ * tem como se derrubar pela tela.
+ *
+ * 🔴 A decisão vive DENTRO da mesma instrução do INSERT, e não numa consulta
+ * anterior seguida de um INSERT. Consultar antes e inserir depois abre a janela
+ * em que dois cadastros simultâneos leem o painel sem dono e viram dois donos.
+ *
+ * Limite honesto do que uma instrução garante: dois INSERTs que entrem no mesmo
+ * instante ainda podem enxergar a tabela vazia sob READ COMMITTED. O resultado
+ * seria dois admins, nunca um invasor no lugar do dono, e a probabilidade real
+ * com uma pessoa cadastrando exige colisão em milissegundos.
+ *
+ * `PAINEL_ADMIN_EMAIL` continua valendo quando existe: ela FORÇA quem é o dono
+ * e desliga a promoção automática. Quem quiser travar isso, trava.
+ */
+export async function criarUsuario(conta: NovaConta): Promise<ContaCriada> {
   const emailNorm = normalizarEmail(conta.email);
 
   try {
+    if (conta.papel === "admin") {
+      // Caminho do e-mail declarado no ambiente: o papel já veio decidido.
+      const r = await sql`
+        INSERT INTO usuarios_painel (nome, email, email_norm, senha_hash, papel, estado)
+        VALUES (${conta.nome}, ${conta.email}, ${emailNorm}, ${conta.senhaHash}, 'admin', 'aprovado')
+        RETURNING id, papel, estado
+      `;
+      const x = r.rows[0];
+      return { id: String(x.id), papel: x.papel as PapelUsuario, estado: x.estado as EstadoUsuario };
+    }
+
     const r = await sql`
       INSERT INTO usuarios_painel (nome, email, email_norm, senha_hash, papel, estado)
-      VALUES (${conta.nome}, ${conta.email}, ${emailNorm}, ${conta.senhaHash}, ${conta.papel}, ${conta.estado})
-      RETURNING id
+      SELECT ${conta.nome}, ${conta.email}, ${emailNorm}, ${conta.senhaHash},
+             CASE WHEN orfao.sim THEN 'admin'    ELSE 'membro'   END,
+             CASE WHEN orfao.sim THEN 'aprovado' ELSE 'pendente' END
+        FROM (
+          SELECT NOT EXISTS (
+            SELECT 1 FROM usuarios_painel WHERE papel = 'admin' AND estado = 'aprovado'
+          ) AS sim
+        ) AS orfao
+      RETURNING id, papel, estado
     `;
-    return String(r.rows[0].id);
+    const x = r.rows[0];
+    return { id: String(x.id), papel: x.papel as PapelUsuario, estado: x.estado as EstadoUsuario };
   } catch (causa) {
     // 23505 = unique_violation. É a corrida entre duas submissões do mesmo
     // e-mail, e quem decide é o índice do banco, não uma consulta anterior que

@@ -32,6 +32,7 @@ const SOURCE = "useinfuser.com/diagnostico";
 /** Verbo no passado, vocabulário fechado. Comando não entra aqui. */
 const TYPE_LEAD_REGISTRADO = "br.com.useinfuser.diagnostico.lead.registered";
 const TYPE_CADASTRO_SOLICITADO = "br.com.useinfuser.painel.cadastro.requested";
+const TYPE_DONO_DEFINIDO = "br.com.useinfuser.painel.dono.claimed";
 
 export interface DadosLeadRegistrado {
   readonly leadId: string;
@@ -153,6 +154,63 @@ export async function publicarCadastroSolicitado(dados: DadosCadastroSolicitado)
       source: "painel-leads",
       severity: "warning",
       message: `Cadastro novo esperando aprovacao: ${primeiroNome}. Aprovar em ${envelope.data.aprovarEm}`,
+    });
+    return;
+  }
+
+  try {
+    const resposta = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/cloudevents+json" },
+      body: JSON.stringify(envelope),
+    });
+    if (!resposta.ok) {
+      console.error(`[evento] canal respondeu ${resposta.status} para ${envelope.type}`);
+    }
+  } catch {
+    console.error(`[evento] falha ao publicar ${envelope.type}`);
+  }
+}
+
+/**
+ * Avisa que o painel ganhou dono.
+ *
+ * Acontece UMA vez na vida do sistema: o primeiro cadastro vira admin sozinho,
+ * sem ninguém confirmar. É a coisa de maior consequência que este código faz
+ * por conta própria, então ela grita.
+ *
+ * 🔴 `severity: warning` e não `info` de propósito. Se o dono que apareceu não
+ * for quem devia, isso precisa ser notado no mesmo minuto - depois de virar
+ * admin, a pessoa pode bloquear todo mundo, inclusive quem construiu o painel.
+ * O conserto existe (apagar a linha em `usuarios_painel` e cadastrar de novo),
+ * mas depende de alguém perceber.
+ */
+export async function publicarDonoDefinido(dados: DadosCadastroSolicitado): Promise<void> {
+  const primeiroNome = dados.nome.split(/\s+/)[0] ?? "alguem";
+
+  const envelope = {
+    specversion: "1.0" as const,
+    id: randomUUID(),
+    source: SOURCE,
+    type: TYPE_DONO_DEFINIDO,
+    subject: dados.usuarioId,
+    time: new Date().toISOString(),
+    datacontenttype: "application/json" as const,
+    data: {
+      ok: true as const,
+      usuarioId: dados.usuarioId,
+      primeiroNome,
+      painel: "https://useinfuser.com/leads/equipe",
+    },
+  };
+
+  const url = process.env.LEADS_EVENTO_URL;
+
+  if (!url) {
+    await alertar({
+      source: "painel-leads",
+      severity: "warning",
+      message: `PAINEL GANHOU DONO: a primeira conta (${primeiroNome}) virou admin. Se nao foi voce, apague a conta em usuarios_painel AGORA e cadastre de novo. Equipe: ${envelope.data.painel}`,
     });
     return;
   }

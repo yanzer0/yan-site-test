@@ -20,6 +20,7 @@ import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 import {
+  type ContaCriada,
   contaParaLogin,
   criarSessao,
   criarUsuario,
@@ -29,7 +30,7 @@ import {
   encerrarSessao,
   type EstadoUsuario,
 } from "@/lib/diagnostico/auth-db";
-import { publicarCadastroSolicitado } from "@/lib/diagnostico/eventos";
+import { publicarCadastroSolicitado, publicarDonoDefinido } from "@/lib/diagnostico/eventos";
 import { normalizarEmail, pareceEmail } from "@/lib/diagnostico/normalizar";
 import {
   etiquetar,
@@ -94,20 +95,29 @@ export async function cadastrar(dados: FormData): Promise<void> {
   const veredito = await podeCadastrar(origem);
   if (veredito.bloqueado) voltar("cadastrar", "muitos_cadastros", veredito.esperarSegundos);
 
-  // O e-mail do admin nasce aprovado; qualquer outro nasce pendente. É o único
-  // jeito de sair do problema do ovo e da galinha sem abrir um backdoor: quem
-  // controla a variável de ambiente é quem controla o deploy, e não existe
-  // caminho pela rede que promova ninguém a admin.
-  const ehAdmin = emailDoAdmin().length > 0 && normalizarEmail(email) === emailDoAdmin();
+  // Quem é o dono do painel, em duas regras que não se contradizem:
+  //
+  //   1. Se `PAINEL_ADMIN_EMAIL` existe, ELA manda. Quem quiser travar quem
+  //      pode ser dono, configura e pronto.
+  //   2. Sem ela, o PRIMEIRO cadastro vira dono (decisão do Yan, 24/08). O
+  //      banco é quem decide isso, dentro do INSERT - ver `criarUsuario`.
+  //
+  // 🔴 Risco aceito e declarado: sem a variável, existe uma janela entre o
+  // deploy e o primeiro cadastro em que quem descobrisse esta URL viraria dono.
+  // A tabela vazia é o gatilho, então a janela fecha sozinha no primeiro
+  // cadastro - e o alerta abaixo avisa na hora em que ela fecha, para que um
+  // dono inesperado seja notado no mesmo minuto em vez de meses depois.
+  const declarado = emailDoAdmin();
+  const ehAdminDeclarado = declarado.length > 0 && normalizarEmail(email) === declarado;
 
-  let usuarioId: string;
+  let conta: ContaCriada;
   try {
-    usuarioId = await criarUsuario({
+    conta = await criarUsuario({
       nome,
       email,
       senhaHash: await gerarHash(senha),
-      papel: ehAdmin ? "admin" : "membro",
-      estado: ehAdmin ? "aprovado" : "pendente",
+      papel: ehAdminDeclarado ? "admin" : "membro",
+      estado: ehAdminDeclarado ? "aprovado" : "pendente",
     });
   } catch (erro) {
     await registrarTentativa([origem], "cadastro", false);
@@ -123,10 +133,18 @@ export async function cadastrar(dados: FormData): Promise<void> {
 
   await registrarTentativa([origem], "cadastro", true);
 
-  // O Yan precisa saber que tem gente esperando. Sem aviso, o cadastro fica
-  // parado até alguém lembrar de olhar - que é exatamente o problema que o
-  // painel de leads existe para resolver, repetido numa tela nova.
-  if (!ehAdmin) await publicarCadastroSolicitado({ usuarioId, nome });
+  if (conta.papel === "admin") {
+    // Nasceu um dono. Isso acontece UMA vez na vida do painel, e é a coisa mais
+    // importante que este sistema faz sem pedir confirmação a ninguém - então
+    // avisa, para que um dono inesperado apareça no mesmo minuto.
+    await publicarDonoDefinido({ usuarioId: conta.id, nome });
+    redirect("/leads/entrar?aba=entrar&aviso=dono");
+  }
+
+  // Tem gente esperando. Sem aviso, o cadastro fica parado até alguém lembrar
+  // de olhar - que é o mesmo problema que o painel de leads existe para
+  // resolver, repetido numa tela nova.
+  await publicarCadastroSolicitado({ usuarioId: conta.id, nome });
 
   redirect("/leads/entrar?aba=entrar&aviso=cadastro");
 }
