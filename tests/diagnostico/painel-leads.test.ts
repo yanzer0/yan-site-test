@@ -10,8 +10,6 @@
 
 import { describe, expect, it, beforeEach, afterEach } from "vitest";
 
-import { conferirSenha, criticarSenha, gerarHash, TAMANHO_MINIMO_SENHA } from "@/lib/diagnostico/senha";
-import { etiqueta, ipDaRequisicao } from "@/lib/diagnostico/rate-limit";
 
 import { envelopeLeadRegistrado } from "@/lib/diagnostico/eventos";
 import { paraContexto, paraCsv } from "@/lib/diagnostico/leads-apresentacao";

@@ -53,6 +53,7 @@ const TABELAS_ESPERADAS = [
   "usuarios_painel",
   "sessoes_painel",
   "tentativas_acesso",
+  "painel_config",
 ];
 
 /**

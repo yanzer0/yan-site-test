@@ -32,13 +32,15 @@ import {
 import { publicarCadastroSolicitado } from "@/lib/diagnostico/eventos";
 import { normalizarEmail, pareceEmail } from "@/lib/diagnostico/normalizar";
 import {
-  etiqueta,
+  etiquetar,
+  etiquetasDaTentativa,
   ipDaRequisicao,
   limparAntigas,
   limparFalhasDaConta,
   podeCadastrar,
   podeTentarLogin,
   registrarTentativa,
+  segredoDoFreio,
 } from "@/lib/diagnostico/rate-limit";
 import { adminLogado } from "@/lib/diagnostico/sessao";
 import { conferirSenha, criticarSenha, gastarTempoDeSenha, gerarHash } from "@/lib/diagnostico/senha";
@@ -87,7 +89,7 @@ export async function cadastrar(dados: FormData): Promise<void> {
   const critica = criticarSenha(senha, email);
   if (!critica.ok) voltar("cadastrar", "senha_fraca");
 
-  const origem = etiqueta("origem", ipDaRequisicao(await headers()));
+  const origem = etiquetar(await segredoDoFreio(), "origem", ipDaRequisicao(await headers()));
 
   const veredito = await podeCadastrar(origem);
   if (veredito.bloqueado) voltar("cadastrar", "muitos_cadastros", veredito.esperarSegundos);
@@ -139,8 +141,7 @@ export async function entrar(dados: FormData): Promise<void> {
 
   if (!email || !senha) voltar("entrar", "campos");
 
-  const conta = etiqueta("conta", normalizarEmail(email));
-  const origem = etiqueta("origem", ipDaRequisicao(await headers()));
+  const { conta, origem } = await etiquetasDaTentativa(normalizarEmail(email), await headers());
 
   // 🔴 O freio roda ANTES do hash. Conferir a senha custa 128MB e meio segundo,
   // então checar depois transformaria o login na ferramenta de negação de

@@ -63,3 +63,30 @@ CREATE TABLE IF NOT EXISTS tentativas_acesso (
 
 CREATE INDEX IF NOT EXISTS tentativas_acesso_janela_idx
   ON tentativas_acesso (chave, acao, ocorreu_em DESC);
+
+-- ─────────────────────────────────────────────────────────────
+-- painel_config: segredos que o sistema gera para si mesmo
+-- ─────────────────────────────────────────────────────────────
+-- O HMAC que anonimiza e-mail e IP no freio precisa de uma chave. Ela nasce
+-- AQUI, do `gen_random_bytes` do proprio Postgres, em vez de virar mais uma
+-- variavel de ambiente para alguem configurar a mao.
+--
+-- Guardar essa chave fora do banco nao protegeria nada de verdade: o e-mail ja
+-- esta em claro em `usuarios_painel` (precisa estar, para o login funcionar) e
+-- o telefone dos leads esta em claro em `leads`. Quem chegasse em
+-- `tentativas_acesso` ja teria as outras duas. O que a anonimizacao evita e
+-- outra coisa, mais modesta e ainda util: que um backup parcial, um log de
+-- query ou um dump dessa tabela sozinha carreguem uma lista de quem tentou
+-- entrar de onde.
+CREATE TABLE IF NOT EXISTS painel_config (
+  chave     TEXT PRIMARY KEY,
+  valor     TEXT        NOT NULL,
+  criado_em TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+-- `ON CONFLICT DO NOTHING` e o que torna isto idempotente E estavel: rodar a
+-- migracao de novo nao gera chave nova, e chave nova zeraria todos os
+-- contadores de uma vez.
+INSERT INTO painel_config (chave, valor)
+VALUES ('freio_hmac', encode(gen_random_bytes(32), 'hex'))
+ON CONFLICT (chave) DO NOTHING;

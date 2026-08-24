@@ -11,7 +11,7 @@
 
 import { describe, expect, it, beforeEach, afterEach } from "vitest";
 
-import { etiqueta, ipDaRequisicao } from "@/lib/diagnostico/rate-limit";
+import { etiquetar, ipDaRequisicao } from "@/lib/diagnostico/rate-limit";
 import {
   conferirSenha,
   criticarSenha,
@@ -21,6 +21,10 @@ import {
 } from "@/lib/diagnostico/senha";
 
 const SENHA = "cavalo-bateria-grampo-correto";
+const SEGREDO = "segredo-de-teste-do-painel";
+
+/** A chave vem do banco em produção; aqui ela entra por parâmetro. */
+const etiqueta = (tipo: "conta" | "origem", valor: string) => etiquetar(SEGREDO, tipo, valor);
 
 beforeEach(() => {
   process.env.PAINEL_SEGREDO = "segredo-de-teste-do-painel";
@@ -120,11 +124,6 @@ describe("o freio de tentativas", () => {
   it("separa o balde da conta do balde da origem", () => {
     // Cota única faria o primeiro que chega monopolizar e derrubar todo mundo.
     expect(etiqueta("conta", "mesmo-valor")).not.toBe(etiqueta("origem", "mesmo-valor"));
-  });
-
-  it("fecha por padrão sem o segredo configurado", () => {
-    delete process.env.PAINEL_SEGREDO;
-    expect(() => etiqueta("conta", "yan@infuser.com")).toThrow();
   });
 
   it("lê o IP do cabeçalho que a Vercel escreve", () => {

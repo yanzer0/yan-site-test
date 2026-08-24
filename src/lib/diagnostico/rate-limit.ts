@@ -21,8 +21,17 @@
  * fica com o freio armado pelos quinze minutos seguintes, e o freio passa a
  * atrapalhar quem ele deveria proteger.
  *
- * Env:
- *   PAINEL_SEGREDO  (sensível) — chave do HMAC que anonimiza e-mail e IP
+ * A chave do HMAC que anonimiza e-mail e IP NASCE NO BANCO, gerada pelo
+ * Postgres na migração (`painel_config`). Ela não é variável de ambiente porque
+ * seria mais um passo de configuração sem ganho real: o e-mail já está em claro
+ * em `usuarios_painel` e o telefone dos leads em `leads`, então quem chegasse
+ * aqui já teria as outras duas. O que a anonimização evita é mais modesto e
+ * ainda vale: um backup parcial ou um dump só desta tabela não vira lista de
+ * quem tentou entrar de onde.
+ *
+ * Env (opcional):
+ *   PAINEL_SEGREDO  — sobrepõe a chave do banco. Existe para rotação e para o
+ *                     teste rodar sem banco; não precisa estar configurada.
  */
 
 import { createHmac } from "node:crypto";
@@ -49,25 +58,61 @@ export const LIMITE_LOGIN_ORIGEM: Limite = { tentativas: 20, janelaMinutos: 15 }
 /** Cadastro conta ACERTOS também: o abuso aqui é criar contas, não errar senha. */
 export const LIMITE_CADASTRO_ORIGEM: Limite = { tentativas: 3, janelaMinutos: 60 };
 
-function segredo(): string {
-  const s = process.env.PAINEL_SEGREDO;
-  if (!s) {
-    // Fecha por padrão. Sem o segredo, a alternativa seria guardar IP em claro
-    // ou rodar sem freio, e as duas são piores que a rota recusar.
-    throw new Error("PAINEL_SEGREDO ausente");
+/**
+ * Cache por processo. A instância serverless atende várias requisições, então
+ * o segredo é lido do banco uma vez e reusado; sem isto, todo login pagaria uma
+ * consulta a mais só para montar uma etiqueta.
+ */
+let segredoEmCache: string | null = null;
+
+export async function segredoDoFreio(): Promise<string> {
+  const daEnv = process.env.PAINEL_SEGREDO;
+  if (daEnv) return daEnv;
+
+  if (segredoEmCache) return segredoEmCache;
+
+  const r = await sql`SELECT valor FROM painel_config WHERE chave = 'freio_hmac'`;
+  const valor = r.rows[0]?.valor;
+
+  if (!valor) {
+    // Fecha por padrão. Sem chave, a alternativa seria guardar IP em claro ou
+    // rodar sem freio, e as duas são piores que a rota recusar. Na prática só
+    // acontece se a migração não tiver rodado.
+    throw new Error("chave do freio ausente: rodar aplicar-schema.mjs");
   }
-  return s;
+
+  segredoEmCache = String(valor);
+  return segredoEmCache;
 }
 
 /**
  * A identidade vira uma etiqueta irreversível.
  *
- * Contar tentativas não exige saber de quem elas são. Guardar o e-mail ou o IP
- * em claro criaria uma lista de quem tentou entrar de onde, que é dado pessoal
- * que o freio não precisa ter.
+ * Contar tentativas não exige saber de quem elas são. Função pura, recebendo o
+ * segredo por parâmetro: assim ela é testável sem banco e sem ambiente, e quem
+ * chama decide de onde a chave vem.
  */
-export function etiqueta(tipo: "conta" | "origem", valor: string): string {
-  return `${tipo}:${createHmac("sha256", segredo()).update(valor.toLowerCase()).digest("hex")}`;
+export function etiquetar(segredo: string, tipo: "conta" | "origem", valor: string): string {
+  return `${tipo}:${createHmac("sha256", segredo).update(valor.toLowerCase()).digest("hex")}`;
+}
+
+/**
+ * As duas etiquetas de uma tentativa de login, numa chamada.
+ *
+ * Existe para que nenhum caminho monte só uma das duas: cota de conta sem cota
+ * de origem deixa passar a varredura com mil e-mails diferentes, e cota de
+ * origem sem cota de conta deixa um escritório inteiro derrubar o login de
+ * todos os colegas.
+ */
+export async function etiquetasDaTentativa(
+  email: string,
+  cabecalhos: Headers,
+): Promise<{ conta: string; origem: string }> {
+  const segredo = await segredoDoFreio();
+  return {
+    conta: etiquetar(segredo, "conta", email),
+    origem: etiquetar(segredo, "origem", ipDaRequisicao(cabecalhos)),
+  };
 }
 
 /**
