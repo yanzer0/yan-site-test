@@ -84,6 +84,53 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       {
+        // Area autenticada com dado pessoal de prospect. Os cabecalhos ficam
+        // ESCOPADOS aqui em vez de globais de proposito: uma CSP no site
+        // inteiro quebraria as landing pages, os embeds e o SkillTree, e isso
+        // seria outra mudanca, com outro dono e outro teste.
+        //
+        // frame-ancestors 'none' mata clickjacking; a CSP sem 'unsafe-eval'
+        // limita o estrago de um XSS; nostore impede que a lista de leads fique
+        // no cache do navegador de quem usou um computador emprestado.
+        source: "/leads/:path*",
+        headers: [
+          { key: "X-Robots-Tag", value: "noindex, nofollow" },
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "X-Frame-Options", value: "DENY" },
+          // `same-origin` e nao `no-referrer`: sem Referer o Next nao consegue
+          // validar a origem de uma Server Action e responde 500 em todo POST
+          // (`new URL('null')`). `same-origin` manda o Referer so para o
+          // proprio site, entao o vazamento para fora continua fechado.
+          { key: "Referrer-Policy", value: "same-origin" },
+          { key: "Cache-Control", value: "no-store, max-age=0, must-revalidate" },
+          {
+            key: "Strict-Transport-Security",
+            value: "max-age=63072000; includeSubDomains; preload",
+          },
+          {
+            key: "Permissions-Policy",
+            value: "camera=(), microphone=(), geolocation=(), payment=()",
+          },
+          {
+            key: "Content-Security-Policy",
+            value: [
+              "default-src 'self'",
+              // 'unsafe-inline' em style porque o Next injeta CSS inline no SSR.
+              // Em script ele NAO entra: o que roda aqui vem de /_next.
+              "style-src 'self' 'unsafe-inline'",
+              "script-src 'self'",
+              "img-src 'self' data:",
+              "font-src 'self' data:",
+              "connect-src 'self'",
+              "form-action 'self'",
+              "frame-ancestors 'none'",
+              "base-uri 'none'",
+              "object-src 'none'",
+            ].join("; "),
+          },
+        ],
+      },
+      {
         // Demo de cliente, nao pagina publica de marketing: fica acessivel por link
         // direto mas fora dos buscadores.
         source: "/demodome",
