@@ -151,6 +151,7 @@ footer{border-top:1px solid var(--linha);padding:18px 0;font-size:12px;color:var
 
 <nav>
   <div class="wrap">
+    <button class="tab" data-p="atende">Atendimento</button>
     <button class="tab on" data-p="mapa">Consulta de território</button>
     <button class="tab" data-p="visita">Ficha de visita</button>
     <button class="tab" data-p="follow">Acompanhamento do lead</button>
@@ -269,6 +270,87 @@ footer{border-top:1px solid var(--linha);padding:18px 0;font-size:12px;color:var
     </div>
   </section>
 
+<!-- ATENDIMENTO:inicio -->
+<style id="at-css">
+#p-atende h2{margin-bottom:4px}
+.at-grid{display:grid;grid-template-columns:340px 1fr;gap:18px;align-items:start}
+.at-form .bloco:first-child{border-top:0}
+.at-campo{margin-bottom:15px}
+.at-campo > label{display:block;font-size:11.5px;text-transform:uppercase;letter-spacing:.07em;
+  color:var(--tinta-fraca);font-weight:700;margin-bottom:7px}
+.at-chips{display:flex;flex-wrap:wrap;gap:6px}
+.at-chip{font:inherit;font-size:13px;cursor:pointer;background:var(--papel);color:var(--tinta);
+  border:1px solid var(--linha);border-radius:999px;padding:7px 13px}
+.at-chip:hover{border-color:var(--verde-500)}
+.at-chip[aria-pressed="true"]{background:var(--verde-700);border-color:var(--verde-700);color:#fff;
+  font-weight:600}
+.at-form textarea{width:100%;font:inherit;font-size:13.5px;padding:9px 11px;border-radius:8px;
+  border:1px solid var(--linha);background:var(--papel);color:var(--tinta);resize:vertical}
+.at-acoes{display:flex;gap:8px;margin-top:4px}
+
+.at-vazio{padding:26px 22px;text-align:center;color:var(--tinta-fraca);font-size:14px;line-height:1.6}
+.at-cabeca{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.at-conta{font-size:22px;font-weight:700;color:var(--verde-700)}
+.at-conta span{font-size:14px;font-weight:400;color:var(--tinta-fraca)}
+
+.at-mapa{position:relative;background:var(--creme);border:1px solid var(--linha);border-radius:10px;
+  padding:8px;margin-bottom:14px}
+.at-mapa svg{display:block;width:100%;height:250px}
+.at-mapa .fora{fill:#E6E6E1;stroke:#DADAD4;stroke-width:.4}
+.at-mapa .dentro{fill:var(--verde-500);stroke:var(--verde-900);stroke-width:.5}
+
+.at-lista{display:flex;flex-direction:column;gap:10px}
+.at-item{border:1px solid var(--linha);border-radius:10px;padding:13px 15px;background:var(--papel)}
+.at-item.top{border-color:var(--verde-500);box-shadow:0 0 0 2px rgba(95,109,67,.12)}
+.at-item h4{margin:0 0 3px;font-size:15.5px;color:var(--tinta)}
+.at-end{font-size:13px;color:var(--verde-700);font-weight:600;margin-bottom:8px}
+.at-fatos{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:9px}
+.at-fato{font-size:12px;background:var(--creme);border:1px solid var(--linha);border-radius:6px;
+  padding:4px 9px;color:var(--tinta)}
+.at-dono{border-top:1px dashed var(--linha);padding-top:9px;font-size:12.5px;color:var(--tinta)}
+.at-dono b{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.06em;
+  color:var(--tinta-fraca);margin-bottom:5px}
+.at-dono .l{display:flex;justify-content:space-between;gap:10px;padding:2px 0}
+.at-selo{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.08em;background:var(--aviso);
+  color:#7A5B12;border-radius:4px;padding:2px 6px;margin-left:6px;vertical-align:middle}
+
+.at-resumo{margin-top:14px}
+.at-resumo p{margin:0;font-size:13.5px;line-height:1.65;color:var(--tinta)}
+.at-limite{margin-top:12px;font-size:12.5px;line-height:1.6;color:var(--tinta-fraca)}
+@media(max-width:900px){ .at-grid{grid-template-columns:1fr} .at-mapa svg{height:190px} }
+</style>
+
+<section class="panel" id="p-atende">
+  <h2>Atendimento</h2>
+  <p class="sub">O cliente sentou na mesa. Levante o que ele procura e mostre na tela, com o mapa da
+    cidade e os dados da carteira cruzados na hora.</p>
+
+  <div class="at-grid">
+    <div class="card at-form">
+      <div class="card-h">O que ele procura</div>
+      <div class="card-b" id="at-campos"></div>
+      <div class="bloco">
+        <div class="at-campo">
+          <label for="at-notas">O que ele falou</label>
+          <textarea id="at-notas" rows="3" placeholder="Ex.: quer abrir uma farmacia, precisa de movimento e estacionamento na porta"></textarea>
+        </div>
+        <div class="at-acoes">
+          <button type="button" class="go" id="at-buscar">Mostrar na tela</button>
+          <button type="button" class="ghost" id="at-limpar">Limpar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" id="at-saida">
+      <div class="card-h"><span>O que atende o perfil</span><span id="at-cont" style="color:var(--tinta-fraca);font-weight:400"></span></div>
+      <div class="card-b" id="at-corpo">
+        <p class="at-vazio">Responda ao lado e toque em <b>Mostrar na tela</b>.<br>
+          O sistema cruza as 283 quadras de Palmas com o perfil e mostra o que serve.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ATENDIMENTO:fim -->
 </main>
 
 <footer class="wrap">
@@ -569,6 +651,192 @@ document.getElementById("btn-rodar").onclick = () => {
 
 desenhar(); resetar(); pintarImovel(); pintarFluxo(PASSOS.length);
 </script>
+<!-- ATENDIMENTO-JS:inicio -->
+<script id="at-js">
+(function(){
+  "use strict";
+  // Este bloco fica DEPOIS do script da demo de proposito: DADOS e `const`, e ler uma const antes
+  // da declaracao LANCA (zona morta temporal) em vez de devolver undefined. Um `typeof` aqui como
+  // guarda matava a funcao inteira em silencio - foi o defeito da primeira versao.
+  var QUADRAS = DADOS.mapa.quadras, DOSSIES = DADOS.dossies, VB = DADOS.mapa.viewBox;
+
+  // Finalidade -> usos do solo que a servem. Sai do campo USO do KML da prefeitura, nao de opiniao.
+  var FINALIDADES = [
+    { id: "moradia",     rotulo: "Moradia",      usos: ["Residencial"] },
+    { id: "comercio",    rotulo: "Comércio",     usos: ["Comercial", "Comercial e Serviço Urbano", "Local Comercial"] },
+    { id: "servico",     rotulo: "Serviço",      usos: ["Serviço Regional", "Comercial e Serviço Urbano", "Área de Apoio"] },
+    { id: "institucional", rotulo: "Institucional", usos: ["Institucional"] }
+  ];
+  var PORTES = [
+    { id: "p", rotulo: "Até 300 m²",      min: 0,    max: 300 },
+    { id: "m", rotulo: "300 a 600 m²",    min: 300,  max: 600 },
+    { id: "g", rotulo: "600 a 1.000 m²",  min: 600,  max: 1000 },
+    { id: "xg", rotulo: "Acima de 1.000", min: 1000, max: 1e9 }
+  ];
+  var TIPOS = ["Lote", "Terreno", "Casa", "Apartamento", "Sala comercial", "Galpão"];
+  var REGIOES = ["Norte", "Nordeste", "Noroeste", "Sul", "Sudeste", "Sudoeste"];
+
+  var CAMPOS = [
+    { chave: "finalidade", rotulo: "Finalidade", opcoes: FINALIDADES.map(function(f){ return {id:f.id, rotulo:f.rotulo}; }) },
+    { chave: "tipo",       rotulo: "Tipo de imóvel", opcoes: TIPOS.map(function(t){ return {id:t, rotulo:t}; }) },
+    { chave: "regiao",     rotulo: "Região",     opcoes: REGIOES.map(function(r){ return {id:r, rotulo:r}; }) },
+    { chave: "porte",      rotulo: "Porte do lote", opcoes: PORTES.map(function(p){ return {id:p.id, rotulo:p.rotulo}; }) },
+    { chave: "disponivel", rotulo: "Disponibilidade", opcoes: [{ id: "sim", rotulo: "Só com lote disponível" }] }
+  ];
+
+  var perfil = {};
+
+  function esc(v){
+    return String(v == null ? "" : v).replace(/[&<>"]/g, function(c){
+      return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];
+    });
+  }
+  function moeda(n){ return "R$ " + Number(n).toLocaleString("pt-BR", {maximumFractionDigits:0}); }
+
+  function montarCampos(){
+    var alvo = document.getElementById("at-campos");
+    alvo.innerHTML = CAMPOS.map(function(campo){
+      var chips = campo.opcoes.map(function(o){
+        return '<button type="button" class="at-chip" role="button" aria-pressed="false"' +
+               ' data-campo="' + campo.chave + '" data-valor="' + esc(o.id) + '">' + esc(o.rotulo) + "</button>";
+      }).join("");
+      return '<div class="at-campo"><label>' + esc(campo.rotulo) + '</label><div class="at-chips">' + chips + "</div></div>";
+    }).join("");
+
+    // Um chip por campo: tocar de novo desmarca, que e como o corretor corrige na frente do cliente.
+    alvo.addEventListener("click", function(e){
+      var chip = e.target.closest(".at-chip");
+      if (!chip) return;
+      var campo = chip.getAttribute("data-campo"), valor = chip.getAttribute("data-valor");
+      var jaAtivo = perfil[campo] === valor;
+      Array.prototype.forEach.call(alvo.querySelectorAll('[data-campo="' + campo + '"]'), function(o){
+        o.setAttribute("aria-pressed", "false");
+      });
+      if (jaAtivo) { delete perfil[campo]; return; }
+      perfil[campo] = valor;
+      chip.setAttribute("aria-pressed", "true");
+    });
+  }
+
+  /** As quadras que atendem o perfil, mais forte primeiro. Funcao pura. */
+  function cruzar(p){
+    var fin = FINALIDADES.filter(function(f){ return f.id === p.finalidade; })[0];
+    var porte = PORTES.filter(function(x){ return x.id === p.porte; })[0];
+
+    return QUADRAS.filter(function(q){
+      var d = DOSSIES[q.id];
+      if (!d) return false;
+      if (fin && fin.usos.indexOf(q.usoLabel) < 0) return false;
+      if (p.tipo && d.tipo !== p.tipo) return false;
+      if (p.regiao && q.regiao !== p.regiao) return false;
+      if (porte && (d.areaMedia < porte.min || d.areaMedia >= porte.max)) return false;
+      if (p.disponivel === "sim" && d.disponiveis <= 0) return false;
+      return true;
+    }).sort(function(a, b){
+      var da = DOSSIES[a.id], db = DOSSIES[b.id];
+      if (db.disponiveis !== da.disponiveis) return db.disponiveis - da.disponiveis;
+      return (a.postal || a.nome).localeCompare(b.postal || b.nome, "pt-BR");
+    });
+  }
+
+  function endereco(q){
+    if (q.postal && q.cartorial) return esc(q.postal) + " &middot; " + esc(q.cartorial);
+    return esc(q.postal || q.cartorial || q.nome);
+  }
+
+  function mapa(achadas){
+    var dentro = {};
+    achadas.forEach(function(q){ dentro[q.id] = true; });
+    var formas = QUADRAS.map(function(q){
+      return '<path class="' + (dentro[q.id] ? "dentro" : "fora") + '" d="' + q.d.join(" ") + '"/>';
+    }).join("");
+    return '<div class="at-mapa"><svg viewBox="' + VB.join(" ") + '" preserveAspectRatio="xMidYMid meet"' +
+           ' role="img" aria-label="Quadras que atendem o perfil">' + formas + "</svg></div>";
+  }
+
+  function cartao(q, primeiro){
+    var d = DOSSIES[q.id];
+    var fatos = [
+      d.disponiveis + " de " + d.lotes + " lotes disponíveis",
+      esc(q.usoLabel),
+      d.areaMedia + " m² em média",
+      "IPTU médio " + moeda(d.iptuMedio),
+      esc(d.tipo),
+      esc(q.situacao || "Situação não informada")
+    ].map(function(f){ return '<span class="at-fato">' + f + "</span>"; }).join("");
+
+    var donos = (d.proprietarios || []).map(function(dono){
+      return '<div class="l"><span>' + esc(dono.nome) + "</span><span>" + esc(dono.tel) + "</span></div>";
+    }).join("");
+
+    return '<div class="at-item' + (primeiro ? " top" : "") + '">' +
+      "<h4>" + esc(q.nome) + "</h4>" +
+      '<div class="at-end">' + endereco(q) + "</div>" +
+      '<div class="at-fatos">' + fatos + "</div>" +
+      (donos ? '<div class="at-dono"><b>Proprietários na quadra<span class="at-selo">EXEMPLO</span></b>' + donos + "</div>" : "") +
+      "</div>";
+  }
+
+  function resumo(achadas){
+    var partes = [];
+    var fin = FINALIDADES.filter(function(f){ return f.id === perfil.finalidade; })[0];
+    if (fin) partes.push("procura " + fin.rotulo.toLowerCase());
+    if (perfil.tipo) partes.push(perfil.tipo.toLowerCase());
+    if (perfil.regiao) partes.push("na região " + perfil.regiao);
+    var porte = PORTES.filter(function(p){ return p.id === perfil.porte; })[0];
+    if (porte) partes.push("porte " + porte.rotulo.toLowerCase());
+
+    var notas = (document.getElementById("at-notas").value || "").trim();
+    var frase = partes.length ? "Cliente " + partes.join(", ") + "." : "Perfil ainda sem filtro.";
+    return '<div class="bloco at-resumo"><div class="at-campo"><label>Resumo do atendimento</label>' +
+      "<p>" + esc(frase) + " " + achadas.length + " quadra" + (achadas.length === 1 ? "" : "s") +
+      " atende" + (achadas.length === 1 ? "" : "m") + " o perfil." +
+      (notas ? " Anotação: " + esc(notas.replace(/[.\s]+$/, "")) + "." : "") +
+      " É este texto que vai para o CRM junto do atendimento.</p></div></div>";
+  }
+
+  var LIMITE = '<div class="at-limite">A busca vai até a <b>quadra</b>. Esquina, testada e lote ' +
+    'específico dependem da camada de lotes da prefeitura, que ainda não é pública e já foi pedida. ' +
+    'Os proprietários são exemplo, porque a base de contatos não entrou nesta demonstração.</div>';
+
+  function mostrar(){
+    var achadas = cruzar(perfil);
+    var corpo = document.getElementById("at-corpo");
+    document.getElementById("at-cont").textContent = achadas.length + " de " + QUADRAS.length;
+
+    if (!achadas.length){
+      corpo.innerHTML = '<p class="at-vazio">Nenhuma quadra atende esse perfil.<br>' +
+        "Tire um filtro e mostre o que existe perto do que ele pediu.</p>" + LIMITE;
+      return;
+    }
+    corpo.innerHTML =
+      '<div class="at-cabeca"><span class="at-conta">' + achadas.length +
+      "<span> quadra" + (achadas.length === 1 ? "" : "s") + " para mostrar</span></span></div>" +
+      mapa(achadas) +
+      '<div class="at-lista">' + achadas.slice(0, 12).map(function(q, i){ return cartao(q, i === 0); }).join("") + "</div>" +
+      (achadas.length > 12 ? '<div class="at-limite">Mostrando as 12 primeiras de ' + achadas.length + ".</div>" : "") +
+      resumo(achadas) + LIMITE;
+    corpo.scrollTop = 0;
+  }
+
+  function limpar(){
+    perfil = {};
+    Array.prototype.forEach.call(document.querySelectorAll("#at-campos .at-chip"), function(c){
+      c.setAttribute("aria-pressed", "false");
+    });
+    document.getElementById("at-notas").value = "";
+    document.getElementById("at-cont").textContent = "";
+    document.getElementById("at-corpo").innerHTML =
+      '<p class="at-vazio">Responda ao lado e toque em <b>Mostrar na tela</b>.<br>' +
+      "O sistema cruza as 283 quadras de Palmas com o perfil e mostra o que serve.</p>";
+  }
+
+  montarCampos();
+  document.getElementById("at-buscar").addEventListener("click", mostrar);
+  document.getElementById("at-limpar").addEventListener("click", limpar);
+})();
+</script>
+<!-- ATENDIMENTO-JS:fim -->
 <!-- TOUR:inicio -->
 <style id="tour-css">
 #tour-mask{position:fixed;inset:0;z-index:9998;pointer-events:auto;background:rgba(34,30,31,.62);
@@ -615,7 +883,7 @@ desenhar(); resetar(); pintarImovel(); pintarFluxo(PASSOS.length);
 <script id="tour-js">
 (function(){
   "use strict";
-  var PASSOS = [{"alvo": "", "aba": "mapa", "titulo": "Bem-vindo", "texto": "Este é o ambiente da DOME. São três telas, e em menos de dois minutos você vê as três. Pode usar as setas do teclado pra avançar, ou clicar em Próximo.", "lado": "centro"}, {"alvo": "nav .wrap", "aba": "mapa", "titulo": "As três telas ficam aqui", "texto": "Consulta de território, Ficha de visita e Acompanhamento do lead. O tour troca de aba sozinho, mas depois é por aqui que você navega.", "lado": "baixo"}, {"alvo": "#q", "aba": "mapa", "titulo": "Busque do jeito que o cliente fala", "texto": "Palmas tem dois endereços pro mesmo lugar: o cliente diz <b>304 Sul</b>, o cartório escreve <b>ACSO 81</b>, e o carnê do IPTU vem no segundo. Aqui os dois chegam na mesma quadra. Também aceita nome de setor.", "lado": "baixo"}, {"alvo": "#svg", "aba": "mapa", "titulo": "As 283 quadras, clicáveis", "texto": "Este desenho é o mapa público da Prefeitura de Palmas, não uma ilustração. Clique em qualquer quadra pra abrir o detalhe dela ao lado.", "lado": "direita"}, {"alvo": ".zoom", "aba": "mapa", "titulo": "Aproximar, afastar, enquadrar", "texto": "Útil na frente do cliente: aproxima na região que ele quer e mostra o entorno sem sair da tela.", "lado": "esquerda"}, {"alvo": "#legenda", "aba": "mapa", "titulo": "A cor diz o uso do solo", "texto": "Residencial, comercial, serviço, institucional, área verde. É a resposta pra <i>pode abrir comércio aqui?</i> sem abrir a lei em outra aba.", "lado": "cima"}, {"alvo": "#detalhe", "aba": "mapa", "titulo": "O detalhe da quadra", "texto": "Endereço postal e cartorial, uso do solo e situação de aprovação. É o que hoje exige abrir planilha, PDF do mapa e Google Maps em três abas.", "lado": "esquerda"}, {"alvo": "#form-visita fieldset", "aba": "visita", "titulo": "A ficha que hoje é papel", "texto": "Mesmo formulário que a corretora já preenche. Começa pelos dados de quem visitou e por qual corretora acompanhou.", "lado": "direita"}, {"alvo": "#im-tabs", "aba": "visita", "titulo": "Até três imóveis por visita", "texto": "Igual à ficha de papel: a mesma saída pode passar por três imóveis, cada um avaliado à parte.", "lado": "baixo"}, {"alvo": "#im-notas", "aba": "visita", "titulo": "As sete notas, de 1 a 5", "texto": "Localização, tamanho, planta, acabamento, conservação, áreas comuns e preço. É daqui que sai o que ele realmente procura, em vez de ficar na cabeça de quem acompanhou.", "lado": "direita"}, {"alvo": "#btn-salvar", "aba": "visita", "titulo": "Registrar encerra a visita", "texto": "Ao registrar, o resumo é montado na hora ao lado. Nada de digitar de novo no fim do dia.", "lado": "cima"}, {"alvo": "#resumo", "aba": "visita", "titulo": "O resumo pronto pro corretor", "texto": "Sai com o ponto fraco nomeado e a sugestão de por onde retomar. É o insumo do próximo imóvel que você mostra pra essa pessoa.", "lado": "esquerda"}, {"alvo": ".panel#p-follow .nota", "aba": "follow", "titulo": "Leia este aviso primeiro", "texto": "Esta aba é encenação, e está escrito na tela de propósito. O caminho técnico foi verificado, mas nada aqui está ligado ao seu sistema ainda. Preferimos mostrar assim do que fingir execução.", "lado": "baixo"}, {"alvo": "#btn-rodar", "aba": "follow", "titulo": "Rode a sequência", "texto": "Clique e acompanhe: o lead chega do portal, entra no CRM sozinho, e quem não respondeu é cobrado no prazo combinado. Hoje isso depende de alguém lembrar.", "lado": "esquerda"}, {"alvo": "#fluxo", "aba": "follow", "titulo": "Passo a passo, do lead ao retorno", "texto": "Cada etapa mostra o que acontece sem ninguém mover card. É a única das três frentes que roda sozinha em segundo plano.", "lado": "direita"}, {"alvo": "", "aba": "mapa", "titulo": "Pronto, é seu", "texto": "Explore à vontade: clique nas quadras, preencha uma ficha, rode a sequência. Pra rever este guia a qualquer momento, use o botão <b>Guia</b> no canto da tela.", "lado": "centro"}];
+  var PASSOS = [{"alvo": "", "aba": "atende", "titulo": "Bem-vindo", "texto": "Este é o ambiente da DOME. São quatro telas, e em menos de dois minutos o senhor vê as quatro. Pode usar as setas do teclado pra avançar, ou clicar em Próximo.", "lado": "centro"}, {"alvo": "nav .wrap", "aba": "atende", "titulo": "As quatro telas ficam aqui", "texto": "Atendimento, Consulta de território, Ficha de visita e Acompanhamento do lead. O guia troca de aba sozinho, mas depois é por aqui que o senhor navega.", "lado": "baixo"}, {"alvo": "#at-campos [data-campo=\"finalidade\"]", "aba": "atende", "titulo": "Comece pelo que o cliente quer", "texto": "Esta é a tela do atendimento na mesa. O senhor levanta a demanda dele aqui, do jeito que já faz na conversa, e não precisa preencher tudo: cada resposta só aperta mais o filtro.", "lado": "direita"}, {"alvo": "#at-notas", "aba": "atende", "titulo": "O que ele falou, na sua palavra", "texto": "O que não cabe em botão entra aqui. Vai junto para o CRM no fim, então a conversa não se perde quando o atendimento acabar.", "lado": "direita"}, {"alvo": "#at-buscar", "aba": "atende", "titulo": "E aí mostra na tela", "texto": "Um toque e a cidade responde. É este o momento em que o cliente vê a informação aparecer, que é o que gera impacto na mesa.", "lado": "cima"}, {"alvo": "#at-saida", "aba": "atende", "titulo": "O que atende o perfil dele", "texto": "O mapa acende só as quadras que servem, e abaixo vem cada uma com endereço postal e cartorial, uso do solo, lotes disponíveis, área média, IPTU e quem são os proprietários.", "lado": "esquerda"}, {"alvo": "#q", "aba": "mapa", "titulo": "Busque do jeito que o cliente fala", "texto": "Palmas tem dois endereços pro mesmo lugar: o cliente diz <b>304 Sul</b>, o cartório escreve <b>ACSO 81</b>, e o carnê do IPTU vem no segundo. Aqui os dois chegam na mesma quadra. Também aceita nome de setor.", "lado": "baixo"}, {"alvo": "#svg", "aba": "mapa", "titulo": "As 283 quadras, clicáveis", "texto": "Este desenho é o mapa público da Prefeitura de Palmas, não uma ilustração. Clique em qualquer quadra pra abrir o detalhe dela ao lado.", "lado": "direita"}, {"alvo": ".zoom", "aba": "mapa", "titulo": "Aproximar, afastar, enquadrar", "texto": "Útil na frente do cliente: aproxima na região que ele quer e mostra o entorno sem sair da tela.", "lado": "esquerda"}, {"alvo": "#legenda", "aba": "mapa", "titulo": "A cor diz o uso do solo", "texto": "Residencial, comercial, serviço, institucional, área verde. É a resposta pra <i>pode abrir comércio aqui?</i> sem abrir a lei em outra aba.", "lado": "cima"}, {"alvo": "#detalhe", "aba": "mapa", "titulo": "O detalhe da quadra", "texto": "Endereço postal e cartorial, uso do solo e situação de aprovação. É o que hoje exige abrir planilha, PDF do mapa e Google Maps em três abas.", "lado": "esquerda"}, {"alvo": "#form-visita fieldset", "aba": "visita", "titulo": "A ficha que hoje é papel", "texto": "Mesmo formulário que a corretora já preenche. Começa pelos dados de quem visitou e por qual corretora acompanhou.", "lado": "direita"}, {"alvo": "#im-tabs", "aba": "visita", "titulo": "Até três imóveis por visita", "texto": "Igual à ficha de papel: a mesma saída pode passar por três imóveis, cada um avaliado à parte.", "lado": "baixo"}, {"alvo": "#im-notas", "aba": "visita", "titulo": "As sete notas, de 1 a 5", "texto": "Localização, tamanho, planta, acabamento, conservação, áreas comuns e preço. É daqui que sai o que ele realmente procura, em vez de ficar na cabeça de quem acompanhou.", "lado": "direita"}, {"alvo": "#btn-salvar", "aba": "visita", "titulo": "Registrar encerra a visita", "texto": "Ao registrar, o resumo é montado na hora ao lado. Nada de digitar de novo no fim do dia.", "lado": "cima"}, {"alvo": "#resumo", "aba": "visita", "titulo": "O resumo pronto pro corretor", "texto": "Sai com o ponto fraco nomeado e a sugestão de por onde retomar. É o insumo do próximo imóvel que você mostra pra essa pessoa.", "lado": "esquerda"}, {"alvo": ".panel#p-follow .nota", "aba": "follow", "titulo": "Leia este aviso primeiro", "texto": "Esta aba é encenação, e está escrito na tela de propósito. O caminho técnico foi verificado, mas nada aqui está ligado ao seu sistema ainda. Preferimos mostrar assim do que fingir execução.", "lado": "baixo"}, {"alvo": "#btn-rodar", "aba": "follow", "titulo": "Rode a sequência", "texto": "Clique e acompanhe: o lead chega do portal, entra no CRM sozinho, e quem não respondeu é cobrado no prazo combinado. Hoje isso depende de alguém lembrar.", "lado": "esquerda"}, {"alvo": "#fluxo", "aba": "follow", "titulo": "Passo a passo, do lead ao retorno", "texto": "Cada etapa mostra o que acontece sem ninguém mover card. É a única das três frentes que roda sozinha em segundo plano.", "lado": "direita"}, {"alvo": "", "aba": "atende", "titulo": "Pronto, é seu", "texto": "Explore à vontade: clique nas quadras, preencha uma ficha, rode a sequência. Pra rever este guia a qualquer momento, use o botão <b>Guia</b> no canto da tela.", "lado": "centro"}];
   var CHAVE = "dome-tour-visto";
   var i = 0, ativo = false, mask, holo, balao, alvoAtual = null;
 
