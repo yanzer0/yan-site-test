@@ -17,11 +17,12 @@
  *   curl -X POST http://localhost:3000/api/diagnostico/submit -H "Content-Type: application/json" --data $body
  */
 
-import { NextRequest, NextResponse } from "next/server";
+import { after, NextRequest, NextResponse } from "next/server";
 
 import { avaliar } from "@/lib/diagnostico/score";
 import { apagarParcial, gravarLead, ErroPersistencia } from "@/lib/diagnostico/db";
 import { avisarFalhaPersistencia, avisarRevisaoHumana } from "@/lib/diagnostico/alerta";
+import { publicarLeadRegistrado } from "@/lib/diagnostico/eventos";
 import { validarSubmissao } from "@/lib/diagnostico/submissao";
 import { P, VERSAO_PERGUNTAS } from "@/lib/diagnostico/perguntas";
 import configBruto from "@/lib/diagnostico/score-config.json";
@@ -79,6 +80,23 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     if (avaliacao.faixa === "revisao") {
       await avisarRevisaoHumana(leadId, validacao.dados.porte);
     }
+
+    // O fato de que existe lead novo, publicado DEPOIS da resposta ir embora.
+    //
+    // `after` e não `await`: a tela seguinte para um qualificado é o
+    // calendário, e segurar essa resposta esperando um webhook de terceiro
+    // troca agendamento por aviso. O lead já está gravado quando isto roda, e
+    // o publicador nunca lança - então nada aqui pode custar o lead.
+    after(() =>
+      publicarLeadRegistrado({
+        leadId,
+        faixa: avaliacao.faixa,
+        score: avaliacao.score,
+        porte: validacao.dados.porte,
+        tipo: validacao.dados.tipo,
+        origem: validacao.dados.origem,
+      }),
+    );
   } catch (erro) {
     // Log sem dado pessoal: só a operação que falhou (FR-026).
     const detalhe = erro instanceof ErroPersistencia ? erro.operacao : "desconhecida";
