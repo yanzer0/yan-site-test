@@ -1,0 +1,226 @@
+/*
+ * Tokens da identidade v2 da Infuser, ESCOPADOS nesta rota.
+ *
+ * Mesma razão do `diagnostico.css`: o `globals.css` do site ainda carrega a
+ * v1.1, e a regra da casa é que painel usa a v2 completa. A rota cumpre a
+ * regra sem migrar o site inteiro, que é outra mudança com outro dono.
+ *
+ * Fonte: _knowledge/branding/infuser-v2/tokens.css no brain.
+ */
+
+.lp {
+  --onyx: #020202;
+  --carbon: #171717;
+  --warm: #f0f0e4;
+  --lime: #c6ff34;
+  --teal-300: #3bd0a0;
+  --teal-700: #1f6f5f;
+  --amber: #f6c445;
+  --error: #ff5247;
+  --text-1: #f0f0e4;
+  --text-2: rgba(240, 240, 228, 0.78);
+  --text-3: rgba(240, 240, 228, 0.56);
+  --text-4: rgba(240, 240, 228, 0.42);
+  --border: rgba(240, 240, 228, 0.12);
+  --border-vis: rgba(240, 240, 228, 0.22);
+
+  --fonte-display: "Inter", system-ui, sans-serif;
+  --fonte-corpo: "Onest", system-ui, sans-serif;
+  --fonte-mono: "Geist Mono", ui-monospace, monospace;
+
+  min-height: 100dvh;
+  background:
+    radial-gradient(ellipse at 8% 96%, rgba(31, 111, 95, 0.26) 0%, transparent 56%),
+    radial-gradient(ellipse at 96% 2%, rgba(198, 255, 52, 0.1) 0%, transparent 46%),
+    var(--onyx);
+  color: var(--text-1);
+  font-family: var(--fonte-corpo);
+  line-height: 1.6;
+  padding: 20px 16px 64px;
+}
+
+.lp-wrap { max-width: 1120px; margin: 0 auto; }
+
+.lp-marca {
+  color: var(--lime);
+  font: 500 11px/1 var(--fonte-mono);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.lp-titulo {
+  font-family: var(--fonte-display);
+  font-size: clamp(24px, 5vw, 32px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin: 8px 0 2px;
+}
+
+.lp-sub { color: var(--text-3); font-size: 14px; margin: 0 0 24px; }
+
+/* ── Contadores do topo, que também são o filtro de faixa ───────────── */
+.lp-cartoes {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  margin-bottom: 20px;
+}
+
+.lp-cartao {
+  display: block;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: rgba(23, 23, 23, 0.72);
+  color: inherit;
+  text-decoration: none;
+  transition: border-color 120ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.lp-cartao:hover, .lp-cartao:focus-visible { border-color: var(--border-vis); }
+.lp-cartao[data-ativo="sim"] { border-color: var(--lime); background: rgba(198, 255, 52, 0.08); }
+
+.lp-cartao-n { font-family: var(--fonte-display); font-size: 26px; font-weight: 600; line-height: 1.1; }
+.lp-cartao-r { color: var(--text-3); font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; }
+.lp-cartao-alerta { color: var(--amber); font-size: 12px; margin-top: 4px; }
+
+/* ── Barra de filtros e ações ───────────────────────────────────────── */
+.lp-barra {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.lp-chip {
+  display: inline-block;
+  padding: 7px 13px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-2);
+  font-size: 13px;
+  text-decoration: none;
+}
+
+.lp-chip[data-ativo="sim"] { border-color: var(--lime); color: var(--lime); }
+.lp-chip:hover, .lp-chip:focus-visible { border-color: var(--border-vis); }
+
+.lp-acao {
+  margin-left: auto;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: var(--lime);
+  color: var(--onyx);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+/* ── Lista ──────────────────────────────────────────────────────────── */
+.lp-lista { display: grid; gap: 10px; }
+
+.lp-item {
+  display: grid;
+  gap: 10px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--border);
+  border-radius: 12px;
+  background: rgba(23, 23, 23, 0.66);
+}
+
+.lp-item[data-faixa="qualificado"] { border-left-color: var(--lime); }
+.lp-item[data-faixa="revisao"] { border-left-color: var(--amber); }
+.lp-item[data-faixa="nao_icp_empresa"] { border-left-color: var(--teal-700); }
+.lp-item[data-faixa="nao_icp_pessoal"] { border-left-color: var(--border-vis); }
+
+.lp-topo { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: baseline; }
+.lp-nome { font-family: var(--fonte-display); font-size: 17px; font-weight: 600; letter-spacing: -0.01em; }
+.lp-nome a { color: inherit; text-decoration: none; }
+.lp-nome a:hover, .lp-nome a:focus-visible { text-decoration: underline; }
+.lp-empresa { color: var(--text-3); font-size: 14px; }
+.lp-quando { margin-left: auto; color: var(--text-4); font: 400 12px/1.4 var(--fonte-mono); }
+
+.lp-selos { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.lp-selo {
+  padding: 3px 9px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font: 500 11px/1.5 var(--fonte-mono);
+  color: var(--text-2);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.lp-selo[data-tom="bom"] { border-color: rgba(198, 255, 52, 0.4); color: var(--lime); }
+.lp-selo[data-tom="atencao"] { border-color: rgba(246, 196, 69, 0.42); color: var(--amber); }
+.lp-selo[data-tom="frio"] { border-color: rgba(240, 240, 228, 0.18); color: var(--text-3); }
+
+.lp-contato { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.lp-link {
+  padding: 7px 13px;
+  border: 1px solid var(--border-vis);
+  border-radius: 8px;
+  color: var(--text-1);
+  font-size: 13px;
+  text-decoration: none;
+  word-break: break-all;
+}
+
+.lp-link:hover, .lp-link:focus-visible { border-color: var(--lime); color: var(--lime); }
+.lp-link[data-tipo="zap"] { border-color: rgba(59, 208, 160, 0.42); color: var(--teal-300); }
+
+.lp-vazio {
+  padding: 40px 20px;
+  border: 1px dashed var(--border-vis);
+  border-radius: 12px;
+  color: var(--text-3);
+  text-align: center;
+}
+
+/* ── Detalhe ────────────────────────────────────────────────────────── */
+.lp-voltar { color: var(--text-3); font-size: 13px; text-decoration: none; }
+.lp-voltar:hover, .lp-voltar:focus-visible { color: var(--lime); }
+
+.lp-bloco {
+  padding: 18px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: rgba(23, 23, 23, 0.66);
+  margin-bottom: 14px;
+}
+
+.lp-bloco h2 {
+  font-family: var(--fonte-display);
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-3);
+  margin: 0 0 12px;
+}
+
+.lp-qa { display: grid; gap: 14px; }
+.lp-q { color: var(--text-3); font-size: 13px; margin: 0 0 2px; }
+.lp-a { margin: 0; font-size: 15px; white-space: pre-wrap; }
+
+.lp-contexto {
+  width: 100%;
+  min-height: 320px;
+  padding: 14px;
+  border: 1px solid var(--border-vis);
+  border-radius: 10px;
+  background: var(--onyx);
+  color: var(--text-2);
+  font: 400 13px/1.6 var(--fonte-mono);
+  resize: vertical;
+}
+
+@media (max-width: 640px) {
+  .lp-quando { margin-left: 0; width: 100%; }
+  .lp-acao { margin-left: 0; }
+}
