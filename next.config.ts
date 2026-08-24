@@ -71,10 +71,24 @@ const nextConfig: NextConfig = {
         source: "/demomarja",
         destination: "/demomarja.html",
       },
+      // Demo da DOME Imobiliaria (prospect, Call 2 em 27/08). Mesmo padrao do guia acima.
+      // Existe porque o anexo de 8 MB da proposta nao abriu no celular pelo WhatsApp: no
+      // telefone o caminho confiavel e uma URL, nao um arquivo. Sai do ar quando o negocio
+      // fechar ou morrer.
+      {
+        source: "/demodome",
+        destination: "/demodome.html",
+      },
     ];
   },
   async headers() {
     return [
+      {
+        // Demo de cliente, nao pagina publica de marketing: fica acessivel por link
+        // direto mas fora dos buscadores.
+        source: "/demodome",
+        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }],
+      },
       {
         // Assets estaticos do Club (webp/mp4/svg em public/club). Nao sao
         // content-hashed, mas o fluxo de atualizacao RENOMEIA o arquivo ao
