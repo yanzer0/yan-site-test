@@ -10,7 +10,8 @@
 
 import { NextRequest, NextResponse } from "next/server";
 
-import { COOKIE_LEADS, cookieAutoriza } from "@/lib/diagnostico/acesso-leads";
+import { usuarioDaSessao } from "@/lib/diagnostico/auth-db";
+import { COOKIE_SESSAO } from "@/lib/diagnostico/sessao";
 import { listarLeads, lerRespostas, type FiltroAgenda } from "@/lib/diagnostico/leads-db";
 import { paraCsv } from "@/lib/diagnostico/leads-apresentacao";
 import { FAIXAS, type Faixa } from "@/lib/diagnostico/tipos";
@@ -19,7 +20,7 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function GET(req: NextRequest): Promise<NextResponse> {
-  if (!cookieAutoriza(req.cookies.get(COOKIE_LEADS)?.value)) {
+  if (!(await usuarioDaSessao(req.cookies.get(COOKIE_SESSAO)?.value))) {
     // Sem corpo e sem explicação: quem não tem a porta não aprende nada aqui.
     return new NextResponse(null, { status: 404 });
   }

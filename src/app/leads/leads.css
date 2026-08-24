@@ -224,3 +224,100 @@
   .lp-quando { margin-left: 0; width: 100%; }
   .lp-acao { margin-left: 0; }
 }
+
+/* ── Acesso: login e cadastro ────────────────────────────────────────
+ *
+ * O bloco de login do shadcn (Card + Input + Label + Button) entra com a
+ * mecânica dele intacta e recebe os tokens da v2 por variável. Trocar token e
+ * preservar mecanica e a regra: o que faz o componente funcionar (foco,
+ * estados, acessibilidade) nao se mexe; o que faz ele parecer generico, sim.
+ */
+
+.lp-acesso {
+  display: grid;
+  place-items: center;
+  min-height: 100dvh;
+  padding: 24px 16px;
+}
+
+.lp-acesso-caixa { width: 100%; max-width: 400px; }
+
+.lp-acesso .lp-marca { text-align: center; display: block; margin-bottom: 18px; }
+
+/* Os tokens que os componentes shadcn leem, apontados para a identidade v2. */
+.lp-acesso {
+  --background: var(--onyx);
+  --foreground: var(--text-1);
+  --card: rgba(23, 23, 23, 0.78);
+  --card-foreground: var(--text-1);
+  --primary: var(--lime);
+  --primary-foreground: var(--onyx);
+  --muted-foreground: var(--text-3);
+  --border: rgba(240, 240, 228, 0.16);
+  --input: rgba(240, 240, 228, 0.22);
+  --ring: var(--lime);
+  --destructive: var(--error);
+}
+
+.lp-abas { display: flex; gap: 6px; margin-bottom: 16px; }
+
+.lp-aba {
+  flex: 1;
+  padding: 9px 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--text-3);
+  font-size: 14px;
+  text-align: center;
+  text-decoration: none;
+}
+
+.lp-aba[data-ativo="sim"] { border-color: var(--lime); color: var(--lime); }
+
+.lp-campo { display: grid; gap: 6px; margin-bottom: 14px; }
+
+.lp-recado {
+  padding: 11px 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.lp-recado[data-tom="erro"] { border-color: rgba(255, 82, 71, 0.5); color: #ff8a80; }
+.lp-recado[data-tom="aviso"] { border-color: rgba(198, 255, 52, 0.45); color: var(--lime); }
+
+.lp-dica { color: var(--text-4); font-size: 12px; margin: 10px 0 0; text-align: center; }
+
+/* ── Equipe ─────────────────────────────────────────────────────────── */
+.lp-pessoa { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.lp-pessoa-info { flex: 1; min-width: 180px; }
+.lp-pessoa-nome { font-family: var(--fonte-display); font-weight: 600; }
+.lp-pessoa-email { color: var(--text-3); font-size: 13px; word-break: break-all; }
+
+.lp-botao {
+  padding: 7px 14px;
+  border: 1px solid var(--border-vis);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-1);
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.lp-botao[data-tom="bom"] { border-color: var(--lime); color: var(--lime); }
+.lp-botao[data-tom="ruim"] { border-color: rgba(255, 82, 71, 0.5); color: #ff8a80; }
+.lp-botao:hover { border-color: var(--warm); }
+
+.lp-topo-sessao {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 6px;
+  color: var(--text-3);
+  font-size: 13px;
+}
+
+.lp-topo-sessao form { margin-left: auto; }

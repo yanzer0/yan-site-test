@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 
 import { CopiarContexto } from "@/components/diagnostico/CopiarContexto";
 import { lerLead, lerRespostas } from "@/lib/diagnostico/leads-db";
@@ -12,7 +12,7 @@ import {
   rotuloDaResposta,
   tituloDaPergunta,
 } from "@/lib/diagnostico/leads-apresentacao";
-import { PaginaSemAcesso, temAcesso } from "../porta";
+import { usuarioLogado } from "@/lib/diagnostico/sessao";
 import "../leads.css";
 
 export const metadata: Metadata = {
@@ -26,7 +26,7 @@ export const revalidate = 0;
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 export default async function LeadPage({ params }: { params: Promise<{ id: string }> }) {
-  if (!(await temAcesso())) return <PaginaSemAcesso />;
+  if (!(await usuarioLogado())) redirect("/leads/entrar");
 
   const { id } = await params;
   // Formato errado nem chega ao banco: consulta com texto arbitrário em coluna

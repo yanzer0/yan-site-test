@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 import { contarPorFaixa, listarLeads, type FiltroAgenda, type LeadNaLista } from "@/lib/diagnostico/leads-db";
 import { dataBR, linkWhatsapp, ROTULO_FAIXA } from "@/lib/diagnostico/leads-apresentacao";
 import { FAIXAS, type Faixa } from "@/lib/diagnostico/tipos";
-import { PaginaSemAcesso, temAcesso } from "./porta";
+import { usuarioLogado } from "@/lib/diagnostico/sessao";
+import { contarPendentes } from "@/lib/diagnostico/auth-db";
+import { sair } from "./acoes";
 import "./leads.css";
 
 export const metadata: Metadata = {
@@ -77,15 +80,17 @@ export default async function LeadsPage({
 }: {
   searchParams: Promise<{ faixa?: string; agenda?: string }>;
 }) {
-  if (!(await temAcesso())) return <PaginaSemAcesso />;
+  const usuario = await usuarioLogado();
+  if (!usuario) redirect("/leads/entrar");
 
   const params = await searchParams;
   const faixa = faixaValida(params.faixa);
   const agenda = agendaValida(params.agenda);
 
-  const [contagens, leads] = await Promise.all([
+  const [contagens, leads, pendentes] = await Promise.all([
     contarPorFaixa(),
     listarLeads({ faixa, agenda }),
+    usuario.papel === "admin" ? contarPendentes() : Promise.resolve(0),
   ]);
 
   const totalGeral = contagens.reduce((soma, c) => soma + c.total, 0);
@@ -93,7 +98,20 @@ export default async function LeadsPage({
   return (
     <main className="lp">
       <div className="lp-wrap">
-        <div className="lp-marca">Infuser</div>
+        <div className="lp-topo-sessao">
+          <span className="lp-marca">Infuser</span>
+          <span>{usuario.nome}</span>
+          {usuario.papel === "admin" && (
+            <Link className="lp-voltar" href="/leads/equipe">
+              equipe{pendentes > 0 ? ` (${pendentes} esperando)` : ""}
+            </Link>
+          )}
+          <form action={sair}>
+            <button className="lp-botao" type="submit">
+              Sair
+            </button>
+          </form>
+        </div>
         <h1 className="lp-titulo">Leads do diagnóstico</h1>
         <p className="lp-sub">
           Quem preencheu useinfuser.com/diagnostico. Atualiza a cada vez que esta página abre.

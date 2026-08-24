@@ -10,25 +10,19 @@
 
 import { describe, expect, it, beforeEach, afterEach } from "vitest";
 
-import {
-  chaveConfere,
-  COOKIE_LEADS,
-  cookieAutoriza,
-  valorDoCookie,
-} from "@/lib/diagnostico/acesso-leads";
-import { valorDoCookie as valorDoCookieRoteiro } from "@/lib/diagnostico/acesso-roteiro";
+import { conferirSenha, criticarSenha, gerarHash, TAMANHO_MINIMO_SENHA } from "@/lib/diagnostico/senha";
+import { etiqueta, ipDaRequisicao } from "@/lib/diagnostico/rate-limit";
+
 import { envelopeLeadRegistrado } from "@/lib/diagnostico/eventos";
 import { paraContexto, paraCsv } from "@/lib/diagnostico/leads-apresentacao";
 import type { LeadNaLista, RespostaDoLead } from "@/lib/diagnostico/leads-db";
 
-const CHAVE = "chave-do-painel-de-teste";
-
 beforeEach(() => {
-  process.env.LEADS_ACESSO_CHAVE = CHAVE;
+  process.env.PAINEL_SEGREDO = "segredo-de-teste-do-painel";
 });
 
 afterEach(() => {
-  delete process.env.LEADS_ACESSO_CHAVE;
+  delete process.env.PAINEL_SEGREDO;
   delete process.env.LEADS_EVENTO_URL;
 });
 
@@ -49,41 +43,6 @@ const LEAD: LeadNaLista = {
   agendaEstado: null,
   agendaInicio: null,
 };
-
-describe("a porta do painel", () => {
-  it("fecha por padrão quando não há chave no ambiente", () => {
-    delete process.env.LEADS_ACESSO_CHAVE;
-    expect(cookieAutoriza(valorDoCookie(CHAVE))).toBe(false);
-    expect(chaveConfere(CHAVE)).toBe(false);
-  });
-
-  it("recusa cookie ausente, vazio e adulterado", () => {
-    expect(cookieAutoriza(undefined)).toBe(false);
-    expect(cookieAutoriza("")).toBe(false);
-    expect(cookieAutoriza(`${valorDoCookie(CHAVE).slice(0, -1)}0`)).toBe(false);
-  });
-
-  it("aceita o cookie derivado da chave do ambiente", () => {
-    expect(cookieAutoriza(valorDoCookie(CHAVE))).toBe(true);
-  });
-
-  it("recusa a chave errada mesmo com o mesmo tamanho", () => {
-    expect(chaveConfere("chave-do-painel-de-testX")).toBe(false);
-    expect(chaveConfere(CHAVE)).toBe(true);
-  });
-
-  it("NÃO aceita o cookie do roteiro, mesmo com chave idêntica", () => {
-    // Sal diferente por porta. Sem isso, quem tem acesso ao roteiro da call
-    // ganharia a base de leads inteira de brinde no dia em que as duas chaves
-    // fossem configuradas iguais.
-    expect(valorDoCookieRoteiro(CHAVE)).not.toBe(valorDoCookie(CHAVE));
-    expect(cookieAutoriza(valorDoCookieRoteiro(CHAVE))).toBe(false);
-  });
-
-  it("usa um nome de cookie próprio", () => {
-    expect(COOKIE_LEADS).toBe("infuser_leads");
-  });
-});
 
 describe("o evento de lead registrado", () => {
   const dados = {

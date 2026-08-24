@@ -31,6 +31,7 @@ const SOURCE = "useinfuser.com/diagnostico";
 
 /** Verbo no passado, vocabulário fechado. Comando não entra aqui. */
 const TYPE_LEAD_REGISTRADO = "br.com.useinfuser.diagnostico.lead.registered";
+const TYPE_CADASTRO_SOLICITADO = "br.com.useinfuser.painel.cadastro.requested";
 
 export interface DadosLeadRegistrado {
   readonly leadId: string;
@@ -91,6 +92,67 @@ export async function publicarLeadRegistrado(dados: DadosLeadRegistrado): Promis
       source: "funil-diagnostico",
       severity: "info",
       message: `Lead novo. faixa=${dados.faixa} score=${dados.score} porte=${dados.porte ?? "nao_informado"} origem=${dados.origem}. Abrir: ${envelope.data.painel}`,
+    });
+    return;
+  }
+
+  try {
+    const resposta = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/cloudevents+json" },
+      body: JSON.stringify(envelope),
+    });
+    if (!resposta.ok) {
+      console.error(`[evento] canal respondeu ${resposta.status} para ${envelope.type}`);
+    }
+  } catch {
+    console.error(`[evento] falha ao publicar ${envelope.type}`);
+  }
+}
+
+export interface DadosCadastroSolicitado {
+  readonly usuarioId: string;
+  /** O primeiro nome, e só. Ver o comentário abaixo. */
+  readonly nome: string;
+}
+
+/**
+ * Avisa que alguém pediu acesso ao painel e espera aprovação.
+ *
+ * 🔴 Vai só o PRIMEIRO NOME, nunca o e-mail. O aviso precisa dizer "tem gente
+ * esperando" e dar o link; quem decide abre a tela de equipe, que tem porta.
+ * Mandar o e-mail por aqui poria endereço de pessoa em log e em caixa de
+ * entrada de terceiro sem necessidade nenhuma.
+ *
+ * Sem aviso, o cadastro fica parado até alguém lembrar de olhar - que é o mesmo
+ * problema que o painel de leads existe para resolver.
+ */
+export async function publicarCadastroSolicitado(dados: DadosCadastroSolicitado): Promise<void> {
+  const primeiroNome = dados.nome.split(/\s+/)[0] ?? "alguem";
+
+  const envelope = {
+    specversion: "1.0" as const,
+    id: randomUUID(),
+    source: SOURCE,
+    type: TYPE_CADASTRO_SOLICITADO,
+    subject: dados.usuarioId,
+    time: new Date().toISOString(),
+    datacontenttype: "application/json" as const,
+    data: {
+      ok: true as const,
+      usuarioId: dados.usuarioId,
+      primeiroNome,
+      aprovarEm: "https://useinfuser.com/leads/equipe",
+    },
+  };
+
+  const url = process.env.LEADS_EVENTO_URL;
+
+  if (!url) {
+    await alertar({
+      source: "painel-leads",
+      severity: "warning",
+      message: `Cadastro novo esperando aprovacao: ${primeiroNome}. Aprovar em ${envelope.data.aprovarEm}`,
     });
     return;
   }

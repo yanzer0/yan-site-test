@@ -36,6 +36,7 @@ const ARQUIVOS = [
   join(LIB, "roteiro-sql.sql"),
   join(LIB, "pagamento-sql.sql"),
   join(LIB, "roteiro-pdf-sql.sql"),
+  join(LIB, "auth-sql.sql"),
 ];
 
 const TABELAS_ESPERADAS = [
@@ -49,6 +50,9 @@ const TABELAS_ESPERADAS = [
   "mapa_achados",
   "roteiros",
   "pedidos_mapa",
+  "usuarios_painel",
+  "sessoes_painel",
+  "tentativas_acesso",
 ];
 
 /**
