@@ -53,6 +53,14 @@ const PAUSA_APOS_ERRO_MS = 30_000;
 
 let encerrando = false;
 
+/**
+ * Bookings da fila morta que já viraram alerta, para não repetir a cada volta.
+ *
+ * Vive só na memória do processo de propósito: reiniciar o serviço é justamente
+ * quando se quer ser lembrado do que ainda está sem roteiro.
+ */
+const mortosAvisados = new Set();
+
 function registrar(nivel, mensagem) {
   // journald já carimba a hora; repetir aqui seria ruído no `journalctl`.
   console.log(`[${nivel}] ${mensagem}`);
@@ -429,8 +437,21 @@ async function umaVolta() {
 
   // A fila morta some de `trabalhos` por desenho (o filtro de tentativas), então
   // sem este aviso ela vira silêncio, e silêncio parece sucesso.
+  //
+  // 🔴 O log sozinho não bastava: item morto significa call marcada SEM roteiro
+  // válido, e quem descobre é quem entra na chamada. O alerta sai uma vez por
+  // item, na primeira vez que ele aparece morto — a fila devolve o mesmo morto
+  // em toda volta, e alertar em todas viraria ruído que ninguém lê, que é o
+  // fracasso que este alerta existe para evitar.
   for (const item of mortos) {
     registrar("erro", `ESGOTOU as tentativas: booking=${item.calBookingId} call=${item.inicioEm} ultimo=${item.ultimoErro ?? "?"}`);
+    if (!mortosAvisados.has(item.calBookingId)) {
+      mortosAvisados.add(item.calBookingId);
+      alertarOps(
+        "roteiro-fila-morta",
+        `call ${item.inicioEm} sem roteiro valido apos ${item.tentativas} tentativas: ${item.ultimoErro ?? "?"}`,
+      );
+    }
   }
   for (const item of emRisco) {
     registrar("aviso", `call em menos de 24h sem roteiro: booking=${item.calBookingId} call=${item.inicioEm}`);
