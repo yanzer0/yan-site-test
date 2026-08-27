@@ -36,7 +36,8 @@
  */
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import { join } from "node:path";
+import { join, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 import { spawnSync } from "node:child_process";
 
 const BRAIN = process.env.BRAIN_PATH ?? "/home/infuser/brain-roteiro";
@@ -201,15 +202,61 @@ function validar(absoluto) {
  * o card fica preso aqui, invisível para o time.
  *
  * Falhar aqui NÃO derruba o item: o roteiro já existe e vai ser anexado no
- * evento de qualquer jeito. O que se perde é o card chegar ao time agora, e
- * isso o próximo push recupera.
+ * evento de qualquer jeito. O que se perde é o card chegar ao time agora.
+ *
+ * 🔴 27/08/2026 — as três travas abaixo nasceram de uma quebra real. Um
+ * `pull --rebase --autostash` conflitou em 25/08 e deixou `_memory/current-state.md`
+ * unmerged no índice. Ninguém percebeu: o `git commit` passou a falhar com
+ * "Committing is not possible because you have unmerged files", a exceção era
+ * engolida como aviso, e por dois dias TODO card foi gerado, gravado no disco e
+ * nunca chegou ao git. Os cards de `carloscostaprev`, `grupo-makron` e
+ * `lroth-advisor` ficaram presos aqui, e o time trabalhou sem eles.
+ *
+ * Pior: o mesmo estado sujo fez o commit de 25/08 varrer o índice inteiro. Ele
+ * se chamava "card e roteiro da Call 1 de bmb" e, junto, APAGOU o card de
+ * `vertex-componentes` — 102 linhas de cliente, num commit que dizia falar de
+ * outro. Commit sem pathspec leva o que estiver staged, e a mensagem mente.
  */
 function publicarNoGit(slug) {
   const git = (...args) =>
     spawnSync("git", args, { cwd: BRAIN, encoding: "utf8", shell: false, timeout: 120_000 });
 
-  git("add", `_pipeline/clientes/${slug}`);
-  const commit = git("commit", "-m", `brain: card e roteiro da Call 1 de ${slug}`, "--no-verify");
+  const caminho = `_pipeline/clientes/${slug}`;
+
+  // TRAVA 1 — fail-closed em clone conflitado, ANTES de escrever qualquer coisa.
+  // É a mesma trava que o `sync-to-git.sh` já tinha e esta esteira não tinha. Sem
+  // ela o erro só aparece no `git commit`, depois de mexer no índice, e some no
+  // log. A mensagem diz o comando exato porque quem lê isto está destravando.
+  const unmerged = git("ls-files", "--unmerged");
+  if ((unmerged.stdout ?? "").trim()) {
+    const arquivos = [
+      ...new Set(
+        (unmerged.stdout ?? "")
+          .trim()
+          .split("\n")
+          .map((linha) => linha.split("\t")[1])
+          .filter(Boolean),
+      ),
+    ];
+    throw new Error(
+      `clone conflitado (arquivo unmerged): ${arquivos.join(", ")}. ` +
+        `Nenhum card sai daqui ate resolver: cd ${BRAIN} && git reset --hard origin/main`,
+    );
+  }
+
+  git("add", caminho);
+
+  // TRAVA 2 — pathspec no commit. Com pathspec o git commita o conteudo DESTES
+  // caminhos e ignora o resto do indice, entao lixo staged de uma execucao
+  // anterior nunca mais viaja de carona numa mensagem que fala de outro cliente.
+  const commit = git(
+    "commit",
+    "--no-verify",
+    "-m",
+    `brain: card e roteiro da Call 1 de ${slug}`,
+    "--",
+    caminho,
+  );
 
   // "Nada mudou" NÃO é falha: acontece sempre que o card é reprocessado sem
   // alteração. O git tem DUAS frases para isso e eu só cobria uma — com algo
@@ -224,11 +271,54 @@ function publicarNoGit(slug) {
   }
   if (nadaMudou) return;
 
-  git("pull", "--rebase", "--autostash");
+  // TRAVA 3 — índice e árvore voltam ao commit que acabou de sair, antes do rebase.
+  //
+  // Este clone é DERIVADO: nada aqui é escrito por gente. O que sobra fora da
+  // pasta do cliente é indice regenerado pelo proprio `/call-roteiro` (INDEX.md,
+  // pendencias-trigger.md), que a maquina do Yan regenera de qualquer jeito.
+  // Guardar essa sujeira era o que dava material para o `--autostash` conflitar,
+  // e foi assim que o clone travou. Arvore limpa faz o rebase ser trivial, e por
+  // isso o `--autostash` deixou de ser necessario.
+  //
+  // `reset --hard` e nao `checkout -- .`: o segundo limpa a ARVORE e deixa o
+  // INDICE sujo, e ai o `pull --rebase` recusa com "your index contains
+  // uncommitted changes" — o card ficaria preso do mesmo jeito, so com outra
+  // frase. A prova `provar-publicacao-do-card.mjs` pegou exatamente isso.
+  // Seguro porque o card ja esta commitado nesta altura, e arquivo nao rastreado
+  // o reset nao toca.
+  git("reset", "--hard", "HEAD");
+
+  const pull = git("pull", "--rebase");
+  if (pull.status !== 0) {
+    // Sem isto o rebase interrompido fica de pe e envenena TODA execucao
+    // seguinte — que e exatamente a falha que estas travas existem para matar.
+    git("rebase", "--abort");
+    throw new Error(`pull --rebase falhou (rebase abortado): ${(pull.stderr || pull.stdout).slice(0, 200)}`);
+  }
+
   const push = git("push", "origin", "HEAD");
   if (push.status !== 0) {
     throw new Error(`push falhou: ${(push.stderr || push.stdout).slice(0, 200)}`);
   }
+}
+
+/**
+ * Alerta o Yan pelo canal de OPS que já existe (webhook n8n `ops-alert`).
+ *
+ * O card que não chega ao git é invisível: o roteiro vai para o evento, a call
+ * acontece, e nada denuncia que o CRM ficou para trás. Antes disto o sinal era
+ * uma linha de `[aviso]` num log que ninguém abre, e ela ficou dois dias no ar
+ * sem ser lida. Best-effort de propósito: alerta que falha não pode derrubar o
+ * item, porque o roteiro — que é o que a call precisa — já está entregue.
+ */
+function alertarOps(mensagem) {
+  const comando = process.env.OPS_ALERT_CMD ?? "/home/infuser/ops-alert.sh";
+  if (!existsSync(comando)) return;
+  spawnSync(comando, ["roteiro-card-no-git", "critico", mensagem], {
+    encoding: "utf8",
+    shell: false,
+    timeout: 30_000,
+  });
 }
 
 async function processar(trabalho) {
@@ -273,7 +363,10 @@ async function processar(trabalho) {
     registrar("info", "card publicado no git");
   } catch (erro) {
     // Não relança: o roteiro já está no evento, que é o que a call precisa.
-    registrar("aviso", `card nao chegou ao git: ${erro.message}`);
+    registrar("erro", `card nao chegou ao git: ${erro.message}`);
+    // Sobe de aviso para alerta porque o modo de falha e SILENCIOSO: a call
+    // acontece normalmente e so o CRM fica para tras. Log nao denuncia isso.
+    alertarOps(`card de ${trabalho.slug} nao chegou ao git: ${erro.message}`);
   }
 
   registrar("info", `fim booking=${trabalho.calBookingId}`);
@@ -315,16 +408,25 @@ async function umaVolta() {
   return { pausar: false };
 }
 
-registrar("info", `servico de roteiro de pe | brain=${BRAIN} | api=${BASE} | espera=${ESPERA_S}s`);
+// Exportado para o `provar-publicacao-do-card.mjs`, que exercita as travas de
+// publicacao contra um repositorio git de verdade. Sem exportar, a unica forma
+// de provar a trava seria reproduzir o clone travado em producao.
+export { publicarNoGit };
 
-while (!encerrando) {
-  try {
-    const { pausar } = await umaVolta();
-    if (pausar && !encerrando) await new Promise((r) => setTimeout(r, PAUSA_APOS_ERRO_MS));
-  } catch (erro) {
-    registrar("erro", `volta falhou: ${erro.message}`);
-    if (!encerrando) await new Promise((r) => setTimeout(r, PAUSA_APOS_ERRO_MS));
+// O laço só roda quando o arquivo é EXECUTADO. Sem esta guarda, importar o
+// módulo para prová-lo subiria um segundo consumidor da fila.
+if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  registrar("info", `servico de roteiro de pe | brain=${BRAIN} | api=${BASE} | espera=${ESPERA_S}s`);
+
+  while (!encerrando) {
+    try {
+      const { pausar } = await umaVolta();
+      if (pausar && !encerrando) await new Promise((r) => setTimeout(r, PAUSA_APOS_ERRO_MS));
+    } catch (erro) {
+      registrar("erro", `volta falhou: ${erro.message}`);
+      if (!encerrando) await new Promise((r) => setTimeout(r, PAUSA_APOS_ERRO_MS));
+    }
   }
-}
 
-registrar("info", "encerrado");
+  registrar("info", "encerrado");
+}
