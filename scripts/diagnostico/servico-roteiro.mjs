@@ -35,7 +35,7 @@
  *   ROTEIRO_BASE_URL          base da API (default: produção)
  */
 
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { spawnSync } from "node:child_process";
@@ -138,6 +138,25 @@ function gravarCard(trabalho) {
  * sozinho não deveria poder executar comando arbitrário.
  */
 function gerarRoteiro(slug) {
+  const relativoDoRoteiro = `_pipeline/clientes/${slug}/roteiro-call-${slug}-call-1.html`;
+
+  // 🔴 O roteiro anterior sai do caminho ANTES de chamar o modelo.
+  //
+  // O comando manda o roteiro "nascer do template canônico". Com um arquivo de
+  // saída já na pasta, o modelo edita aquele em vez de nascer do template — e
+  // herda a estrutura dele. Medido em 27/08 no lroth-advisor: o template do
+  // clone era v3.1, com a etapa `budget` dentro da call-zone, e mesmo assim
+  // toda tentativa saía v3.0 e sem `budget`, porque o arquivo antigo na pasta
+  // era v3.0. O gerador estava se copiando.
+  //
+  // Piorou com o `reset --hard` do `atualizarClone`, que garante o arquivo
+  // antigo de volta a cada volta: sem isto, o formato velho nunca mais sairia
+  // dali sozinho.
+  //
+  // Apagar é seguro: a versão anterior está no git, e se a geração falhar o
+  // `reset --hard` da próxima volta traz o arquivo de volta.
+  rmSync(join(BRAIN, relativoDoRoteiro), { force: true });
+
   const execucao = spawnSync(
     "claude",
     [
