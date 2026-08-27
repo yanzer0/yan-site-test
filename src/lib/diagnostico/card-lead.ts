@@ -87,20 +87,46 @@ export function slugDaEmpresa(nome: string): string {
   return limpo || "lead-sem-empresa";
 }
 
-/** `2026-08-17`. Data local, não UTC: um agendamento das 21h em SP não é do dia seguinte. */
-export function dataIso(quando: Date): string {
-  const mes = String(quando.getMonth() + 1).padStart(2, "0");
-  const dia = String(quando.getDate()).padStart(2, "0");
-  return `${quando.getFullYear()}-${mes}-${dia}`;
+/**
+ * O fuso da operação. Toda data que uma pessoa lê no card é renderizada aqui.
+ *
+ * 🔴 27/08/2026 — antes disto o código usava `getDate()`/`getHours()`, que é a
+ * hora DO PROCESSO. O card é montado na rota, e função da Vercel roda em UTC:
+ * a call do Bruno (Grupo Makron), marcada para 12:00 de São Paulo, virou
+ * "Call 1 às 15:00" no card e no roteiro. Três horas de erro em todo card
+ * gerado, no campo que decide quando alguém entra na chamada.
+ *
+ * Os testes não pegaram porque construíam a data com `new Date(2026, 7, 5, 9, 5)`,
+ * que é hora local: o valor voltava pelo mesmo fuso em que entrou e o teste
+ * passava em qualquer máquina. Instante só se testa em UTC.
+ */
+const FUSO = "America/Sao_Paulo";
+
+/** Os campos de data/hora daquele instante, já no fuso da operação. */
+function partesEmSaoPaulo(quando: Date): Record<string, string> {
+  const partes = new Intl.DateTimeFormat("pt-BR", {
+    timeZone: FUSO,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  }).formatToParts(quando);
+
+  return Object.fromEntries(partes.map(({ type, value }) => [type, value]));
 }
 
-/** `17/08 às 14:30`, como uma pessoa lê. */
+/** `2026-08-17`. No fuso de SP: um agendamento das 21h aqui não é do dia seguinte. */
+export function dataIso(quando: Date): string {
+  const { year, month, day } = partesEmSaoPaulo(quando);
+  return `${year}-${month}-${day}`;
+}
+
+/** `17/08 às 14:30`, como uma pessoa lê, no fuso de SP. */
 export function quandoLegivel(quando: Date): string {
-  const dia = String(quando.getDate()).padStart(2, "0");
-  const mes = String(quando.getMonth() + 1).padStart(2, "0");
-  const hora = String(quando.getHours()).padStart(2, "0");
-  const minuto = String(quando.getMinutes()).padStart(2, "0");
-  return `${dia}/${mes} às ${hora}:${minuto}`;
+  const { day, month, hour, minute } = partesEmSaoPaulo(quando);
+  return `${day}/${month} às ${hour}:${minute}`;
 }
 
 /**

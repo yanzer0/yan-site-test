@@ -311,18 +311,64 @@ function publicarNoGit(slug) {
  * sem ser lida. Best-effort de propósito: alerta que falha não pode derrubar o
  * item, porque o roteiro — que é o que a call precisa — já está entregue.
  */
-function alertarOps(mensagem) {
+function alertarOps(fonte, mensagem) {
   const comando = process.env.OPS_ALERT_CMD ?? "/home/infuser/ops-alert.sh";
   if (!existsSync(comando)) return;
-  spawnSync(comando, ["roteiro-card-no-git", "critico", mensagem], {
+  spawnSync(comando, [fonte, "critico", mensagem], {
     encoding: "utf8",
     shell: false,
     timeout: 30_000,
   });
 }
 
+/**
+ * Traz o clone para o `main` de origem ANTES de gerar.
+ *
+ * 🔴 O `/call-roteiro`, o template canônico e o `validate-call-card.mjs` são
+ * lidos DO CLONE. Até 27/08/2026 a única coisa que dava `git pull` aqui era a
+ * publicação do card — então quando ela travou, o clone congelou junto, e o
+ * serviço passou dois dias gerando roteiro com a definição de comando de 25/08.
+ * O resultado apareceu no roteiro do Grupo Makron: saiu no formato v3.0
+ * ("Andaime"), sem a pergunta de faixa de investimento que passou a valer em
+ * 25/08, enquanto o gerado à mão na máquina do Yan saiu v3.1. Ninguém percebeu,
+ * porque roteiro velho não parece quebrado — parece roteiro.
+ *
+ * Atualizar virou pré-requisito de gerar, e não efeito colateral de publicar.
+ *
+ * Fail-soft: clone desatualizado gera roteiro pior, clone parado não gera nada.
+ * Entre os dois, gerar vence — mas o alerta sai, porque a segunda vez que isto
+ * falhar em silêncio é a repetição do bug que ele existe para matar.
+ */
+function atualizarClone() {
+  const git = (...args) =>
+    spawnSync("git", args, { cwd: BRAIN, encoding: "utf8", shell: false, timeout: 120_000 });
+
+  if ((git("ls-files", "--unmerged").stdout ?? "").trim()) {
+    return { ok: false, motivo: "clone conflitado; nao mexo ate alguem resolver" };
+  }
+
+  // A árvore aqui é derivada: o que estiver modificado é índice regerado pelo
+  // próprio comando na volta anterior. Descartar é o que torna o pull trivial.
+  git("reset", "--hard", "HEAD");
+
+  const pull = git("pull", "--rebase");
+  if (pull.status !== 0) {
+    git("rebase", "--abort");
+    return { ok: false, motivo: (pull.stderr || pull.stdout).trim().slice(0, 200) };
+  }
+  return { ok: true, cabeca: (git("rev-parse", "--short", "HEAD").stdout ?? "").trim() };
+}
+
 async function processar(trabalho) {
   registrar("info", `inicio booking=${trabalho.calBookingId} slug=${trabalho.slug} tentativa=${trabalho.tentativas + 1}`);
+
+  const clone = atualizarClone();
+  if (clone.ok) {
+    registrar("info", `clone em ${clone.cabeca}`);
+  } else {
+    registrar("erro", `clone NAO atualizado, o roteiro sai com a definicao antiga: ${clone.motivo}`);
+    alertarOps("roteiro-clone-parado", `clone do brain nao atualiza: ${clone.motivo}`);
+  }
 
   const card = gravarCard(trabalho);
   registrar("info", card.pulado ? `card pulado: ${card.motivo}` : "card gravado");
@@ -366,7 +412,7 @@ async function processar(trabalho) {
     registrar("erro", `card nao chegou ao git: ${erro.message}`);
     // Sobe de aviso para alerta porque o modo de falha e SILENCIOSO: a call
     // acontece normalmente e so o CRM fica para tras. Log nao denuncia isso.
-    alertarOps(`card de ${trabalho.slug} nao chegou ao git: ${erro.message}`);
+    alertarOps("roteiro-card-no-git", `card de ${trabalho.slug} nao chegou ao git: ${erro.message}`);
   }
 
   registrar("info", `fim booking=${trabalho.calBookingId}`);

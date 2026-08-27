@@ -29,7 +29,10 @@ const BASE: DadosDoCard = {
   origem: "instagram",
   score: 12,
   faixa: "qualificado",
-  inicioDaCall: new Date(2026, 7, 21, 14, 30),
+  // Instante em UTC, nao `new Date(2026, 7, 21, 14, 30)`: a fixture em hora
+  // local fazia o teste passar em qualquer fuso e nao provava nada sobre a
+  // Vercel, que monta o card em UTC. 17:30Z = 14:30 em Sao Paulo.
+  inicioDaCall: new Date("2026-08-21T17:30:00.000Z"),
   respostas: [
     {
       perguntaId: "processo",
@@ -80,13 +83,27 @@ describe("slugDaEmpresa", () => {
 });
 
 describe("datas", () => {
-  it("usa o fuso local, nao UTC", () => {
-    // Uma call as 21h em SP nao pode ser registrada como do dia seguinte.
-    expect(dataIso(new Date(2026, 7, 21, 21, 0))).toBe("2026-08-21");
+  // 🔴 Estes casos usam INSTANTE em UTC de proposito. A versao anterior deste
+  // bloco construia `new Date(2026, 7, 5, 9, 5)`, que e hora local: o valor
+  // voltava pelo mesmo fuso em que entrou e o teste passava em qualquer maquina,
+  // inclusive na Vercel (UTC), que e onde o card e montado de verdade. Foi assim
+  // que a call do Grupo Makron, marcada para 12:00, virou "15:00" no card.
+
+  it("escreve o horario no fuso de SP, nao no do processo", () => {
+    // 15:00Z = 12:00 em Sao Paulo, que e a hora que o lead marcou.
+    expect(quandoLegivel(new Date("2026-08-27T15:00:00.000Z"))).toBe("27/08 às 12:00");
   });
 
-  it("escreve o horario como uma pessoa le", () => {
-    expect(quandoLegivel(new Date(2026, 7, 5, 9, 5))).toBe("05/08 às 09:05");
+  it("usa o fuso de SP para a data, nao UTC", () => {
+    // 21h em SP e 00:00Z do dia seguinte: a call continua sendo do dia 21.
+    expect(dataIso(new Date("2026-08-22T00:00:00.000Z"))).toBe("2026-08-21");
+  });
+
+  it("nao adianta o dia numa call do comeco da manha", () => {
+    // 09:00 em SP = 12:00Z, mesmo dia dos dois lados. Guarda o caso trivial
+    // para que uma correcao futura nao troque um off-by-one por outro.
+    expect(dataIso(new Date("2026-08-05T12:00:00.000Z"))).toBe("2026-08-05");
+    expect(quandoLegivel(new Date("2026-08-05T12:00:00.000Z"))).toBe("05/08 às 09:00");
   });
 });
 
