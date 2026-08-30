@@ -106,8 +106,29 @@ export interface ConfigScore {
     readonly frequenciaEliminatoria: string;
     readonly patrocinadorAusente: string;
     readonly decisaoAusente: string;
+    /**
+     * Gates de compromisso: as respostas que PASSAM, não a que elimina.
+     *
+     * Lista de permissão porque a rota de submissão é pública: resposta ausente
+     * ou desconhecida tem que reprovar, e uma lista de eliminação deixaria um
+     * POST sem o campo atravessar o gate.
+     */
+    readonly tempoAceito: readonly string[];
+    readonly investimentoAceito: readonly string[];
   };
 }
+
+/**
+ * O caminho oferecido a quem não vai para a agenda gratuita.
+ *
+ * Não é faixa e não substitui faixa: a faixa diz se houve encaixe, isto diz o
+ * que se oferece a quem não teve. Existe separado porque os dois motivos de
+ * saída pedem coisas opostas, e a faixa sozinha não distingue: quem não tem uma
+ * hora não compra uma hora, por mais barata que ela seja.
+ */
+export const OFERTAS_ALTERNATIVAS = ["call_paga", "kit"] as const;
+
+export type OfertaAlternativa = (typeof OFERTAS_ALTERNATIVAS)[number];
 
 /** O que a rota de submissão recebe. Validado no servidor antes de qualquer persistência. */
 export interface LeadSubmissao {
@@ -127,4 +148,12 @@ export interface ResultadoSubmissao {
     readonly email: string;
     readonly processo: string;
   };
+  /**
+   * Qual alternativa mostrar quando a faixa não é `qualificado`.
+   *
+   * Vai decidida do servidor, e não o motivo do corte: o navegador precisa
+   * saber o que renderizar, não por que o lead saiu. Ausente equivale a
+   * `call_paga`, que é o que toda faixa não qualificada recebia antes.
+   */
+  readonly oferta?: OfertaAlternativa;
 }

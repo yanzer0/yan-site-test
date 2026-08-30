@@ -12,7 +12,7 @@
 
 import { useState } from "react";
 
-import type { Faixa } from "@/lib/diagnostico/tipos";
+import type { Faixa, OfertaAlternativa } from "@/lib/diagnostico/tipos";
 import { CalAgenda } from "./CalAgenda";
 
 const LINK_KIT = "https://useinfuser.com/kit-segundo-cerebro";
@@ -22,6 +22,12 @@ interface DesfechoProps {
   readonly nome: string;
   readonly processo: string;
   readonly email: string;
+  /**
+   * Qual alternativa mostrar a quem não é qualificado. Decidida no servidor a
+   * partir do motivo do corte. Ausente equivale a `call_paga`, que é o que
+   * toda faixa não qualificada recebia antes de os gates existirem.
+   */
+  readonly oferta?: OfertaAlternativa;
   /** URL do evento do Cal.com. Ausente cai no caminho alternativo, nunca em erro cru. */
   readonly urlCal?: string;
   /** Destino do Mapa de IA. Enquanto não existir página, cai no contato. */
@@ -107,7 +113,52 @@ function ConviteDaCall({ processo }: { readonly processo: string }) {
   );
 }
 
-export function Desfecho({ faixa, nome, processo, email, urlCal, urlMapa }: DesfechoProps) {
+/**
+ * O Kit, com o que sustenta o preço listado, e o botão que leva à venda.
+ *
+ * Um componente só para os dois caminhos que chegam aqui (uso pessoal e empresa
+ * que não vai à call) pelo mesmo motivo que existe o `ConviteDaCall`: texto
+ * duplicado por faixa diverge com o tempo e ninguém percebe.
+ *
+ * 🔴 O preço aqui já esteve ERRADO em produção: dizia "pagamento único de
+ * R$ 67" enquanto a página cobra assinatura mensal a partir de R$ 37 (Starter),
+ * com R$ 67 sendo o plano do meio. Quem clicava batia num preço diferente do
+ * que acabou de ler. Qualquer mudança de preço nesta caixa se confere em
+ * `src/app/kit-segundo-cerebro/pagina.html`, que é a página que recebe o clique.
+ *
+ * O que sustenta a oferta é a lista do que vem dentro, nunca adjetivo. Mesma
+ * disciplina do bloco do Mapa: o lead conclui o valor sozinho, e conclusão
+ * própria não gera reatância.
+ */
+function OfertaSegundoCerebro({ abertura }: { readonly abertura: React.ReactNode }) {
+  return (
+    <div className="dg-oferta">
+      <div className="dg-oferta-nome">Kit Segundo Cérebro</div>
+      {abertura}
+      <ul className="dg-inclui">
+        <li>Um cérebro privado onde ficam os seus projetos, decisões, ideias e contexto</li>
+        <li>
+          Conecta no Claude ou no Codex que você já usa, e a partir daí a IA responde com o que
+          está lá dentro
+        </li>
+        <li>Você pede em português normal, sem estrutura para acertar nem pasta para manter</li>
+        <li>
+          Nos planos acima do inicial vêm junto o Kit de Skills e os cinco agentes base da Infuser
+        </li>
+        <li>Tutorial de ativação e conexão, para você ligar sozinho no mesmo dia</li>
+      </ul>
+      <p>
+        São três planos, a partir de <strong>R$ 37 por mês</strong>. É assinatura mensal, e a
+        assinatura da IA que você já usa continua contratada à parte.
+      </p>
+      <a className="dg-cta" href={LINK_KIT} target="_blank" rel="noopener noreferrer">
+        Ver os planos do Segundo Cérebro
+      </a>
+    </div>
+  );
+}
+
+export function Desfecho({ faixa, nome, processo, email, oferta, urlCal, urlMapa }: DesfechoProps) {
   const [calFalhou, setCalFalhou] = useState(false);
   const eu = primeiroNome(nome);
 
@@ -158,16 +209,39 @@ export function Desfecho({ faixa, nome, processo, email, urlCal, urlMapa }: Desf
           Pelo que você contou, o que você quer é organizar o seu próprio contexto, e para isso a
           call de diagnóstico de empresa não serve.
         </p>
-        <div className="dg-oferta">
-          <div className="dg-oferta-nome">Kit Segundo Cérebro</div>
-          <p>
-            É o sistema que o Yan usa todo dia para não reexplicar as coisas para a IA a cada
-            conversa. Pagamento único de <strong>R$ 67</strong>.
-          </p>
-          <a className="dg-cta" href={LINK_KIT} target="_blank" rel="noopener noreferrer">
-            Ver o kit
-          </a>
-        </div>
+        <OfertaSegundoCerebro
+          abertura={
+            <p>
+              É o sistema que o Yan usa todo dia para não reexplicar as coisas para a IA a cada
+              conversa.
+            </p>
+          }
+        />
+      </div>
+    );
+  }
+
+  // Empresa que não vai para a agenda: ela declarou não ter a hora que a call
+  // custa. Vender a MESMA hora, cobrando por ela, seria devolver o obstáculo
+  // com preço. O que sobra de honesto é o produto que ele usa sozinho.
+  //
+  // Continua valendo o FR-017: em nenhuma linha aqui ele lê veredito sobre o
+  // próprio encaixe. O que ele lê é a própria resposta dele, devolvida.
+  if (oferta === "kit") {
+    return (
+      <div className="dg-desfecho">
+        <h2 className="dg-h1">
+          Anotado, <em>{eu}</em>.
+        </h2>
+        <OfertaSegundoCerebro
+          abertura={
+            <p>
+              O mapa da sua operação sai de uma hora de conversa, e essa hora não cabe na sua
+              agenda por enquanto. Dá para começar pelo lado que não depende de reunião: parar de
+              reexplicar a sua operação para a IA toda vez que abre uma conversa nova.
+            </p>
+          }
+        />
       </div>
     );
   }

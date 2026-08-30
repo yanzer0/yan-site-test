@@ -10,17 +10,35 @@ As fontes de verdade de negócio vivem no brain (`yangalasso-brain`) e não são
 
 A venda tem duas conversas. A Call 1 é diagnóstico puro: sem demo comercial, sem oferta, sem preço. A Call 2 apresenta proposta, escopo, investimento e caminho de fechamento.
 
-Nenhuma superfície construída aqui pode exibir preço, faixa de preço, tabela, nome de plano ou promessa de entrega antes do diagnóstico. Isso inclui formulário, e-mail de confirmação, página de agendamento, mensagem automática e o próprio mapa de diagnóstico.
+Nenhuma superfície construída aqui pode exibir faixa de preço, tabela, nome de plano ou promessa de entrega antes do diagnóstico. Isso inclui formulário, e-mail de confirmação, página de agendamento, mensagem automática e o próprio mapa de diagnóstico.
 
-Fonte: `_knowledge/comercial/direcionamento-estrategico.md` (decisão de 02/08/2026) e `_empresa/identidade/pricing.md` (política v3, princípio 2).
+**Exceção única, decidida pelo Yan em 30/08/2026 (emenda 1.1.0): o PISO declarado no gate de investimento do formulário.** O que o princípio protege é o lead entrar na Call 1 com uma faixa na cabeça, e faixa é o que ancora. Um piso não ancora: ele não diz quanto o projeto vai custar, diz abaixo de quanto não existe projeto. O número é o da Fundação Essencial na tabela viva, nunca um degrau superior, e o guard `copy.test.ts` prende o valor exato: mudar o piso sem passar pelo `pricing.md` reprova. Continua proibido em toda superfície: faixa, tabela, degrau acima do piso, nome de plano e qualquer preço fora dessa única pergunta.
+
+Fonte: `_knowledge/comercial/direcionamento-estrategico.md` (decisão de 02/08/2026), `_empresa/identidade/pricing.md` (política v3, princípio 2) e `_decisions/2026-08-30-gate-de-tempo-e-investimento-no-formulario.md`.
 
 ### II. Qualificação é GPCT, nunca BANT
 
-Por texto se pergunta situação: processo, volume, fontes de informação, tentativas anteriores, decisor. Dor, número e urgência ficam para a call, porque o valor está no cliente articular em voz alta. Não se pergunta orçamento em formulário.
+Por texto se pergunta situação: processo, volume, fontes de informação, tentativas anteriores, decisor. Dor, número e urgência ficam para a call, porque o valor está no cliente articular em voz alta.
 
-Toda pergunta nova precisa passar neste teste antes de entrar: ela coleta situação verificável, ou está tentando extrair dor e verba por escrito? Se for a segunda, não entra.
+**Nunca se pede ao lead que ele nomeie uma faixa, um valor ou um orçamento.** É essa a regra, e ela não tem exceção: número dito pelo cliente antes do custo da dor prende a proposta inteira nele, que é o risco 3 da decisão de 25/08/2026.
+
+O que a emenda 1.1.0 permitiu é o movimento inverso, e só ele: **nós declaramos o piso e perguntamos se cabe**, em pergunta que não pontua e existe só para gatear a agenda gratuita. Quem nomeia o número somos nós.
+
+Toda pergunta nova que PONTUA precisa passar no teste original: ela coleta situação verificável, ou está tentando extrair dor e verba por escrito? Se for a segunda, não entra. Pergunta pontuável com valor em dinheiro é reprovada por `perguntas.test.ts`.
 
 Fonte: `_knowledge/comercial/abordagem-leads-dm.md`, seção "Questionário pré-call por WhatsApp" (decisão de 13/08/2026). Ela supera o modelo BANT com âncora de preço desenhado em 16/07/2026.
+
+### II-b. Gate de compromisso não é critério de qualificação
+
+Existem dois gates, e eles são de natureza diferente do score: **tempo** (a hora que a call custa) e **investimento** (o piso que o projeto custa). Eles não pontuam, não mapeiam para critério do ICP e não entram no cálculo. Reprovam.
+
+Três regras que os governam:
+
+1. **Falham fechado.** A rota de submissão é pública. Resposta ausente ou desconhecida reprova, senão o gate se atravessa apagando o campo do POST.
+2. **Quem reprova sai da agenda gratuita, nunca do funil.** Fica gravado com respostas, score e motivo, como todo lead (princípio IV), e recebe alternativa honesta sem ler veredito sobre o próprio encaixe (FR-017).
+3. **A alternativa corresponde ao que ele disse que não tem.** Quem declarou não ter a hora não recebe oferta de reunião paga: seria devolver o obstáculo com preço. Recebe o produto que usa sozinho.
+
+Fonte: `_decisions/2026-08-30-gate-de-tempo-e-investimento-no-formulario.md`.
 
 ### III. O score é derivado do ICP, e o ICP é uma tabela, não uma intuição
 
@@ -100,4 +118,18 @@ Princípio marcado como NÃO-NEGOCIÁVEL não é flexibilizado por emenda ordin�
 
 Todo pull request declara quais princípios ele toca e como os respeita.
 
-**Version**: 1.0.0 | **Ratified**: 2026-08-14 | **Last Amended**: 2026-08-14
+## Emendas
+
+### 1.1.0 (2026-08-30) - gate de tempo e de investimento no formulário
+
+**O que muda:** o formulário passa a ter duas perguntas de compromisso no fim da trilha de empresa, e a segunda declara o piso de investimento. Novo princípio II-b. Exceção nomeada no princípio I. Princípio II reescrito para separar "o lead nomeia um número" (proibido, sem exceção) de "nós declaramos o piso" (permitido, só no gate).
+
+**Por que muda:** a call gratuita é hora do time, e o gargalo declarado é a agenda. Até aqui o funil não tinha nenhuma pergunta que separasse quem não pode pagar nem comparecer, e essa hora saía do mesmo lugar que a hora de quem fecha.
+
+**Qual fonte do brain mudou junto:** `_decisions/2026-08-30-gate-de-tempo-e-investimento-no-formulario.md`, decisão explícita do Yan, como a governança exige de princípio NÃO-NEGOCIÁVEL. `pricing.md` não mudou: o piso citado é o que já está lá.
+
+**O que precisou ser refeito:** guard de preço em `copy.test.ts` (de "nenhuma pergunta cita valor" para "só o gate cita, e cita o piso exato"), guard de BANT em `perguntas.test.ts`, teto de perguntas de 14 para 16, contagem prometida na abertura, e o desfecho, que ganhou o destino Kit para empresa.
+
+**Risco assumido, declarado:** o lead passa a conhecer o piso antes da Call 1. É piso e não faixa, mas é preço, e o princípio I existia justamente para não haver nenhum. Sinal de reavaliação: taxa de abandono na pergunta 15 e proporção de leads que reprovam só o gate de dinheiro.
+
+**Version**: 1.1.0 | **Ratified**: 2026-08-14 | **Last Amended**: 2026-08-30

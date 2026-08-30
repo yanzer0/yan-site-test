@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
-import { PERGUNTAS } from "@/lib/diagnostico/perguntas";
+import { P, PERGUNTAS } from "@/lib/diagnostico/perguntas";
 
 /**
  * Guard executável das regras de copy da casa.
@@ -150,9 +150,34 @@ describe("nunca dizer que o material foi gerado por IA", () => {
 });
 
 describe("principio I: nenhum preco antes do diagnostico", () => {
-  it("o formulario nao menciona valor em nenhuma pergunta", () => {
+  /**
+   * 🔴 Regra amendada em 30/08 (constitution 1.1.0, decisão do Yan).
+   *
+   * Antes: nenhuma pergunta podia citar valor. Agora: UMA pode, e só ela, e só
+   * o piso verificado. O guard ficou mais apertado do lado que importa, porque
+   * agora ele também prende o NÚMERO: mudar o piso sem passar pela tabela viva
+   * reprova aqui.
+   */
+  it("so a pergunta-gate de investimento cita valor", () => {
+    const comValor = PERGUNTAS.filter((p) => /r\$|reais/i.test(p.enunciado));
+    expect(comValor.map((p) => p.id)).toEqual([P.INVESTIMENTO]);
+  });
+
+  it("o valor citado e o PISO da tabela viva, nunca a faixa cheia", () => {
+    // Fundação Essencial em `_empresa/identidade/pricing.md`, política v3 de
+    // 02/08: R$ 3.000 de setup mais R$ 500/mês após o aceite. Piso não ancora,
+    // teto ancora: por isso R$ 12 mil (topo da tabela) não pode aparecer aqui.
+    // Lista fechada, e não busca por proibido: assim entra em conflito com
+    // QUALQUER número novo ou alterado, inclusive um degrau superior que
+    // ninguém pensou em proibir.
+    const gate = PERGUNTAS.find((p) => p.id === P.INVESTIMENTO)?.enunciado ?? "";
+    const valores = gate.match(/R\$\s?[\d.,]+(?:\s?mil)?/g) ?? [];
+    expect(valores).toEqual(["R$ 3 mil", "R$ 500"]);
+  });
+
+  it("nenhuma pergunta pergunta quanto custa a dor nem quanto o lead pagaria", () => {
     const enunciados = PERGUNTAS.map((p) => p.enunciado.toLowerCase()).join(" ");
-    for (const proibido of ["r$", "reais", "valor do investimento", "quanto custa"]) {
+    for (const proibido of ["valor do investimento", "quanto custa", "quanto voce pagaria", "quanto você pagaria"]) {
       expect(enunciados).not.toContain(proibido);
     }
   });
@@ -177,7 +202,9 @@ describe("principio I: nenhum preco antes do diagnostico", () => {
     }
   });
 
-  it("preco so aparece no desfecho, e so nas faixas de nao-ICP", () => {
+  it("fora da pergunta-gate, preco so existe no desfecho", () => {
+    // A abertura e o motor da conversa continuam sem nenhum valor: quem entra
+    // na página não vê preço, e quem chega ao gate já descreveu a operação.
     const conversa = ler("src/components/diagnostico/Conversa.tsx");
     const abertura = ler("src/app/diagnostico/page.tsx");
     expect(conversa).not.toContain("R$");

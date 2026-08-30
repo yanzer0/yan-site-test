@@ -7,6 +7,16 @@
  * Regra que governa este arquivo (princípio II da constitution): pergunta-se
  * SITUAÇÃO. Dor subjetiva, urgência e orçamento ficam para a call, onde o
  * cliente articula em voz alta. Nenhuma pergunta daqui pode violar isso.
+ *
+ * 🔴 Exceção única, e ela é do Yan (30/08/2026, emenda 1.1.0 da constitution):
+ * as duas ÚLTIMAS perguntas da trilha de empresa não qualificam, elas GATEIAM.
+ * `tempo_call` e `investimento` não pontuam, não mapeiam para critério do ICP e
+ * não perguntam faixa nenhuma: declaram o que a call custa em tempo e o que o
+ * projeto custa em dinheiro, e registram se aquilo cabe. A diferença que
+ * sustenta a exceção é que quem nomeia o número somos nós, e ele é PISO, nunca
+ * teto. O risco que a decisão de 25/08 aponta (perguntar orçamento cedo ancora
+ * baixo) vem de o CLIENTE jogar um número pequeno, e aqui ele não joga número.
+ * Ver `_decisions/2026-08-30-gate-de-tempo-e-investimento-no-formulario.md`.
  */
 
 import type { Pergunta, Trilha } from "./tipos";
@@ -16,7 +26,7 @@ import type { Pergunta, Trilha } from "./tipos";
  * Sem ela, resposta antiga fica órfã de significado quando a copy muda.
  * Subir sempre que uma pergunta for adicionada, removida ou tiver opção alterada.
  */
-export const VERSAO_PERGUNTAS = "2026-08-14.1";
+export const VERSAO_PERGUNTAS = "2026-08-30.1";
 
 /** Identificadores estáveis. Reescrever a copy de uma pergunta não pode invalidar histórico. */
 export const P = {
@@ -33,6 +43,8 @@ export const P = {
   DECISAO: "decisao",
   TENTATIVAS: "tentativas",
   ACESSO: "acesso",
+  TEMPO_CALL: "tempo_call",
+  INVESTIMENTO: "investimento",
   CONTATO: "contato",
   OBJETIVO_PESSOAL: "objetivo_pessoal",
   USO_IA: "uso_ia",
@@ -231,9 +243,64 @@ export const PERGUNTAS: readonly Pergunta[] = [
       { id: "nao_sei", rotulo: "Não sei dizer agora" },
     ],
   },
+  // ── os dois gates de compromisso ──
+  //
+  // Vêm DEPOIS de tudo que qualifica e ANTES do contato, de propósito. Depois,
+  // porque o lead precisa ter descrito o processo antes de ser perguntado o que
+  // vai colocar nele: perguntado antes, é pedágio na porta. E antes do contato
+  // porque o formulário fecha na pergunta mais fácil, com o consentimento
+  // pousando ali e não em cima do preço.
+  //
+  // Nenhum dos dois tem `criterioIcp`: eles NÃO somam pontos. São corte duro em
+  // `score.ts`, do mesmo tipo que "processo esporádico". Quem responde não sai
+  // do funil, sai da agenda gratuita, e recebe a alternativa que corresponde ao
+  // que ele acabou de dizer que não tem.
+  {
+    id: P.TEMPO_CALL,
+    ordem: 14,
+    trilha: "empresa",
+    tipo: "escolha_unica",
+    // Uma hora, e não "30 a 45 minutos": é o que a página promete no topo, o
+    // que o desfecho repete e o que a Call 1 dura de verdade. Gate que pede
+    // menos do que o compromisso real não filtra, só adianta o desencontro.
+    enunciado:
+      "A call é por vídeo e leva cerca de uma hora, com você e quem toca esse processo no dia a dia. Dá para reservar esse tempo?",
+    obrigatoria: true,
+    opcoes: [
+      { id: "sim", rotulo: "Dá, sem problema" },
+      // Passa no gate e vira informação para quem conduz: diagnóstico sem quem
+      // executa o processo rende menos, mas ainda rende.
+      { id: "so_eu", rotulo: "Dá, mas só eu, sem outras pessoas" },
+      { id: "nao", rotulo: "Hoje não consigo reservar esse tempo" },
+    ],
+  },
+  {
+    id: P.INVESTIMENTO,
+    ordem: 15,
+    trilha: "empresa",
+    tipo: "escolha_unica",
+    // 🔴 Os dois números são PISO e são verificados: Fundação Essencial custa
+    // R$ 3.000 de setup mais R$ 500/mês após o aceite (`pricing.md`, política
+    // v3 de 02/08). Nunca escrever aqui número que não esteja na tabela viva, e
+    // nunca escrever a faixa cheia: piso não ancora, teto ancora.
+    //
+    // A mensalidade aparece junto de propósito. Omiti-la faria o lead descobrir
+    // a recorrência só na Call 2, que é exatamente a sensação de troca de preço
+    // que o funil inteiro existe para não produzir.
+    enunciado:
+      "Resolver isso com a gente é um projeto pago: começa em R$ 3 mil de implantação e R$ 500 por mês depois. Isso cabe no que a empresa pode destinar?",
+    obrigatoria: true,
+    opcoes: [
+      { id: "cabe", rotulo: "Cabe, se o resultado justificar" },
+      { id: "cabe_com_aprovacao", rotulo: "Cabe, mas preciso aprovar internamente" },
+      // Sem opção de "não sei": num gate de dinheiro ela é a saída que todo
+      // mundo clica para não responder, e o gate deixa de gatear.
+      { id: "nao_cabe", rotulo: "Hoje não cabe" },
+    ],
+  },
   {
     id: P.CONTATO,
-    ordem: 14,
+    ordem: 16,
     trilha: "empresa",
     tipo: "contato",
     enunciado: "Onde eu te chamo?",

@@ -2,12 +2,14 @@ import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
+import { perguntasDaTrilha } from "@/lib/diagnostico/perguntas";
+
 /**
  * A abertura da página aparece na PRIMEIRA pergunta, e só nela.
  *
- * Por que virou teste: o texto que vende a call ("São 14 perguntas...", "Não é
+ * Por que virou teste: o texto que vende a call ("São 16 perguntas...", "Não é
  * apresentação comercial...") morava solto acima do formulário, então repetia
- * nas 14 perguntas. Da segunda em diante ele rouba a tela da pergunta e da
+ * em toda pergunta. Da segunda em diante ele rouba a tela da pergunta e da
  * barra de progresso e, no celular, empurra o campo de resposta para baixo da
  * dobra: o lead tem que rolar para achar onde responder. Medido no print do
  * Yan em 17/08.
@@ -30,7 +32,7 @@ const CONVERSA = join(RAIZ, "src/components/diagnostico/Conversa.tsx");
 
 /** Trechos da abertura. Se a copy mudar, o teste falha e alguém relê a regra. */
 const FRASES_DA_ABERTURA = [
-  "São 14 perguntas",
+  "São 16 perguntas",
   "Na call a gente mapeia",
   "Não é apresentação comercial",
 ];
@@ -42,12 +44,16 @@ function ler(caminho: string): string {
 /**
  * O JSX, sem o bloco `metadata`.
  *
- * A description do SEO repete "São 14 perguntas" de propósito, e deve repetir:
+ * A description do SEO repete "São 16 perguntas" de propósito, e deve repetir:
  * é a `<meta>` que o Google e o preview de link leem. O que este teste cobra é
  * o que o lead vê NA TELA, e ninguém lê meta tag na tela.
  */
 function apenasOQueOLeadVe(pagina: string): string {
-  return pagina.replace(/export const metadata[\s\S]*?\n};\n/, " ");
+  // `\r?\n` e não `\n`: no checkout Windows o arquivo está em CRLF, o bloco de
+  // metadata não era removido e o teste reprovava por achar a frase na própria
+  // `description` que ele existe para ignorar. Ficou vermelho e sem valor de
+  // sinal até 30/08. A regra continua a mesma; o que estava errado era a régua.
+  return pagina.replace(/export const metadata[\s\S]*?\r?\n};\r?\n/, " ");
 }
 
 /** O que está entre <Conversa ...> e </Conversa>. Vazio se as tags sumirem. */
@@ -96,5 +102,25 @@ describe("abertura da pagina de diagnostico", () => {
 
     expect(conversa).toContain("children?: React.ReactNode");
     expect(conversa).toMatch(/function Conversa\(\{[^}]*children[^}]*\}/);
+  });
+
+  /**
+   * O número de perguntas prometido na abertura tem que ser o número REAL.
+   *
+   * Sem isto ele só era conferido por quem lembrasse: em 30/08 entraram duas
+   * perguntas e a página continuaria dizendo 14. Promessa de tamanho é a
+   * primeira coisa que o lead usa para decidir se começa, e errá-la para mais
+   * é o pior lado do erro.
+   */
+  it("a contagem prometida bate com o contrato de perguntas", () => {
+    const quantas = perguntasDaTrilha("empresa").length;
+    const pagina = ler(PAGINA);
+
+    // Nos dois lugares: o texto da tela e a description que vai no preview do
+    // link. Elas divergirem é a mesma promessa dita com dois números.
+    const ocorrencias = pagina.match(/São \d+ perguntas/g) ?? [];
+    expect(ocorrencias.length, "a frase da contagem sumiu da página").toBe(2);
+    expect(new Set(ocorrencias).size, "tela e SEO prometem contagens diferentes").toBe(1);
+    expect(ocorrencias[0]).toBe(`São ${quantas} perguntas`);
   });
 });

@@ -19,7 +19,7 @@
 
 import { after, NextRequest, NextResponse } from "next/server";
 
-import { avaliar } from "@/lib/diagnostico/score";
+import { avaliar, ofertaAlternativa } from "@/lib/diagnostico/score";
 import { apagarParcial, gravarLead, ErroPersistencia } from "@/lib/diagnostico/db";
 import { avisarFalhaPersistencia, avisarRevisaoHumana } from "@/lib/diagnostico/alerta";
 import { publicarLeadRegistrado } from "@/lib/diagnostico/eventos";
@@ -119,7 +119,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
                 : "",
           },
         }
-      : {}),
+      // Quem não é qualificado leva a alternativa já decidida. Ela sai daqui, e
+      // não do navegador, porque depende do motivo do corte, que é dado interno
+      // e não pode viajar só para o cliente reproduzir a decisão.
+      : { oferta: ofertaAlternativa(avaliacao) }),
   };
 
   return NextResponse.json(resposta);

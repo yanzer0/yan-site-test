@@ -7,7 +7,7 @@ import "./diagnostico.css";
 export const metadata: Metadata = {
   title: "Diagnóstico da sua operação | Infuser",
   description:
-    "Uma hora de diagnóstico com o time da Infuser para mapear onde IA e automação encaixam na sua operação. São 14 perguntas e leva uns 3 minutos.",
+    "Uma hora de diagnóstico com o time da Infuser para mapear onde IA e automação encaixam na sua operação. São 16 perguntas e leva uns 3 minutos.",
   robots: { index: true, follow: true },
 };
 
@@ -54,7 +54,7 @@ export default function DiagnosticoPage() {
             HTML inicial — o que importa no webview do Instagram. */}
         <Conversa urlCal={urlCal} urlMapa={urlMapa} urlPolitica="/privacidade">
           <p className="dg-lead">
-            São 14 perguntas e leva uns 3 minutos. Se fizer sentido pros dois lados, você escolhe o
+            São 16 perguntas e leva uns 3 minutos. Se fizer sentido pros dois lados, você escolhe o
             horário aqui mesmo no final.
           </p>
           <p className="dg-lead">

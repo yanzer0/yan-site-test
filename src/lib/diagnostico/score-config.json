@@ -1,5 +1,5 @@
 {
-  "versao": "2026-08-14.1",
+  "versao": "2026-08-30.1",
   "_nota": "Pesos calibráveis sem tocar em código (FR-018). São chute informado pelo ICP, não verdade medida: recalibrar contra os primeiros leads reais comparando a faixa dada com a leitura de quem conduziu a call. Fonte: specs/001-funil-diagnostico-captura/contracts/score.md",
 
   "limiares": {
@@ -67,6 +67,9 @@
   "cortesDuros": {
     "frequenciaEliminatoria": "esporadico",
     "patrocinadorAusente": "ninguem",
-    "decisaoAusente": "nao_sou_eu"
+    "decisaoAusente": "nao_sou_eu",
+    "_nota_gates": "Os dois gates sao LISTA DE PERMISSAO e nao de eliminacao, ao contrario dos cortes acima. Motivo: a rota de submissao e publica, e resposta ausente ou desconhecida precisa REPROVAR o gate, nao passar por omissao. Gate que um POST sem o campo atravessa nao e gate.",
+    "tempoAceito": ["sim", "so_eu"],
+    "investimentoAceito": ["cabe", "cabe_com_aprovacao"]
   }
 }

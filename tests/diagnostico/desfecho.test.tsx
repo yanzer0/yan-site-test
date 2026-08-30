@@ -28,24 +28,36 @@ function textoDe(markup: string): string {
     .trim();
 }
 
-function renderizar(faixa: "qualificado" | "nao_icp_empresa" | "revisao" | "nao_icp_pessoal") {
-  return textoDe(
-    renderToStaticMarkup(
-      <Desfecho
-        faixa={faixa}
-        nome="Yan Galasso"
-        processo="a cobrança de inadimplentes"
-        email="lead@exemplo.com"
-        urlCal="https://cal.com/infuser/diagnostico"
-        urlMapa={LINK_STRIPE}
-      />,
-    ),
+function markup(
+  faixa: "qualificado" | "nao_icp_empresa" | "revisao" | "nao_icp_pessoal",
+  oferta?: "call_paga" | "kit",
+) {
+  return renderToStaticMarkup(
+    <Desfecho
+      faixa={faixa}
+      nome="Yan Galasso"
+      processo="a cobrança de inadimplentes"
+      email="lead@exemplo.com"
+      oferta={oferta}
+      urlCal="https://cal.com/infuser/diagnostico"
+      urlMapa={LINK_STRIPE}
+    />,
   );
+}
+
+function renderizar(
+  faixa: "qualificado" | "nao_icp_empresa" | "revisao" | "nao_icp_pessoal",
+  oferta?: "call_paga" | "kit",
+) {
+  return textoDe(markup(faixa, oferta));
 }
 
 const QUALIFICADO = renderizar("qualificado");
 const PAGANTE = renderizar("nao_icp_empresa");
 const REVISAO = renderizar("revisao");
+/** Empresa que declarou não ter a hora da call: recebe o Kit, nunca a call paga. */
+const SEM_TEMPO = renderizar("nao_icp_empresa", "kit");
+const PESSOAL = renderizar("nao_icp_pessoal");
 
 describe("as duas faixas recebem a MESMA promessa", () => {
   it("nenhuma das duas diz ao lead que ele nao se encaixa", () => {
@@ -151,8 +163,73 @@ describe("o que sustenta o preco e fato, nao adjetivo", () => {
 
 describe("uso pessoal continua com destino proprio", () => {
   it("nao recebe o convite da call de empresa", () => {
-    const pessoal = renderizar("nao_icp_pessoal");
-    expect(pessoal).toContain("Kit Segundo Cérebro");
-    expect(pessoal).not.toContain("Agendar a call");
+    expect(PESSOAL).toContain("Kit Segundo Cérebro");
+    expect(PESSOAL).not.toContain("Agendar a call");
+  });
+});
+
+/**
+ * A saída de quem declarou não ter a hora (gate de tempo, 30/08).
+ *
+ * A regra que isto protege: não se vende uma reunião paga a quem acabou de
+ * dizer que não consegue reunir. Seria devolver o obstáculo com preço.
+ */
+describe("empresa sem tempo recebe o Kit, nunca a call paga", () => {
+  it("nao ve preco de call nem botao de agendar", () => {
+    expect(SEM_TEMPO).not.toContain("R$ 197");
+    expect(SEM_TEMPO).not.toContain("Agendar a call");
+  });
+
+  it("ve o Kit com o botao que leva a pagina de vendas", () => {
+    expect(SEM_TEMPO).toContain("Kit Segundo Cérebro");
+    expect(markup("nao_icp_empresa", "kit")).toContain(
+      'href="https://useinfuser.com/kit-segundo-cerebro"',
+    );
+  });
+
+  it("nao da veredito sobre o encaixe dele, so devolve a resposta dele", () => {
+    expect(SEM_TEMPO).not.toMatch(
+      /não é o melhor caminho|não vai te servir|não se encaixa|não é para você/i,
+    );
+  });
+
+  it("sem a oferta explicita, a faixa cai na call paga como antes", () => {
+    // Compatibilidade: resposta antiga de API, sem o campo, não pode mudar de
+    // destino sozinha.
+    expect(renderizar("nao_icp_empresa")).toBe(PAGANTE);
+    expect(renderizar("nao_icp_empresa", "call_paga")).toBe(PAGANTE);
+  });
+});
+
+/**
+ * 🔴 Este bloco nasce de um erro que esteve VIVO em produção: o desfecho dizia
+ * "pagamento único de R$ 67" e a página cobra assinatura mensal a partir de
+ * R$ 37. O lead lia um preço e clicava para outro.
+ */
+describe("o preco do Kit bate com a pagina que recebe o clique", () => {
+  it.each([PESSOAL, SEM_TEMPO])("nao promete pagamento unico", (texto) => {
+    expect(texto).not.toMatch(/pagamento único|compra única|uma vez só/i);
+  });
+
+  it.each([PESSOAL, SEM_TEMPO])("diz que e mensal e a partir do plano inicial", (texto) => {
+    expect(texto).toContain("R$ 37 por mês");
+    expect(texto).toMatch(/assinatura mensal/i);
+  });
+
+  it("os dois caminhos mostram exatamente a mesma oferta", () => {
+    // Um componente só. Se alguém duplicar o texto por faixa, eles divergem
+    // com o tempo e ninguém percebe, que é como o "R$ 67 único" sobreviveu.
+    for (const item of ["cérebro privado", "Claude ou no Codex", "Kit de Skills", "R$ 37 por mês"]) {
+      expect(PESSOAL, `pessoal perdeu "${item}"`).toContain(item);
+      expect(SEM_TEMPO, `sem tempo perdeu "${item}"`).toContain(item);
+    }
+  });
+
+  it("sustenta a oferta com o que vem dentro, nao com adjetivo", () => {
+    for (const adjetivo of ["barato", "vale mais", "por apenas", "imperdível", "revolucion"]) {
+      expect(SEM_TEMPO.toLowerCase(), `voltou a afirmar valor: "${adjetivo}"`).not.toContain(
+        adjetivo,
+      );
+    }
   });
 });

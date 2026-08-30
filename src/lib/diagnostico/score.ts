@@ -13,6 +13,7 @@ import type {
   ConfigScore,
   CriterioIcp,
   Faixa,
+  OfertaAlternativa,
   PontuacaoCriterio,
   Respostas,
   ValorResposta,
@@ -22,7 +23,23 @@ const MOTIVO = {
   USO_PESSOAL: "uso_pessoal_declarado",
   SEM_RECORRENCIA: "processo_sem_recorrencia",
   SEM_DONO_SEM_DECISAO: "sem_dono_do_processo_e_sem_poder_de_decisao",
+  SEM_TEMPO: "sem_tempo_para_a_call",
+  SEM_INVESTIMENTO: "investimento_minimo_nao_cabe",
+  SEM_TEMPO_E_SEM_INVESTIMENTO: "sem_tempo_e_investimento_nao_cabe",
 } as const;
+
+/**
+ * Motivos de corte que tornam a call PAGA incoerente como alternativa.
+ *
+ * Quem declarou não ter uma hora não passa a ter uma hora porque ela custa
+ * R$ 197. Oferecer reunião paga a quem acabou de dizer que não consegue reunir
+ * é vender o obstáculo de volta, e o destino honesto é o produto que ele usa
+ * sozinho, no tempo dele.
+ */
+const MOTIVOS_SEM_CALL: readonly string[] = [
+  MOTIVO.SEM_TEMPO,
+  MOTIVO.SEM_TEMPO_E_SEM_INVESTIMENTO,
+];
 
 function lerUnica(respostas: Respostas, id: string): string {
   const valor: ValorResposta | undefined = respostas[id];
@@ -105,6 +122,29 @@ function aplicarCorteDuro(respostas: Respostas, config: ConfigScore): { faixa: F
     return { faixa: "nao_icp_pessoal", motivo: MOTIVO.USO_PESSOAL };
   }
 
+  // Os gates de compromisso vêm ANTES dos cortes de ICP porque respondem uma
+  // pergunta diferente: os de ICP dizem que não há o que diagnosticar, estes
+  // dizem que a pessoa não vai à call. E é o motivo que escolhe a alternativa,
+  // então quem falha nos dois precisa sair pelo motivo que fecha mais portas.
+  //
+  // Reprovam por LISTA DE PERMISSÃO, e não pela resposta que elimina: a rota de
+  // submissão é pública, e um POST que simplesmente omite o campo passaria por
+  // um teste de igualdade. Gate que se atravessa apagando o campo não é gate.
+  const semTempo = !config.cortesDuros.tempoAceito.includes(lerUnica(respostas, P.TEMPO_CALL));
+  const semInvestimento = !config.cortesDuros.investimentoAceito.includes(
+    lerUnica(respostas, P.INVESTIMENTO),
+  );
+
+  if (semTempo && semInvestimento) {
+    return { faixa: "nao_icp_empresa", motivo: MOTIVO.SEM_TEMPO_E_SEM_INVESTIMENTO };
+  }
+  if (semTempo) {
+    return { faixa: "nao_icp_empresa", motivo: MOTIVO.SEM_TEMPO };
+  }
+  if (semInvestimento) {
+    return { faixa: "nao_icp_empresa", motivo: MOTIVO.SEM_INVESTIMENTO };
+  }
+
   if (lerUnica(respostas, P.FREQUENCIA) === config.cortesDuros.frequenciaEliminatoria) {
     return { faixa: "nao_icp_empresa", motivo: MOTIVO.SEM_RECORRENCIA };
   }
@@ -154,6 +194,25 @@ export function avaliar(respostas: Respostas, config: ConfigScore): Avaliacao {
 }
 
 export const MOTIVOS_CORTE = MOTIVO;
+
+/**
+ * A alternativa que o lead não qualificado recebe.
+ *
+ * Função pura sobre a avaliação, e não sobre a faixa: a faixa `nao_icp_empresa`
+ * cobre saídas de naturezas diferentes, e é o motivo que separa quem ainda pode
+ * comprar uma call de quem não pode comprar call nenhuma.
+ *
+ * Quem falhou SÓ o gate de dinheiro continua na call paga de propósito:
+ * R$ 197 não é R$ 3.000, e o Mapa é entregável fechado que não depende de ele
+ * sustentar o projeto inteiro.
+ */
+export function ofertaAlternativa(avaliacao: Avaliacao): OfertaAlternativa {
+  if (avaliacao.faixa === "nao_icp_pessoal") return "kit";
+  if (avaliacao.motivoCorte !== null && MOTIVOS_SEM_CALL.includes(avaliacao.motivoCorte)) {
+    return "kit";
+  }
+  return "call_paga";
+}
 
 /** Máximo teórico, derivado dos tetos. Usado em teste e na calibração. */
 export function scoreMaximo(config: ConfigScore): number {

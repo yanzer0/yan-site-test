@@ -230,6 +230,7 @@ export function Conversa({ urlCal, urlMapa, urlPolitica, children }: ConversaPro
         nome={resultado.nome}
         processo={resultado.agendamento?.processo ?? ""}
         email={resultado.agendamento?.email ?? extras.email}
+        oferta={resultado.oferta}
         urlCal={urlCal}
         urlMapa={urlMapa}
       />
