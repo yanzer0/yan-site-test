@@ -12,7 +12,9 @@ A venda tem duas conversas. A Call 1 é diagnóstico puro: sem demo comercial, s
 
 Nenhuma superfície construída aqui pode exibir faixa de preço, tabela, nome de plano ou promessa de entrega antes do diagnóstico. Isso inclui formulário, e-mail de confirmação, página de agendamento, mensagem automática e o próprio mapa de diagnóstico.
 
-**Exceção única, decidida pelo Yan em 30/08/2026 (emenda 1.1.0): o PISO declarado no gate de investimento do formulário.** O que o princípio protege é o lead entrar na Call 1 com uma faixa na cabeça, e faixa é o que ancora. Um piso não ancora: ele não diz quanto o projeto vai custar, diz abaixo de quanto não existe projeto. O número é o da Fundação Essencial na tabela viva, nunca um degrau superior, e o guard `copy.test.ts` prende o valor exato: mudar o piso sem passar pelo `pricing.md` reprova. Continua proibido em toda superfície: faixa, tabela, degrau acima do piso, nome de plano e qualquer preço fora dessa única pergunta.
+**Exceção única, decidida pelo Yan em 30/08/2026 (emenda 1.1.0): o PISO declarado no gate de investimento do formulário.** O que o princípio protege é o lead entrar na Call 1 com uma faixa na cabeça, e faixa é o que ancora. Um piso não ancora: ele não diz quanto o projeto vai custar, diz abaixo de quanto não existe projeto.
+
+A exceção é de **limiar, nunca de cotação**, e a fronteira é literal: **um número só, e nada que descreva como se cobra.** Mensalidade, setup, nome de plano, degrau e faixa continuam proibidos em toda superfície, a pergunta incluída. Dois números já descrevem a estrutura do SKU, e estrutura é tabela: a primeira versão desta pergunta dizia "começa em R$ 3 mil de implantação e R$ 500 por mês depois", que é a Fundação Essencial inteira exposta antes do diagnóstico, e foi corrigida no mesmo dia. O guard `copy.test.ts` prende os dois lados: o valor exato (mudar o piso sem passar pelo `pricing.md` reprova) e o vocabulário de estrutura.
 
 Fonte: `_knowledge/comercial/direcionamento-estrategico.md` (decisão de 02/08/2026), `_empresa/identidade/pricing.md` (política v3, princípio 2) e `_decisions/2026-08-30-gate-de-tempo-e-investimento-no-formulario.md`.
 
@@ -123,6 +125,8 @@ Todo pull request declara quais princípios ele toca e como os respeita.
 ### 1.1.0 (2026-08-30) - gate de tempo e de investimento no formulário
 
 **O que muda:** o formulário passa a ter duas perguntas de compromisso no fim da trilha de empresa, e a segunda declara o piso de investimento. Novo princípio II-b. Exceção nomeada no princípio I. Princípio II reescrito para separar "o lead nomeia um número" (proibido, sem exceção) de "nós declaramos o piso" (permitido, só no gate).
+
+**Correção no mesmo dia, e ela aperta a emenda em vez de afrouxar:** a pergunta nasceu dizendo "começa em R$ 3 mil de implantação e R$ 500 por mês depois", o que é a Fundação Essencial descrita antes do diagnóstico. O Yan cortou para **"A sua empresa está disposta a investir pelo menos R$ 3 mil para resolver isso?"**. A regra que ficou é a fronteira entre **limiar** (um número, é o chão) e **cotação** (dois números, vira a estrutura de cobrança), e é ela que o guard cobra.
 
 **Por que muda:** a call gratuita é hora do time, e o gargalo declarado é a agenda. Até aqui o funil não tinha nenhuma pergunta que separasse quem não pode pagar nem comparecer, e essa hora saía do mesmo lugar que a hora de quem fecha.
 

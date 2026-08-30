@@ -11,11 +11,12 @@
  * 🔴 Exceção única, e ela é do Yan (30/08/2026, emenda 1.1.0 da constitution):
  * as duas ÚLTIMAS perguntas da trilha de empresa não qualificam, elas GATEIAM.
  * `tempo_call` e `investimento` não pontuam, não mapeiam para critério do ICP e
- * não perguntam faixa nenhuma: declaram o que a call custa em tempo e o que o
- * projeto custa em dinheiro, e registram se aquilo cabe. A diferença que
- * sustenta a exceção é que quem nomeia o número somos nós, e ele é PISO, nunca
- * teto. O risco que a decisão de 25/08 aponta (perguntar orçamento cedo ancora
- * baixo) vem de o CLIENTE jogar um número pequeno, e aqui ele não joga número.
+ * não perguntam faixa nenhuma: declaram o que a call custa em tempo e o PISO do
+ * que a Infuser cobra por projeto, e registram se aquilo cabe. A diferença que
+ * sustenta a exceção é que quem nomeia o número somos nós, e ele é LIMIAR, não
+ * cotação: não diz quanto o projeto custa, diz abaixo de quanto não há projeto.
+ * O risco que a decisão de 25/08 aponta (perguntar orçamento cedo ancora baixo)
+ * vem de o CLIENTE jogar um número pequeno, e aqui ele não joga número.
  * Ver `_decisions/2026-08-30-gate-de-tempo-e-investimento-no-formulario.md`.
  */
 
@@ -26,7 +27,7 @@ import type { Pergunta, Trilha } from "./tipos";
  * Sem ela, resposta antiga fica órfã de significado quando a copy muda.
  * Subir sempre que uma pergunta for adicionada, removida ou tiver opção alterada.
  */
-export const VERSAO_PERGUNTAS = "2026-08-30.1";
+export const VERSAO_PERGUNTAS = "2026-08-30.2";
 
 /** Identificadores estáveis. Reescrever a copy de uma pergunta não pode invalidar histórico. */
 export const P = {
@@ -279,23 +280,33 @@ export const PERGUNTAS: readonly Pergunta[] = [
     ordem: 15,
     trilha: "empresa",
     tipo: "escolha_unica",
-    // 🔴 Os dois números são PISO e são verificados: Fundação Essencial custa
-    // R$ 3.000 de setup mais R$ 500/mês após o aceite (`pricing.md`, política
-    // v3 de 02/08). Nunca escrever aqui número que não esteja na tabela viva, e
-    // nunca escrever a faixa cheia: piso não ancora, teto ancora.
+    // 🔴 UM número, e ele é LIMIAR, não cotação (regra do Yan, 30/08).
     //
-    // A mensalidade aparece junto de propósito. Omiti-la faria o lead descobrir
-    // a recorrência só na Call 2, que é exatamente a sensação de troca de preço
-    // que o funil inteiro existe para não produzir.
+    // R$ 3 mil é o piso do que a Infuser cobra por projeto. O que a pergunta
+    // faz é medir disposição contra esse piso, e é só isso que ela pode fazer:
+    //
+    //   - NÃO diz quanto o projeto custa, então não é preço antes do
+    //     diagnóstico e não vira âncora que a proposta herda;
+    //   - NÃO cita mensalidade, setup, nome de plano nem degrau da tabela.
+    //     A versão anterior dizia "começa em R$ 3 mil de implantação e R$ 500
+    //     por mês depois", e isso é a ESTRUTURA do SKU (Fundação Essencial)
+    //     exposta na primeira superfície que o lead toca. Limiar é uma linha no
+    //     chão; cotação é a tabela. Só a linha no chão pode aparecer aqui.
+    //
+    // Nunca escrever aqui número que não seja o piso do `pricing.md` vivo, e
+    // nunca acrescentar um segundo número: `copy.test.ts` prende os dois lados.
     enunciado:
-      "Resolver isso com a gente é um projeto pago: começa em R$ 3 mil de implantação e R$ 500 por mês depois. Isso cabe no que a empresa pode destinar?",
+      "A sua empresa está disposta a investir pelo menos R$ 3 mil para resolver isso?",
     obrigatoria: true,
     opcoes: [
-      { id: "cabe", rotulo: "Cabe, se o resultado justificar" },
-      { id: "cabe_com_aprovacao", rotulo: "Cabe, mas preciso aprovar internamente" },
+      { id: "cabe", rotulo: "Sim, se o resultado justificar" },
+      { id: "cabe_com_aprovacao", rotulo: "Sim, mas preciso aprovar internamente" },
+      // "Hoje não" e não "Não": o lead volta a ser abordável mais para frente,
+      // e o princípio IV diz que ele é dado, não lixo.
+      //
       // Sem opção de "não sei": num gate de dinheiro ela é a saída que todo
       // mundo clica para não responder, e o gate deixa de gatear.
-      { id: "nao_cabe", rotulo: "Hoje não cabe" },
+      { id: "nao_cabe", rotulo: "Hoje não" },
     ],
   },
   {

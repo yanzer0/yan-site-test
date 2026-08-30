@@ -163,16 +163,37 @@ describe("principio I: nenhum preco antes do diagnostico", () => {
     expect(comValor.map((p) => p.id)).toEqual([P.INVESTIMENTO]);
   });
 
-  it("o valor citado e o PISO da tabela viva, nunca a faixa cheia", () => {
-    // Fundação Essencial em `_empresa/identidade/pricing.md`, política v3 de
-    // 02/08: R$ 3.000 de setup mais R$ 500/mês após o aceite. Piso não ancora,
-    // teto ancora: por isso R$ 12 mil (topo da tabela) não pode aparecer aqui.
-    // Lista fechada, e não busca por proibido: assim entra em conflito com
-    // QUALQUER número novo ou alterado, inclusive um degrau superior que
-    // ninguém pensou em proibir.
+  it("o gate cita UM numero, e ele e o piso: limiar, nunca cotacao", () => {
+    // Regra do Yan, 30/08: a pergunta mostra que existe custo e onde está o
+    // chão, e não quanto o projeto custa. Um segundo número transforma limiar
+    // em cotação, porque passa a descrever a ESTRUTURA do que se cobra. Foi
+    // exatamente o que a primeira versão fez ao dizer "R$ 3 mil de implantação
+    // e R$ 500 por mês", que é a Fundação Essencial exposta antes da Call 1.
+    //
+    // Lista fechada, e não busca por proibido: assim reprova QUALQUER número
+    // novo ou alterado, inclusive um que ninguém pensou em proibir.
     const gate = PERGUNTAS.find((p) => p.id === P.INVESTIMENTO)?.enunciado ?? "";
     const valores = gate.match(/R\$\s?[\d.,]+(?:\s?mil)?/g) ?? [];
-    expect(valores).toEqual(["R$ 3 mil", "R$ 500"]);
+    expect(valores).toEqual(["R$ 3 mil"]);
+  });
+
+  it("o gate nao descreve estrutura de cobranca", () => {
+    // Mensalidade, setup, nome de plano e degrau continuam banidos da
+    // superfície inteira: é o princípio I, e a emenda 1.1.0 abriu exceção
+    // só para o piso.
+    const gate = (PERGUNTAS.find((p) => p.id === P.INVESTIMENTO)?.enunciado ?? "").toLowerCase();
+    for (const estrutura of [
+      "por mês",
+      "mensal",
+      "mensalidade",
+      "implantação",
+      "setup",
+      "plano",
+      "fundação",
+      "recorrência",
+    ]) {
+      expect(gate, `o gate virou cotação ao citar "${estrutura}"`).not.toContain(estrutura);
+    }
   });
 
   it("nenhuma pergunta pergunta quanto custa a dor nem quanto o lead pagaria", () => {
