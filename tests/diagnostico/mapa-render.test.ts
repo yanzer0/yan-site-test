@@ -26,11 +26,18 @@ const CANONICO =
 
 describe("sincronia com o template canonico do brain", () => {
   it.skipIf(!existsSync(CANONICO))(
-    "a copia do site e byte a byte igual ao canonico",
+    "a copia do site e identica ao canonico, linha a linha",
     () => {
       // Se este teste falhar, alguem editou um dos dois lados sozinho. O certo
       // e sempre editar o canonico no brain, onde o guard cobre, e recopiar.
-      expect(readFileSync(TEMPLATE, "utf8")).toBe(readFileSync(CANONICO, "utf8"));
+      //
+      // Compara ignorando fim de linha, e nao byte a byte: os dois repos tem
+      // configuracao de checkout diferente, entao no Windows o site vem em CRLF
+      // e o brain em LF. A comparacao crua reprovava por isso desde sempre, sem
+      // nenhuma divergencia de conteudo, e virou vermelho permanente que
+      // ninguem lia. Diferenca que importa (uma linha trocada) continua pegando.
+      const linhas = (caminho: string) => readFileSync(caminho, "utf8").split(/\r?\n/);
+      expect(linhas(TEMPLATE)).toEqual(linhas(CANONICO));
     },
   );
 
