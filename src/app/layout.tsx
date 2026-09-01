@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Outfit, Space_Mono, Fraunces } from "next/font/google";
 import localFont from "next/font/local";
+import { Gtm } from "@/components/gtm";
 import { UtmTracker } from "@/components/utm-tracker";
 import { SmoothAnchorScroll } from "@/components/smooth-anchor-scroll";
 import "./globals.css";
@@ -51,6 +52,7 @@ export default function RootLayout({
       className={`${outfit.variable} ${spaceMono.variable} ${fraunces.variable} ${cabinetGrotesk.variable} dark h-full antialiased`}
     >
       <body className="min-h-full flex flex-col font-sans">
+        <Gtm />
         <UtmTracker />
         <SmoothAnchorScroll />
         {children}
