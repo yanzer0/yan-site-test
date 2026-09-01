@@ -7,7 +7,7 @@ import { useScrolled } from "@/lib/use-scrolled";
 import Image from "next/image";
 import Link from "next/link";
 
-const CHECKOUT_URL = "https://pay.kiwify.com.br/2r9Z7sZ";
+const CHECKOUT_URL = "https://pay.hub.la/I3PfZRUnP9VGNR5hzXpH";
 
 /* ─── Navbar ─── */
 function SKNavbar() {
