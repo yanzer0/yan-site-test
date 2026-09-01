@@ -1,11 +1,8 @@
 /**
  * Normalização de contato, usada na deduplicação de lead (FR-033).
  *
- * A lógica de telefone é a mesma que já existe em
- * `src/app/api/kiwify-webhook/route.ts`. Ela foi replicada aqui em vez de
- * importada de lá de propósito: unificar as duas exigiria editar uma rota de
- * produção que já funciona, o que é refatoração e merece ser sua própria
- * mudança, com seu próprio teste de caracterização. Fica anotado como dívida.
+ * A lógica de telefone era duplicada do webhook da Kiwify, removido em 01/09
+ * junto com o resto do tracking do Meta. Esta passou a ser a única cópia.
  */
 
 /** Só os dígitos. Vazio quando não há nada aproveitável. */

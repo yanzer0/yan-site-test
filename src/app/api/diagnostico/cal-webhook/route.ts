@@ -9,7 +9,7 @@
  *
  * Responde 200 mesmo em falha de vínculo, de propósito: código de erro faria o
  * Cal.com entrar em retry, e o problema não é do lado dele. A falha vai para o
- * log e para o alerta. Mesma política do kiwify-webhook que já existe aqui.
+ * log e para o alerta.
  *
  * Envs:
  *   CAL_WEBHOOK_SECRET  (sensível, o mesmo configurado no painel do Cal.com)

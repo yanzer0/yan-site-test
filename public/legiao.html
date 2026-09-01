@@ -22,8 +22,6 @@
 <!-- Trackers (Meta Pixel + UTMify) carregam FORA do caminho critico: na 1a interacao
      do usuario ou em load+idle, o que vier primeiro. Loader no fim do <body>.
      dns-prefetch mantido pra aquecer o DNS antes desse carregamento tardio. -->
-<link rel="dns-prefetch" href="https://connect.facebook.net">
-<link rel="dns-prefetch" href="https://cdn.utmify.com.br">
 <style>
 /* Fontes self-hosted, subset latino (cobre acentos PT-BR). Inter e Onest sao
    variable fonts: um woff2 cobre toda a faixa de peso. font-display:swap =
@@ -852,43 +850,6 @@ footer p{font-size:13px;color:var(--faint)}
      long-tasks / unused-JS / forced-reflow do fbevents.js), mas ainda rodam bem antes
      do usuario rolar ate o botao de compra — entao a atribuicao UTM->Hubla e o PageView
      continuam intactos. PageView do browser + CAPI compartilham o mesmo eventID (dedup). -->
-<script id="deferred-trackers">
-(function(){
-  var loaded=false;
-  var events=['pointerdown','touchstart','scroll','keydown','mousemove'];
-  function detach(){events.forEach(function(e){window.removeEventListener(e,onFirstInteract,{passive:true});});}
-  function loadTrackers(){
-    if(loaded) return; loaded=true; detach();
-    // --- UTMify: captura de UTM (atribuicao por criativo) + pixel ---
-    window.pixelId="6a4d636e418e8b5a0446d024";
-    var up=document.createElement("script");
-    up.async=true; up.defer=true; up.src="https://cdn.utmify.com.br/scripts/pixel/pixel.js";
-    document.head.appendChild(up);
-    var uu=document.createElement("script");
-    uu.async=true; uu.defer=true; uu.src="https://cdn.utmify.com.br/scripts/utms/latest.js";
-    uu.setAttribute("data-utmify-prevent-xcod-sck","");
-    uu.setAttribute("data-utmify-prevent-subids","");
-    document.head.appendChild(uu);
-    // --- Meta Pixel + CAPI (mesmo eventID p/ dedup) ---
-    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
-    fbq('init','26669487942716886');
-    try{
-      var eid=(window.crypto&&crypto.randomUUID)?crypto.randomUUID():(Date.now().toString(36)+'-'+Math.random().toString(36).slice(2));
-      fbq('track','PageView',{},{eventID:eid});
-      var ck=function(n){var m=document.cookie.match(new RegExp('(?:^|; )'+n+'=([^;]*)'));return m?decodeURIComponent(m[1]):undefined;};
-      var ud={},fbp=ck('_fbp'),fbc=ck('_fbc');if(fbp)ud.fbp=fbp;if(fbc)ud.fbc=fbc;
-      fetch('/api/meta-capi',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({event_name:'PageView',event_id:eid,event_source_url:location.href,user_data:ud}),keepalive:true}).catch(function(){});
-    }catch(e){}
-  }
-  function onFirstInteract(){loadTrackers();}
-  events.forEach(function(e){window.addEventListener(e,onFirstInteract,{passive:true});});
-  window.addEventListener('load',function(){
-    if('requestIdleCallback' in window){requestIdleCallback(loadTrackers,{timeout:3000});}
-    else{setTimeout(loadTrackers,2500);}
-  });
-})();
-</script>
-<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=26669487942716886&ev=PageView&noscript=1" alt=""></noscript>
 
 </body>
 </html>

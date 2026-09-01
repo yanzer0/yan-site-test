@@ -1,7 +1,5 @@
 import type { PropsWithChildren } from "react";
 import { Inter, Onest, Fraunces, Geist_Mono } from "next/font/google";
-import { ClubUtmifyPixel } from "@/components/club-utmify-pixel";
-import { ClubClarity } from "@/components/club-clarity";
 
 // Fontes da identidade v2 do Club self-hosted (perf: sem Google Fonts CDN).
 // Cada uma expõe uma CSS var consumida em .club-scope no club-live.html.
@@ -32,8 +30,6 @@ export default function ClubLayout({ children }: PropsWithChildren) {
     <div
       className={`club-scope ${inter.variable} ${onest.variable} ${fraunces.variable} ${geistMono.variable}`}
     >
-      <ClubUtmifyPixel />
-      <ClubClarity />
       {children}
     </div>
   );
