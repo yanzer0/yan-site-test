@@ -59,6 +59,8 @@ export interface DadosDoCard {
   readonly email: string;
   readonly whatsapp: string | null;
   readonly origem: string;
+  /** Quem indicou, quando a origem é indicação. Opcional: card antigo não tem e continua válido. */
+  readonly indicadoPor?: string | null;
   readonly score: number;
   readonly faixa: string;
   readonly inicioDaCall: Date;
@@ -153,6 +155,8 @@ export function montarCard(dados: DadosDoCard): string {
   const origem = ORIGEM_DO_BRAIN[dados.origem] ?? "outro";
   const dataDaCall = dataIso(dados.inicioDaCall);
   const porte = dados.porte ? (PORTE_LEGIVEL[dados.porte] ?? dados.porte) : "não informado";
+  // Só vale acompanhado da origem: nome solto sem "indicacao" seria dado inventado.
+  const indicadoPor = origem === "indicacao" ? dados.indicadoPor?.trim() || null : null;
 
   const frontmatter = [
     "---",
@@ -163,6 +167,7 @@ export function montarCard(dados: DadosDoCard): string {
     "prioridade: media",
     "responsavel: Yan",
     `origem: ${origem}`,
+    ...(indicadoPor ? [`indicado_por: ${valorYaml(indicadoPor)}`] : []),
     `proximo_passo: ${valorYaml(`Conduzir a Call 1 de diagnóstico em ${quandoLegivel(dados.inicioDaCall)}, seguindo o roteiro gerado.`)}`,
     `data_proximo_passo: ${dataDaCall}`,
     `contato: ${valorYaml(dados.nome)}`,
@@ -191,6 +196,7 @@ export function montarCard(dados: DadosDoCard): string {
     ...(dados.whatsapp ? [`| WhatsApp | ${dados.whatsapp} |`] : []),
     `| Porte | ${porte} |`,
     `| Origem | ${dados.origem} |`,
+    ...(indicadoPor ? [`| Indicado por | ${indicadoPor} |`] : []),
     `| Call 1 | ${quandoLegivel(dados.inicioDaCall)} |`,
     "",
     "## O que ele respondeu no formulário",

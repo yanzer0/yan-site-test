@@ -28,6 +28,8 @@ interface Extras {
   whatsapp: string;
   email: string;
   origem: string;
+  /** Só aparece quando a origem é indicação. Opcional: vazio não trava o envio. */
+  indicadoPor: string;
 }
 
 const EXTRAS_VAZIO: Extras = {
@@ -37,7 +39,11 @@ const EXTRAS_VAZIO: Extras = {
   whatsapp: "",
   email: "",
   origem: "",
+  indicadoPor: "",
 };
+
+/** A opção de origem que revela o campo "quem te indicou". Mesmo id do contrato de perguntas. */
+const ORIGEM_INDICACAO = "indicacao";
 
 interface EstadoSalvo {
   readonly passo: number;
@@ -200,6 +206,7 @@ export function Conversa({ urlCal, urlMapa, urlPolitica, children }: ConversaPro
             whatsapp: extras.whatsapp,
             empresa: extras.empresaNome,
             papel: extras.empresaPapel,
+            indicadoPor: extras.origem === ORIGEM_INDICACAO ? extras.indicadoPor : "",
           },
         }),
       });
@@ -407,6 +414,18 @@ export function Conversa({ urlCal, urlMapa, urlPolitica, children }: ConversaPro
               ))}
             </div>
           </div>
+          {extras.origem === ORIGEM_INDICACAO && (
+            <div className="dg-campo">
+              <span className="dg-rotulo">Quem te indicou? (opcional)</span>
+              <input
+                className="dg-input"
+                type="text"
+                maxLength={200}
+                value={extras.indicadoPor}
+                onChange={(e) => setExtras({ ...extras, indicadoPor: e.target.value })}
+              />
+            </div>
+          )}
         </>
       );
     }

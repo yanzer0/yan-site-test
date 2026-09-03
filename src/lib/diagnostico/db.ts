@@ -32,6 +32,8 @@ export interface DadosLead {
   readonly email: string;
   readonly whatsapp: string | null;
   readonly origem: string;
+  /** Quem indicou. Só existe quando `origem` é indicação; `null` no resto. */
+  readonly indicadoPor: string | null;
   readonly tipo: "empresa" | "pessoal";
 }
 
@@ -54,16 +56,17 @@ export async function gravarLead(
   try {
     const inserido = await sql<{ id: string }>`
       INSERT INTO leads (nome, empresa, papel, porte, email, email_norm,
-                         whatsapp, whatsapp_norm, origem, tipo, consentimento_em)
+                         whatsapp, whatsapp_norm, origem, indicado_por, tipo, consentimento_em)
       VALUES (${dados.nome}, ${dados.empresa}, ${dados.papel}, ${dados.porte},
               ${dados.email}, ${emailNorm}, ${dados.whatsapp}, ${whatsappNorm},
-              ${dados.origem}, ${dados.tipo}, now())
+              ${dados.origem}, ${dados.indicadoPor}, ${dados.tipo}, now())
       ON CONFLICT (email_norm, COALESCE(whatsapp_norm, '')) DO UPDATE
         SET nome = EXCLUDED.nome,
             empresa = EXCLUDED.empresa,
             papel = EXCLUDED.papel,
             porte = EXCLUDED.porte,
             origem = EXCLUDED.origem,
+            indicado_por = EXCLUDED.indicado_por,
             atualizado_em = now()
       RETURNING id
     `;

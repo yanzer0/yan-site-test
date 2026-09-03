@@ -142,6 +142,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
           email: item.email,
           whatsapp: item.whatsapp,
           origem: item.origem,
+          indicadoPor: item.indicadoPor,
           score: item.score,
           faixa: item.faixa,
           inicioDaCall: item.inicioEm,

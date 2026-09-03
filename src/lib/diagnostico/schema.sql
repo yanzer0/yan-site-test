@@ -19,6 +19,9 @@ CREATE TABLE IF NOT EXISTS leads (
   whatsapp          TEXT,
   whatsapp_norm     TEXT,
   origem            TEXT        NOT NULL,
+  -- Quem indicou, quando `origem` é indicação (2026-09-03). Texto livre e opcional:
+  -- é o que permite medir a conversão do canal que o ICP chama de prioritário.
+  indicado_por      TEXT,
   tipo              TEXT        NOT NULL CHECK (tipo IN ('empresa', 'pessoal')),
   -- Sem consentimento nada é persistido, então a coluna é NOT NULL de propósito:
   -- o banco é a última linha de defesa da regra, não só a rota.
@@ -26,6 +29,9 @@ CREATE TABLE IF NOT EXISTS leads (
   criado_em         TIMESTAMPTZ NOT NULL DEFAULT now(),
   atualizado_em     TIMESTAMPTZ NOT NULL DEFAULT now()
 );
+
+-- Tabela que já existia antes de 2026-09-03 ganha a coluna sem recriar nada. Idempotente.
+ALTER TABLE leads ADD COLUMN IF NOT EXISTS indicado_por TEXT;
 
 -- Deduplicação de FR-033: reenvio atualiza, não cria segundo lead.
 CREATE UNIQUE INDEX IF NOT EXISTS leads_contato_unico

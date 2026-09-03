@@ -90,6 +90,11 @@ export default async function LeadPage({ params }: { params: Promise<{ id: strin
             <span className="lp-selo" data-tom="frio">
               veio de {lead.origem}
             </span>
+            {lead.indicadoPor && (
+              <span className="lp-selo" data-tom="frio">
+                indicado por {lead.indicadoPor}
+              </span>
+            )}
           </div>
           {lead.motivoCorte && (
             <p className="lp-q" style={{ marginTop: 12 }}>

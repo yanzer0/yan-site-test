@@ -39,6 +39,7 @@ export interface TrabalhoDaFila {
   readonly email: string;
   readonly whatsapp: string | null;
   readonly origem: string;
+  readonly indicadoPor: string | null;
   readonly score: number;
   readonly faixa: string;
   readonly respostas: Readonly<Record<string, unknown>>;
@@ -88,6 +89,7 @@ export async function reservarTrabalho(limite = 10): Promise<readonly TrabalhoDa
       email: string;
       whatsapp: string | null;
       origem: string;
+      indicado_por: string | null;
       score: number;
       faixa: string;
       respostas: Record<string, unknown>;
@@ -124,7 +126,7 @@ export async function reservarTrabalho(limite = 10): Promise<readonly TrabalhoDa
       )
       SELECT r.cal_booking_id, r.tentativas, r.google_event_id,
              a.inicio_em,
-             l.nome, l.empresa, l.papel, l.porte, l.email, l.whatsapp, l.origem,
+             l.nome, l.empresa, l.papel, l.porte, l.email, l.whatsapp, l.origem, l.indicado_por,
              av.score, av.faixa,
              COALESCE(resp.mapa, '{}'::jsonb) AS respostas
         FROM reservados r
@@ -161,6 +163,7 @@ export async function reservarTrabalho(limite = 10): Promise<readonly TrabalhoDa
       email: linha.email,
       whatsapp: linha.whatsapp,
       origem: linha.origem,
+      indicadoPor: linha.indicado_por,
       score: linha.score,
       faixa: linha.faixa,
       respostas: linha.respostas,

@@ -68,11 +68,21 @@ export function sanitizarRespostas(bruto: unknown): Respostas {
  * O consentimento é checado aqui, no servidor. Confiar no botão desabilitado do
  * cliente não é validação, é decoração.
  */
+/** A opção de origem que libera o campo "quem te indicou". Mesmo id do contrato de perguntas. */
+export const ORIGEM_INDICACAO = "indicacao";
+
 export function validarSubmissao(
   respostasBrutas: unknown,
   origem: unknown,
   consentimento: unknown,
-  contato: { nome?: unknown; email?: unknown; whatsapp?: unknown; empresa?: unknown; papel?: unknown },
+  contato: {
+    nome?: unknown;
+    email?: unknown;
+    whatsapp?: unknown;
+    empresa?: unknown;
+    papel?: unknown;
+    indicadoPor?: unknown;
+  },
 ): ResultadoValidacao {
   if (consentimento !== true) {
     return { ok: false, erro: "consent_required" };
@@ -93,6 +103,17 @@ export function validarSubmissao(
     return { ok: false, erro: "whatsapp_invalido" };
   }
 
+  const origemLimpa = texto(typeof origem === "string" ? origem : "").slice(0, 60) || "nao_informado";
+
+  // "Quem te indicou" só faz sentido quando a origem é indicação. Fora disso o
+  // valor é descartado, mesmo que venha no payload: um nome solto sem origem que
+  // o explique viraria dado inventado na hora de medir o canal.
+  const indicadoPorBruto = texto(typeof contato.indicadoPor === "string" ? contato.indicadoPor : "");
+  const indicadoPor =
+    origemLimpa === ORIGEM_INDICACAO && indicadoPorBruto.length > 0
+      ? indicadoPorBruto.slice(0, MAX_TEXTO_CURTO)
+      : null;
+
   return {
     ok: true,
     respostas,
@@ -103,7 +124,8 @@ export function validarSubmissao(
       empresa: ehPessoal ? null : texto(typeof contato.empresa === "string" ? contato.empresa : "").slice(0, MAX_TEXTO_CURTO) || null,
       papel: ehPessoal ? null : texto(typeof contato.papel === "string" ? contato.papel : "") || null,
       porte: ehPessoal ? null : texto(respostas[P.PORTE]) || null,
-      origem: texto(typeof origem === "string" ? origem : "").slice(0, 60) || "nao_informado",
+      origem: origemLimpa,
+      indicadoPor,
       tipo: ehPessoal ? "pessoal" : "empresa",
     },
   };

@@ -33,6 +33,8 @@ export interface LeadNaLista {
   readonly email: string;
   readonly whatsapp: string | null;
   readonly origem: string;
+  /** Quem indicou, quando a origem é indicação. `null` no resto. */
+  readonly indicadoPor: string | null;
   readonly tipo: string;
   readonly criadoEm: Date;
   readonly score: number | null;
@@ -58,7 +60,7 @@ export interface RespostaDoLead {
  */
 const SELECT_BASE = `
   SELECT l.id, l.nome, l.empresa, l.papel, l.porte, l.email, l.whatsapp,
-         l.origem, l.tipo, l.criado_em,
+         l.origem, l.indicado_por, l.tipo, l.criado_em,
          a.score, a.faixa, a.motivo_corte,
          g.estado AS agenda_estado, g.inicio_em AS agenda_inicio
     FROM leads l
@@ -114,6 +116,7 @@ function paraLeadNaLista(x: Record<string, unknown>): LeadNaLista {
     email: String(x.email),
     whatsapp: (x.whatsapp as string) ?? null,
     origem: String(x.origem),
+    indicadoPor: (x.indicado_por as string) ?? null,
     tipo: String(x.tipo),
     criadoEm: new Date(x.criado_em as string),
     score: (x.score as number) ?? null,

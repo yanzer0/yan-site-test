@@ -33,6 +33,7 @@ const LEAD: LeadNaLista = {
   email: "ana@exemplo.com",
   whatsapp: "27981629696",
   origem: "instagram",
+  indicadoPor: null,
   tipo: "empresa",
   criadoEm: new Date("2026-08-22T23:58:00Z"),
   score: 15,

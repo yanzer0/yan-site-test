@@ -191,3 +191,26 @@ describe("montarCard", () => {
     expect(montarCard(BASE)).toContain("- **2026-08-17** — Preencheu o formulário");
   });
 });
+
+describe("indicado_por (2026-09-03)", () => {
+  it("grava quem indicou quando a origem e indicacao", () => {
+    const card = montarCard({ ...BASE, origem: "indicacao", indicadoPor: "Thiago Nigro" });
+    expect(frontmatter(card).indicado_por).toBe("'Thiago Nigro'");
+    expect(card).toContain("| Indicado por | Thiago Nigro |");
+  });
+
+  it("descarta o nome quando a origem nao e indicacao, mesmo que venha preenchido", () => {
+    const card = montarCard({ ...BASE, origem: "instagram", indicadoPor: "Fulano" });
+    expect(frontmatter(card).indicado_por).toBeUndefined();
+    expect(card).not.toContain("Indicado por");
+  });
+
+  it("nao escreve o campo quando veio vazio", () => {
+    const card = montarCard({ ...BASE, origem: "indicacao", indicadoPor: "   " });
+    expect(frontmatter(card).indicado_por).toBeUndefined();
+  });
+
+  it("card antigo, sem o campo, continua igual", () => {
+    expect(montarCard(BASE)).not.toContain("indicado_por");
+  });
+});
