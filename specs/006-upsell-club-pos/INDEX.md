@@ -1,7 +1,7 @@
 # Manifesto - Funil pós-compra do Infuser Club
 
 Versão: 1.0.0
-Status: ready-for-build
+Status: verified
 
 Precedência: estes artefatos definem a publicação de `/pos`. Em conflito, `README.md` e `PRD.md` governam o resultado; a decisão arquitetural governa a forma de servir as páginas.
 

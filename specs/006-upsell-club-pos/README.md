@@ -1,6 +1,6 @@
 # Funil pós-compra do Infuser Club
 
-definition_status: ready-for-build
+definition_status: verified
 
 ## Resultado desejado
 
