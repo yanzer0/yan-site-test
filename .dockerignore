@@ -1,0 +1,14 @@
+.git
+.github
+.planning
+.claude
+.vercel
+.next
+node_modules
+coverage
+specs
+tests
+*.log
+.env
+.env.*
+!.env.example

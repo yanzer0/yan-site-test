@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+set -eu
+
+repo_root="$(git rev-parse --show-toplevel)"
+exec node "$repo_root/scripts/check-scope-lock.js" --repo "$repo_root" --mode enforce --staged

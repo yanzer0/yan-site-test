@@ -1,0 +1,63 @@
+name: useinfuser-site
+
+services:
+  site:
+    image: useinfuser-site:${APP_RELEASE:?APP_RELEASE is required}
+    build:
+      context: ../..
+      dockerfile: deploy/vps/Dockerfile
+      secrets:
+        - app_env
+    container_name: useinfuser-site
+    restart: unless-stopped
+    init: true
+    env_file:
+      - ${USEINFUSER_ENV_FILE:-/home/infuser/.config/useinfuser/useinfuser.env}
+    environment:
+      APP_RELEASE: ${APP_RELEASE:?APP_RELEASE is required}
+      NODE_ENV: production
+      HOSTNAME: 0.0.0.0
+      PORT: "3000"
+    networks:
+      - useinfuser-net
+    expose:
+      - "3000"
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=64m,mode=1777
+      - /app/.next/cache:rw,noexec,nosuid,size=256m,uid=1001,gid=1001,mode=0750
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 256
+    mem_limit: 1536m
+    mem_reservation: 384m
+    cpus: 1.5
+    stop_grace_period: 20s
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - fetch('http://127.0.0.1:3000/api/health').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+    labels:
+      org.opencontainers.image.revision: ${APP_RELEASE:?APP_RELEASE is required}
+
+networks:
+  useinfuser-net:
+    name: useinfuser-net
+    driver: bridge
+
+secrets:
+  app_env:
+    file: ${USEINFUSER_ENV_FILE:-/home/infuser/.config/useinfuser/useinfuser.env}
