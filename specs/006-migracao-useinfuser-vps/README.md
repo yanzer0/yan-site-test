@@ -1,7 +1,7 @@
 ---
 tags: [engenharia, definicao, migracao, vps, incidente]
-status: ready
-definition_status: ready-for-build
+status: verified
+definition_status: verified
 definition_version: 1.2
 owner: Yan
 updated: 2026-09-09
@@ -11,7 +11,7 @@ updated: 2026-09-09
 
 ## Estado da definição
 
-- `definition_status`: `ready-for-build`
+- `definition_status`: `verified`
 - versão do pacote: `1.2`
 - owner humano: Yan
 - executor técnico: Codex /codar
@@ -103,3 +103,4 @@ Nenhuma decisão técnica bloqueia o build. O acesso ao DNS pode exigir handoff 
 | 2026-09-09 | ready-for-build | 1.1 | Yan + Codex /codar | Hotfix autorizado após um Chrome ainda alcançar o IP antigo pelo link apex do evento. |
 | 2026-09-09 | verified | 1.1 | Codex /codar | Host estável, env restaurada, cookie legado bridged, evento reparado e probes públicos aprovados. |
 | 2026-09-09 | ready-for-build | 1.2 | Yan + Codex /codar | Incidente do socket fechado reproduzido, retry limitado e reprocessamento da KSG autorizados. |
+| 2026-09-09 | verified | 1.2 | Codex /codar | Worker `2c4ddcf` vivo; KSG concluída em uma tentativa com anexo real e sem lead convidado. |

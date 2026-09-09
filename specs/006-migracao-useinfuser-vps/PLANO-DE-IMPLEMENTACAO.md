@@ -1,6 +1,6 @@
 ---
 tags: [engenharia, implementacao, rollout, rollback, migracao]
-status: ready
+status: verified
 version: 1.2
 updated: 2026-09-09
 ---
@@ -130,3 +130,5 @@ flowchart LR
 - rollout: publicar o commit, atualizar somente o script do worker, reiniciar o supervisor e provar processo/commit;
 - prova final: resetar somente o booking da KSG com o utilitário existente, aguardar conclusão, confirmar anexo no evento e ausência na fila morta;
 - rollback: restaurar o script anterior e reiniciar somente o supervisor; não há migration.
+
+Estado: concluído no commit `2c4ddcf`; booking real da KSG terminou em uma tentativa e o POST de 36.932 bytes chegou ao Caddy com `Connection: close` e HTTP 200.

@@ -1,6 +1,6 @@
 ---
 tags: [engenharia, testes, operacao, runbook, migracao]
-status: ready
+status: verified
 version: 1.2
 updated: 2026-09-09
 ---
@@ -123,3 +123,12 @@ O baseline tem um teste já vermelho por divergência do enum `perdido-stand-by`
 - suíte: 401 testes passaram; `contrato-brain` manteve a divergência conhecida de `perdido-stand-by`; o import de `validate-env.mjs` falhou somente no checkout CRLF e passou no worktree-base LF;
 - lint completo: os dois erros de `require()` do build do Club também reproduzem no commit-base;
 - SCA: o PostCSS transitivo do Next tem advisory novo e o único remédio sugerido pelo npm é Next 16; sem mudança de dependência nesta fatia, fica fora do hotfix e não é ocultado.
+
+### Evidência de produção executada
+
+- worker: processo `2186628`, checkout `2c4ddcf`, primeira fila 200 com `Connection: close`;
+- Caddy: POST de conclusão com 36.932 bytes, HTTP 200 em 3,07 s e conexão marcada `close`;
+- worker: roteiro KSG validado, 27.487 bytes anexados, card publicado e booking finalizado sem retry;
+- Postgres: `estado=concluido`, `tentativas=1`, token presente, evento e caminho persistidos;
+- Google Calendar: um anexo `text/html` em `www.useinfuser.com/roteiro/<token>`; o lead não consta entre os convidados;
+- alertas: a última notificação foi a leitura da fila morta no instante do restart, antes do reset; nenhuma falha foi emitida pelo reprocessamento.

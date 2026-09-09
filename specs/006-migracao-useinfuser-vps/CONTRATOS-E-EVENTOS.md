@@ -1,6 +1,6 @@
 ---
 tags: [engenharia, contratos, eventos, fila, webhook]
-status: ready
+status: verified
 version: 1.2
 updated: 2026-09-09
 ---
