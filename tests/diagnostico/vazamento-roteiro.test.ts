@@ -110,7 +110,13 @@ describe("a porta do documento", () => {
     expect(COOKIE_ACESSO).toBe("infuser_roteiro");
   });
 
-  it.each(["useinfuser.com", "www.useinfuser.com", "WWW.USEINFUSER.COM."])(
+  it.each([
+    "useinfuser.com",
+    "www.useinfuser.com",
+    "WWW.USEINFUSER.COM.",
+    "www.useinfuser.com:443",
+    "www.useinfuser.com, proxy.local",
+  ])(
     "compartilha o cookie entre apex e www em producao: %s",
     (host) => {
       expect(dominioDoCookieAcesso(host)).toBe("useinfuser.com");
@@ -128,6 +134,17 @@ describe("a porta do documento", () => {
     const { GET } = await import("@/app/roteiro/entrar/route");
     const resposta = await GET(
       new NextRequest(`https://www.useinfuser.com/roteiro/entrar?k=${CHAVE}`),
+    );
+
+    expect(resposta.headers.get("set-cookie")).toContain("Domain=useinfuser.com");
+  });
+
+  it("usa o host publico encaminhado pelo proxy em producao", async () => {
+    const { GET } = await import("@/app/roteiro/entrar/route");
+    const resposta = await GET(
+      new NextRequest(`http://0.0.0.0:3000/roteiro/entrar?k=${CHAVE}`, {
+        headers: { "x-forwarded-host": "www.useinfuser.com" },
+      }),
     );
 
     expect(resposta.headers.get("set-cookie")).toContain("Domain=useinfuser.com");

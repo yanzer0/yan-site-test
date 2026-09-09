@@ -30,7 +30,12 @@ export const VALIDADE_SEGUNDOS = 365 * 24 * 60 * 60;
  * Em localhost/previews, omitir Domain mantém o cookie válido no host atual.
  */
 export function dominioDoCookieAcesso(hostname: string): string | undefined {
-  const host = hostname.trim().toLowerCase().replace(/\.$/, "");
+  const host = hostname
+    .split(",", 1)[0]
+    .trim()
+    .toLowerCase()
+    .replace(/:\d+$/, "")
+    .replace(/\.$/, "");
   return host === "useinfuser.com" || host === "www.useinfuser.com"
     ? "useinfuser.com"
     : undefined;

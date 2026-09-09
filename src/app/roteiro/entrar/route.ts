@@ -64,6 +64,11 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     "Agora os roteiros de call abrem direto neste aparelho. É uma vez só.",
   );
 
+  const hostnamePublico =
+    req.headers.get("x-forwarded-host") ??
+    req.headers.get("host") ??
+    req.nextUrl.hostname;
+
   resposta.cookies.set(COOKIE_ACESSO, valorDoCookie(chave), {
     httpOnly: true,
     secure: true,
@@ -72,7 +77,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     // neutra mesmo tendo entrado — o modo de falha mais confuso possível.
     sameSite: "lax",
     path: "/roteiro",
-    domain: dominioDoCookieAcesso(req.nextUrl.hostname),
+    domain: dominioDoCookieAcesso(hostnamePublico),
     maxAge: VALIDADE_SEGUNDOS,
   });
 
