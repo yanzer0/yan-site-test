@@ -25,6 +25,17 @@ export const COOKIE_ACESSO = "infuser_roteiro";
 /** Um ano. O time entra uma vez por aparelho e esquece que existe. */
 export const VALIDADE_SEGUNDOS = 365 * 24 * 60 * 60;
 
+/**
+ * Compartilha o acesso entre apex e www somente no domínio de produção.
+ * Em localhost/previews, omitir Domain mantém o cookie válido no host atual.
+ */
+export function dominioDoCookieAcesso(hostname: string): string | undefined {
+  const host = hostname.trim().toLowerCase().replace(/\.$/, "");
+  return host === "useinfuser.com" || host === "www.useinfuser.com"
+    ? "useinfuser.com"
+    : undefined;
+}
+
 function chaveDoAmbiente(): string | null {
   return process.env.ROTEIRO_ACESSO_CHAVE ?? null;
 }

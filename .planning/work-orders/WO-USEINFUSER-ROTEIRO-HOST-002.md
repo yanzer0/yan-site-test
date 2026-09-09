@@ -12,27 +12,40 @@ scope_lock:
     - .planning/work-orders/WO-USEINFUSER-ROTEIRO-HOST-002.md
     - specs/006-migracao-useinfuser-vps/**
     - src/app/api/diagnostico/roteiro/concluir/route.ts
+    - src/app/roteiro/entrar/route.ts
+    - src/lib/diagnostico/acesso-roteiro.ts
     - src/lib/diagnostico/documento-roteiro.ts
     - scripts/diagnostico/servico-roteiro.mjs
     - scripts/diagnostico/processar-roteiros.mjs
     - scripts/diagnostico/roteiro.service
+    - scripts/diagnostico/reapontar-roteiro-evento.mjs
     - tests/diagnostico/vazamento-roteiro.test.ts
     - deploy/vps/compose.prod.yml
+    - deploy/vps/Dockerfile
+    - deploy/vps/validate-env.mjs
+    - tests/deploy/validate-env.test.ts
   architecture_delta:
     production_files:
       - src/app/api/diagnostico/roteiro/concluir/route.ts
+      - src/app/roteiro/entrar/route.ts
+      - src/lib/diagnostico/acesso-roteiro.ts
       - src/lib/diagnostico/documento-roteiro.ts
       - scripts/diagnostico/servico-roteiro.mjs
       - scripts/diagnostico/processar-roteiros.mjs
       - scripts/diagnostico/roteiro.service
       - deploy/vps/compose.prod.yml
+      - deploy/vps/Dockerfile
+      - deploy/vps/validate-env.mjs
     runtime_dependencies: []
     public_contracts:
       - POST /api/diagnostico/roteiro/concluir emits a stable www attachment URL
+      - GET /roteiro/entrar shares the access cookie across apex and www in production
     persistence_surfaces: []
     background_jobs:
       - scripts/diagnostico/servico-roteiro.mjs
       - scripts/diagnostico/processar-roteiros.mjs
+    operational_controls:
+      - production image build fails closed when critical environment values are missing, malformed, or duplicated placeholders
   acceptance_ids:
     - RH-01
     - RH-02
@@ -41,6 +54,8 @@ scope_lock:
     - RH-05
     - RH-06
     - RH-07
+    - RH-08
+    - RH-09
   stop_when:
     - RH-01
     - RH-02
@@ -49,6 +64,8 @@ scope_lock:
     - RH-05
     - RH-06
     - RH-07
+    - RH-08
+    - RH-09
   passed_acceptance_ids:
     - RH-01
 ---
@@ -63,6 +80,8 @@ O token informado responde 200 na VPS e numa máquina externa, mas 402 quando o 
 
 Separar a origem pública do anexo da origem da request. `ROTEIRO_PUBLIC_BASE_URL` terá default seguro em `https://www.useinfuser.com`, será validada e ficará explícita no Compose. Workers também usarão `www` enquanto caches do apex antigo expiram.
 
+Como o cookie anterior era host-only, a entrada também passa a emitir `Domain=useinfuser.com` quando acessada no apex ou em `www`. Em localhost e outros hosts, o cookie continua host-only para não quebrar desenvolvimento.
+
 ## Aceites
 
 | ID | Critério |
@@ -74,6 +93,8 @@ Separar a origem pública do anexo da origem da request. `ROTEIRO_PUBLIC_BASE_UR
 | RH-05 | Release novo fica healthy e passa os 59 probes por host. |
 | RH-06 | Worker usa o segredo canônico, recebe 200 e mantém intervalo local. |
 | RH-07 | O token reportado responde 200 no host novo; evento existente recebe link `www` se for seguro identificá-lo e atualizar sem reprocessar conteúdo. |
+| RH-08 | Uma nova entrada em apex ou `www` autoriza as duas origens; ambiente local continua host-only. |
+| RH-09 | O build de produção rejeita env crítica ausente, malformada ou repetida como marcador. |
 
 ## Evidências
 

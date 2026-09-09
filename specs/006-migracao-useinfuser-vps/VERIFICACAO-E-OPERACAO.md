@@ -93,5 +93,6 @@ O baseline tem um teste já vermelho por divergência do enum `perdido-stand-by`
 - token reportado: 200 na VPS e em vantage externo; 402 apenas quando forçado a `76.76.21.21`;
 - teste unitário: origem pública não depende do host da request e rejeita configuração insegura;
 - integração: anexo aponta para `https://www.useinfuser.com/roteiro/<token>`;
+- contrato de acesso: entrada em apex ou `www` compartilha o cookie somente no domínio de produção;
 - produção: nova imagem healthy, smoke completo e worker 200 em chamada curta;
 - evento existente: atualizar somente o `fileUrl`, sem notificação, se a linha e o evento forem identificados sem ambiguidade.

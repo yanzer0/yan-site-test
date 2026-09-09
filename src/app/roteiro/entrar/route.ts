@@ -15,6 +15,7 @@ import { NextRequest, NextResponse } from "next/server";
 import {
   chaveConfere,
   COOKIE_ACESSO,
+  dominioDoCookieAcesso,
   VALIDADE_SEGUNDOS,
   valorDoCookie,
 } from "@/lib/diagnostico/acesso-roteiro";
@@ -71,6 +72,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     // neutra mesmo tendo entrado — o modo de falha mais confuso possível.
     sameSite: "lax",
     path: "/roteiro",
+    domain: dominioDoCookieAcesso(req.nextUrl.hostname),
     maxAge: VALIDADE_SEGUNDOS,
   });
 

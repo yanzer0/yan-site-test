@@ -12,7 +12,9 @@ WORKDIR /app
 ENV NEXT_TELEMETRY_DISABLED=1
 COPY --from=dependencies /app/node_modules ./node_modules
 COPY . .
-RUN --mount=type=secret,id=app_env,target=/app/.env.production npm run build
+RUN --mount=type=secret,id=app_env,target=/app/.env.production \
+    node deploy/vps/validate-env.mjs /app/.env.production \
+    && npm run build
 
 FROM ${NODE_IMAGE} AS runner
 WORKDIR /app

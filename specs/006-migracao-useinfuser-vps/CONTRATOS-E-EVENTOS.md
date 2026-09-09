@@ -90,4 +90,6 @@ Contrato 1.1:
 - o token é codificado como segmento de path;
 - o host da request não influencia o anexo;
 - workers chamam `www` durante a janela de cache do apex;
+- a entrada em apex ou `www` emite cookie com `Domain=useinfuser.com` e `Path=/roteiro`, preservando `HttpOnly`, `Secure` e `SameSite=Lax`;
+- hosts de desenvolvimento e preview continuam com cookie host-only;
 - payload, token do documento, idempotência e PATCH `sendUpdates=none` não mudam.

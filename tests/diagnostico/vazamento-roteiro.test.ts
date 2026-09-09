@@ -18,11 +18,13 @@
  */
 
 import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
+import { NextRequest } from "next/server";
 
 import {
   chaveConfere,
   COOKIE_ACESSO,
   cookieAutoriza,
+  dominioDoCookieAcesso,
   valorDoCookie,
 } from "@/lib/diagnostico/acesso-roteiro";
 
@@ -106,6 +108,38 @@ describe("a porta do documento", () => {
 
   it("o nome do cookie e escopado, nao generico", () => {
     expect(COOKIE_ACESSO).toBe("infuser_roteiro");
+  });
+
+  it.each(["useinfuser.com", "www.useinfuser.com", "WWW.USEINFUSER.COM."])(
+    "compartilha o cookie entre apex e www em producao: %s",
+    (host) => {
+      expect(dominioDoCookieAcesso(host)).toBe("useinfuser.com");
+    },
+  );
+
+  it.each(["localhost", "preview.vercel.app", "eviluseinfuser.com"])(
+    "mantem o cookie host-only fora do dominio de producao: %s",
+    (host) => {
+      expect(dominioDoCookieAcesso(host)).toBeUndefined();
+    },
+  );
+
+  it("a rota de entrada realmente emite Domain no www", async () => {
+    const { GET } = await import("@/app/roteiro/entrar/route");
+    const resposta = await GET(
+      new NextRequest(`https://www.useinfuser.com/roteiro/entrar?k=${CHAVE}`),
+    );
+
+    expect(resposta.headers.get("set-cookie")).toContain("Domain=useinfuser.com");
+  });
+
+  it("a rota de entrada nao emite Domain em localhost", async () => {
+    const { GET } = await import("@/app/roteiro/entrar/route");
+    const resposta = await GET(
+      new NextRequest(`http://localhost:3000/roteiro/entrar?k=${CHAVE}`),
+    );
+
+    expect(resposta.headers.get("set-cookie")).not.toContain("Domain=");
   });
 });
 
