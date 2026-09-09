@@ -32,6 +32,8 @@ import { join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { spawnSync } from "node:child_process";
 
+import { chamarApi as chamarApiHttp } from "./roteiro-http.mjs";
+
 const BRAIN = process.env.BRAIN_PATH ?? "/home/infuser/brain-roteiro";
 const BASE = process.env.ROTEIRO_BASE_URL ?? "https://www.useinfuser.com";
 const SEGREDO = process.env.ROTEIRO_WORKER_SECRET;
@@ -84,13 +86,17 @@ for (const sinal of ["SIGTERM", "SIGINT"]) {
   });
 }
 
-async function chamarApi(caminho, opcoes = {}) {
-  const resposta = await fetch(`${BASE}${caminho}`, {
-    ...opcoes,
-    headers: { ...opcoes.headers, "x-roteiro-secret": SEGREDO, "Content-Type": "application/json" },
+async function chamarApi(caminho, opcoes = {}, controle = {}) {
+  return chamarApiHttp({
+    baseUrl: BASE,
+    segredo: SEGREDO,
+    caminho,
+    opcoes,
+    ...controle,
+    aoRepetir: ({ codigo, mensagem }) => {
+      registrar("aviso", `transporte da API caiu; retry unico codigo=${codigo} motivo=${mensagem}`);
+    },
   });
-  const corpo = await resposta.json().catch(() => ({}));
-  return { ok: resposta.ok, status: resposta.status, corpo };
 }
 
 /**
@@ -403,22 +409,26 @@ async function processar(trabalho) {
   const documento = Buffer.from(limparComentarios(readFileSync(roteiro.absoluto, "utf8")), "utf8");
   registrar("info", `documento pronto: ${Math.round(documento.length / 1024)} kB de HTML`);
 
-  const conclusao = await chamarApi("/api/diagnostico/roteiro/concluir", {
-    method: "POST",
-    body: JSON.stringify({
-      calBookingId: trabalho.calBookingId,
-      inicioEm: trabalho.inicioEm,
-      email: trabalho.lead.email,
-      nome: trabalho.lead.nome,
-      empresa: trabalho.lead.empresa,
-      // Vão para a descrição do evento: quem conduz a call precisa saber para
-      // onde chamar se o vídeo cair, sem abrir o CRM em outra aba.
-      papel: trabalho.lead.papel ?? null,
-      whatsapp: trabalho.lead.whatsapp ?? null,
-      documentoBase64: documento.toString("base64"),
-      caminhoRoteiro: roteiro.relativo,
-    }),
-  });
+  const conclusao = await chamarApi(
+    "/api/diagnostico/roteiro/concluir",
+    {
+      method: "POST",
+      body: JSON.stringify({
+        calBookingId: trabalho.calBookingId,
+        inicioEm: trabalho.inicioEm,
+        email: trabalho.lead.email,
+        nome: trabalho.lead.nome,
+        empresa: trabalho.lead.empresa,
+        // Vão para a descrição do evento: quem conduz a call precisa saber para
+        // onde chamar se o vídeo cair, sem abrir o CRM em outra aba.
+        papel: trabalho.lead.papel ?? null,
+        whatsapp: trabalho.lead.whatsapp ?? null,
+        documentoBase64: documento.toString("base64"),
+        caminhoRoteiro: roteiro.relativo,
+      }),
+    },
+    { repetirFalhaTransitoria: true },
+  );
 
   if (!conclusao.ok) {
     throw new Error(`a rota recusou: ${conclusao.status} ${conclusao.corpo.erro ?? ""}`);
@@ -478,10 +488,16 @@ async function umaVolta() {
       registrar("erro", `booking=${trabalho.calBookingId} FALHOU: ${erro.message}`);
       // Quem conta a tentativa e dispara o alerta é a rota. Sem este POST, uma
       // quebra local não contaria e o item voltaria para sempre.
-      await chamarApi("/api/diagnostico/roteiro/concluir", {
-        method: "POST",
-        body: JSON.stringify({ calBookingId: trabalho.calBookingId, falha: erro.message }),
-      }).catch(() => {});
+      await chamarApi(
+        "/api/diagnostico/roteiro/concluir",
+        {
+          method: "POST",
+          body: JSON.stringify({ calBookingId: trabalho.calBookingId, falha: erro.message }),
+        },
+        { repetirFalhaTransitoria: true },
+      ).catch((falhaDoRegistro) => {
+        registrar("erro", `nao consegui registrar a falha na API: ${falhaDoRegistro.message}`);
+      });
     }
   }
 

@@ -1,7 +1,7 @@
 ---
 tags: [engenharia, contratos, eventos, fila, webhook]
 status: ready
-version: 1.1
+version: 1.2
 updated: 2026-09-09
 ---
 
@@ -94,3 +94,12 @@ Contrato 1.1:
 - hosts de desenvolvimento e preview continuam com cookie host-only;
 - um anexo `www` sem cookie redireciona somente para o mesmo token no apex; um cookie apex válido é então renovado com `Domain=useinfuser.com`, enquanto o lead continua recebendo a página neutra;
 - payload, token do documento, idempotência e PATCH `sendUpdates=none` não mudam.
+
+## 10. Hotfix 1.2: transporte da conclusão
+
+- Cada chamada HTTP do worker envia `Connection: close`; nenhuma conexão sobrevive ao trabalho síncrono do modelo.
+- `GET /api/diagnostico/roteiro/fila` nunca é repetido, pois a leitura reserva e incrementa a tentativa.
+- `POST /api/diagnostico/roteiro/concluir` com documento pode repetir uma vez somente para `UND_ERR_SOCKET`, `ECONNRESET`, `EPIPE`, `ETIMEDOUT`, `UND_ERR_CONNECT_TIMEOUT` ou `EAI_AGAIN`.
+- O retry preserva a mesma chave de negócio `cal_booking_id`. Documento, token, PATCH do evento e conclusão são atualizações idempotentes.
+- Resposta HTTP, erro de autenticação ou validação não dispara retry.
+- A falha final carrega código e mensagem da causa de transporte, limitados e sem URL, segredo ou dados do lead.

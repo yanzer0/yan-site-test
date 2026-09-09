@@ -1,7 +1,7 @@
 ---
 tags: [engenharia, testes, operacao, runbook, migracao]
 status: ready
-version: 1.1
+version: 1.2
 updated: 2026-09-09
 ---
 
@@ -100,3 +100,26 @@ O baseline tem um teste já vermelho por divergência do enum `perdido-stand-by`
 - worker: processo vivo, segredo canônico e fila 200 em 0,91 s sem long-poll;
 - evento existente: o Google confirmou o novo `fileUrl` sem notificação e sem reprocessar o conteúdo;
 - suíte: 397 testes passaram; permanece excluído somente o baseline conhecido `contrato-brain.test.ts`.
+
+## 11. Provas exigidas do hotfix 1.2
+
+- teste vermelho antes do código para retry de `UND_ERR_SOCKET` na conclusão;
+- teste verde prova exatamente duas chamadas e retorno da segunda;
+- teste negativo prova que resposta HTTP e consulta da fila não são repetidas;
+- source guard prova `Connection: close` em todas as chamadas do worker;
+- log de causa contém somente código e mensagem limitados, sem header, corpo ou identidade do lead;
+- testes focados, suíte, lint e build executados;
+- release e processo do worker confirmados no caminho vivo;
+- booking da KSG concluído, anexo confirmado e fila morta limpa;
+- nenhum novo alerta `funil-diagnostico/roteiro` após o reprocessamento.
+
+### Evidência local executada
+
+- teste vermelho: import do cliente HTTP inexistente bloqueou antes da implementação;
+- teste verde: 6 casos do worker passaram, incluindo retry único, fila sem retry, HTTP sem retry e erro permanente sem retry;
+- regressão adjacente: 19 casos da descrição idempotente do evento passaram;
+- lint tocado: zero erro nos dois scripts e no teste modificados;
+- build: Next 15.5.25 compilou e listou 40 rotas;
+- suíte: 401 testes passaram; `contrato-brain` manteve a divergência conhecida de `perdido-stand-by`; o import de `validate-env.mjs` falhou somente no checkout CRLF e passou no worktree-base LF;
+- lint completo: os dois erros de `require()` do build do Club também reproduzem no commit-base;
+- SCA: o PostCSS transitivo do Next tem advisory novo e o único remédio sugerido pelo npm é Next 16; sem mudança de dependência nesta fatia, fica fora do hotfix e não é ocultado.

@@ -1,7 +1,7 @@
 ---
 tags: [engenharia, implementacao, rollout, rollback, migracao]
 status: ready
-version: 1.1
+version: 1.2
 updated: 2026-09-09
 ---
 
@@ -118,3 +118,15 @@ flowchart LR
 - rollout: nova imagem, 59 probes por host, fila autenticada e token reportado;
 - rollback: imagem `42c41cba44d2` e supervisor já funcional em `www`;
 - nenhum schema, documento ou conteúdo de roteiro muda.
+
+## 10. Hotfix W7: conexão fechada durante a geração
+
+`W7.1 teste vermelho -> W7.2 conexão descartável + retry restrito -> W7.3 suíte/build -> W7.4 deploy -> W7.5 reprocessamento e prova real`.
+
+- escopo: worker, teste, pacote e work order; nenhum schema, payload ou rota muda;
+- teste: mock de transporte lança `UND_ERR_SOCKET` no primeiro POST e responde no segundo; uma falha HTTP não repete;
+- disponibilidade: uma repetição com atraso curto antes de consumir nova tentativa da fila;
+- observabilidade: código e mensagem sanitizada da causa chegam ao log;
+- rollout: publicar o commit, atualizar somente o script do worker, reiniciar o supervisor e provar processo/commit;
+- prova final: resetar somente o booking da KSG com o utilitário existente, aguardar conclusão, confirmar anexo no evento e ausência na fila morta;
+- rollback: restaurar o script anterior e reiniciar somente o supervisor; não há migration.

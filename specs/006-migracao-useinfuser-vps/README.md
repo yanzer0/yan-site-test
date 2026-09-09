@@ -1,8 +1,8 @@
 ---
 tags: [engenharia, definicao, migracao, vps, incidente]
-status: verified
-definition_status: verified
-definition_version: 1.1
+status: ready
+definition_status: ready-for-build
+definition_version: 1.2
 owner: Yan
 updated: 2026-09-09
 ---
@@ -11,8 +11,8 @@ updated: 2026-09-09
 
 ## Estado da definição
 
-- `definition_status`: `verified`
-- versão do pacote: `1.1`
+- `definition_status`: `ready-for-build`
+- versão do pacote: `1.2`
 - owner humano: Yan
 - executor técnico: Codex /codar
 - risco/altitude: G
@@ -33,6 +33,10 @@ Restabelecer `useinfuser.com` e `www.useinfuser.com` na VPS da Infuser, preserva
 - O build local do commit base `435d450` conclui e lista 40 rotas de aplicação.
 - A VPS tem Docker, Compose, Caddy, 9,4 GiB de RAM disponível e 37 GB livres no momento da definição.
 - O clone original tem alterações locais alheias; a migração usa worktree isolada.
+- Em 09/09, o booking da KSG gerou três roteiros válidos, mas nenhum POST com o documento chegou ao access log do Caddy; somente os POSTs pequenos de registro da falha chegaram.
+- O mesmo runtime reproduziu `fetch failed` com causa `UND_ERR_SOCKET: other side closed`; o logger anterior descartava essa causa.
+- Um POST diagnóstico de 40 kB atravessou Caddy e Next, e o container permaneceu healthy, refutando limite de corpo e reinício do aplicativo.
+- A mesma falha já ocorreu em 06/09 contra a Vercel, refutando a migração como causa-raiz.
 
 ### Hipóteses
 
@@ -51,6 +55,8 @@ Restabelecer `useinfuser.com` e `www.useinfuser.com` na VPS da Infuser, preserva
 4. O long-poll de 25 segundos será removido; o worker consultará a fila rapidamente com intervalo explícito.
 5. O DNS só muda depois de build, healthcheck, paridade de rotas, backup e validação do Caddy.
 6. `club.useinfuser.com` e `live.useinfuser.com` são subdomínios separados e estão fora desta work order.
+7. O worker descartará a conexão de cada chamada HTTP e repetirá uma única vez somente a conclusão idempotente quando a falha for transitória de transporte.
+8. A consulta da fila não será repetida, porque ela reserva o trabalho e incrementa tentativas.
 
 ## Escopo
 
@@ -96,3 +102,4 @@ Nenhuma decisão técnica bloqueia o build. O acesso ao DNS pode exigir handoff 
 | 2026-09-09 | verified | 1.0 | Codex /codar | DNS, TLS, 59 probes por host, worker e observação de produção aprovados. |
 | 2026-09-09 | ready-for-build | 1.1 | Yan + Codex /codar | Hotfix autorizado após um Chrome ainda alcançar o IP antigo pelo link apex do evento. |
 | 2026-09-09 | verified | 1.1 | Codex /codar | Host estável, env restaurada, cookie legado bridged, evento reparado e probes públicos aprovados. |
+| 2026-09-09 | ready-for-build | 1.2 | Yan + Codex /codar | Incidente do socket fechado reproduzido, retry limitado e reprocessamento da KSG autorizados. |
