@@ -1,6 +1,6 @@
 ---
 work_order: WO-USEINFUSER-VPS-001
-status: active
+status: completed
 central_branch: codex/migrar-useinfuser-vps
 owner: Codex
 authorized_by: Yan
@@ -57,6 +57,7 @@ scope_lock:
     - AC-07
     - AC-08
     - AC-09
+    - AC-10
     - AC-10
   stop_when:
     - AC-01
@@ -115,4 +116,4 @@ Executar o pacote [specs/006-migracao-useinfuser-vps/INDEX.md](../../specs/006-m
 | AC-07 | Dois autoritativos e três resolvedores públicos no novo IP; TLS Let's Encrypt válido nos dois hosts. |
 | AC-08 | Imagens anteriores e backups timestampados de Caddy, Compose e supervisor preservados. |
 | AC-09 | Next 15.5.25 e Sharp 0.35.4; audit sem vulnerabilidade crítica. |
-| AC-10 | Aguardando o commit final de closeout após a janela de observação, já sem incremento de 5xx. |
+| AC-10 | Mais de 15 minutos observados, container healthy, três requisições reais sem novo 5xx e vantage externo 200. |
