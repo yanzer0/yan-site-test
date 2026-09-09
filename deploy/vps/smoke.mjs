@@ -67,7 +67,8 @@ await check("/demomarja", [401]);
 await check("/leads", [302, 303, 307, 308]);
 await check("/leads/entrar", [200]);
 await check("/leads/equipe", [302, 303, 307, 308]);
-await check("/leads/export", [302, 303, 307, 308, 401]);
+// The export deliberately hides its existence from unauthenticated callers.
+await check("/leads/export", [404]);
 await check("/api/diagnostico/roteiro/fila", [401]);
 await check("/api/diagnostico/cal-webhook", [404, 405]);
 await check("/api/diagnostico/mapa-pago/webhook", [404, 405]);
