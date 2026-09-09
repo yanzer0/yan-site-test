@@ -1,6 +1,6 @@
 ---
 work_order: WO-USEINFUSER-ROTEIRO-HOST-002
-status: active
+status: completed
 central_branch: codex/migrar-useinfuser-vps
 owner: Codex
 authorized_by: Yan
@@ -81,6 +81,7 @@ scope_lock:
     - RH-07
     - RH-08
     - RH-09
+    - RH-10
 ---
 
 # Hotfix: host estável nos anexos de roteiro
