@@ -1,6 +1,6 @@
 ---
 tags: [engenharia, definicao, index, migracao, vps]
-status: ready
+status: verified
 definition_version: 1.0
 updated: 2026-09-09
 ---
@@ -11,15 +11,15 @@ updated: 2026-09-09
 
 | Ordem | Documento | Estado | Versão | Dono | Revisor | Observação |
 |---:|---|---|---|---|---|---|
-| 0 | [README.md](README.md) | ready | 1.0 | Yan | Codex /codar | Entidade e decisões congeladas. |
-| 1 | [PRD.md](PRD.md) | ready | 1.0 | Yan | Codex /codar | Resultado e aceite. |
-| 2 | [ARQUITETURA.md](ARQUITETURA.md) | ready | 1.0 | Codex /software-engineer | Yan, pelo go explícito | Arquitetura ponta a ponta. |
-| 3 | [CONTRATOS-E-EVENTOS.md](CONTRATOS-E-EVENTOS.md) | ready | 1.0 | Codex /event-driven | Codex /codar | Contratos preservados e correção do poll. |
+| 0 | [README.md](README.md) | ready | 1.0 | Yan | Codex /codar | Entidade e decisões verificadas em produção. |
+| 1 | [PRD.md](PRD.md) | ready | 1.0 | Yan | Codex /codar | Resultado e aceite provados. |
+| 2 | [ARQUITETURA.md](ARQUITETURA.md) | ready | 1.0 | Codex /software-engineer | Yan, pelo go explícito | Arquitetura ponta a ponta viva. |
+| 3 | [CONTRATOS-E-EVENTOS.md](CONTRATOS-E-EVENTOS.md) | ready | 1.0 | Codex /event-driven | Codex /codar | Contratos preservados e poll corrigido. |
 | 4 | [DADOS-E-APIS.md](DADOS-E-APIS.md) | ready | 1.0 | Codex /software-engineer | Codex /codar | Sem migration de dados. |
 | 5 | [UX-E-CONTEUDO.md](UX-E-CONTEUDO.md) | not-applicable | 1.0 | Yan | Codex /codar | A interface e o conteúdo não mudam; a prova é por paridade de rotas. |
-| 6 | [PLANO-DE-IMPLEMENTACAO.md](PLANO-DE-IMPLEMENTACAO.md) | ready | 1.0 | Codex /codar | Yan, pelo go explícito | Fatias, rollout e rollback. |
-| 7 | [VERIFICACAO-E-OPERACAO.md](VERIFICACAO-E-OPERACAO.md) | ready | 1.0 | Codex /software-engineer | Codex /codar | Gates de produção. |
-| 8 | [DECISAO-ARQUITETURAL.md](DECISAO-ARQUITETURAL.md) | ready | 1.0 | Codex /software-engineer | Yan, pelo go explícito | VPS como host canônico. |
+| 6 | [PLANO-DE-IMPLEMENTACAO.md](PLANO-DE-IMPLEMENTACAO.md) | ready | 1.0 | Codex /codar | Yan, pelo go explícito | Rollout e rollback executados. |
+| 7 | [VERIFICACAO-E-OPERACAO.md](VERIFICACAO-E-OPERACAO.md) | ready | 1.0 | Codex /software-engineer | Codex /codar | Gates de produção aprovados. |
+| 8 | [DECISAO-ARQUITETURAL.md](DECISAO-ARQUITETURAL.md) | ready | 1.0 | Codex /software-engineer | Yan, pelo go explícito | VPS é o host canônico. |
 
 ## Gate antes do build
 

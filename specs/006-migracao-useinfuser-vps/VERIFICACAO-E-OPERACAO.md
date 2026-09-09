@@ -67,10 +67,23 @@ O baseline tem um teste já vermelho por divergência do enum `perdido-stand-by`
 
 ## 8. Critérios de prontidão
 
-- [ ] testes e build focados verdes, com baseline vermelho explicitado;
-- [ ] audit sem vulnerabilidade crítica no runtime;
-- [ ] container hardened e healthy;
-- [ ] todas as rotas e proteções provadas;
-- [ ] Caddy validado e rollback preservado;
-- [ ] DNS/TLS/release confirmados no caminho real;
-- [ ] observação pós-corte sem 5xx novo.
+- [x] testes e build focados verdes, com baseline vermelho explicitado;
+- [x] audit sem vulnerabilidade crítica no runtime;
+- [x] container hardened e healthy;
+- [x] todas as rotas e proteções provadas;
+- [x] Caddy validado e rollback preservado;
+- [x] DNS/TLS/release confirmados no caminho real;
+- [x] observação pós-corte sem 5xx novo.
+
+## 9. Evidência executada em 2026-09-09
+
+- release vivo: `42c41cba44d2`;
+- apex e `www`: 59 probes cada, todos aprovados;
+- DNS: Hostinger, Cloudflare, Google e Quad9 retornaram `187.77.36.156`;
+- TLS: Let's Encrypt, válido de 09/09 a 08/12/2026 nos dois hosts;
+- container: `healthy`, usuário `nextjs`, rootfs read-only, sem porta publicada, capabilities removidas;
+- consumo observado: 216 MiB de 1,5 GiB;
+- fila: chamada autenticada 200 em 0,95 s e worker com intervalo local de 60 s;
+- `/time`: upstream restaurado ao persistir `skilltree-net` no Caddy;
+- 5xx: contador não cresceu durante a janela posterior ao conserto;
+- vantage externo: Mac Mini fora da VPS resolveu o novo IP e recebeu health 200 e `/time` 200.

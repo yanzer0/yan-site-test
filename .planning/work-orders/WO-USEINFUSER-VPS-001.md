@@ -69,7 +69,16 @@ scope_lock:
     - AC-08
     - AC-09
     - AC-10
-  passed_acceptance_ids: []
+  passed_acceptance_ids:
+    - AC-01
+    - AC-02
+    - AC-03
+    - AC-04
+    - AC-05
+    - AC-06
+    - AC-07
+    - AC-08
+    - AC-09
 ---
 
 # Work order: migrar useinfuser.com para a VPS
@@ -95,4 +104,15 @@ Executar o pacote [specs/006-migracao-useinfuser-vps/INDEX.md](../../specs/006-m
 
 ## Evidências
 
-Preencher somente depois de cada prova. Não marcar aceite por intenção.
+| ID | Evidência |
+|---|---|
+| AC-01 | EDP 1.0 ready, Scope Lock PASS, baseline documentado. |
+| AC-02 | Dockerfile/Compose validados e três builds limpos na VPS. |
+| AC-03 | 59 probes aprovados no apex e 59 no `www`. |
+| AC-04 | Basic auth, CSP, redirects privados, 401/404/405 e APIs do SkillTree falharam fechados. |
+| AC-05 | Container healthy, não-root, read-only, sem porta publicada e rede dedicada. |
+| AC-06 | Teste de regressão verde; worker 200 em 0,95 s e intervalo local de 60 s. |
+| AC-07 | Dois autoritativos e três resolvedores públicos no novo IP; TLS Let's Encrypt válido nos dois hosts. |
+| AC-08 | Imagens anteriores e backups timestampados de Caddy, Compose e supervisor preservados. |
+| AC-09 | Next 15.5.25 e Sharp 0.35.4; audit sem vulnerabilidade crítica. |
+| AC-10 | Aguardando o commit final de closeout após a janela de observação, já sem incremento de 5xx. |
