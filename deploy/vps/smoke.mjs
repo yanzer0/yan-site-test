@@ -94,7 +94,9 @@ if (!leadsLogin.response.headers.get("content-security-policy")?.includes("frame
 await check("/leads/equipe", [302, 303, 307, 308]);
 // The export deliberately hides its existence from unauthenticated callers.
 await check("/leads/export", [404]);
-await check("/leads/not-a-uuid", [404]);
+// Authentication runs before the dynamic id validator, so an anonymous caller
+// must be redirected without learning whether the id exists.
+await check("/leads/not-a-uuid", [302, 303, 307, 308]);
 await check("/api/diagnostico/roteiro/fila", [401]);
 await check("/api/diagnostico/mapa/respostas", [401]);
 await check("/api/diagnostico/cal-webhook", [404, 405]);
