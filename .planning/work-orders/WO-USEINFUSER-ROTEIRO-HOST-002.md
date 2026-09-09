@@ -13,6 +13,7 @@ scope_lock:
     - specs/006-migracao-useinfuser-vps/**
     - src/app/api/diagnostico/roteiro/concluir/route.ts
     - src/app/roteiro/entrar/route.ts
+    - src/app/roteiro/[token]/route.ts
     - src/lib/diagnostico/acesso-roteiro.ts
     - src/lib/diagnostico/documento-roteiro.ts
     - scripts/diagnostico/servico-roteiro.mjs
@@ -28,6 +29,7 @@ scope_lock:
     production_files:
       - src/app/api/diagnostico/roteiro/concluir/route.ts
       - src/app/roteiro/entrar/route.ts
+      - src/app/roteiro/[token]/route.ts
       - src/lib/diagnostico/acesso-roteiro.ts
       - src/lib/diagnostico/documento-roteiro.ts
       - scripts/diagnostico/servico-roteiro.mjs
@@ -40,6 +42,7 @@ scope_lock:
     public_contracts:
       - POST /api/diagnostico/roteiro/concluir emits a stable www attachment URL
       - GET /roteiro/entrar shares the access cookie across apex and www in production
+      - GET /roteiro/:token bridges an existing apex-only cookie when the attachment opens on www
     persistence_surfaces: []
     background_jobs:
       - scripts/diagnostico/servico-roteiro.mjs
@@ -56,6 +59,7 @@ scope_lock:
     - RH-07
     - RH-08
     - RH-09
+    - RH-10
   stop_when:
     - RH-01
     - RH-02
@@ -66,6 +70,7 @@ scope_lock:
     - RH-07
     - RH-08
     - RH-09
+    - RH-10
   passed_acceptance_ids:
     - RH-01
 ---
@@ -95,6 +100,7 @@ Como o cookie anterior era host-only, a entrada também passa a emitir `Domain=u
 | RH-07 | O token reportado responde 200 no host novo; evento existente recebe link `www` se for seguro identificá-lo e atualizar sem reprocessar conteúdo. |
 | RH-08 | Uma nova entrada em apex ou `www` autoriza as duas origens; ambiente local continua host-only. |
 | RH-09 | O build de produção rejeita env crítica ausente, malformada ou repetida como marcador. |
+| RH-10 | Link `www` sem cookie tenta o apex; cookie host-only antigo é promovido para o domínio compartilhado sem abrir o documento ao lead. |
 
 ## Evidências
 

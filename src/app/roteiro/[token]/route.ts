@@ -11,7 +11,13 @@
 
 import { NextRequest, NextResponse } from "next/server";
 
-import { COOKIE_ACESSO, cookieAutoriza } from "@/lib/diagnostico/acesso-roteiro";
+import {
+  COOKIE_ACESSO,
+  cookieAutoriza,
+  dominioDoCookieAcesso,
+  normalizarHostnameDoAcesso,
+  VALIDADE_SEGUNDOS,
+} from "@/lib/diagnostico/acesso-roteiro";
 import { abrirRoteiroPorToken, registrarAberturaDoRoteiro } from "@/lib/diagnostico/roteiro-db";
 
 export const runtime = "nodejs";
@@ -63,7 +69,24 @@ export async function GET(
   // A checagem de acesso vem ANTES da consulta: sem cookie, o banco nem é
   // tocado, então nem a existência do documento é revelada pelo tempo de
   // resposta ou por um erro diferente.
-  if (!cookieAutoriza(req.cookies.get(COOKIE_ACESSO)?.value)) {
+  const cookie = req.cookies.get(COOKIE_ACESSO)?.value;
+  const hostnamePublico =
+    req.headers.get("x-forwarded-host") ??
+    req.headers.get("host") ??
+    req.nextUrl.hostname;
+  const host = normalizarHostnameDoAcesso(hostnamePublico);
+
+  if (!cookie || !cookieAutoriza(cookie)) {
+    // Anexos novos usam www. Um aparelho liberado antes da migração ainda tem
+    // um cookie host-only no apex, invisível para www. A primeira abertura faz
+    // uma ponte para o apex: o time leva o cookie antigo; o lead continua sem
+    // cookie e recebe a mesma página neutra de sempre.
+    if (host === "www.useinfuser.com") {
+      return NextResponse.redirect(
+        new URL(`/roteiro/${token}`, "https://useinfuser.com"),
+        307,
+      );
+    }
     return new NextResponse(PAGINA_NEUTRA, {
       status: 200,
       headers: { "Content-Type": "text/html; charset=utf-8", "X-Robots-Tag": "noindex, nofollow" },
@@ -85,7 +108,7 @@ export async function GET(
   // entrega se falhar.
   void registrarAberturaDoRoteiro(token).catch(() => {});
 
-  return new Response(new Uint8Array(roteiro.conteudo), {
+  const resposta = new NextResponse(new Uint8Array(roteiro.conteudo), {
     status: 200,
     headers: {
       // O tipo vem do banco, nao fixo aqui: o roteiro virou HTML em 18/08, mas
@@ -102,4 +125,17 @@ export async function GET(
         "default-src 'none'; style-src 'unsafe-inline'; img-src data:; font-src data:",
     },
   });
+
+  // Promove o cookie host-only antigo para o domínio compartilhado. O valor já
+  // foi autenticado acima; nenhuma chave entra na resposta.
+  resposta.cookies.set(COOKIE_ACESSO, cookie, {
+    httpOnly: true,
+    secure: true,
+    sameSite: "lax",
+    path: "/roteiro",
+    domain: dominioDoCookieAcesso(hostnamePublico),
+    maxAge: VALIDADE_SEGUNDOS,
+  });
+
+  return resposta;
 }

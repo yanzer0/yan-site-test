@@ -25,8 +25,17 @@ import {
   COOKIE_ACESSO,
   cookieAutoriza,
   dominioDoCookieAcesso,
+  normalizarHostnameDoAcesso,
   valorDoCookie,
 } from "@/lib/diagnostico/acesso-roteiro";
+
+const abrirRoteiroPorToken = vi.fn();
+const registrarAberturaDoRoteiro = vi.fn();
+
+vi.mock("@/lib/diagnostico/roteiro-db", () => ({
+  abrirRoteiroPorToken,
+  registrarAberturaDoRoteiro,
+}));
 
 const CHAVE = "chave-do-time-de-teste";
 const chamadas: { url: string; metodo: string; corpo: unknown }[] = [];
@@ -41,6 +50,8 @@ vi.mock("google-auth-library", () => ({
 
 beforeEach(() => {
   chamadas.length = 0;
+  abrirRoteiroPorToken.mockReset();
+  registrarAberturaDoRoteiro.mockReset();
   process.env.ROTEIRO_ACESSO_CHAVE = CHAVE;
   process.env.GOOGLE_CALENDAR_ID = "agenda-infuser@group.calendar.google.com";
   process.env.GOOGLE_SERVICE_ACCOUNT_B64 = Buffer.from(
@@ -130,6 +141,12 @@ describe("a porta do documento", () => {
     },
   );
 
+  it("normaliza a cadeia encaminhada pelo proxy", () => {
+    expect(normalizarHostnameDoAcesso("WWW.USEINFUSER.COM:443, proxy.local")).toBe(
+      "www.useinfuser.com",
+    );
+  });
+
   it("a rota de entrada realmente emite Domain no www", async () => {
     const { GET } = await import("@/app/roteiro/entrar/route");
     const resposta = await GET(
@@ -157,6 +174,59 @@ describe("a porta do documento", () => {
     );
 
     expect(resposta.headers.get("set-cookie")).not.toContain("Domain=");
+  });
+});
+
+describe("a ponte dos cookies anteriores a migracao", () => {
+  const token = "df2ec61db9c55270ac8c335fbc2fa28b";
+
+  it("manda o www sem cookie ao apex, onde o cookie antigo existe", async () => {
+    const { GET } = await import("@/app/roteiro/[token]/route");
+    const resposta = await GET(
+      new NextRequest(`https://www.useinfuser.com/roteiro/${token}`, {
+        headers: { "x-forwarded-host": "www.useinfuser.com" },
+      }),
+      { params: Promise.resolve({ token }) },
+    );
+
+    expect(resposta.status).toBe(307);
+    expect(resposta.headers.get("location")).toBe(`https://useinfuser.com/roteiro/${token}`);
+    expect(abrirRoteiroPorToken).not.toHaveBeenCalled();
+  });
+
+  it("continua neutro para o lead no apex", async () => {
+    const { GET } = await import("@/app/roteiro/[token]/route");
+    const resposta = await GET(
+      new NextRequest(`https://useinfuser.com/roteiro/${token}`),
+      { params: Promise.resolve({ token }) },
+    );
+
+    expect(resposta.status).toBe(200);
+    expect(resposta.headers.get("content-disposition")).toBeNull();
+    expect(abrirRoteiroPorToken).not.toHaveBeenCalled();
+  });
+
+  it("promove um cookie apex valido para o dominio compartilhado", async () => {
+    abrirRoteiroPorToken.mockResolvedValue({
+      conteudo: Buffer.from("<!doctype html><html><body>roteiro</body></html>"),
+      mime: "text/html; charset=utf-8",
+      nomeArquivo: "Preparo - Call 1.html",
+    });
+    registrarAberturaDoRoteiro.mockResolvedValue(undefined);
+    const { GET } = await import("@/app/roteiro/[token]/route");
+    const resposta = await GET(
+      new NextRequest(`https://useinfuser.com/roteiro/${token}`, {
+        headers: {
+          cookie: `${COOKIE_ACESSO}=${valorDoCookie(CHAVE)}`,
+          "x-forwarded-host": "useinfuser.com",
+        },
+      }),
+      { params: Promise.resolve({ token }) },
+    );
+
+    expect(resposta.status).toBe(200);
+    expect(resposta.headers.get("content-disposition")).toContain("Preparo - Call 1.html");
+    expect(resposta.headers.get("set-cookie")).toContain("Domain=useinfuser.com");
   });
 });
 

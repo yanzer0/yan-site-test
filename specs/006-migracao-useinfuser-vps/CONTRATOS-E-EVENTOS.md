@@ -92,4 +92,5 @@ Contrato 1.1:
 - workers chamam `www` durante a janela de cache do apex;
 - a entrada em apex ou `www` emite cookie com `Domain=useinfuser.com` e `Path=/roteiro`, preservando `HttpOnly`, `Secure` e `SameSite=Lax`;
 - hosts de desenvolvimento e preview continuam com cookie host-only;
+- um anexo `www` sem cookie redireciona somente para o mesmo token no apex; um cookie apex válido é então renovado com `Domain=useinfuser.com`, enquanto o lead continua recebendo a página neutra;
 - payload, token do documento, idempotência e PATCH `sendUpdates=none` não mudam.

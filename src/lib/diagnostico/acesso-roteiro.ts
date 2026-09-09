@@ -29,13 +29,17 @@ export const VALIDADE_SEGUNDOS = 365 * 24 * 60 * 60;
  * Compartilha o acesso entre apex e www somente no domínio de produção.
  * Em localhost/previews, omitir Domain mantém o cookie válido no host atual.
  */
-export function dominioDoCookieAcesso(hostname: string): string | undefined {
-  const host = hostname
+export function normalizarHostnameDoAcesso(hostname: string): string {
+  return hostname
     .split(",", 1)[0]
     .trim()
     .toLowerCase()
     .replace(/:\d+$/, "")
     .replace(/\.$/, "");
+}
+
+export function dominioDoCookieAcesso(hostname: string): string | undefined {
+  const host = normalizarHostnameDoAcesso(hostname);
   return host === "useinfuser.com" || host === "www.useinfuser.com"
     ? "useinfuser.com"
     : undefined;
