@@ -1,7 +1,7 @@
 ---
 tags: [engenharia, testes, operacao, runbook, migracao]
 status: ready
-version: 1.0
+version: 1.1
 updated: 2026-09-09
 ---
 
@@ -87,3 +87,11 @@ O baseline tem um teste já vermelho por divergência do enum `perdido-stand-by`
 - `/time`: upstream restaurado ao persistir `skilltree-net` no Caddy;
 - 5xx: contador não cresceu durante a janela posterior ao conserto;
 - vantage externo: Mac Mini fora da VPS resolveu o novo IP e recebeu health 200 e `/time` 200.
+
+## 10. Provas do hotfix 1.1
+
+- token reportado: 200 na VPS e em vantage externo; 402 apenas quando forçado a `76.76.21.21`;
+- teste unitário: origem pública não depende do host da request e rejeita configuração insegura;
+- integração: anexo aponta para `https://www.useinfuser.com/roteiro/<token>`;
+- produção: nova imagem healthy, smoke completo e worker 200 em chamada curta;
+- evento existente: atualizar somente o `fileUrl`, sem notificação, se a linha e o evento forem identificados sem ambiguidade.

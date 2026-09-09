@@ -1,7 +1,7 @@
 ---
 tags: [engenharia, implementacao, rollout, rollback, migracao]
 status: ready
-version: 1.0
+version: 1.1
 updated: 2026-09-09
 ---
 
@@ -109,3 +109,12 @@ flowchart LR
 | RF-03/RF-04 | W2/W4 | probes negativos/headers | AC-04 |
 | RF-05 | W1 | teste + duração | AC-06 |
 | RF-06 | W2-W5 | runbook/tag/backups | AC-08 |
+
+## 9. Hotfix W6: host estável do roteiro
+
+- depende de: migração 1.0 verificada e token reportado reproduzido;
+- mudança: helper validado para URL pública, Compose explícito e defaults dos workers em `www`;
+- teste primeiro: request origin antiga não pode aparecer no link;
+- rollout: nova imagem, 59 probes por host, fila autenticada e token reportado;
+- rollback: imagem `42c41cba44d2` e supervisor já funcional em `www`;
+- nenhum schema, documento ou conteúdo de roteiro muda.

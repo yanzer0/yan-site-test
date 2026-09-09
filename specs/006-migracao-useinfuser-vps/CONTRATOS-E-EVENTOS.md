@@ -1,7 +1,7 @@
 ---
 tags: [engenharia, contratos, eventos, fila, webhook]
 status: ready
-version: 1.0
+version: 1.1
 updated: 2026-09-09
 ---
 
@@ -77,3 +77,17 @@ stateDiagram-v2
 - source guard garante ausência de `esperar=25` e presença de pausa local;
 - webhooks sem assinatura retornam 4xx e não escrevem;
 - `/time` continua reescrevendo para o upstream atual.
+
+## 9. Hotfix 1.1: origem pública do anexo
+
+Fato: `POST /api/diagnostico/roteiro/concluir` montava `fileUrl` com `req.nextUrl.origin`. O token era válido, mas um evento antigo guardou o apex e um Chrome com DNS cacheado continuou chegando ao deployment pausado.
+
+Contrato 1.1:
+
+- `ROTEIRO_PUBLIC_BASE_URL` é a autoridade do host gravado no Google Calendar;
+- default: `https://www.useinfuser.com`;
+- apenas origem HTTPS sem credenciais, query ou fragmento é aceita;
+- o token é codificado como segmento de path;
+- o host da request não influencia o anexo;
+- workers chamam `www` durante a janela de cache do apex;
+- payload, token do documento, idempotência e PATCH `sendUpdates=none` não mudam.
