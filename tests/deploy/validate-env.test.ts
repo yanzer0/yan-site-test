@@ -23,7 +23,7 @@ function validEnvironment(): Record<string, string> {
     ROTEIRO_ACESSO_CHAVE: "access-" + "d".repeat(20),
     ROTEIRO_PUBLIC_BASE_URL: "https://www.useinfuser.com",
     ROTEIRO_WORKER_SECRET: "worker-" + "e".repeat(32),
-    STRIPE_SECRET_KEY: "sk_test_" + "f".repeat(24),
+    STRIPE_SECRET_KEY: "rk_live_" + "f".repeat(24),
     STRIPE_WEBHOOK_SECRET: "whsec_" + "g".repeat(24),
   };
 }

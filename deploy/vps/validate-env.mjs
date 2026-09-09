@@ -70,7 +70,11 @@ export function validateProductionEnvironment(environment) {
   requireValue("NEXT_PUBLIC_CAL_URL", isHttps, "URL HTTPS invalida");
   requireValue("NEXT_PUBLIC_MAPA_IA_URL", isHttps, "URL HTTPS invalida");
   requireValue("OPS_ALERT_URL", isHttps, "URL HTTPS invalida");
-  requireValue("STRIPE_SECRET_KEY", (value) => /^sk_(?:test|live)_/.test(value), "formato invalido");
+  requireValue(
+    "STRIPE_SECRET_KEY",
+    (value) => /^(?:sk|rk)_(?:test|live)_/.test(value),
+    "formato invalido",
+  );
   requireValue("STRIPE_WEBHOOK_SECRET", (value) => value.startsWith("whsec_"), "formato invalido");
   requireValue("DEMO_MARJA_USER", (value) => value.length >= 3, "curto demais");
   requireValue("DEMO_MARJA_PASS", (value) => value.length >= 20, "curta demais");
