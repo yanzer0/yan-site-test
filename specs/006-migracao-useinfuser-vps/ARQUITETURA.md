@@ -13,7 +13,7 @@ updated: 2026-09-09
 2. Um runtime para todas as rotas: preservar o comportamento híbrido do Next.js.
 3. Segredo fora de Git e imagem: arquivo 600 e BuildKit secret.
 4. Borda compartilhada sem restart: Caddy validado e recarregado.
-5. Rede mínima: Caddy e site dividem apenas `useinfuser-net`.
+5. Rede mínima: Caddy e site dividem `useinfuser-net`; o Caddy mantém `skilltree-net` para servir `/time` pelo upstream existente.
 
 ## 2. Contexto e fronteiras
 
@@ -84,6 +84,7 @@ flowchart LR
 - Build lista o mesmo inventário de rotas públicas.
 - Container não publica porta e executa como UID não-root.
 - `docker compose config` e `caddy validate` passam antes de aplicar.
+- Caddy permanece conectado a `skilltree-net`; sem essa rede `/time` falha com 502.
 - Poll contínuo de 25 s é proibido por teste.
 - `/api/health` identifica o release sem revelar segredo.
 

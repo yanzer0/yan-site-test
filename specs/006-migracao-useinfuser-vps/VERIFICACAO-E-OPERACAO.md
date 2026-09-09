@@ -28,7 +28,7 @@ Falhas perigosas são: DNS apontar antes do upstream, página pública parecer v
 - build: `next build` com inventário de rotas;
 - imagem: build limpo, usuário não-root, healthcheck;
 - integração: probes internos contra container e via Caddy;
-- E2E: apex e `www` no DNS real, incluindo `/`, `/club`, `/diagnostico`, `/pos`, um guia, `/time`, `/leads/entrar` e APIs negativas.
+- E2E: apex e `www` no DNS real, incluindo todas as páginas do build, rewrites, assets do SkillTree, redirects legados, rotas dinâmicas negativas, `/leads/entrar` e APIs negativas.
 
 O baseline tem um teste já vermelho por divergência do enum `perdido-stand-by` entre brain e repo. É defeito pré-existente fora da migração; os outros 375 testes passam. Ele não pode ser escondido e será reportado separadamente.
 

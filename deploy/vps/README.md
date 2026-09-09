@@ -5,7 +5,7 @@
 - checkout limpo do commit a publicar;
 - Docker/Compose e Caddy já ativos;
 - env de produção em `/home/infuser/.config/useinfuser/useinfuser.env`, modo 600;
-- Caddy conectado à rede externa `useinfuser-net`;
+- Caddy conectado às redes externas `useinfuser-net` e `skilltree-net`;
 - DNS só muda depois do smoke interno.
 
 ## Deploy da aplicação
@@ -22,10 +22,11 @@ O script valida o Compose, constrói a imagem com o env como BuildKit secret, so
 
 1. Criar `useinfuser-net` pelo Compose do site.
 2. Declarar essa rede como externa no Compose canônico do Caddy e conectá-la ao serviço `caddy`.
-3. Fazer backup timestampado do Compose e do Caddyfile.
-4. Acrescentar `Caddyfile.block` uma única vez.
-5. Rodar `docker compose config --quiet` e `docker exec caddy caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile`.
-6. Conectar o Caddy vivo à rede sem reiniciar e recarregar a configuração.
+3. Confirmar que `skilltree-net` também está declarada e conectada ao Caddy; `/time` depende dela.
+4. Fazer backup timestampado do Compose e do Caddyfile.
+5. Acrescentar `Caddyfile.block` uma única vez.
+6. Rodar `docker compose config --quiet` e `docker exec caddy caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile`.
+7. Conectar o Caddy vivo às redes sem reiniciar e recarregar a configuração.
 
 ## Corte
 
