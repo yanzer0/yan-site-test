@@ -28,6 +28,7 @@
  *   GOOGLE_SERVICE_ACCOUNT_B64  (sensível)
  *   GOOGLE_CALENDAR_ID
  *   POSTGRES_URL                (sensível)
+ *   ROTEIRO_PUBLIC_BASE_URL     origem HTTPS gravada no anexo
  */
 
 import { NextRequest, NextResponse } from "next/server";
@@ -42,7 +43,12 @@ import {
   obterToken,
 } from "@/lib/diagnostico/agenda-google";
 import { descricaoComContato } from "@/lib/diagnostico/contato-no-evento";
-import { ErroDocumento, nomeDoDocumento, prepararEvento } from "@/lib/diagnostico/documento-roteiro";
+import {
+  ErroDocumento,
+  nomeDoDocumento,
+  prepararEvento,
+  urlPublicaDoRoteiro,
+} from "@/lib/diagnostico/documento-roteiro";
 import {
   concluirRoteiro,
   guardarDocumentoDoRoteiro,
@@ -133,7 +139,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     // saídas que o Google oferece exigem Workspace. Quem barra o lead é o
     // cookie da rota, não a ACL do Google.
     const token = await guardarDocumentoDoRoteiro(calBookingId, documento, titulo);
-    const url = new URL(`/roteiro/${token}`, req.nextUrl.origin).toString();
+    const url = urlPublicaDoRoteiro(token);
 
     const eventoId = await acharEventoDaCall(calBookingId, inicio, email);
 

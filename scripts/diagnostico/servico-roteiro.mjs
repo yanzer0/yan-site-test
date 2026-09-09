@@ -33,7 +33,7 @@ import { fileURLToPath } from "node:url";
 import { spawnSync } from "node:child_process";
 
 const BRAIN = process.env.BRAIN_PATH ?? "/home/infuser/brain-roteiro";
-const BASE = process.env.ROTEIRO_BASE_URL ?? "https://useinfuser.com";
+const BASE = process.env.ROTEIRO_BASE_URL ?? "https://www.useinfuser.com";
 const SEGREDO = process.env.ROTEIRO_WORKER_SECRET;
 
 /** Successful empty rounds wait locally instead of reserving remote compute. */

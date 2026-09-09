@@ -131,6 +131,40 @@ describe("o nome do anexo, que o lead LE", () => {
   });
 });
 
+describe("o host publico do anexo", () => {
+  afterEach(() => {
+    delete process.env.ROTEIRO_PUBLIC_BASE_URL;
+  });
+
+  it("nao herda o host da request e usa o www ja propagado", async () => {
+    const { urlPublicaDoRoteiro } = await import("@/lib/diagnostico/documento-roteiro");
+
+    expect(urlPublicaDoRoteiro("abc123")).toBe(
+      "https://www.useinfuser.com/roteiro/abc123",
+    );
+  });
+
+  it("aceita uma origem HTTPS explicita e codifica o token como path", async () => {
+    process.env.ROTEIRO_PUBLIC_BASE_URL = "https://www.useinfuser.com";
+    const { urlPublicaDoRoteiro } = await import("@/lib/diagnostico/documento-roteiro");
+
+    expect(urlPublicaDoRoteiro("token com espaco")).toBe(
+      "https://www.useinfuser.com/roteiro/token%20com%20espaco",
+    );
+  });
+
+  it.each([
+    "http://www.useinfuser.com",
+    "https://usuario:senha@www.useinfuser.com",
+    "https://www.useinfuser.com/base?x=1",
+  ])("recusa origem publica insegura ou ambigua: %s", async (origem) => {
+    process.env.ROTEIRO_PUBLIC_BASE_URL = origem;
+    const { urlPublicaDoRoteiro } = await import("@/lib/diagnostico/documento-roteiro");
+
+    expect(() => urlPublicaDoRoteiro("abc123")).toThrow("ROTEIRO_PUBLIC_BASE_URL invalida");
+  });
+});
+
 describe("o anexo no evento da call", () => {
   async function anexar() {
     const { anexarNoEvento } = await import("@/lib/diagnostico/documento-roteiro");

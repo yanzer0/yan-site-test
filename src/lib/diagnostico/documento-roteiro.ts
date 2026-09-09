@@ -31,6 +31,7 @@ import { ErroAgenda } from "./agenda-google";
 
 /** Sem timeout, um Google lento pendura a função inteira. */
 const TIMEOUT_GOOGLE_MS = 60_000;
+const ORIGEM_PUBLICA_PADRAO = "https://www.useinfuser.com";
 
 export class ErroDocumento extends Error {
   constructor(
@@ -40,6 +41,37 @@ export class ErroDocumento extends Error {
     super(`falha ao ${operacao}: ${detalhe}`);
     this.name = "ErroDocumento";
   }
+}
+
+/**
+ * Builds the stable public URL stored in Google Calendar attachments.
+ *
+ * The request origin is deliberately absent from this function. Internal
+ * callers and stale DNS must never decide which host is persisted for users.
+ */
+export function urlPublicaDoRoteiro(token: string): string {
+  const configurada = process.env.ROTEIRO_PUBLIC_BASE_URL?.trim() || ORIGEM_PUBLICA_PADRAO;
+
+  let origem: URL;
+  try {
+    origem = new URL(configurada);
+  } catch {
+    throw new ErroDocumento("montar link do roteiro", "ROTEIRO_PUBLIC_BASE_URL invalida");
+  }
+
+  if (
+    origem.protocol !== "https:" ||
+    origem.username ||
+    origem.password ||
+    origem.port ||
+    origem.pathname !== "/" ||
+    origem.search ||
+    origem.hash
+  ) {
+    throw new ErroDocumento("montar link do roteiro", "ROTEIRO_PUBLIC_BASE_URL invalida");
+  }
+
+  return new URL(`/roteiro/${encodeURIComponent(token)}`, origem).toString();
 }
 
 /**

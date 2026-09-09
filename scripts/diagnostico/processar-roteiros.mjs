@@ -50,7 +50,7 @@ import { spawnSync } from "node:child_process";
 const BRAIN =
   process.env.BRAIN_PATH ??
   "C:\\Users\\PC\\Documents\\INFUSER USE - CONSULTORIA DE IA\\yangalasso-brain";
-const BASE = process.env.ROTEIRO_BASE_URL ?? "https://useinfuser.com";
+const BASE = process.env.ROTEIRO_BASE_URL ?? "https://www.useinfuser.com";
 const SECO = process.argv.includes("--seco");
 
 function morrer(mensagem) {

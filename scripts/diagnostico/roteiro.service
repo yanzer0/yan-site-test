@@ -30,7 +30,7 @@ WorkingDirectory=/home/infuser/yan-site-funil
 # Sem esta linha, `node` e `claude` simplesmente não existem para o serviço.
 Environment=PATH=/home/infuser/.local/bin:/usr/local/bin:/usr/bin:/bin
 Environment=BRAIN_PATH=/home/infuser/brain-roteiro
-Environment=ROTEIRO_BASE_URL=https://useinfuser.com
+Environment=ROTEIRO_BASE_URL=https://www.useinfuser.com
 Environment=NODE_ENV=production
 
 # Segredos vêm de arquivo 600, nunca de `Environment=` no unit: `systemctl cat`
