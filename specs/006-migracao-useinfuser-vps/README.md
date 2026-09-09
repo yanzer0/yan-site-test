@@ -1,7 +1,7 @@
 ---
 tags: [engenharia, definicao, migracao, vps, incidente]
-status: active
-definition_status: ready-for-build
+status: verified
+definition_status: verified
 definition_version: 1.1
 owner: Yan
 updated: 2026-09-09
@@ -11,7 +11,7 @@ updated: 2026-09-09
 
 ## Estado da definição
 
-- `definition_status`: `ready-for-build`
+- `definition_status`: `verified`
 - versão do pacote: `1.1`
 - owner humano: Yan
 - executor técnico: Codex /codar
@@ -95,3 +95,4 @@ Nenhuma decisão técnica bloqueia o build. O acesso ao DNS pode exigir handoff 
 | 2026-09-09 | ready-for-build | 1.0 | Yan + Codex /codar | Incidente diagnosticado, escopo e recuperação congelados. |
 | 2026-09-09 | verified | 1.0 | Codex /codar | DNS, TLS, 59 probes por host, worker e observação de produção aprovados. |
 | 2026-09-09 | ready-for-build | 1.1 | Yan + Codex /codar | Hotfix autorizado após um Chrome ainda alcançar o IP antigo pelo link apex do evento. |
+| 2026-09-09 | verified | 1.1 | Codex /codar | Host estável, env restaurada, cookie legado bridged, evento reparado e probes públicos aprovados. |

@@ -73,6 +73,14 @@ scope_lock:
     - RH-10
   passed_acceptance_ids:
     - RH-01
+    - RH-02
+    - RH-03
+    - RH-04
+    - RH-05
+    - RH-06
+    - RH-07
+    - RH-08
+    - RH-09
 ---
 
 # Hotfix: host estável nos anexos de roteiro
@@ -105,3 +113,11 @@ Como o cookie anterior era host-only, a entrada também passa a emitir `Domain=u
 ## Evidências
 
 - RH-01: `187.77.36.156` e Mac externo retornaram 200; `76.76.21.21` retornou 402.
+- RH-02/RH-03: `urlPublicaDoRoteiro` usa origem HTTPS validada, default `www` e não lê `req.nextUrl.origin`; testes travam host, encoding e rejeições.
+- RH-04: 397 testes passaram, excluído apenas o baseline conhecido `contrato-brain.test.ts`; build Next 15.5.25 e lint tocado passaram.
+- RH-05: release `671add23864a` ficou healthy; apex e `www` passaram 59 probes públicos cada.
+- RH-06: worker `servico-roteiro.mjs` permaneceu vivo com intervalo local de 60 s; fila autenticada respondeu 200 em 0,91 s.
+- RH-07: token informado retornou o documento de 25.862 bytes nos dois hosts; o Google confirmou a persistência do `fileUrl` `www` no evento sem notificar convidados.
+- RH-08: produção emite `Domain=useinfuser.com`, `HttpOnly`, `Secure` e `SameSite=Lax`; localhost permanece host-only por teste.
+- RH-09: o primeiro build foi corretamente bloqueado por env inválida; após restauração com backup, o gate aprovou credenciais e o build concluiu.
+- RH-10 preparado para closeout: cookie apex legado abriu o documento via link `www`, foi promovido para o domínio compartilhado, e o mesmo fluxo sem cookie terminou na página neutra de 1.032 bytes.

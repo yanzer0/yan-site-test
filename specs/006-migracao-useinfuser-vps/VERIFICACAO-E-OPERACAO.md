@@ -90,9 +90,13 @@ O baseline tem um teste já vermelho por divergência do enum `perdido-stand-by`
 
 ## 10. Provas do hotfix 1.1
 
-- token reportado: 200 na VPS e em vantage externo; 402 apenas quando forçado a `76.76.21.21`;
+- release viva: `671add23864a`, ambiente validado durante o build e container healthy;
+- token reportado: documento de 25.862 bytes em apex e `www`; 402 apenas quando forçado ao IP antigo `76.76.21.21`;
 - teste unitário: origem pública não depende do host da request e rejeita configuração insegura;
 - integração: anexo aponta para `https://www.useinfuser.com/roteiro/<token>`;
-- contrato de acesso: entrada em apex ou `www` compartilha o cookie somente no domínio de produção;
-- produção: nova imagem healthy, smoke completo e worker 200 em chamada curta;
-- evento existente: atualizar somente o `fileUrl`, sem notificação, se a linha e o evento forem identificados sem ambiguidade.
+- contrato de acesso: entrada em apex ou `www` compartilha o cookie somente no domínio de produção; cookie host-only anterior é promovido de forma transparente;
+- privacidade: fluxo sem cookie em `www` termina na página neutra de 1.032 bytes e não consulta o documento;
+- produção: 59 probes externos em apex e 59 em `www`, todos aprovados; Mac externo recebeu 200 no IP `187.77.36.156`;
+- worker: processo vivo, segredo canônico e fila 200 em 0,91 s sem long-poll;
+- evento existente: o Google confirmou o novo `fileUrl` sem notificação e sem reprocessar o conteúdo;
+- suíte: 397 testes passaram; permanece excluído somente o baseline conhecido `contrato-brain.test.ts`.
