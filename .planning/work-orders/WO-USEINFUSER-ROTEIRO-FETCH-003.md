@@ -1,6 +1,6 @@
 ---
 work_order: WO-USEINFUSER-ROTEIRO-FETCH-003
-status: active
+status: completed
 central_branch: codex/fix-roteiro-fetch-retry
 owner: Codex
 authorized_by: Yan
@@ -33,6 +33,8 @@ scope_lock:
     - RF-02
     - RF-03
     - RF-04
+    - RF-05
+    - RF-06
     - RF-05
     - RF-06
   stop_when:
