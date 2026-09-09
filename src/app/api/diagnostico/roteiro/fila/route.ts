@@ -23,23 +23,6 @@ import { PERGUNTAS, perguntaPorId } from "@/lib/diagnostico/perguntas";
 import { callsEmRisco, filaMorta, reservarTrabalho } from "@/lib/diagnostico/roteiro-db";
 import { segredoConfere } from "@/lib/diagnostico/segredo";
 
-/**
- * Teto do long-poll, em segundos.
- *
- * O consumidor na VPS pede `?esperar=N` e a rota segura a resposta até aparecer
- * trabalho. É o que troca "roda a cada 5 minutos" por "responde em segundos"
- * sem abrir porta nenhuma na VPS nem tocar no Caddy, que serve 9 domínios de
- * cliente.
- *
- * 25s é conservador de propósito: o teto de execução de função varia por plano
- * da Vercel, e uma espera cortada pelo runtime devolveria erro em vez de lista
- * vazia. O consumidor reconecta em loop, então cortar cedo não perde nada.
- */
-const ESPERA_MAXIMA_S = 25;
-const INTERVALO_DA_ESPERA_MS = 2000;
-
-const dormir = (ms: number): Promise<void> => new Promise((r) => setTimeout(r, ms));
-
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
@@ -97,21 +80,9 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   }
 
   try {
-    // `esperar` faz a rota segurar a resposta até haver trabalho. Sem ele, o
-    // comportamento é o de sempre: responde na hora, mesmo vazio.
-    const esperar = Math.min(
-      Math.max(Number(req.nextUrl.searchParams.get("esperar") ?? 0) || 0, 0),
-      ESPERA_MAXIMA_S,
-    );
-
-    let fila = await reservarTrabalho();
-    if (esperar > 0 && fila.length === 0) {
-      const limite = Date.now() + esperar * 1000;
-      while (fila.length === 0 && Date.now() < limite) {
-        await dormir(INTERVALO_DA_ESPERA_MS);
-        fila = await reservarTrabalho();
-      }
-    }
+    // Return immediately. Waiting belongs to the VPS worker, not to an HTTP
+    // request that reserves compute and memory for its full lifetime.
+    const fila = await reservarTrabalho();
 
     const [emRisco, mortos] = await Promise.all([callsEmRisco(), filaMorta()]);
 

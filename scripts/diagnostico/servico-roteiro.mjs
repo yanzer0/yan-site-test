@@ -2,17 +2,9 @@
 /**
  * Serviço que gera o roteiro da Call 1 assim que a call é marcada.
  *
- * Roda na VPS da Infuser como unit systemd, em loop, drenando a fila por
- * long-poll. Substitui o `processar-roteiros.mjs`, que rodava por agendamento
- * na máquina do Yan e dependia dela estar ligada.
- *
- * ## Por que long-poll, e não um endpoint público na VPS
- *
- * O Caddy da VPS serve 9 domínios de cliente. Abrir porta, subdomínio e
- * certificado para o webhook empurrar ganharia uns 20 segundos num processo que
- * leva 3 minutos, em troca de mexer no proxy de produção. Aqui a VPS PERGUNTA e
- * a conexão fica aberta esperando: latência de segundos, zero superfície nova,
- * zero mudança no Caddy.
+ * Roda na VPS da Infuser em loop, drenando a fila com uma consulta HTTP curta
+ * seguida de espera local. Substitui o `processar-roteiros.mjs`, que rodava por
+ * agendamento na máquina do Yan e dependia dela estar ligada.
  *
  * ## Por que a fila continua existindo
  *
@@ -44,12 +36,14 @@ const BRAIN = process.env.BRAIN_PATH ?? "/home/infuser/brain-roteiro";
 const BASE = process.env.ROTEIRO_BASE_URL ?? "https://useinfuser.com";
 const SEGREDO = process.env.ROTEIRO_WORKER_SECRET;
 
-/** Quanto a API segura a resposta esperando trabalho aparecer. */
-const ESPERA_S = 25;
+/** Successful empty rounds wait locally instead of reserving remote compute. */
+const PAUSA_ENTRE_CONSULTAS_MS = 60_000;
 /** Teto do gerador. Sem isto, um modelo travado pendura o serviço para sempre. */
 const TIMEOUT_MODELO_MS = 20 * 60_000;
 /** Pausa depois de erro de rede, para não martelar a API num apagão. */
 const PAUSA_APOS_ERRO_MS = 30_000;
+
+const dormir = (ms) => new Promise((resolvePromise) => setTimeout(resolvePromise, ms));
 
 let encerrando = false;
 
@@ -446,7 +440,7 @@ async function processar(trabalho) {
 }
 
 async function umaVolta() {
-  const fila = await chamarApi(`/api/diagnostico/roteiro/fila?esperar=${ESPERA_S}`);
+  const fila = await chamarApi("/api/diagnostico/roteiro/fila");
   if (!fila.ok) {
     registrar("erro", `fila respondeu ${fila.status}`);
     return { pausar: true };
@@ -502,15 +496,20 @@ export { publicarNoGit };
 // O laço só roda quando o arquivo é EXECUTADO. Sem esta guarda, importar o
 // módulo para prová-lo subiria um segundo consumidor da fila.
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-  registrar("info", `servico de roteiro de pe | brain=${BRAIN} | api=${BASE} | espera=${ESPERA_S}s`);
+  registrar(
+    "info",
+    `servico de roteiro de pe | brain=${BRAIN} | api=${BASE} | intervalo=${PAUSA_ENTRE_CONSULTAS_MS / 1000}s`,
+  );
 
   while (!encerrando) {
     try {
       const { pausar } = await umaVolta();
-      if (pausar && !encerrando) await new Promise((r) => setTimeout(r, PAUSA_APOS_ERRO_MS));
+      if (!encerrando) {
+        await dormir(pausar ? PAUSA_APOS_ERRO_MS : PAUSA_ENTRE_CONSULTAS_MS);
+      }
     } catch (erro) {
       registrar("erro", `volta falhou: ${erro.message}`);
-      if (!encerrando) await new Promise((r) => setTimeout(r, PAUSA_APOS_ERRO_MS));
+      if (!encerrando) await dormir(PAUSA_APOS_ERRO_MS);
     }
   }
 
