@@ -35,6 +35,17 @@
 
 Só marcar verificado depois do UAT com pagamento e acesso reais.
 
+O deploy técnico e comercial pode encerrar sem cobrança própria. A compra real é um UAT financeiro separado, porque cria transação e dispara as comunicações da Hubla; sua pendência está registrada na entidade do produto no brain.
+
+## Evidência de produção de 2026-09-11
+
+- release `945fdf29f338` saudável na VPS;
+- smoke canônico passou em `https://useinfuser.com` e `https://www.useinfuser.com`;
+- rota, CSS, JavaScript, logos e ZIP responderam 200 nos dois hosts;
+- checkout Hubla `rzNrSe1kZncGyrrWdIWC` mostrou R$147 como preço-base e R$97 como preço promocional e valor de pagamento;
+- produto `Zzmx3tF66nGCPSxGXIHX` ativo em “Vendendo”;
+- área externa e pós-compra configurados para `https://useinfuser.com/instalar`.
+
 ## Evidência local de 2026-09-11
 
 - 4/4 testes específicos do guia passaram;

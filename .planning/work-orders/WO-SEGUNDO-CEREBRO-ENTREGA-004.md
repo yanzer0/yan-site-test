@@ -46,7 +46,7 @@ scope_lock:
 - SC-04: produto Hubla existe e está vendendo com preço-base de R$147.
 - SC-05: a oferta padrão aplica preço promocional de R$97 sem cupom.
 - SC-06: a área de membros externa e o pós-compra apontam para a rota correta.
-- SC-07: produção, checkout e compra de teste passam com rollback conhecido.
+- SC-07: produção e checkout passam com rollback conhecido; compra real fica em UAT financeiro separado.
 
 ## Evidências
 
@@ -59,3 +59,4 @@ scope_lock:
 - SC-04: produto Hubla `Zzmx3tF66nGCPSxGXIHX` ativado como “Vendendo”; oferta padrão `rzNrSe1kZncGyrrWdIWC`.
 - SC-05: checkout `https://pay.hub.la/rzNrSe1kZncGyrrWdIWC` verificado com “De: R$147,00” e “Por: R$97,00”; campo de cupom oculto.
 - SC-06: área de membros externa e redirecionamento pós-compra configurados para `https://useinfuser.com/instalar`.
+- SC-07: release `945fdf29f338` saudável; smoke passou no apex e no `www`, incluindo `/instalar` e o ZIP. O checkout ativo cobra R$97. A compra real não foi executada porque geraria cobrança e comunicações; ficou registrada como pendência na entidade do produto.
