@@ -1,23 +1,24 @@
-# Dados e APIs: entrega do Segundo Cérebro Autônomo
+# Dados e APIs da fachada
 
-## Autoridade
+O site não persiste comprador nem entitlement. Ele encaminha apenas:
 
-| Dado | Autoridade | Classificação |
+- cookie HttpOnly recebido do navegador;
+- query `code` na ativação;
+- corpo `application/x-www-form-urlencoded` limitado no POST;
+- IP encaminhado pelo proxy confiável para rate limit.
+
+## Conteúdo
+
+| Ativo | Local | Proteção |
 |---|---|---|
-| produto, ofertas, preço e comprador | Hubla | comercial e pessoal |
-| HTML, imagens e ZIP | Git e release do site | público por URL |
-| progresso do wizard | `localStorage` do navegador | local, não sensível |
+| HTML do wizard | `private/instalar/index.html` | lido só após sessão 204 |
+| JavaScript do wizard | `private/instalar/guide.js` | handler protegido |
+| ZIP | somente no MCP | download autenticado |
+| CSS, fontes, logos e prints sanitizados | `public/instalar` | públicos, sem produto executável |
 
-## APIs e persistência
+## Configuração
 
-Nenhuma tabela, migration ou API nova. O Route Handler responde apenas `GET /instalar`; os ativos são arquivos estáticos. O site não recebe dados da compra nem identifica o comprador.
+`SECOND_BRAIN_ACCESS_ORIGIN` é server-only e aceita apenas origem HTTP(S) sem path. Default de produção:
+`https://mcp.useinfuser.com`. Testes injetam servidor local.
 
-## Retenção e logs
-
-- nenhum dado pessoal é gravado pelo guia;
-- logs HTTP devem registrar caminho e status, nunca query com token;
-- Hubla mantém seu próprio ciclo de dados e acesso.
-
-## Capacidade
-
-O maior custo é transferência dos PNGs. As imagens continuam carregadas sob demanda pelo passo; o ZIP tem menos de 100 KB. Não há trabalho assíncrono nem chamada de banco.
+Nenhum segredo novo no site.

@@ -1,43 +1,32 @@
-# PRD: entrega do Segundo Cérebro Autônomo
-
-## Problema
-
-O produto e o guia existem apenas no disco local. Um comprador da Hubla ainda não recebe uma rota estável nem um caminho de reentrada.
+# PRD: fachada protegida de instalação
 
 ## Usuário
 
-Comprador não técnico que precisa instalar no Windows, macOS ou Linux usando Claude, Codex ou ambos.
+Comprador não técnico no Windows, macOS ou Linux, usando Claude, Codex ou ambos.
 
-## Requisitos funcionais
+## Requisitos
 
 | ID | Requisito | Aceite |
 |---|---|---|
-| RF-01 | Servir o guia em `/instalar` | GET no apex e www responde 200 com o título correto |
-| RF-02 | Servir o pacote | botão baixa ZIP válido e igual ao build aprovado |
-| RF-03 | Criar produto na Hubla | produto ativo com acesso vitalício e pagamento único |
-| RF-04 | Criar oferta padrão | checkout mostra R$147 |
-| RF-05 | Aplicar preço promocional | checkout mostra R$147 e cobra R$97 sem cupom |
-| RF-06 | Configurar área externa | comprador é direcionado para `/instalar` |
-| RF-07 | Configurar pós-compra | pagamento aprovado leva à Área de Membros |
-| RF-08 | Preservar atualização | novo deploy mantém a mesma URL e troca guia e ZIP juntos |
+| RF-01 | Porta pública neutra | sem cookie, `/instalar` não contém o wizard |
+| RF-02 | Reenvio passwordless | formulário envia e-mail ao MCP e responde sem enumerar |
+| RF-03 | Ativação segura | GET confirma; POST cria cookie e volta para `/instalar` |
+| RF-04 | Guia privado | HTML e JS só são servidos após sessão ativa |
+| RF-05 | Download privado | botão chama `/instalar/download`, nunca arquivo estático |
+| RF-06 | Falha fechada | timeout/5xx do MCP mostra indisponibilidade sem conteúdo |
+| RF-07 | Preservar wizard | rotas, progresso, prints, zoom e copy existentes não mudam |
+| RF-08 | Remover atalhos públicos | index, JS e ZIP antigos retornam 404 |
 
-## Requisitos não funcionais
+## NFRs
 
-| ID | Meta | Prova |
-|---|---|---|
-| RNF-01 | zero PII e segredo no bundle | varredura e revisão dos ativos públicos |
-| RNF-02 | sem overflow em 375 px | browser real |
-| RNF-03 | zero erro de console | browser real |
-| RNF-04 | rollback em uma tag anterior | runbook VPS |
-| RNF-05 | página fora de busca | meta `noindex, nofollow` |
+- respostas protegidas usam `no-store` e `noindex`;
+- proxy tem timeout e não vaza corpo de erro interno;
+- zero segredo no bundle do navegador;
+- formulário acessível em 375 e 1440 px;
+- assets não sensíveis continuam cacheáveis;
+- rollback restaura uma imagem anterior.
 
-## Métricas iniciais
+## Métricas
 
-- compra aprovada que chega à Área de Membros;
-- clique em “Abrir guia de instalação”;
-- download do ZIP;
-- pedidos de suporte por instalação.
-
-## Rastreabilidade
-
-RF-01, RF-02 e RF-08 ficam no site; RF-03 a RF-07 ficam na Hubla; todos convergem no UAT de compra.
+Ativação, reenvio, acesso negado e download ficam no MCP sem PII. O site mantém GTM somente no guia
+autorizado; a tela de acesso não registra e-mail em tracking.

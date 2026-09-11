@@ -1,30 +1,28 @@
-# UX e conteúdo: entrega do Segundo Cérebro Autônomo
+# UX: ativação sem senha
 
-## Jornada
+## Direção Studio
 
-| Etapa | O que o cliente vê | Ação |
-|---|---|---|
-| compra | checkout com âncora de R$147 e preço final de R$97 | pagar |
-| confirmação | acesso à Área de Membros | abrir produto |
-| área externa | mensagem curta de acesso | abrir guia |
-| guia | escolha de sistema e aplicativo | montar caminho |
-| pacote | botão destacado | baixar ZIP |
-| conclusão | confirmação visual | fazer primeira pergunta |
+Risco G, produto Infuser. Modo CRIAR + QA. Reutilizar o design system do wizard em vez de criar uma
+segunda linguagem. Tese visual: uma porta calma para um produto premium, com Onyx/Carbon, Lime e Teal,
+tipografia Inter/Onest/Geist Mono e o núcleo cognitivo da capa como assinatura discreta. Tese de
+interação: uma única ação por tela, feedback imediato e nenhuma animação que esconda estado.
 
-## Mensagem da área externa
+## Tela sem sessão
 
-Título: `Comece aqui`
+- eyebrow: `ACESSO DO COMPRADOR`;
+- título: `Acesse seu Segundo Cérebro.`;
+- texto: `Use o mesmo e-mail informado na compra. Você receberá um link individual para ativar este navegador.`;
+- label: `E-mail usado na compra`;
+- CTA: `Enviar meu link de acesso`;
+- apoio: `Ainda não comprou? Conheça o Segundo Cérebro Autônomo.`;
+- suporte: `Se o e-mail não chegar, confira o spam ou fale com contato@useinfuser.com.`
 
-Texto: `Abra o guia no computador em que você usa Claude ou Codex. Ele mostra o caminho certo para o seu sistema, entrega o arquivo e guarda seu progresso.`
+## Estados
 
-CTA: `Abrir guia de instalação`
+Link verificado tem CTA `Ativar este navegador`. Link expirado e reenvio não revelam se o e-mail
+existe. Indisponibilidade diz para tentar novamente, sem chamar o usuário de não comprador.
 
-Suporte: `Se alguma tela estiver diferente, tire um print e fale com o suporte antes de repetir o comando.`
+## QA
 
-## Acessibilidade e responsividade
-
-- navegação por teclado e foco visível;
-- contraste AA nos textos e botões;
-- `aria-live` para feedback;
-- mobile em 375 px sem overflow;
-- `prefers-reduced-motion` respeitado.
+Label real, autocomplete e-mail, alvo >=44 px, foco Teal, contraste AA, corpo 16 px no mobile,
+sem overflow em 375 px e reduced motion.

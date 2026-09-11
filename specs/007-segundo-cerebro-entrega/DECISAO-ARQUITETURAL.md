@@ -1,31 +1,33 @@
-# ADR: Hubla como porta e guia público no site Infuser
+# ADR: substituir guia público por ativação passwordless
 
 ## Status
 
 accepted
 
-## Contexto
+## Decisão anterior revisada
 
-O comprador precisa de acesso persistente e simples. Enviar ZIP por e-mail ou WhatsApp envelhece. Construir autenticação própria duplicaria a Hubla e aumentaria suporte. O arquivo baixado continua compartilhável mesmo com login.
+A versão 1 aceitou o compartilhamento por URL para reduzir tempo. Depois da publicação, Yan rejeitou
+essa premissa: o link permite baixar o produto sem compra. Este arquivo passa a conter a decisão vigente.
 
 ## Decisão
 
-A Hubla controla compra e reentrada na área externa. A oferta padrão usa R$147 como preço-base e R$97 como preço promocional automático. O pós-compra e a área externa apontam para `https://useinfuser.com/instalar`, que serve o guia público com o ZIP vigente.
+`useinfuser.com/instalar` permanece como URL, mas vira fachada same-origin do entitlement no MCP.
+Magic link de uso único cria cookie HttpOnly. O site consulta a sessão antes de servir HTML ou JS e
+o ZIP sai apenas por rota autenticada do MCP.
+
+## Por que
+
+Reaproveita o fluxo provado da A Legião, não cria senha e permite revogação. Proxy mantém o domínio e
+evita compartilhar segredo ou banco entre containers.
 
 ## Consequências
 
-- acesso inicial simples e reentrada pela Hubla;
-- atualização do guia sem trocar a URL;
-- sem backend ou segredo novo;
-- a URL e o ZIP podem ser compartilhados, risco aceito para esta primeira versão;
-- revogação externa exige uma fatia futura com webhook e token individual.
+- a instalação depende de e-mail e MCP antes do primeiro download;
+- CSS e imagens sanitizadas continuam públicos;
+- o ZIP baixado ainda pode ser copiado;
+- falha do MCP bloqueia conteúdo em vez de abrir fallback.
 
-## Rollback
+## Reversibilidade
 
-Desativar o produto; restaurar a tag anterior do site. Não há migration nem dado novo no site.
-
-## Reconsiderar quando
-
-- compartilhamento não autorizado gerar perda mensurável;
-- houver assinatura recorrente ou conteúdo revogável;
-- suporte exigir identificação do comprador no guia.
+Site e MCP têm releases independentes. Desligar o workflow evita novas concessões; restaurar o site
+anterior reabre o conteúdo e só deve ser usado em rollback de emergência conscientemente inseguro.

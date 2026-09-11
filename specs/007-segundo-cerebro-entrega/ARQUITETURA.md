@@ -1,36 +1,35 @@
-# Arquitetura: entrega do Segundo Cérebro Autônomo
+# Arquitetura: fachada Next e autoridade MCP
 
-## Contexto
+```text
+Browser -> useinfuser.com/instalar
+  -> Next chama MCP /second-brain/session com o cookie
+     -> 204: lê private/instalar/index.html
+     -> 401: renderiza tela de acesso
+     -> 5xx/timeout: renderiza indisponibilidade
 
-```mermaid
-flowchart LR
-  C[Comprador] --> H[Checkout Hubla]
-  H --> M[Área de Membros]
-  M --> G[useinfuser.com/instalar]
-  G --> Z[ZIP do cérebro]
+Browser -> /instalar/activate|resend|download
+  -> Next proxy server-side -> MCP equivalente
+  -> Set-Cookie e redirects voltam no domínio useinfuser.com
 ```
 
-## Componentes
+## Responsabilidades
 
-| Componente | Responsabilidade | Falha segura |
+| Componente | Faz | Não faz |
 |---|---|---|
-| Hubla | pagamento, oferta e entrada na área externa | compra sem aprovação não libera o produto |
-| Route Handler `/instalar` | servir HTML estático | 500 visível, sem fallback para conteúdo antigo |
-| `public/instalar` | CSS, JS, fontes, imagens e ZIP | build falha se ativo faltar |
-| VPS/Caddy | TLS e publicação | container anterior permanece no rollback |
+| Site | UX, proxy, arquivo privado do wizard | decidir se a compra está ativa |
+| MCP | entitlement, sessão, reenvio e ZIP | renderizar o wizard principal |
+| Hubla/n8n | fatos comerciais e comandos | servir conteúdo |
 
-## Segurança
+## Falha segura
 
-- nenhum segredo entra no cliente;
-- o guia é público e deliberadamente não autenticado;
-- PII dos prints permanece borrada no bitmap;
-- Hubla controla a compra e a reentrada no link externo, não o arquivo já baixado;
-- links externos são fixos e revisados.
+- MCP não responde: 503 amigável, sem wizard;
+- cookie inválido/revogado: tela neutra de acesso;
+- download negado: 401/404 sem revelar compra;
+- resposta inesperada: site descarta corpo e mostra erro próprio.
 
 ## Fitness functions
 
-- `npm run build` lista `/instalar`;
-- todos os ativos referenciados respondem 200;
-- ZIP servido tem o mesmo SHA256 do build do produto;
-- apex e www passam o smoke;
-- rota mobile não gera overflow.
+- `rg` não encontra ZIP, index ou JS sensível sob `public`;
+- todos os handlers usam o helper único de proxy;
+- `Set-Cookie`, `Location`, tipo e corpo binário são preservados de forma allowlisted;
+- smoke prova 200 da tela pública e 404 dos caminhos antigos.

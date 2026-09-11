@@ -1,32 +1,20 @@
-# Contratos e integrações: entrega do Segundo Cérebro Autônomo
+# Contratos consumidos pelo site
 
-## Fronteiras
+O contrato canônico está no pacote `second-brain-access/v1` do MCP.
 
-| Origem | Destino | Contrato |
+| Rota pública | Upstream MCP | Regras |
 |---|---|---|
-| Hubla pós-compra | Página e área externa | compra aprovada direciona para `/instalar` |
-| Módulo “Comece aqui” | Site Infuser | link absoluto `https://useinfuser.com/instalar` |
-| `/instalar` | ativos públicos | caminhos absolutos sob `/instalar/` |
-| botão de download | ZIP | `Content-Type` de ZIP e nome `segundo-cerebro-autonomo.zip` |
+| `GET /instalar` | `GET /second-brain/session` | guia só após 204 |
+| `GET|POST /instalar/ativar` | `GET|POST /second-brain/activate` | query/body allowlisted, redirect reescrito |
+| `POST /instalar/reenviar` | `POST /second-brain/resend` | corpo limitado, resposta HTML neutra |
+| `GET /instalar/guide.js` | `GET /second-brain/session` | JS privado só após 204 |
+| `GET /instalar/download` | `GET /second-brain/download` | stream binário, sem cache |
 
-## Eventos
+O site nunca recebe o evento Hubla. Ele consome somente o estado resultante. Comando e evento não são
+misturados na fachada.
 
-Não há webhook customizado nesta fatia. Pagamento, acesso e reembolso permanecem sob o contrato nativo da Hubla. Se a Infuser exigir revogação do guia externo, nasce outra fatia event-driven com `invoice.payment_succeeded` e `invoice.refunded`.
+## Headers permitidos do upstream
 
-## Estado comercial
-
-```mermaid
-stateDiagram-v2
-  [*] --> aguardando_pagamento
-  aguardando_pagamento --> acesso_liberado: pagamento aprovado
-  acesso_liberado --> acesso_hubla_revogado: reembolso
-```
-
-## Erros
-
-| Código | Significado | Remediação |
-|---|---|---|
-| HTTP 404 | ativo ou rota ausente | abortar deploy |
-| HTTP 5xx | aplicação indisponível | rollback do container |
-| preço divergente | oferta errada | não ativar CTA e corrigir na Hubla |
-| área vazia | link externo ausente | não liberar oferta |
+`content-type`, `content-disposition`, `content-length`, `cache-control`, `set-cookie`, `location` e
+`retry-after`. Outros headers não atravessam por padrão. `Location` interno é convertido para o path
+equivalente sob `/instalar`.
