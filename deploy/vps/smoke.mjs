@@ -16,7 +16,6 @@ const publicPaths = [
   "/guia-ia-sem-bajulacao",
   "/guia-mapeamento-processos",
   "/guia-skill",
-  "/instalar",
   "/kit-jarvis",
   "/kit-segundo-cerebro",
   "/kit-skills",
@@ -46,10 +45,10 @@ const skillTreeAssets = [
 
 const instalarAssets = [
   "/instalar/guide.css?v=20260911-1",
-  "/instalar/guide.js?v=20260911-1",
   "/instalar/assets/brands/claude-icon.svg",
   "/instalar/assets/brands/codex-icon.png",
-  "/instalar/assets/downloads/segundo-cerebro-autonomo.zip",
+  "/instalar/assets/brands/infuser-v2-lockup.svg",
+  "/instalar/assets/brands/segundo-cerebro-autonomo-premium.webp",
 ];
 
 const checks = [];
@@ -95,6 +94,18 @@ for (const path of instalarAssets) {
   const result = await check(path, [200]);
   if (result.body.length < 100) throw new Error(`${path}: response body is unexpectedly small`);
 }
+
+const instalar = await check("/instalar", [200]);
+if (!instalar.body.includes("Acesse seu Segundo Cérebro")) {
+  throw new Error("/instalar: access gate is missing");
+}
+if (instalar.body.includes("Qual é o seu sistema?")) {
+  throw new Error("/instalar: private guide leaked without a session");
+}
+await check("/instalar/guide.js", [401]);
+await check("/instalar/download", [401]);
+await check("/instalar/index.html", [404]);
+await check("/instalar/assets/downloads/segundo-cerebro-autonomo.zip", [404]);
 
 const protectedDemo = await check("/demomarja", [401]);
 if (!protectedDemo.response.headers.get("www-authenticate")?.startsWith("Basic")) {

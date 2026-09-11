@@ -18,7 +18,7 @@ scope_lock:
     - src/lib/instalar/**
     - tests/instalar/**
     - deploy/vps/smoke.mjs
-    - Dockerfile
+    - deploy/vps/Dockerfile
     - .env.example
   architecture_delta:
     production_files:
@@ -26,7 +26,7 @@ scope_lock:
       - public/instalar/**
       - src/app/instalar/**
       - src/lib/instalar/**
-      - Dockerfile
+      - deploy/vps/Dockerfile
       - deploy/vps/smoke.mjs
     runtime_dependencies: []
     public_contracts:

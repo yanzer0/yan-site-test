@@ -174,7 +174,7 @@
       label: "Abrir o instalador",
       title: "Baixe e descompacte antes de abrir.",
       body: `<p><strong>Baixe o pacote pelo botão abaixo.</strong> Quando terminar, localize o arquivo <strong>segundo-cerebro-autonomo.zip</strong>, descompacte e abra a pasta resultante como projeto.</p><ul><li>No Claude, use a aba Code e selecione a pasta.</li><li>No Codex, crie um projeto com a pasta descompactada.</li></ul>`,
-      actions: [actionDownload("Baixar o Segundo Cérebro", "/instalar/assets/downloads/segundo-cerebro-autonomo.zip", "segundo-cerebro-autonomo.zip")],
+      actions: [actionDownload("Baixar o Segundo Cérebro", "/instalar/download", "segundo-cerebro-autonomo.zip")],
       callout: "No Codex, não anexe o ZIP ao chat. O fluxo validado é abrir a pasta descompactada como projeto.",
     }));
 
