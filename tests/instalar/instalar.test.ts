@@ -1,4 +1,5 @@
 import { existsSync, readFileSync, statSync } from "node:fs";
+import { createHash } from "node:crypto";
 import { join } from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
@@ -33,6 +34,7 @@ describe("fachada protegida do Segundo Cérebro", () => {
     expect(response.headers.get("content-security-policy")).toContain("form-action 'self'");
     expect(html).toContain("Acesse seu Segundo Cérebro");
     expect(html).toContain("E-mail usado na compra");
+    expect(html).toContain('src="/instalar/assets/brands/infuser-v2-lockup.svg"');
     expect(html).not.toContain("Qual é o seu sistema?");
     expect(html).not.toContain("Baixar o Segundo Cérebro");
   });
@@ -136,6 +138,16 @@ describe("fachada protegida do Segundo Cérebro", () => {
     expect(existsSync(join(privateDir, "index.html"))).toBe(true);
     expect(existsSync(join(privateDir, "guide.js"))).toBe(true);
     expect(statSync(join(publicDir, "assets/brands/segundo-cerebro-autonomo-premium.webp")).size).toBeGreaterThan(10_000);
+    const officialLogo = readFileSync(join(publicDir, "assets/brands/infuser-v2-lockup.svg"));
+    expect(createHash("sha256").update(officialLogo).digest("hex")).toBe(
+      "7602deefc3198000c11dffeb60a666c013e60542173bd000ba52a15a7ab6880a",
+    );
+    const wizard = readFileSync(join(privateDir, "index.html"), "utf-8");
+    const embeddedLogo = wizard.match(/data:image\/svg\+xml;base64,([A-Za-z0-9+/=]+)/)?.[1];
+    expect(embeddedLogo).toBeTruthy();
+    expect(createHash("sha256").update(Buffer.from(embeddedLogo!, "base64")).digest("hex")).toBe(
+      "7602deefc3198000c11dffeb60a666c013e60542173bd000ba52a15a7ab6880a",
+    );
     const script = readFileSync(join(privateDir, "guide.js"), "utf-8");
     expect(script).toContain('"/instalar/download"');
     expect(script).not.toContain("assets/downloads/segundo-cerebro-autonomo.zip");
