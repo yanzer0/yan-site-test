@@ -16,6 +16,7 @@ const publicPaths = [
   "/guia-ia-sem-bajulacao",
   "/guia-mapeamento-processos",
   "/guia-skill",
+  "/instalar",
   "/kit-jarvis",
   "/kit-segundo-cerebro",
   "/kit-skills",
@@ -41,6 +42,14 @@ const skillTreeAssets = [
   "/skilltree-standalone.css",
   "/skilltree-standalone.js",
   "/skilltree-assets/infuser-v2-icon-lime.svg",
+];
+
+const instalarAssets = [
+  "/instalar/guide.css?v=20260911-1",
+  "/instalar/guide.js?v=20260911-1",
+  "/instalar/assets/brands/claude-icon.svg",
+  "/instalar/assets/brands/codex-icon.png",
+  "/instalar/assets/downloads/segundo-cerebro-autonomo.zip",
 ];
 
 const checks = [];
@@ -78,6 +87,11 @@ for (const path of publicPaths) {
 }
 
 for (const path of skillTreeAssets) {
+  const result = await check(path, [200]);
+  if (result.body.length < 100) throw new Error(`${path}: response body is unexpectedly small`);
+}
+
+for (const path of instalarAssets) {
   const result = await check(path, [200]);
   if (result.body.length < 100) throw new Error(`${path}: response body is unexpectedly small`);
 }
