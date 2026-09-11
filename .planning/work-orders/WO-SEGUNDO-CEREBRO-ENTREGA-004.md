@@ -1,6 +1,6 @@
 ---
 work_order: WO-SEGUNDO-CEREBRO-ENTREGA-004
-status: active
+status: complete
 central_branch: codex/segundo-cerebro-entrega
 owner: Codex
 authorized_by: Yan
@@ -33,7 +33,7 @@ scope_lock:
     background_jobs: []
   acceptance_ids: [SC-01, SC-02, SC-03, SC-04, SC-05, SC-06, SC-07]
   stop_when: [SC-01, SC-02, SC-03, SC-04, SC-05, SC-06, SC-07]
-  passed_acceptance_ids: [SC-01, SC-02, SC-03, SC-04, SC-05, SC-06]
+  passed_acceptance_ids: [SC-01, SC-02, SC-03, SC-04, SC-05, SC-06, SC-07]
 ---
 
 # Entrega comercial do Segundo Cérebro Autônomo
