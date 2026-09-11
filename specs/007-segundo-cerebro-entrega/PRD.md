@@ -16,8 +16,8 @@ Comprador não técnico que precisa instalar no Windows, macOS ou Linux usando C
 | RF-02 | Servir o pacote | botão baixa ZIP válido e igual ao build aprovado |
 | RF-03 | Criar produto na Hubla | produto ativo com acesso vitalício e pagamento único |
 | RF-04 | Criar oferta padrão | checkout mostra R$147 |
-| RF-05 | Criar oferta promocional | link direto mostra R$97 sem digitar cupom |
-| RF-06 | Criar módulo “Comece aqui” | comprador encontra CTA para `/instalar` |
+| RF-05 | Aplicar preço promocional | checkout mostra R$147 e cobra R$97 sem cupom |
+| RF-06 | Configurar área externa | comprador é direcionado para `/instalar` |
 | RF-07 | Configurar pós-compra | pagamento aprovado leva à Área de Membros |
 | RF-08 | Preservar atualização | novo deploy mantém a mesma URL e troca guia e ZIP juntos |
 

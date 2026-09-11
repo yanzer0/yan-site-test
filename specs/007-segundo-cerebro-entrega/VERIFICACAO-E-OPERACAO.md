@@ -19,14 +19,14 @@
 - console sem erro;
 - `deploy/vps/smoke.mjs` no apex e www;
 - checkout padrão e promocional abertos em janela limpa;
-- compra de teste libera o módulo e o botão correto.
+- compra de teste abre a área externa correta.
 
 ## Runbook
 
 1. Confirmar SHA do ZIP e commit do site.
 2. Publicar o commit na VPS pelo script canônico.
 3. Rodar health e smoke nos dois hosts.
-4. Ativar produto e ofertas na Hubla.
+4. Ativar produto e oferta na Hubla.
 5. Executar compra de teste.
 6. Em falha do site, restaurar a tag anterior.
 7. Em falha comercial, desativar a oferta sem apagar evidência.

@@ -4,14 +4,14 @@
 
 | Etapa | O que o cliente vê | Ação |
 |---|---|---|
-| compra | checkout promocional de R$97 ou padrão de R$147 | pagar |
+| compra | checkout com âncora de R$147 e preço final de R$97 | pagar |
 | confirmação | acesso à Área de Membros | abrir produto |
-| módulo | “Comece aqui” com uma instrução | abrir guia |
+| área externa | mensagem curta de acesso | abrir guia |
 | guia | escolha de sistema e aplicativo | montar caminho |
 | pacote | botão destacado | baixar ZIP |
 | conclusão | confirmação visual | fazer primeira pergunta |
 
-## Conteúdo do módulo
+## Mensagem da área externa
 
 Título: `Comece aqui`
 

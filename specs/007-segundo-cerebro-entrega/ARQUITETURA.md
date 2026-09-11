@@ -14,7 +14,7 @@ flowchart LR
 
 | Componente | Responsabilidade | Falha segura |
 |---|---|---|
-| Hubla | pagamento, ofertas e acesso ao módulo | compra sem aprovação não libera módulo |
+| Hubla | pagamento, oferta e entrada na área externa | compra sem aprovação não libera o produto |
 | Route Handler `/instalar` | servir HTML estático | 500 visível, sem fallback para conteúdo antigo |
 | `public/instalar` | CSS, JS, fontes, imagens e ZIP | build falha se ativo faltar |
 | VPS/Caddy | TLS e publicação | container anterior permanece no rollback |
@@ -24,7 +24,7 @@ flowchart LR
 - nenhum segredo entra no cliente;
 - o guia é público e deliberadamente não autenticado;
 - PII dos prints permanece borrada no bitmap;
-- Hubla controla o acesso ao módulo, não ao arquivo já baixado;
+- Hubla controla a compra e a reentrada no link externo, não o arquivo já baixado;
 - links externos são fixos e revisados.
 
 ## Fitness functions

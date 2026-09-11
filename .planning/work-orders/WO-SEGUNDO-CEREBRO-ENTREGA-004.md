@@ -27,13 +27,13 @@ scope_lock:
     public_contracts:
       - GET https://useinfuser.com/instalar
       - GET https://useinfuser.com/instalar/assets/downloads/segundo-cerebro-autonomo.zip
-      - Hubla product Segundo Cérebro Autônomo with R$147 and R$97 offers
+      - Hubla product Segundo Cérebro Autônomo with R$147 base price and R$97 promotional price
     persistence_surfaces:
-      - Hubla product, offers and member-area module
+      - Hubla product, default offer and external member area
     background_jobs: []
   acceptance_ids: [SC-01, SC-02, SC-03, SC-04, SC-05, SC-06, SC-07]
   stop_when: [SC-01, SC-02, SC-03, SC-04, SC-05, SC-06, SC-07]
-  passed_acceptance_ids: [SC-01, SC-02, SC-03]
+  passed_acceptance_ids: [SC-01, SC-02, SC-03, SC-04, SC-05, SC-06]
 ---
 
 # Entrega comercial do Segundo Cérebro Autônomo
@@ -43,9 +43,9 @@ scope_lock:
 - SC-01: rota `/instalar` compila e responde 200.
 - SC-02: todos os ativos e o ZIP respondem 200.
 - SC-03: desktop e mobile passam sem overflow ou erro de console.
-- SC-04: produto Hubla existe com oferta padrão de R$147.
-- SC-05: oferta promocional direta cobra R$97 sem cupom.
-- SC-06: módulo “Comece aqui” aponta para a rota correta.
+- SC-04: produto Hubla existe e está vendendo com preço-base de R$147.
+- SC-05: a oferta padrão aplica preço promocional de R$97 sem cupom.
+- SC-06: a área de membros externa e o pós-compra apontam para a rota correta.
 - SC-07: produção, checkout e compra de teste passam com rollback conhecido.
 
 ## Evidências
@@ -56,3 +56,6 @@ scope_lock:
 - Gate conhecido do repositório: `npm run lint` acusa dois erros preexistentes em `scripts/club/build-club-html.js`, fora do escopo desta work order. O build completo passou.
 - Suíte completa: 401 testes passaram; 5 testes e 1 suíte preexistentes falharam fora do escopo, em autenticação do painel, contrato com o brain e parser de ambiente. Os 4 testes de `/instalar` passaram.
 - Dependências: nenhuma dependência foi adicionada. `npm audit --omit=dev` aponta vulnerabilidades herdadas do PostCSS interno ao Next 15.5.25; a correção automática exige migração incompatível para Next 16. A rota nova não processa CSS ou entrada enviada pelo usuário.
+- SC-04: produto Hubla `Zzmx3tF66nGCPSxGXIHX` ativado como “Vendendo”; oferta padrão `rzNrSe1kZncGyrrWdIWC`.
+- SC-05: checkout `https://pay.hub.la/rzNrSe1kZncGyrrWdIWC` verificado com “De: R$147,00” e “Por: R$97,00”; campo de cupom oculto.
+- SC-06: área de membros externa e redirecionamento pós-compra configurados para `https://useinfuser.com/instalar`.

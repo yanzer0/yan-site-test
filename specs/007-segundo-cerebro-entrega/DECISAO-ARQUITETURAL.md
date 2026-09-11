@@ -10,7 +10,7 @@ O comprador precisa de acesso persistente e simples. Enviar ZIP por e-mail ou Wh
 
 ## Decisão
 
-A Hubla controla compra e acesso ao módulo. O módulo aponta para `https://useinfuser.com/instalar`, que serve um guia público com o ZIP vigente. O CTA promocional usa uma oferta direta de R$97; a oferta padrão de R$147 permanece como âncora e alternativa standalone.
+A Hubla controla compra e reentrada na área externa. A oferta padrão usa R$147 como preço-base e R$97 como preço promocional automático. O pós-compra e a área externa apontam para `https://useinfuser.com/instalar`, que serve o guia público com o ZIP vigente.
 
 ## Consequências
 
@@ -22,7 +22,7 @@ A Hubla controla compra e acesso ao módulo. O módulo aponta para `https://usei
 
 ## Rollback
 
-Desativar as ofertas e o módulo; restaurar a tag anterior do site. Não há migration nem dado novo no site.
+Desativar o produto; restaurar a tag anterior do site. Não há migration nem dado novo no site.
 
 ## Reconsiderar quando
 

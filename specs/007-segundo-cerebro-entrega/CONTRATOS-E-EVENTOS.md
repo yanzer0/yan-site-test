@@ -4,7 +4,7 @@
 
 | Origem | Destino | Contrato |
 |---|---|---|
-| Hubla pós-compra | Área de Membros | compra aprovada concede acesso nativo |
+| Hubla pós-compra | Página e área externa | compra aprovada direciona para `/instalar` |
 | Módulo “Comece aqui” | Site Infuser | link absoluto `https://useinfuser.com/instalar` |
 | `/instalar` | ativos públicos | caminhos absolutos sob `/instalar/` |
 | botão de download | ZIP | `Content-Type` de ZIP e nome `segundo-cerebro-autonomo.zip` |
@@ -29,4 +29,4 @@ stateDiagram-v2
 | HTTP 404 | ativo ou rota ausente | abortar deploy |
 | HTTP 5xx | aplicação indisponível | rollback do container |
 | preço divergente | oferta errada | não ativar CTA e corrigir na Hubla |
-| área vazia | módulo não publicado | não liberar oferta |
+| área vazia | link externo ausente | não liberar oferta |

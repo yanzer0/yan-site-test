@@ -20,9 +20,9 @@ flowchart LR
 |---|---|---|---:|---|---|---|
 | W0 | contrato pronto | nenhum | 0 | `specs/007-*` | EDP ready | apagar pacote antes do build |
 | W1A | rota e ativos locais | W0 | 1 | `public/instalar`, `src/app/instalar`, testes | build + browser | remover rota e ativos |
-| W1B | produto, ofertas e módulo preparados | W0 | 1 | Hubla | revisão antes de ativar | manter inativo ou arquivar rascunho |
+| W1B | produto, oferta e área externa preparados | W0 | 1 | Hubla | revisão antes de ativar | manter inativo ou arquivar rascunho |
 | W2 | QA ponta a ponta sem venda | W1A, W1B | 2 | site local + preview Hubla | preço, links, ZIP, mobile | voltar às versões anteriores |
-| W3 | site e produto publicados | W2 + confirmação Yan | 3 | VPS + Hubla | smoke externo | tag anterior + desativar oferta |
+| W3 | site e produto publicados | W2 + confirmação Yan | 3 | VPS + Hubla | smoke externo | tag anterior + desativar produto |
 | W4 | compra de teste | W3 | 4 | checkout real | acesso e download | reembolso da compra de teste |
 
 ## Serializações
