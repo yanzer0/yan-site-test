@@ -75,7 +75,11 @@ function ZoomableImage({ src, alt, width, height, className, containerClassName,
   );
 }
 
-const CHECKOUT_URL = "https://pay.hub.la/6VBtmQtyBG5lFjn12AFO";
+// Checkouts da Hubla (decisao 12-14/09/2026). O Basico NAO aparece em botao nenhum
+// da pagina: so dentro do pop-up de upgrade, no link "Nao, quero so o Basico".
+const CHECKOUT_BASICO_URL = "https://pay.hub.la/6VBtmQtyBG5lFjn12AFO";
+const CHECKOUT_PREMIUM_URL = "https://pay.hub.la/rzNrSe1kZncGyrrWdIWC";
+const CHECKOUT_PREMIUM_POPUP_URL = "https://pay.hub.la/tRcpJwMnzOWXZumXN51B";
 
 const FINAL_CTA_ID = "cta-comprar-final";
 
@@ -985,9 +989,113 @@ function SupportSection() {
   );
 }
 
-/* ─── Section 11: Preço + CTA ─── */
+/* ─── Section 11: Preço + CTA (dois planos + pop-up de upgrade) ─── */
+const PREMIUM_ITENS = [
+  "Tudo do Básico",
+  "Harness de auto-consistência: índice, estado e pendências se regeneram a cada sessão",
+  "Pendências com gatilho: aparecem sozinhas quando o assunto surge na conversa",
+  "Memória de aprendizados que volta por assunto, sem repetir",
+  "Funciona no Claude Code e no Codex, com o mesmo cérebro",
+  "Instalador guiado, sem terminal: o próprio Claude instala",
+];
+
+const BASICO_ITENS = [
+  "CLAUDE.md profissional, a alma do cérebro",
+  "8 slash commands prontos",
+  "4 prompts de setup e 9 templates de conhecimento",
+  "Guias de instalação e personalização",
+  "Suporte infinito via IA",
+];
+
+function Check() {
+  return <span className="text-green-400 mr-2">&#10003;</span>;
+}
+
+/* Pop-up: aparece ao clicar no Basico. Oferece o Premium por R$97 antes do checkout de R$67. */
+function UpsellModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const primaryRef = useRef<HTMLAnchorElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    primaryRef.current?.focus();
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape") onClose();
+    }
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = prev;
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [open, onClose]);
+
+  if (!open) return null;
+
+  return (
+    <div
+      className="fixed inset-0 z-[200] flex items-center justify-center p-5 bg-black/80 backdrop-blur-sm"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="upsell-titulo"
+      onClick={onClose}
+    >
+      <div
+        className="relative w-full max-w-[420px] rounded-2xl border-2 border-green-500/45 bg-[#0a0a0a] px-6 pt-8 pb-6 text-center shadow-[0_0_60px_rgba(168,232,76,0.15)]"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Fechar"
+          className="absolute top-3 right-3 flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors cursor-pointer"
+        >
+          <X className="h-4 w-4" />
+        </button>
+
+        <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-green-400 mb-2">Antes de fechar o Básico</div>
+        <h3 id="upsell-titulo" className="font-heading text-[23px] font-extrabold leading-[1.15] tracking-tight mb-1.5">
+          Leva o Premium, só agora.
+        </h3>
+        <p className="text-[13.5px] leading-relaxed text-zinc-400 mb-3.5">
+          O mesmo cérebro, só que ele se mantém e aprende sozinho.
+        </p>
+
+        <div className="flex items-baseline justify-center gap-2.5">
+          <span className="font-mono text-[15px] text-zinc-500 line-through">R$127</span>
+          <span className="font-punch text-[46px] font-extrabold leading-none tracking-tight text-gradient-green">R$97</span>
+        </div>
+        <div className="font-mono text-[11px] text-green-400 mb-3.5">R$30 de desconto &middot; pagamento único</div>
+
+        <ul className="mb-4 flex flex-col gap-[7px] text-left text-[13px] leading-snug text-zinc-200">
+          <li><Check />Tudo do Básico</li>
+          <li><Check />Índice, estado e pendências se mantêm sozinhos</li>
+          <li><Check />Pendências aparecem no gatilho certo</li>
+          <li><Check />Claude Code e Codex, instala sem terminal</li>
+        </ul>
+
+        <a
+          ref={primaryRef}
+          href={CHECKOUT_PREMIUM_POPUP_URL}
+          className="group flex w-full items-center justify-center gap-2 rounded-xl bg-green-500 px-5 py-3.5 text-base font-extrabold tracking-tight text-black shadow-[0_0_25px_rgba(168,232,76,0.2)] transition-all duration-200 hover:bg-green-400 hover:-translate-y-0.5 hover:shadow-[0_0_45px_rgba(168,232,76,0.4)]"
+        >
+          Quero o Premium <span className="transition-transform duration-200 group-hover:translate-x-1">&rarr;</span>
+        </a>
+        <a
+          href={CHECKOUT_BASICO_URL}
+          className="mt-3 block font-mono text-[11px] text-zinc-500 underline underline-offset-4 hover:text-zinc-200 transition-colors"
+        >
+          Não, quero só o Básico por R$67
+        </a>
+      </div>
+    </div>
+  );
+}
+
 function PricingSection() {
   const ref = useScrollReveal();
+  const [upsellOpen, setUpsellOpen] = useState(false);
+
   return (
     <>
     <div className="section-divider" />
@@ -1008,28 +1116,55 @@ function PricingSection() {
           </p>
         </div>
 
-        {/* Price box */}
-        <div className="mx-auto max-w-sm rounded-lg border-2 border-green-500/40 bg-green-500/[0.06] p-8 mb-6">
-          <div className="font-mono text-lg text-zinc-500 line-through mb-1">R$127</div>
-          <div className="font-punch text-5xl sm:text-6xl font-extrabold text-gradient-green mb-2">R$67</div>
-          <p className="text-sm text-green-300/70 mb-6">
-            Pagamento único. Sem assinatura. Sem renovação.
-          </p>
-          <a
-            href={CHECKOUT_URL}
-            className="group block w-full rounded-lg bg-green-500 px-8 py-4 text-lg font-bold text-black transition-all duration-200 hover:bg-green-400 hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(168,232,76,0.3)] cursor-pointer"
-          >
-            Quero o Kit Segundo Cérebro <span className="transition-transform duration-200 group-hover:translate-x-1 inline-block">&rarr;</span>
-          </a>
-          <p className="font-mono text-[11px] text-zinc-500 mt-4">
-            Pagamento seguro via Hubla &middot; Entrega instantânea &middot; Acesso imediato
-          </p>
-        </div>
+        {/* Dois planos */}
+        <div className="mx-auto mb-6 grid max-w-[880px] grid-cols-1 gap-[22px] md:grid-cols-2 md:items-stretch">
+          {/* Básico */}
+          <div className="relative flex h-full flex-col rounded-[0.9rem] border border-white/15 bg-white/[0.02] px-7 py-[34px]">
+            <div className="font-mono text-[11px] uppercase tracking-[0.24em] text-zinc-500 mb-3.5">Básico</div>
+            <div className="font-punch text-[52px] font-extrabold leading-none tracking-tight mb-2.5">R$67</div>
+            <p className="text-sm leading-relaxed text-zinc-400 mb-1.5">Tudo que o kit entrega hoje. Você baixa, personaliza e usa.</p>
+            <div className="mx-auto my-5 h-px w-[46px] bg-white/15" />
+            <ul className="mb-7 flex flex-col gap-3 text-sm leading-snug text-zinc-200">
+              {BASICO_ITENS.map((item) => (
+                <li key={item}><Check />{item}</li>
+              ))}
+            </ul>
+            <button
+              type="button"
+              onClick={() => setUpsellOpen(true)}
+              className="group mt-auto flex w-full items-center justify-center gap-2 rounded-[0.8rem] border-2 border-green-500/40 px-6 py-[1.1rem] text-[1.1rem] font-extrabold tracking-tight text-green-300 transition-all duration-200 hover:border-green-500/80 hover:bg-green-500/10 hover:-translate-y-0.5 cursor-pointer"
+            >
+              Quero o Básico <span className="transition-transform duration-200 group-hover:translate-x-1">&rarr;</span>
+            </button>
+            <p className="font-mono text-[11px] text-zinc-500 mt-3.5">Pagamento único &middot; Sem assinatura</p>
+          </div>
 
-        <p className="font-mono text-[12px] text-zinc-600 leading-relaxed">
-          CLAUDE.md profissional &middot; 8 slash commands &middot; 4 prompts de setup &middot; 9 templates &middot; Guias completos &middot; Suporte via IA incluso
-        </p>
+          {/* Premium */}
+          <div className="relative flex h-full flex-col rounded-[0.9rem] border-2 border-green-500/40 bg-green-500/[0.06] px-7 py-[34px]">
+            <div className="absolute -top-[13px] left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-green-500 px-[13px] py-[5px] font-mono text-[10px] font-bold uppercase tracking-[0.16em] text-black">
+              Mais inteligente
+            </div>
+            <div className="font-mono text-[11px] uppercase tracking-[0.24em] text-green-300/80 mb-3.5">Premium</div>
+            <div className="font-punch text-[52px] font-extrabold leading-none tracking-tight text-gradient-green mb-2.5">R$127</div>
+            <p className="text-sm leading-relaxed text-zinc-400 mb-1.5">O mesmo cérebro, só que ele se mantém e aprende sozinho, e gasta token só com o que o assunto pede.</p>
+            <div className="mx-auto my-5 h-px w-[46px] bg-white/15" />
+            <ul className="mb-7 flex flex-col gap-3 text-sm leading-snug text-zinc-200">
+              {PREMIUM_ITENS.map((item) => (
+                <li key={item}><Check />{item}</li>
+              ))}
+            </ul>
+            <a
+              href={CHECKOUT_PREMIUM_URL}
+              className="group mt-auto flex w-full items-center justify-center gap-2 rounded-[0.8rem] bg-green-500 px-6 py-[1.1rem] text-[1.1rem] font-extrabold tracking-tight text-black shadow-[0_0_25px_rgba(168,232,76,0.18)] transition-all duration-200 hover:bg-green-400 hover:-translate-y-0.5 hover:shadow-[0_0_45px_rgba(168,232,76,0.4)]"
+            >
+              Quero o Premium <span className="transition-transform duration-200 group-hover:translate-x-1">&rarr;</span>
+            </a>
+            <p className="font-mono text-[11px] text-zinc-500 mt-3.5">Pagamento único &middot; Sem assinatura</p>
+          </div>
+        </div>
       </div>
+
+      <UpsellModal open={upsellOpen} onClose={() => setUpsellOpen(false)} />
     </section>
     </>
   );
@@ -1062,13 +1197,13 @@ function FinalPushSection() {
         <div className="mt-10 text-center">
           <a
             id={FINAL_CTA_ID}
-            href={CHECKOUT_URL}
+            href="#comprar"
             className="group inline-flex items-center gap-2 rounded-lg bg-green-500 px-10 py-4 text-base font-bold text-black transition-all duration-200 hover:bg-green-400 hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(168,232,76,0.3)] cursor-pointer green-glow"
           >
-            Montar meu Segundo Cérebro — R$67 <span className="transition-transform duration-200 group-hover:translate-x-1">&rarr;</span>
+            Escolher meu plano <span className="transition-transform duration-200 group-hover:translate-x-1">&rarr;</span>
           </a>
           <p className="mt-4 font-mono text-[12px] text-green-300/70">
-            Pagamento único. Acesso vitalício. Atualizações incluídas.
+            Pagamento único nos dois planos. Acesso vitalício.
           </p>
         </div>
       </div>
