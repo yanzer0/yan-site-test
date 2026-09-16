@@ -142,16 +142,23 @@ describe("validacao da submissao", () => {
     if (!r.ok) expect(r.erro).toBe("email_invalido");
   });
 
-  it("exige whatsapp de empresa, mas nao de uso pessoal", () => {
+  it("exige whatsapp tanto de empresa quanto de uso pessoal", () => {
     const empresa = validarSubmissao(respostasEmpresa, "ig", true, { ...contatoValido, whatsapp: "" });
     expect(empresa.ok).toBe(false);
 
-    const pessoal = validarSubmissao({ [P.TIPO_USO]: "pessoal" }, "ig", true, {
+    const pessoalSemWhatsapp = validarSubmissao({ [P.TIPO_USO]: "pessoal" }, "ig", true, {
       nome: "Ana",
       email: "ana@gmail.com",
     });
-    expect(pessoal.ok).toBe(true);
-    if (pessoal.ok) expect(pessoal.dados.tipo).toBe("pessoal");
+    expect(pessoalSemWhatsapp.ok).toBe(false);
+
+    const pessoalComWhatsapp = validarSubmissao({ [P.TIPO_USO]: "pessoal" }, "ig", true, {
+      nome: "Ana",
+      email: "ana@gmail.com",
+      whatsapp: "11988887777",
+    });
+    expect(pessoalComWhatsapp.ok).toBe(true);
+    if (pessoalComWhatsapp.ok) expect(pessoalComWhatsapp.dados.tipo).toBe("pessoal");
   });
 
   it("uso pessoal nao carrega dados de empresa", () => {

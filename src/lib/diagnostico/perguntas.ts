@@ -27,7 +27,7 @@ import type { Pergunta, Trilha } from "./tipos";
  * Sem ela, resposta antiga fica órfã de significado quando a copy muda.
  * Subir sempre que uma pergunta for adicionada, removida ou tiver opção alterada.
  */
-export const VERSAO_PERGUNTAS = "2026-08-30.2";
+export const VERSAO_PERGUNTAS = "2026-09-16.1";
 
 /** Identificadores estáveis. Reescrever a copy de uma pergunta não pode invalidar histórico. */
 export const P = {
@@ -353,8 +353,8 @@ export const PERGUNTAS: readonly Pergunta[] = [
     id: P.EMAIL_PESSOAL,
     ordem: 5,
     trilha: "pessoal",
-    tipo: "texto_curto",
-    enunciado: "Qual o seu e-mail?",
+    tipo: "contato",
+    enunciado: "Onde eu te chamo?",
     obrigatoria: true,
   },
 ];

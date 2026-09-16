@@ -99,7 +99,7 @@ export function validarSubmissao(
   const ehPessoal = respostas[P.TIPO_USO] === RESPOSTA_USO_PESSOAL;
 
   const whatsappBruto = texto(typeof contato.whatsapp === "string" ? contato.whatsapp : "");
-  if (!ehPessoal && !pareceWhatsapp(whatsappBruto)) {
+  if (!pareceWhatsapp(whatsappBruto)) {
     return { ok: false, erro: "whatsapp_invalido" };
   }
 

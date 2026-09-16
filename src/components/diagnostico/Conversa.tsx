@@ -129,7 +129,9 @@ export function Conversa({ urlCal, urlMapa, urlPolitica, children }: ConversaPro
 
       if (pergunta.id === P.NOME) return extras.nome.trim().length >= 2;
       if (pergunta.id === P.EMPRESA) return extras.empresaNome.trim().length > 0 && extras.empresaPapel.length > 0;
-      if (pergunta.id === P.EMAIL_PESSOAL) return extras.email.trim().length > 0;
+      if (pergunta.id === P.EMAIL_PESSOAL) {
+        return extras.whatsapp.trim().length > 0 && extras.email.trim().length > 0;
+      }
       if (pergunta.id === P.CONTATO) {
         return extras.whatsapp.trim().length > 0 && extras.email.trim().length > 0 && extras.origem.length > 0;
       }
@@ -327,14 +329,29 @@ export function Conversa({ urlCal, urlMapa, urlPolitica, children }: ConversaPro
 
     if (atual!.id === P.EMAIL_PESSOAL) {
       return (
-        <input
-          className="dg-input"
-          type="email"
-          inputMode="email"
-          value={extras.email}
-          onChange={(e) => setExtras({ ...extras, email: e.target.value })}
-          autoFocus
-        />
+        <>
+          <div className="dg-campo">
+            <span className="dg-rotulo">WhatsApp com DDD</span>
+            <input
+              className="dg-input"
+              type="tel"
+              inputMode="tel"
+              value={extras.whatsapp}
+              onChange={(e) => setExtras({ ...extras, whatsapp: e.target.value })}
+              autoFocus
+            />
+          </div>
+          <div className="dg-campo">
+            <span className="dg-rotulo">E-mail</span>
+            <input
+              className="dg-input"
+              type="email"
+              inputMode="email"
+              value={extras.email}
+              onChange={(e) => setExtras({ ...extras, email: e.target.value })}
+            />
+          </div>
+        </>
       );
     }
 
