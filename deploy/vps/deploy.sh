@@ -4,6 +4,7 @@ set -euo pipefail
 repo_dir="${1:-/home/infuser/useinfuser-site}"
 env_file="${USEINFUSER_ENV_FILE:-/home/infuser/.config/useinfuser/useinfuser.env}"
 compose_file="$repo_dir/deploy/vps/compose.prod.yml"
+KEEP_IMAGES="${KEEP_IMAGES:-3}"
 
 cd "$repo_dir"
 
@@ -31,6 +32,10 @@ for attempt in $(seq 1 20); do
   if [[ "$health" == "healthy" ]]; then
     docker exec useinfuser-site node /app/smoke.mjs http://127.0.0.1:3000 "$release"
     echo "useinfuser-site release $release is healthy"
+    # Poda de imagens antigas (disco da VPS). A em uso nunca sai: `docker rmi` recusa, e o `|| true` segura.
+    docker image ls useinfuser-site --format '{{.Tag}} {{.CreatedAt}}' \
+      | sort -k2 -r | tail -n "+$((KEEP_IMAGES + 1))" | awk '{print $1}' \
+      | xargs -r -I{} sh -c 'docker rmi "useinfuser-site:{}" >/dev/null 2>&1 || true'
     exit 0
   fi
   if [[ "$health" == "unhealthy" ]]; then
