@@ -23,7 +23,7 @@ scope_lock:
       - servico-roteiro (VPS, supervisor por cron): intervalo entre rodadas vazias sobe de 60s para 360s
   acceptance_ids: [RPL-S01]
   stop_when: [RPL-S01]
-  passed_acceptance_ids: []
+  passed_acceptance_ids: [RPL-S01]
 ---
 
 # Poll do roteiro acima do scale-to-zero do Neon
