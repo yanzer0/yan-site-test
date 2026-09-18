@@ -23,7 +23,7 @@ scope_lock:
       - servico-roteiro (VPS, supervisor por cron): intervalo entre rodadas vazias sobe de 6 para 30 minutos
   acceptance_ids: [RPL-S02]
   stop_when: [RPL-S02]
-  passed_acceptance_ids: []
+  passed_acceptance_ids: [RPL-S02]
 ---
 
 # Poll do roteiro a 30 minutos: fração ativa do Neon, não só o limiar
