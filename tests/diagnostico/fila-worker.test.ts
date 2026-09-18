@@ -22,9 +22,12 @@ describe("the script worker queue cadence", () => {
     expect(queueRoute).not.toMatch(/while \(fila\.length === 0/);
   });
 
-  it("polls quickly and waits locally between successful rounds", () => {
+  it("waits locally between empty rounds, longer than Neon's five-minute scale-to-zero", () => {
     expect(worker).not.toContain("?esperar=");
-    expect(worker).toContain("const PAUSA_ENTRE_CONSULTAS_MS = 60_000");
+    const pausa = worker.match(/const PAUSA_ENTRE_CONSULTAS_MS = (\d[\d_]*);/);
+    expect(pausa).not.toBeNull();
+    const NEON_SCALE_TO_ZERO_MS = 5 * 60_000;
+    expect(Number(pausa![1].replaceAll("_", ""))).toBeGreaterThan(NEON_SCALE_TO_ZERO_MS);
     expect(worker).toContain(
       "await dormir(pausar ? PAUSA_APOS_ERRO_MS : PAUSA_ENTRE_CONSULTAS_MS)",
     );

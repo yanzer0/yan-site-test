@@ -39,7 +39,8 @@ const BASE = process.env.ROTEIRO_BASE_URL ?? "https://www.useinfuser.com";
 const SEGREDO = process.env.ROTEIRO_WORKER_SECRET;
 
 /** Successful empty rounds wait locally instead of reserving remote compute. */
-const PAUSA_ENTRE_CONSULTAS_MS = 60_000;
+// Acima dos 5 min de scale-to-zero do Neon: com 60s o banco nunca dormia (101 CU-h em 18 dias, 18/09).
+const PAUSA_ENTRE_CONSULTAS_MS = 360_000;
 /** Teto do gerador. Sem isto, um modelo travado pendura o serviço para sempre. */
 const TIMEOUT_MODELO_MS = 20 * 60_000;
 /** Pausa depois de erro de rede, para não martelar a API num apagão. */
