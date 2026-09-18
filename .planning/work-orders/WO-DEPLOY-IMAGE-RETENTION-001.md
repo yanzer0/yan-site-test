@@ -20,7 +20,7 @@ scope_lock:
     background_jobs: []
   acceptance_ids: [DIR-S01]
   stop_when: [DIR-S01]
-  passed_acceptance_ids: []
+  passed_acceptance_ids: [DIR-S01]
 ---
 
 # Poda automática de imagens antigas no deploy do useinfuser-site
