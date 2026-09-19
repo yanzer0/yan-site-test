@@ -64,6 +64,53 @@ de dados), publicar porta, ligar o banco em `useinfuser-net` ou em qualquer rede
 rodar `psql` com senha em linha de comando. Dump e restore são por `docker exec` como `postgres`,
 e o artefato vai para `~/backups/formulario/` (700), nunca para log, chat ou git.
 
+## Backup e drill do `formulario-db`
+
+Todo dia às 03:15 (entre o backup principal das 03:00 e o do MCP das 03:30) o cron roda
+`deploy/vps/formulario-db/backup.sh /home/infuser/backups/formulario`. Falha alta dispara
+`ops-alert.sh "backup-formulario" "critico"`, e a saída vai para
+`~/logs/backup-formulario.log`.
+
+Cada execução deixa três arquivos com o mesmo prefixo `formulario-<utc>-<release>` em
+`~/backups/formulario/` (diretório 700, arquivos 600): o dump `-Fc` cifrado (`.dump.age`), o
+`sha256` do dump em claro (`.sha256`) e o resumo de contagens `tabela,linhas` mais o `last_value`
+de cada sequência (`.resumo`). O dump em claro nunca sobrevive ao script, nem em falha: ele tem
+e-mail e WhatsApp. Retenção de 14 dias.
+
+O drill roda dentro do backup, antes de cifrar, e é o que impede backup verde que não restaura:
+`restore-drill.sh` sobe um `postgres` descartável sem rede, cria a mesma role, banco e extensão
+que o init cria, restaura com `--exit-on-error` e compara as contagens com o `.resumo`. Container
+e volume somem em qualquer saída. Um byte trocado no dump derruba o drill no `sha256sum -c`.
+
+Dois detalhes do `pg_restore` que são obrigatórios e foram medidos: `--no-comments`, porque
+`COMMENT ON EXTENSION pgcrypto` falha sob `--role=formulario` (a role não é dona da extensão), e
+`--no-acl`, porque o dump vindo do Neon carrega `GRANT` para `cloud_admin` e `neon_superuser`,
+roles que não existem fora de lá. Com `--no-owner --role=formulario`, quem manda no acesso é a
+propriedade, não a ACL de origem.
+
+**A chave privada `age` não está nesta VPS.** Só a recipient pública está, em
+`~/.config/age/recipients.txt`. A privada mora no gerenciador de senhas, protegida por
+passphrase, do mesmo jeito que o backup principal (ver o runbook em `/opt/infuser-brew/kb/`).
+Consequência honesta: enquanto o `.age` continuar sem par de chave aqui, perder a VPS inteira
+significa depender do gerenciador de senhas, e é por isso que o drill diário roda no dump em
+claro em vez de no cifrado. Para restaurar de verdade a partir de um `.age`, traga a chave e
+rode:
+
+```bash
+AGE_IDENTITY=/caminho/da/chave.txt deploy/vps/formulario-db/restore-drill.sh   ~/backups/formulario/formulario-<utc>-<release>.dump.age
+```
+
+`contar-tabelas.sh` recebe o comando `psql` como argumentos justamente para que uma URL de
+conexão fique na variável de ambiente e nunca apareça em `ps` nem no histórico:
+
+```bash
+deploy/vps/formulario-db/contar-tabelas.sh docker exec formulario-db psql -U postgres -d formulario
+```
+
+O que **não** fazer: restaurar qualquer drill dentro do `formulario-db` de produção, apagar
+`.dump.age` à mão (a retenção é do script), guardar dump em claro fora do script, e colar
+contagem junto com qualquer coluna de dado.
+
 ## Instalação da borda
 
 1. Criar `useinfuser-net` pelo Compose do site.
