@@ -24,6 +24,7 @@ scope_lock:
     - AC-00
     - AC-01
   passed_acceptance_ids:
+    - AC-00
     - AC-01
 ---
 
@@ -55,4 +56,24 @@ nesta ordem. F1 a F7 saem em ordens próprias, cada uma com branch, worktree e S
 - AC-01: inventário executado em 19/09/2026 às 09:19 UTC contra `POSTGRES_URL_NON_POOLING` do Neon com
   queries em `information_schema`, `pg_indexes`, `pg_constraint`, `pg_roles` e `count(*)`; nenhum
   `SELECT` de coluna de dado. Resultado em `specs/008-formulario-db-postgres-vps/INVENTARIO-F0.md`.
-- AC-00: pendente da saída do checker (registrada no closeout).
+- AC-00: checker executado em 19/09/2026 com os 12 arquivos staged, nos dois modos:
+
+```text
+$ node scripts/check-scope-lock.js --repo <worktree> --mode enforce --staged
+Scope Lock PASS (enforce)
+branch: claude/formulario-db
+work_orders_ativas: WO-FORMULARIO-DB-001
+arquivos_avaliados: 12
+WARN SLW03 x4: work orders ativas de outras branches ignoradas aqui (esperado)
+exit 0
+```
+
+  Mesma saída sem `--staged`. Os quatro avisos são as ordens ativas de outras frentes
+  (`deploy-image-retention`, `roteiro-poll-30min`, `roteiro-poll-6min`, `segundo-cerebro-auth`);
+  nenhuma reivindica `specs/008` nem esta ordem.
+
+## Closeout
+
+`stop_when` completo (AC-00 e AC-01). Esta ordem não autoriza mais escrita alguma. F1 e F2 nascem
+em `WO-FORMULARIO-DB-002` e `-003`, com o Scope Lock pré-declarado em
+`specs/008-formulario-db-postgres-vps/PLANO-DE-IMPLEMENTACAO.md` §4, quando o Yan der o go.
