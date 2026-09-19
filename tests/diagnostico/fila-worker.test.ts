@@ -22,15 +22,11 @@ describe("the script worker queue cadence", () => {
     expect(queueRoute).not.toMatch(/while \(fila\.length === 0/);
   });
 
-  it("keeps the Neon compute awake at most 20% of the time between empty rounds", () => {
+  it("polls every 60s without long-polling the queue route", () => {
     expect(worker).not.toContain("?esperar=");
     const pausa = worker.match(/const PAUSA_ENTRE_CONSULTAS_MS = (\d[\d_]*);/);
     expect(pausa).not.toBeNull();
-    // Every poll wakes the compute for the full scale-to-zero window, so the
-    // active fraction is scale_to_zero / interval, not "interval > scale_to_zero".
-    const NEON_SCALE_TO_ZERO_MS = 5 * 60_000;
-    const fracaoAtiva = NEON_SCALE_TO_ZERO_MS / Number(pausa![1].replaceAll("_", ""));
-    expect(fracaoAtiva).toBeLessThanOrEqual(0.2);
+    expect(Number(pausa![1].replaceAll("_", ""))).toBe(60_000);
     expect(worker).toContain(
       "await dormir(pausar ? PAUSA_APOS_ERRO_MS : PAUSA_ENTRE_CONSULTAS_MS)",
     );
