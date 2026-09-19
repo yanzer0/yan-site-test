@@ -121,7 +121,7 @@ para o Neon por env; F3 e F4 provadas; `df -h /` < 85%; nenhum agendamento no Ca
 - [ ] F2: mutante estático reprova; suíte, lint e build verdes; integração com Postgres local (AC-03, AC-04).
 - [x] F3: restore do dump F0 com diff zero; volume de teste apagado (AC-05).
 - [x] F4: dump cifrado + sha256 no cron; alerta provado; drill provado (AC-06).
-- [ ] F5: janela ≤ 15 min registrada; diff zero; smoke; worker 60 s; reconciliação zero ausente (AC-07, AC-08, AC-09).
+- [x] F5: janela ≤ 15 min registrada; diff zero; smoke; worker 60 s; reconciliação zero ausente (AC-07, AC-08, AC-09).
 - [ ] F6: 7 dias sem 5xx novo, sem alerta, backup 7/7, leads consistentes (AC-10).
 - [ ] F7: Neon revogado e destruído; envs e `.env.local` limpos; pacote sem `@vercel/postgres`; runbook e mapa atualizados (AC-11).
 - [ ] transversal: nenhum segredo ou PII em diff, log, smoke ou closeout (AC-12).
@@ -187,3 +187,50 @@ para o Neon por env; F3 e F4 provadas; `df -h /` < 85%; nenhum agendamento no Ca
 - **invariante nova para a F6:** depois da F5, um backup com `0 tabelas` passaria verde, porque o
   drill compara o dump com o resumo do próprio dump. Gate não construído (fora do AC-06);
   registrado na WO-004 como lacuna nomeada.
+
+### 2026-09-19, F5 (WO-FORMULARIO-DB-005)
+
+- **janela.** `T0` 07:51:32Z, `T1` 07:52:22Z, `T2` 07:56:34Z: 4 min e 12 s fechada, contra o alvo
+  de 15 min. Durante a janela, 503 com `Retry-After: 600` em `POST /api/diagnostico/parcial`,
+  `POST /api/diagnostico/cal-webhook`, `/leads` e `/leads/entrar`; `/api/health` 200 e as páginas
+  públicas 200, então o health check do Caddy não derrubou o upstream. Bloco removido restaurando
+  o backup do Caddyfile, com `diff` provando que o arquivo voltou byte a byte ao estado anterior.
+- **dados.** `pg_dump -Fc` do Neon vivo às 07:52:51Z: 240.549 bytes em 14 s, idêntico em tamanho
+  ao da F3. `pg_restore --no-owner --role=formulario --no-comments --no-acl --exit-on-error` no
+  `formulario-db` de produção: exit 0 em 1 s. Diff das 15 linhas de contagem entre origem e
+  destino **vazio** (14 tabelas somando 806 linhas mais `seq:tentativas_acesso_id_seq,118`).
+  Dono das tabelas no destino: `formulario`, uma única linha. Extensões: `pgcrypto`, `plpgsql`.
+- **origem congelada.** `ALTER DATABASE neondb SET default_transaction_read_only = on`, provado em
+  sessão nova: `cannot execute CREATE TABLE in a read-only transaction`.
+- **env e release.** Env trocado com backup timestampado em 600; só os valores de `POSTGRES_URL` e
+  `POSTGRES_URL_NON_POOLING` mudaram (diff por chave vazio); `validate-env.mjs` verde. `deploy.sh`
+  em 89 s, health 200 com `release` `79f7f26264e7`.
+- **a senha da app precisa ir percent-encoded, e isso não estava no pacote.** A senha é base64 de
+  44 bytes e contém `/`: numa URL crua, tanto o parser do libpq quanto o do `pg` encerram a
+  autoridade no primeiro `/` e leem o pedaço anterior como host e porta, falhando com
+  `invalid integer value ... for connection option "port"`. Com `+`, `/` e `=` escritos como
+  `%2B`, `%2F` e `%3D`, a conexão abre normal. Medido antes da janela contra o banco vazio.
+- **smoke pós-corte.** Interno, pelo container, antes de reabrir: fila autenticada 200 em 102 ms
+  (era ~0,9 s pelo Neon), fila sem segredo 401, `/leads/entrar` 200, `cal-webhook` sem assinatura
+  401, `mapa-pago/webhook` sem assinatura 401, `POST /api/diagnostico/parcial` 204 com
+  `sessao_id` sintético, `count` igual a 1 no `formulario-db` e igual a 0 depois do `delete`,
+  com o total de `parciais` voltando a 44. Público depois de reabrir: `smoke.mjs` verde nos dois
+  hosts, 69 checagens cada, pior latência 63 ms.
+- **o 204 do `parcial` não prova escrita.** A rota engole erro de persistência de propósito (é
+  telemetria, não caminho crítico) e devolve 204 do mesmo jeito. A prova é a contagem no banco,
+  não o código HTTP.
+- **worker.** `/home/infuser/yan-site-funil` movido de `cfb0e9c0cad6` para `79f7f26264e7`,
+  `PAUSA_ENTRE_CONSULTAS_MS = 60_000` conferido no arquivo, unit reiniciada, log com
+  `intervalo=60s` e primeira chamada da fila 200 em 13 ms, 11 s depois de `T2`.
+- **reconciliação.** Nenhum agendamento nas 3 h seguintes no instante do `T0`, nenhum roteiro em
+  voo (21 `concluido`, 1 `falhou`). Na janela, o access log do Caddy tem 31 requisições, e todas
+  as 6 que bateram nas rotas fechadas foram as próprias provas desta ordem; zero POST de Cal ou
+  Stripe de verdade, zero 5xx fora do 503 desenhado. `agendamentos` criados depois de `T1`: 0.
+  **Não verificado:** a API do Cal não foi consultada porque não existe chave `CAL_API*` no env
+  da VPS, então a lista de bookings criados ou alterados na janela fica sem contraprova
+  independente; e o evento de teste do Stripe depende do painel, que é do Yan.
+- **`X-Roteiro-Secret` vai em claro para o access log do Caddy.** O `format json` registra os
+  headers da requisição, e o segredo do worker aparece em texto em
+  `/var/log/caddy/useinfuser.access.log`, que fica em disco com retenção própria. Achado desta
+  janela, anterior a ela e fora do escopo desta fatia; o remédio barato é um `log { ... }` com
+  os headers sensíveis redigidos.

@@ -111,6 +111,46 @@ O que **não** fazer: restaurar qualquer drill dentro do `formulario-db` de prod
 `.dump.age` à mão (a retenção é do script), guardar dump em claro fora do script, e colar
 contagem junto com qualquer coluna de dado.
 
+## Corte do banco (F5)
+
+Executado em 2026-09-19. `T0` 07:51:32Z (backup do env e do Caddyfile), `T1` 07:52:22Z (bloco de
+janela no Caddy de pé), `T2` 07:56:34Z (bloco removido). A janela ficou fechada 4 min e 12 s.
+
+Rito, nesta ordem:
+
+1. `cp -p` timestampado do env (modo 600) e do Caddyfile.
+2. Bloco `@janela` (503 com `Retry-After: 600` em `/api/diagnostico/*`, `/leads` e `/leads/*`)
+   dentro de `useinfuser.com, www.useinfuser.com`, antes do `reverse_proxy`. `caddy validate` e
+   `caddy reload`. Nunca `restart`: este Caddy serve os outros domínios da casa.
+3. `pg_dump -Fc` do Neon para `~/backups/formulario/neon-final-<stamp>.dump`, com a URL só em
+   variável de ambiente e nunca em `argv`.
+4. `docker exec -i formulario-db pg_restore -U postgres -d formulario --no-owner
+   --role=formulario --no-comments --no-acl --exit-on-error < <dump>`.
+5. `contar-tabelas.sh` nos dois lados e `diff` vazio antes de seguir. Diferença aborta.
+6. `ALTER DATABASE neondb SET default_transaction_read_only = on;` no Neon, provado por uma
+   escrita recusada em sessão nova.
+7. `POSTGRES_URL` e `POSTGRES_URL_NON_POOLING` apontando para o `formulario-db`. A senha da app é
+   base64 e contém `/`, que encerra a autoridade da URL antes do `@`: ela entra
+   **percent-encoded** (`+`, `/` e `=` viram `%2B`, `%2F` e `%3D`), senão `psql` e `pg` leem
+   pedaço de senha como host e porta. `validate-env.mjs` tem que passar depois.
+8. `deploy.sh` no commit da fatia, health 200 com o `release` novo e smoke interno pelo próprio
+   container antes de reabrir.
+9. Remover o bloco do Caddy restaurando o backup, `validate`, `reload`.
+10. Worker: `git checkout` do mesmo commit em `/home/infuser/yan-site-funil` e
+    `systemctl --user restart roteiro`.
+
+### Rollback do corte (vale até a F7)
+
+Sem dual-write, o Neon é exatamente o estado pré-corte.
+
+1. `cp -p` do env a partir do backup timestampado.
+2. `git checkout fb14957` no checkout de produção e `deploy.sh` (a imagem
+   `useinfuser-site:fb14957dbd2f` continua no host).
+3. Restaurar o Caddyfile do backup, `validate`, `reload`.
+4. `ALTER DATABASE neondb SET default_transaction_read_only = off;`.
+5. `git checkout cfb0e9c0cad6` em `yan-site-funil` e `systemctl --user restart roteiro`.
+6. Smoke nos dois hosts. O que ficou no `formulario-db` pode ficar: a F5 se repete.
+
 ## Instalação da borda
 
 1. Criar `useinfuser-net` pelo Compose do site.
