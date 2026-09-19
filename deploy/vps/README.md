@@ -38,10 +38,19 @@ openssl rand -base64 32 | tr -d '
 Os caminhos podem ser sobrescritos por `FORMULARIO_DB_ADMIN_PASSWORD_FILE` e
 `FORMULARIO_DB_APP_PASSWORD_FILE`. Nunca imprima, copie nem versione o conteúdo.
 
+O `entrypoint` do serviço copia o secret da app como root para `/tmp/db_app_password` antes de
+chamar o `docker-entrypoint.sh`: o init roda como `postgres` (uid 999) e o arquivo do host é 600
+do uid 1000. Compose fora do Swarm ignora `uid`/`gid`/`mode` em `secrets`, então a cópia é o
+caminho; não afrouxe o arquivo no host.
+
 `deploy/vps/formulario-db/init/01-formulario.sh` roda **só no primeiro boot do volume**
 `formulario-db-data`: cria a role `formulario`, o banco `formulario` e a extensão `pgcrypto`, e
 revoga `PUBLIC` no banco. Com o volume já existente ele não roda de novo; mudança de schema é
 migration, não init.
+
+O healthcheck é `pg_isready` **mais** um `select 1` como `formulario`: sozinho, o `pg_isready`
+responde `accepting connections` mesmo com a role ausente, e esse falso verde já deixou um deploy
+passar com o banco vazio de role.
 
 O `deploy.sh` sobe o banco e espera `healthy` (teto de 120 s) antes de construir e recriar o site.
 Para subir só o banco:

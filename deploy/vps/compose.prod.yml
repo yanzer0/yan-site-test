@@ -71,6 +71,15 @@ services:
     secrets:
       - db_admin_password
       - db_app_password
+    # O entrypoint do Postgres le POSTGRES_PASSWORD_FILE como root, mas cai para o
+    # usuario postgres (999) antes de rodar /docker-entrypoint-initdb.d. O secret
+    # chega do host como 600 do uid 1000, e o Compose fora do Swarm ignora uid/gid/mode
+    # em secrets (avisa e segue). Esta copia de root e o que deixa o init ler a senha
+    # da app sem afrouxar o arquivo no host.
+    entrypoint:
+      - /bin/bash
+      - -c
+      - install -o postgres -g postgres -m 0400 /run/secrets/db_app_password /tmp/db_app_password && exec docker-entrypoint.sh postgres
     networks:
       - formulario-net
     volumes:
@@ -95,7 +104,7 @@ services:
     healthcheck:
       test:
         - CMD-SHELL
-        - pg_isready -U formulario -d formulario
+        - pg_isready -U formulario -d formulario && psql -U formulario -d formulario -Atc 'select 1' > /dev/null
       interval: 10s
       timeout: 5s
       retries: 6

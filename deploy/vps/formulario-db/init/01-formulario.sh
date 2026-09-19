@@ -5,7 +5,9 @@
 # reads it from the environment with \getenv and quotes it with :'...'.
 set -euo pipefail
 
-app_password_file=/run/secrets/db_app_password
+# Root copy of /run/secrets/db_app_password, made by the entrypoint: this script
+# runs as the postgres user and the mounted secret belongs to the host user.
+app_password_file=/tmp/db_app_password
 
 if [ ! -s "$app_password_file" ]; then
   echo "formulario-db init: missing or empty $app_password_file" >&2

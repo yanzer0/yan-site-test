@@ -174,3 +174,16 @@ Removido com o mesmo rito ao reabrir. O restante do site continua servido; `/api
 - F1, 19/09: minor pinado = `postgres:17.11`
   (`sha256:a6ec007920913e8d715a41e68a17b05ddf30e62d69565814988a896767594cc6`), o mesmo 17.11 da
   origem Neon, o que remove o risco de restore entre minors diferentes na F3.
+- F1, 19/09, desvio provado na VPS: o init roda como `postgres` (999) e o secret chega do host
+  como 600 do uid 1000, entao `cat /run/secrets/db_app_password` deu `Permission denied` e a
+  primeira subida ficou com o banco sem a role. Compose fora do Swarm **ignora** `uid`, `gid` e
+  `mode` em `secrets` (medido: `warning: secrets uid, gid and mode are not supported, they will
+  be ignored`). Correcao no menor ponto: `entrypoint` do servico copia o secret como root
+  (`install -o postgres -g postgres -m 0400`) para `/tmp/db_app_password` e faz `exec
+  docker-entrypoint.sh postgres`. O arquivo no host continua 600 e o §6 nao muda.
+- F1, 19/09, desvio provado na VPS: `pg_isready -U formulario -d formulario` retorna `accepting
+  connections` e exit 0 com a role `formulario` **inexistente** - ele so prova que o servidor
+  responde, nao que a role ou o banco existem. Foi esse falso verde que deixou o `deploy.sh`
+  passar com o banco quebrado. O healthcheck do §4.1 passa a ser
+  `pg_isready ... && psql -U formulario -d formulario -Atc 'select 1'`, que falha alto nos dois
+  casos. A invariante do `VERIFICACAO-E-OPERACAO.md` §2 ganha o contraexemplo correspondente.

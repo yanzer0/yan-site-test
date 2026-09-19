@@ -21,6 +21,7 @@ externa. Cada uma tem prova positiva e contraexemplo abaixo; happy path sozinho 
 | Contagem por tabela origem = destino | diff zero das 14 linhas | inserir 1 linha de teste no destino descartável e ver o diff acusar | Integração | F3, F5 |
 | Banco sem porta e só duas pontas na rede | `docker inspect`, `docker network inspect` | `nc -z 127.0.0.1 5432` na VPS falha; `psql` de outro container falha | Produção | F1, F5 |
 | App sem superuser | `pg_roles` da role `formulario` | `CREATE DATABASE x` como `formulario` falha | Produção | F1 |
+| Banco pronto para a app, não só de pé | healthcheck com `select 1` como `formulario` | `pg_isready` sozinho dá exit 0 com a role ausente (medido na F1) | Produção | F1 |
 | Nenhum `@vercel/postgres` no caminho vivo | teste estático verde | reintroduzir o import num arquivo de `src/` e o teste reprova | Regressão | F2 |
 | Tagged template parametriza | unidade: `$1..$n` na ordem | `undefined` lança `TypeError` | Unidade | F2 |
 | Reserva concorrente da fila | dois clientes recebem itens distintos | sem `SKIP LOCKED` um deles bloqueia (teste documenta, não muda o SQL) | Integração | F2 |
