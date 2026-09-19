@@ -21,6 +21,10 @@ services:
       ROTEIRO_PUBLIC_BASE_URL: https://www.useinfuser.com
     networks:
       - useinfuser-net
+      - formulario-net
+    depends_on:
+      formulario-db:
+        condition: service_healthy
     expose:
       - "3000"
     read_only: true
@@ -54,11 +58,71 @@ services:
     labels:
       org.opencontainers.image.revision: ${APP_RELEASE:?APP_RELEASE is required}
 
+  # Banco dedicado do funil de diagnostico (specs/008). Sem porta publicada: a unica
+  # entrada e a rede interna formulario-net, onde so o site tambem esta.
+  formulario-db:
+    image: postgres:17.11
+    container_name: formulario-db
+    restart: unless-stopped
+    environment:
+      TZ: UTC
+      PGTZ: UTC
+      POSTGRES_PASSWORD_FILE: /run/secrets/db_admin_password
+    secrets:
+      - db_admin_password
+      - db_app_password
+    networks:
+      - formulario-net
+    volumes:
+      - formulario-db-data:/var/lib/postgresql/data
+      - ./formulario-db/init:/docker-entrypoint-initdb.d:ro
+    cap_drop:
+      - ALL
+    # O entrypoint do Postgres sobe como root para preparar o PGDATA e cai para o
+    # usuario postgres antes de servir.
+    cap_add:
+      - CHOWN
+      - DAC_OVERRIDE
+      - FOWNER
+      - SETGID
+      - SETUID
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 128
+    mem_limit: 512m
+    shm_size: 128m
+    stop_grace_period: 30s
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - pg_isready -U formulario -d formulario
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 20s
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+
 networks:
   useinfuser-net:
     name: useinfuser-net
     driver: bridge
+  formulario-net:
+    name: formulario-net
+    driver: bridge
+    internal: true
+
+volumes:
+  formulario-db-data:
+    name: formulario-db-data
 
 secrets:
   app_env:
     file: ${USEINFUSER_ENV_FILE:-/home/infuser/.config/useinfuser/useinfuser.env}
+  db_admin_password:
+    file: ${FORMULARIO_DB_ADMIN_PASSWORD_FILE:-/home/infuser/.config/useinfuser/formulario-db-admin.password}
+  db_app_password:
+    file: ${FORMULARIO_DB_APP_PASSWORD_FILE:-/home/infuser/.config/useinfuser/formulario-db-app.password}

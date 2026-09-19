@@ -24,6 +24,27 @@ if [[ "$mode" != "600" ]]; then
 fi
 
 docker compose -f "$compose_file" config --quiet
+
+# O banco do funil sobe antes do site e precisa estar healthy: o site entra em
+# formulario-net e a F2 em diante depende dele. Nunca `down`, nunca `-v`.
+docker compose -f "$compose_file" up -d formulario-db
+
+db_healthy=""
+for attempt in $(seq 1 40); do
+  db_health="$(docker inspect --format '{{if .State.Health}}{{.State.Health.Status}}{{else}}missing{{end}}' formulario-db 2>/dev/null || echo missing)"
+  if [[ "$db_health" == "healthy" ]]; then
+    db_healthy="yes"
+    break
+  fi
+  sleep 3
+done
+
+if [[ -z "$db_healthy" ]]; then
+  docker logs --tail 100 formulario-db >&2
+  echo "formulario-db did not become healthy within 120s" >&2
+  exit 1
+fi
+
 DOCKER_BUILDKIT=1 docker compose -f "$compose_file" build site
 docker compose -f "$compose_file" up -d --no-deps site
 

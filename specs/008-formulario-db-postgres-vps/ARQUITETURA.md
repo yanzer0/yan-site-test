@@ -167,3 +167,10 @@ Removido com o mesmo rito ao reabrir. O restante do site continua servido; `/api
 - A decisão de 19/09 no brain diz `postgres:16`; a F0 provou 17.11 no Neon. Este pacote fixa a
   série 17 e o brain é corrigido na mesma sessão.
 - Destino offsite definitivo do dump: pendente de R1; não bloqueia F1 a F6.
+- F1, 19/09: o init é `deploy/vps/formulario-db/init/01-formulario.sh`, não `01-formulario.sql`.
+  O `.sql` do §4.2 não consegue ler `/run/secrets/db_app_password` sozinho; o próprio §4.2 já
+  descrevia o shell. O SQL é o mesmo, num heredoc, com `\getenv` lendo a senha do ambiente e
+  `:'app_password'` citando o literal - a senha nunca entra em argv nem em string SQL.
+- F1, 19/09: minor pinado = `postgres:17.11`
+  (`sha256:a6ec007920913e8d715a41e68a17b05ddf30e62d69565814988a896767594cc6`), o mesmo 17.11 da
+  origem Neon, o que remove o risco de restore entre minors diferentes na F3.
