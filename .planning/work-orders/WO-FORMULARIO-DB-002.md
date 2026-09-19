@@ -1,6 +1,6 @@
 ---
 work_order: WO-FORMULARIO-DB-002
-status: active
+status: completed
 central_branch: claude/formulario-db-f1
 owner: Opus 5 (executor) / Claude (validador)
 authorized_by: Yan
