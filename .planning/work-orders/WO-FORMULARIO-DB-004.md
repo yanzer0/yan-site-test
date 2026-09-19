@@ -1,6 +1,6 @@
 ---
 work_order: WO-FORMULARIO-DB-004
-status: active
+status: completed
 central_branch: claude/formulario-db-f4
 owner: Opus 5 (executor) / Claude (validador)
 authorized_by: Yan
@@ -30,7 +30,7 @@ scope_lock:
   stop_when:
     - AC-05
     - AC-06
-  passed_acceptance_ids: []
+  passed_acceptance_ids: [AC-05, AC-06]
 ---
 
 # WO-FORMULARIO-DB-004: F3 (restore drill do dump do Neon) e F4 (backup cifrado com drill)
