@@ -1,15 +1,14 @@
 /**
  * Acesso ao Postgres do funil de diagnóstico.
  *
- * Toda query usa o tagged template `sql` do @vercel/postgres, que parametriza
- * os valores. Nunca montar SQL por concatenação de string.
+ * Toda query usa o tagged template `sql` de `./banco`, que parametriza os
+ * valores. Nunca montar SQL por concatenação de string.
  *
  * 🔴 Nada aqui pode logar dado pessoal. Em erro, registra-se o identificador da
  * sessão ou do lead, nunca nome, e-mail ou telefone (FR-026).
  */
 
-import { sql } from "@vercel/postgres";
-
+import { sql } from "./banco";
 import { normalizarEmail, normalizarTelefone } from "./normalizar";
 import type { Avaliacao, Faixa, Respostas } from "./tipos";
 

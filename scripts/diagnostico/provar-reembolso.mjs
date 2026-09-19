@@ -27,7 +27,7 @@
  */
 
 import { createHmac } from "node:crypto";
-import { createClient } from "@vercel/postgres";
+import { abrirCliente } from "./banco.mjs";
 
 const SEGREDO = process.env.STRIPE_WEBHOOK_SECRET;
 const BASE = process.env.ROTEIRO_BASE_URL ?? "https://useinfuser.com";
@@ -91,9 +91,7 @@ async function entregar(corpo) {
   return { status: r.status, corpo: await r.json().catch(() => ({})) };
 }
 
-const cliente = createClient({
-  connectionString: process.env.POSTGRES_URL_NON_POOLING ?? process.env.POSTGRES_URL,
-});
+const cliente = abrirCliente();
 await cliente.connect();
 
 async function estadoDoPedido() {

@@ -18,7 +18,7 @@
  * aprovado" na tela do Stripe mesmo que o nosso webhook nunca tenha rodado.
  */
 
-import { createClient } from "@vercel/postgres";
+import { abrirCliente } from "./banco.mjs";
 
 const CHAVE = process.env.STRIPE_SECRET_KEY;
 const BASE = process.env.ROTEIRO_BASE_URL ?? "https://useinfuser.com";
@@ -57,9 +57,7 @@ console.log(ok(`Stripe: sessão paga de R$ ${valor} ${(sessao.currency ?? "").to
 console.log(`     ${sessao.id}`);
 
 // ── 2. o webhook gravou o pedido? ────────────────────────────────────────
-const cliente = createClient({
-  connectionString: process.env.POSTGRES_URL_NON_POOLING ?? process.env.POSTGRES_URL,
-});
+const cliente = abrirCliente();
 await cliente.connect();
 
 try {

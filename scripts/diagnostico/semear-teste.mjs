@@ -15,7 +15,7 @@
  * ninguém por engano.
  */
 
-import { createClient } from "@vercel/postgres";
+import { abrirCliente } from "./banco.mjs";
 
 const EMAIL = process.env.SEED_EMAIL ?? "ricardo@exemplo-infuser.test";
 const BOOKING = process.env.SEED_BOOKING ?? "teste-003-local";
@@ -26,7 +26,7 @@ if (!url) {
   process.exit(1);
 }
 
-const cliente = createClient({ connectionString: url });
+const cliente = abrirCliente(url);
 await cliente.connect();
 
 async function limpar() {

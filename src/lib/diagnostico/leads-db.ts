@@ -9,8 +9,7 @@
  * prospect (FR-026). Em erro, propaga-se `ErroPersistencia` sem o conteúdo.
  */
 
-import { sql } from "@vercel/postgres";
-
+import { sql } from "./banco";
 import { ErroPersistencia } from "./db";
 import type { Faixa } from "./tipos";
 

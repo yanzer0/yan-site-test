@@ -5,8 +5,7 @@
  * nenhum log com dado pessoal.
  */
 
-import { sql } from "@vercel/postgres";
-
+import { sql } from "./banco";
 import { ErroPersistencia } from "./db";
 
 /** Teto de tentativas. Acima disso o item para e vira alerta, não laço infinito. */

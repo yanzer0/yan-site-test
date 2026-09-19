@@ -5,8 +5,7 @@
  * própria, nenhum dado pessoal em log.
  */
 
-import { sql } from "@vercel/postgres";
-
+import { sql } from "./banco";
 import { ErroPersistencia } from "./db";
 import type { EstadoMapa, MapaConteudo } from "./mapa-tipos";
 

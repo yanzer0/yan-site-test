@@ -12,8 +12,7 @@
  */
 
 import { NextRequest, NextResponse } from "next/server";
-import { sql } from "@vercel/postgres";
-
+import { sql } from "@/lib/diagnostico/banco";
 import { normalizarEmail } from "@/lib/diagnostico/normalizar";
 import { perguntaPorId } from "@/lib/diagnostico/perguntas";
 import { segredoConfere } from "@/lib/diagnostico/segredo";

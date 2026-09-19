@@ -26,7 +26,7 @@
  */
 
 import { createHmac } from "node:crypto";
-import { createClient } from "@vercel/postgres";
+import { abrirCliente } from "./banco.mjs";
 
 const SEGREDO = process.env.STRIPE_WEBHOOK_SECRET;
 const BASE = process.env.ROTEIRO_BASE_URL ?? "https://useinfuser.com";
@@ -101,9 +101,7 @@ conferir("assinatura CERTA é aceita", await entregar(corpo, assinar(corpo, SEGR
 conferir("REENTREGA é aceita", await entregar(corpo, assinar(corpo, SEGREDO, agora)), 200);
 
 // ── o que sobrou no banco depois das duas entregas ───────────────────────
-const cliente = createClient({
-  connectionString: process.env.POSTGRES_URL_NON_POOLING ?? process.env.POSTGRES_URL,
-});
+const cliente = abrirCliente();
 await cliente.connect();
 
 try {
