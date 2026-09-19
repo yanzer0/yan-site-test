@@ -1,6 +1,6 @@
 ---
 work_order: WO-FORMULARIO-DB-005
-status: active
+status: completed
 central_branch: claude/formulario-db-f5
 owner: Opus 5 (executor) / Claude (validador)
 authorized_by: Yan
@@ -32,7 +32,10 @@ scope_lock:
     - AC-07
     - AC-08
     - AC-09
-  passed_acceptance_ids: []
+  passed_acceptance_ids:
+    - AC-07
+    - AC-08
+    - AC-09
 ---
 
 # WO-FORMULARIO-DB-005: F5, a janela de corte (Neon para `formulario-db`)
