@@ -134,3 +134,26 @@ para o Neon por env; F3 e F4 provadas; `df -h /` < 85%; nenhum agendamento no Ca
   `pgcrypto` 1.3, 1 sequência, 0 views/triggers/funções próprias, role `neondb_owner` sem
   superuser; nenhuma coluna de dado lida. Detalhe em `INVENTARIO-F0.md`.
 - consequência registrada: alvo passa de `postgres:16` para a série 17.
+
+### 2026-09-19, F2 (WO-FORMULARIO-DB-003)
+
+- driver `pg@8.23.0` (`@types/pg@8.23.1`) pinado; `@vercel/postgres` segue no `package.json`
+  para o rollback da F5 e não é mais importado por ninguém.
+- `src/lib/diagnostico/banco.ts` no ar: pool único por processo, `max: 5`,
+  `idleTimeoutMillis: 30_000`, `connectionTimeoutMillis: 5_000`, `statement_timeout: 15_000`.
+  Os 8 arquivos de `src/` passaram a importar `sql` dele; nenhuma query mudou.
+- `scripts/diagnostico/banco.mjs` (`abrirCliente`) atende os 8 scripts; `aplicar-schema.mjs`
+  passou a listar os 9 `.sql` (entraram `reembolso`, `documento-html` e `fila-trava`);
+  `inventariar-banco.mjs` entrou, só leitura, com `--resumo` para diff origem/destino.
+- `deploy/vps/validate-env.mjs`: `POSTGRES_URL_NON_POOLING` opcional, ainda conferida quando
+  presente.
+- mutante provado: import de `@vercel/postgres` plantado em `src/lib/diagnostico/mapa-db.ts`
+  reprovou `driver-neon-ausente.test.ts` (`culpados` = `[src/lib/diagnostico/mapa-db.ts]`);
+  removido, o teste voltou a passar.
+- `npm test`: 428 passaram, 4 pulados (integração sem `TEST_POSTGRES_URL`), 3 vermelhos de
+  baseline herdados (`contrato-brain` por divergência de enum com o brain; `instalar` e
+  `tests/deploy/validate-env` por CRLF do checkout Windows). `npx eslint .` sem achado novo
+  (os 2 erros em `scripts/club/build-club-html.js` são de baseline). `npx next build` verde,
+  inclusive sem `POSTGRES_URL` no ambiente.
+- pendente para o orquestrador: rodar a suíte de integração com `TEST_POSTGRES_URL` apontando
+  para um Postgres descartável (esta máquina não tem Postgres nem Docker).

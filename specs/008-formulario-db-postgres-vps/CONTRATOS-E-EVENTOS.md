@@ -30,8 +30,10 @@ o banco é interno ao produto e os contratos externos ficam byte a byte iguais.
 export interface Resultado<T> { readonly rows: T[]; readonly rowCount: number }
 export function sql<T = Record<string, unknown>>(strings: TemplateStringsArray, ...values: unknown[]): Promise<Resultado<T>>;
 export namespace sql { function query<T = Record<string, unknown>>(text: string, params?: readonly unknown[]): Promise<Resultado<T>>; }
-export function abrirCliente(): Client;            // scripts: um Client TCP por execucao, sem pool
 export function encerrarPool(): Promise<void>;     // testes e scripts encerram o processo limpo
+
+// scripts/diagnostico/banco.mjs (script e .mjs e nao importa TypeScript; o helper mora la)
+export function abrirCliente(connectionString?: string): Client;  // um Client TCP por execucao
 ```
 
 Regras:
@@ -41,9 +43,15 @@ Regras:
 - `undefined` em parâmetro lança `TypeError` antes de ir ao banco (o pacote atual envia `null`
   em silêncio; aqui falha alto);
 - erro do driver sobe encapsulado em `ErroPersistencia(operacao, causa)` onde o chamador já faz
-  isso; o módulo não loga nada;
-- `POSTGRES_URL` ausente ou sem protocolo `postgres:`/`postgresql:` falha no boot do módulo, não
-  na primeira query;
+  isso; o módulo não loga texto de query nem parâmetro. A única linha que ele escreve é o
+  CÓDIGO de um erro em conexão ociosa, que não tem chamador esperando: sem esse listener o `pg`
+  derruba o processo inteiro por evento `error` não tratado;
+- `POSTGRES_URL` ausente ou sem protocolo `postgres:`/`postgresql:` falha no carregamento do
+  módulo, não na primeira query. A trava de carregamento fica de fora quando não há servidor
+  atrás (`NEXT_PHASE=phase-production-build` e `NODE_ENV=test`): ali o módulo é importado só
+  para ler configuração de rota, ou porque um teste de função pura o arrasta no grafo de
+  imports, e travar transformaria variável de EXECUÇÃO em requisito de compilação e de teste.
+  Nos dois casos a mesma validação continua valendo na abertura do pool;
 - o pool é único por processo (`globalThis` em dev para sobreviver ao HMR do Next);
 - `statement_timeout` 15 s e `connectionTimeoutMillis` 5 s; o Neon HTTP não tinha nenhum dos dois.
 

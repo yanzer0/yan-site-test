@@ -36,7 +36,7 @@
 
 import { createHmac } from "node:crypto";
 
-import { sql } from "@vercel/postgres";
+import { sql } from "./banco";
 
 export type Acao = "login" | "cadastro";
 
@@ -194,7 +194,9 @@ async function excedeu(
 
   // Quanto falta para a tentativa mais antiga sair da janela. Devolver isto
   // permite responder com um prazo real em vez de "tente mais tarde".
-  const maisAntiga = r.rows[0]?.mais_antiga ? new Date(r.rows[0].mais_antiga) : new Date();
+  const maisAntiga = r.rows[0]?.mais_antiga
+    ? new Date(r.rows[0].mais_antiga as string | Date)
+    : new Date();
   const liberaEm = maisAntiga.getTime() + limite.janelaMinutos * 60_000;
   const faltam = Math.max(1, Math.ceil((liberaEm - Date.now()) / 1000));
 

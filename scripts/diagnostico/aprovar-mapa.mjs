@@ -15,7 +15,7 @@
  * é confiável o suficiente para entregar direto.
  */
 
-import { createClient } from "@vercel/postgres";
+import { abrirCliente } from "./banco.mjs";
 
 const url = process.env.POSTGRES_URL_NON_POOLING || process.env.POSTGRES_URL;
 if (!url) {
@@ -29,7 +29,7 @@ const houveCorrecao = args.includes("--corrigi");
 const token = args.find((a) => !a.startsWith("--"));
 const quem = process.env.USERNAME || process.env.USER || "desconhecido";
 
-const cliente = createClient({ connectionString: url });
+const cliente = abrirCliente(url);
 await cliente.connect();
 
 try {

@@ -5,8 +5,7 @@
  * string da URL de retorno.
  */
 
-import { sql } from "@vercel/postgres";
-
+import { sql } from "./banco";
 import { ErroPersistencia } from "./db";
 import { normalizarEmail } from "./normalizar";
 

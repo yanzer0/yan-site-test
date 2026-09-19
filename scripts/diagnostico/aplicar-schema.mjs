@@ -22,20 +22,32 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
+import { abrirCliente } from "./banco.mjs";
+
 const AQUI = dirname(fileURLToPath(import.meta.url));
 const LIB = join(AQUI, "..", "..", "src", "lib", "diagnostico");
 
 /**
- * Os arquivos entram nesta ordem e ela importa: `mapa-sql.sql` tem chave
+ * TODOS os `.sql` da pasta, e nesta ordem, porque ela importa: quem faz
+ * `ALTER TABLE` precisa da tabela criada antes. `mapa-sql.sql` tem chave
  * estrangeira para `leads` e `roteiro-sql.sql` para `agendamentos`, e as duas
- * nascem no `schema.sql`.
+ * nascem no `schema.sql`; `reembolso-sql.sql` altera `pedidos_mapa`, e
+ * `roteiro-pdf-sql.sql`, `documento-html-sql.sql` e `fila-trava-sql.sql`
+ * alteram `roteiros`.
+ *
+ * Os três últimos a entrar na lista (reembolso, documento HTML e trava da fila)
+ * já tinham sido aplicados à mão no banco vivo. Faltar aqui só se notava em
+ * ambiente NOVO, que é onde o teste de integração desta fatia bate.
  */
 const ARQUIVOS = [
   join(LIB, "schema.sql"),
   join(LIB, "mapa-sql.sql"),
   join(LIB, "roteiro-sql.sql"),
   join(LIB, "pagamento-sql.sql"),
+  join(LIB, "reembolso-sql.sql"),
   join(LIB, "roteiro-pdf-sql.sql"),
+  join(LIB, "documento-html-sql.sql"),
+  join(LIB, "fila-trava-sql.sql"),
   join(LIB, "auth-sql.sql"),
 ];
 
@@ -76,10 +88,8 @@ async function main() {
   /**
    * DDL vai pela conexão DIRETA, não pela pooled.
    *
-   * A `POSTGRES_URL` do Neon aponta para o pgbouncer, e o próprio
-   * `@vercel/postgres` recusa `createClient()` com ela. Além disso, pooler em
-   * modo transação não é lugar de rodar CREATE TABLE. A `_NON_POOLING` é a
-   * conexão direta, que é o que migração pede.
+   * Pooler em modo transação não é lugar de rodar CREATE TABLE. A
+   * `_NON_POOLING` é a conexão direta, que é o que migração pede.
    */
   const url =
     process.env.POSTGRES_URL_NON_POOLING ||
@@ -96,9 +106,7 @@ async function main() {
     process.exit(1);
   }
 
-  // Import dinâmico: sem a URL no ambiente o pacote nem precisa carregar.
-  const { createClient } = await import("@vercel/postgres");
-  const cliente = createClient({ connectionString: url });
+  const cliente = abrirCliente(url);
 
   await cliente.connect();
 

@@ -14,7 +14,7 @@
  * Roda contra o banco real, em transações paralelas, e limpa o que criou.
  */
 
-import { createClient } from "@vercel/postgres";
+import { abrirCliente } from "./banco.mjs";
 
 const CONEXAO = process.env.POSTGRES_URL_NON_POOLING ?? process.env.POSTGRES_URL;
 const BOOKING = "prova-trava-fila";
@@ -51,7 +51,7 @@ const RESERVA = `
    )
   RETURNING cal_booking_id, tentativas`;
 
-const admin = createClient({ connectionString: CONEXAO });
+const admin = abrirCliente(CONEXAO);
 await admin.connect();
 
 console.log("\n  Provando a trava da fila de roteiros\n");
@@ -75,8 +75,8 @@ try {
   await admin.query(`INSERT INTO roteiros (cal_booking_id) VALUES ($1)`, [BOOKING]);
 
   // ── dois consumidores, ao mesmo tempo, em conexões separadas ──────────
-  const a = createClient({ connectionString: CONEXAO });
-  const b = createClient({ connectionString: CONEXAO });
+  const a = abrirCliente(CONEXAO);
+  const b = abrirCliente(CONEXAO);
   await Promise.all([a.connect(), b.connect()]);
 
   const disputar = async (cliente) => {

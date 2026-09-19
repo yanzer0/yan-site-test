@@ -53,7 +53,15 @@ export function validateProductionEnvironment(environment) {
   };
 
   requireValue("POSTGRES_URL", isPostgres, "URL Postgres invalida");
-  requireValue("POSTGRES_URL_NON_POOLING", isPostgres, "URL Postgres invalida");
+
+  // Opcional desde que o banco saiu do Neon: sem pooler na frente, a conexao
+  // direta E a POSTGRES_URL. Continua sendo conferida quando vem preenchida,
+  // que e o caso do rollback para o Neon.
+  const naoPooled = environment.POSTGRES_URL_NON_POOLING ?? "";
+  if (naoPooled && !isPostgres(naoPooled)) {
+    errors.push("POSTGRES_URL_NON_POOLING: URL Postgres invalida");
+  }
+
   requireValue("ROTEIRO_ACESSO_CHAVE", (value) => value.length >= 20, "curta demais");
   requireValue("ROTEIRO_WORKER_SECRET", (value) => value.length >= 32, "curto demais");
   requireValue("GOOGLE_CALENDAR_ID", (value) => value.includes("@"), "id invalido");

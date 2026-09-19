@@ -11,7 +11,7 @@
  * corrigido não deve continuar bloqueado.
  */
 
-import { createClient } from "@vercel/postgres";
+import { abrirCliente } from "./banco.mjs";
 
 const booking = process.argv[2];
 if (!booking) {
@@ -25,7 +25,7 @@ if (!url) {
   process.exit(1);
 }
 
-const cliente = createClient({ connectionString: url });
+const cliente = abrirCliente(url);
 await cliente.connect();
 
 try {

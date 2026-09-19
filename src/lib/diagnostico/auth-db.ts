@@ -11,8 +11,7 @@
 
 import { createHash, randomBytes } from "node:crypto";
 
-import { sql } from "@vercel/postgres";
-
+import { sql } from "./banco";
 import { ErroPersistencia } from "./db";
 import { normalizarEmail } from "./normalizar";
 
@@ -212,8 +211,8 @@ export async function usuarioDaSessao(token: string | undefined): Promise<Usuari
       email: String(x.email),
       papel: x.papel as PapelUsuario,
       estado: x.estado as EstadoUsuario,
-      criadoEm: new Date(x.criado_em),
-      aprovadoEm: x.aprovado_em ? new Date(x.aprovado_em) : null,
+      criadoEm: new Date(x.criado_em as string | Date),
+      aprovadoEm: x.aprovado_em ? new Date(x.aprovado_em as string | Date) : null,
     };
   } catch (causa) {
     throw new ErroPersistencia("ler sessao", causa);
@@ -243,8 +242,8 @@ export async function listarUsuarios(): Promise<readonly UsuarioPainel[]> {
       email: String(x.email),
       papel: x.papel as PapelUsuario,
       estado: x.estado as EstadoUsuario,
-      criadoEm: new Date(x.criado_em),
-      aprovadoEm: x.aprovado_em ? new Date(x.aprovado_em) : null,
+      criadoEm: new Date(x.criado_em as string | Date),
+      aprovadoEm: x.aprovado_em ? new Date(x.aprovado_em as string | Date) : null,
     }));
   } catch (causa) {
     throw new ErroPersistencia("listar usuarios", causa);
