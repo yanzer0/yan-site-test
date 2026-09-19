@@ -119,8 +119,8 @@ para o Neon por env; F3 e F4 provadas; `df -h /` < 85%; nenhum agendamento no Ca
 
 - [ ] F1: banco healthy, isolado, role sem privilégio, `df` registrado (AC-02).
 - [ ] F2: mutante estático reprova; suíte, lint e build verdes; integração com Postgres local (AC-03, AC-04).
-- [ ] F3: restore do dump F0 com diff zero; volume de teste apagado (AC-05).
-- [ ] F4: dump cifrado + sha256 no cron; alerta provado; drill provado (AC-06).
+- [x] F3: restore do dump F0 com diff zero; volume de teste apagado (AC-05).
+- [x] F4: dump cifrado + sha256 no cron; alerta provado; drill provado (AC-06).
 - [ ] F5: janela ≤ 15 min registrada; diff zero; smoke; worker 60 s; reconciliação zero ausente (AC-07, AC-08, AC-09).
 - [ ] F6: 7 dias sem 5xx novo, sem alerta, backup 7/7, leads consistentes (AC-10).
 - [ ] F7: Neon revogado e destruído; envs e `.env.local` limpos; pacote sem `@vercel/postgres`; runbook e mapa atualizados (AC-11).
@@ -155,5 +155,35 @@ para o Neon por env; F3 e F4 provadas; `df -h /` < 85%; nenhum agendamento no Ca
   `tests/deploy/validate-env` por CRLF do checkout Windows). `npx eslint .` sem achado novo
   (os 2 erros em `scripts/club/build-club-html.js` são de baseline). `npx next build` verde,
   inclusive sem `POSTGRES_URL` no ambiente.
-- pendente para o orquestrador: rodar a suíte de integração com `TEST_POSTGRES_URL` apontando
-  para um Postgres descartável (esta máquina não tem Postgres nem Docker).
+- integração executada pelo orquestrador em 19/09 contra um `postgres:17.11` descartável na VPS
+  (túnel ssh em loopback): 4 casos verdes (schema em banco vazio cria as 14 tabelas, segundo run
+  no-op, reserva concorrente, `--resumo` com uma linha por tabela); container removido depois.
+
+### 2026-09-19, F3 e F4 (WO-FORMULARIO-DB-004)
+
+- **AC-05.** Dump `-Fc` do Neon vivo às 07:20:30 UTC (240.549 bytes, 13,1 s, URL só em variável
+  de ambiente), `pg_restore --list` com as 14 tabelas, restore em container descartável
+  `postgres:17.11` sem rede, `--exit-on-error` com exit 0 e diff vazio das 15 linhas de contagem
+  (14 tabelas somando 806 linhas + `seq:tentativas_acesso_id_seq,118`), idênticas à origem no
+  instante do dump. Contraexemplo: uma linha plantada em `painel_config` e o diff acusa. Container
+  e volume removidos; `formulario-db` de produção seguiu vazio e healthy. `df -h /` 81% antes e
+  depois.
+- **o restore exige duas flags, e uma não estava prevista:** `--no-comments` (o
+  `COMMENT ON EXTENSION pgcrypto` falha sob `--role=formulario`) e `--no-acl` (o dump do Neon
+  carrega ACL para `cloud_admin` e `neon_superuser`, roles inexistentes fora de lá). O remédio
+  previsto de filtrar por `pg_restore -l` e `-L` não serviria: `--list` não mostra entradas de
+  ACL. `DADOS-E-APIS.md` §4 reescrito.
+- **AC-06.** `backup.sh`, `restore-drill.sh` e `contar-tabelas.sh` em
+  `deploy/vps/formulario-db/`; cron diário 03:15 com `ops-alert.sh` em falha (crontab salvo antes
+  em `~/backups/crontab.bak.20260919T072922Z`); primeira execução real exit 0 no ambiente enxuto
+  do cron, deixando `.dump.age`, `.sha256` e `.resumo` em 600 dentro de um diretório 700, sem
+  `.dump` em claro; drill real com 806 linhas e diff vazio (2,2 s); byte trocado no dump derruba
+  o drill no `sha256sum -c` com exit 2; alerta provado na ponta, execução `193163` do workflow
+  `OPS - alert (email Yan)` com `status=success` no instante da falha forçada. `df -h /` 81%.
+- **lacuna de chave confirmada:** a privada `age` não está na VPS, só a recipient pública. Por
+  isso o drill diário roda dentro do `backup.sh`, sobre o dump em claro, antes de cifrar, e o
+  caminho do `.dump.age` exige `AGE_IDENTITY`. R1 (offsite) segue aberto. `DADOS-E-APIS.md` §6
+  reescrito; runbook em `deploy/vps/README.md`.
+- **invariante nova para a F6:** depois da F5, um backup com `0 tabelas` passaria verde, porque o
+  drill compara o dump com o resumo do próprio dump. Gate não construído (fora do AC-06);
+  registrado na WO-004 como lacuna nomeada.
