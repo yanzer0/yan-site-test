@@ -1088,7 +1088,7 @@ function UpsellModal({ open, onClose }: { open: boolean; onClose: () => void }) 
 
         <div className="flex items-baseline justify-center gap-2.5">
           <span className="font-mono text-[15px] text-zinc-500 line-through">R$147</span>
-          <span className="font-punch text-[42px] sm:text-[48px] font-extrabold leading-none tracking-tight text-gradient-green">R$97</span>
+          <span className="font-punch text-[42px] sm:text-[48px] font-extrabold leading-none tracking-tight text-gradient-green">R$84</span>
         </div>
         <div className="font-mono text-[11px] text-green-400 mb-1">R$50 de desconto &middot; só R$30 a mais que o Básico</div>
         <div className="font-mono text-[10.5px] text-zinc-500 mb-4">Só nesta tela &middot; Pagamento único</div>
@@ -1104,7 +1104,7 @@ function UpsellModal({ open, onClose }: { open: boolean; onClose: () => void }) 
           href={CHECKOUT_PREMIUM_POPUP_URL}
           className="group flex w-full items-center justify-center gap-2 whitespace-nowrap rounded-xl bg-green-500 px-4 py-3.5 text-[15px] font-extrabold tracking-tight text-black shadow-[0_0_25px_rgba(168,232,76,0.2)] transition-all duration-200 hover:bg-green-400 hover:-translate-y-0.5 hover:shadow-[0_0_45px_rgba(168,232,76,0.4)] sm:px-5 sm:text-base"
         >
-          Quero o Premium por R$97 <span className="transition-transform duration-200 group-hover:translate-x-1">&rarr;</span>
+          Quero o Premium por R$84 <span className="transition-transform duration-200 group-hover:translate-x-1">&rarr;</span>
         </a>
         <p className="font-mono text-[10.5px] text-zinc-500 mt-2.5">Sem assinatura &middot; Nada sai do seu computador</p>
         <a
@@ -1171,7 +1171,7 @@ function PricingSection() {
               Se mantém sozinho
             </div>
             <div className="font-mono text-[11px] uppercase tracking-[0.24em] text-green-300/80 mb-3.5">Premium</div>
-            <div className="font-punch text-[52px] font-extrabold leading-none tracking-tight text-gradient-green mb-2.5">R$147</div>
+            <div className="font-punch text-[52px] font-extrabold leading-none tracking-tight text-gradient-green mb-2.5">R$97</div>
             <p className="text-sm leading-relaxed text-zinc-400 mb-1.5">O mesmo cérebro, mas ele se atualiza a cada sessão, lembra o que você corrigiu e se instala sozinho. Você só conversa.</p>
             <div className="mx-auto my-5 h-px w-[46px] bg-white/15" />
             <ul className="mb-7 flex flex-col gap-2.5 text-left">
