@@ -1035,8 +1035,8 @@ function ValueItem({ t, d, size = "sm" }: { t: string; d: string; size?: "sm" | 
   );
 }
 
-/* Pop-up: aparece ao clicar no Basico. Oferece o Premium (R$147) por R$97, ou seja,
-   R$30 a mais que o Basico de R$67. Esse checkout de R$97 so existe aqui. */
+/* Pop-up: aparece ao clicar no Basico. Oferece o Premium (R$97 no card) por R$84, ou seja,
+   R$17 a mais que o Basico de R$67. Esse checkout de R$84 so existe aqui. */
 function UpsellModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   const primaryRef = useRef<HTMLAnchorElement>(null);
 
@@ -1080,17 +1080,17 @@ function UpsellModal({ open, onClose }: { open: boolean; onClose: () => void }) 
 
         <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-green-400 mb-2">Antes de fechar o Básico</div>
         <h3 id="upsell-titulo" className="font-heading text-[22px] sm:text-[24px] font-extrabold leading-[1.12] tracking-tight mb-2">
-          Por mais R$30, ele se mantém sozinho.
+          Por mais R$17, ele se mantém sozinho.
         </h3>
         <p className="text-[13.5px] leading-relaxed text-zinc-400 mb-4">
           O Básico depende de você manter índice e pendências em dia. É assim que todo segundo cérebro morre: esquecido. O Premium faz isso sozinho, toda sessão.
         </p>
 
         <div className="flex items-baseline justify-center gap-2.5">
-          <span className="font-mono text-[15px] text-zinc-500 line-through">R$147</span>
+          <span className="font-mono text-[15px] text-zinc-500 line-through">R$97</span>
           <span className="font-punch text-[42px] sm:text-[48px] font-extrabold leading-none tracking-tight text-gradient-green">R$84</span>
         </div>
-        <div className="font-mono text-[11px] text-green-400 mb-1">R$50 de desconto &middot; só R$30 a mais que o Básico</div>
+        <div className="font-mono text-[11px] text-green-400 mb-1">R$13 de desconto &middot; só R$17 a mais que o Básico</div>
         <div className="font-mono text-[10.5px] text-zinc-500 mb-4">Só nesta tela &middot; Pagamento único</div>
 
         <ul className="mb-4 flex flex-col gap-1.5 text-left sm:mb-5 sm:gap-[7px]">
