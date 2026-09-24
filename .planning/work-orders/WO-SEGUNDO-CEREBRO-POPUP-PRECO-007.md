@@ -1,6 +1,6 @@
 ---
 work_order: WO-SEGUNDO-CEREBRO-POPUP-PRECO-007
-status: active
+status: complete
 central_branch: fix/segundo-cerebro-popup-preco
 owner: Claude
 authorized_by: Yan
@@ -21,7 +21,7 @@ scope_lock:
     background_jobs: []
   acceptance_ids: [SPP-S01, SPP-S02]
   stop_when: [SPP-S01, SPP-S02]
-  passed_acceptance_ids: []
+  passed_acceptance_ids: [SPP-S01, SPP-S02]
 ---
 
 # Pop-up do Premium com a conta certa do preço novo
@@ -38,3 +38,11 @@ Básico". Checkouts da Hubla conferidos em 24/09: Básico R$67, Premium R$97, po
 - SPP-S01: pop-up mostra R$97 riscado, R$84, "R$13 de desconto · só R$17 a mais que o Básico" e
   título "Por mais R$17, ele se mantém sozinho."; nenhum R$147 nem R$30 sobra no pop-up.
 - SPP-S02: build passa e o site em produção mostra o pop-up corrigido depois do deploy.
+
+## Evidência
+
+- SPP-S01: `8a82dd8`, único R$147/R$30 restante saiu do `UpsellModal`.
+- SPP-S02: `deploy/vps/deploy.sh` na VPS com EXIT=0, "useinfuser-site release 8a82dd834d43 is
+  healthy". Pop-up lido ao vivo em `useinfuser.com/kit-segundo-cerebro` (24/09): "Por mais R$17,
+  ele se mantém sozinho.", R$97 riscado, R$84, "R$13 de desconto · só R$17 a mais que o Básico".
+  Mobile 375 sem overflow.
