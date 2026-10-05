@@ -1,6 +1,6 @@
 ---
 work_order: WO-GUIA-99-COMANDOS-URL-001
-status: active
+status: complete
 central_branch: main
 owner: Claude
 authorized_by: Yan
@@ -24,7 +24,7 @@ scope_lock:
     background_jobs: []
   acceptance_ids: [G99-S01, G99-S02]
   stop_when: [G99-S01, G99-S02]
-  passed_acceptance_ids: []
+  passed_acceptance_ids: [G99-S01, G99-S02]
 ---
 
 # Guia dos 99 comandos em /99comandos
@@ -40,3 +40,9 @@ mesmo arquivo; og:url passa a apontar pra /99comandos.
 
 - G99-S01: `/99comandos` e `/guia-99-comandos` respondem 200 com o guia nos dois hosts.
 - G99-S02: deploy na VPS saudável (`/api/health` + smoke).
+
+## Evidência
+
+- G99-S01: curl em 05/10/2026, `useinfuser.com` e `www.useinfuser.com`, `/99comandos` e
+  `/guia-99-comandos`: 200 com o título do guia; 99 linhas `.cmd` na página servida.
+- G99-S02: `deploy/vps/deploy.sh` na VPS com EXIT=0, "useinfuser-site release 06113e46e569 is healthy".
