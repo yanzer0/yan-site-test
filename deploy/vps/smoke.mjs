@@ -10,6 +10,7 @@ const publicPaths = [
   "/comunidade",
   "/diagnostico",
   "/demodome",
+  "/guia-99-comandos",
   "/guia-agentes",
   "/guia-comandos-gpt",
   "/guia-gpt6-astra",
