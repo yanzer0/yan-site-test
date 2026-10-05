@@ -1,6 +1,6 @@
 ---
 work_order: WO-GATE-INVESTIMENTO-FAIXAS-001
-status: active
+status: complete
 central_branch: feat/gate-investimento-faixas
 owner: Claude
 authorized_by: Yan
@@ -29,7 +29,7 @@ scope_lock:
     background_jobs: []
   acceptance_ids: [GIF-S01, GIF-S02, GIF-S03]
   stop_when: [GIF-S01, GIF-S02, GIF-S03]
-  passed_acceptance_ids: []
+  passed_acceptance_ids: [GIF-S01, GIF-S02, GIF-S03]
 ---
 
 # Gate de investimento por faixa
@@ -49,3 +49,12 @@ enunciado que não presuma um processo só, e cortes calibrados pelo `pricing.md
 - GIF-S03: deploy em produção e a pergunta nova lida ao vivo em `useinfuser.com/diagnostico`.
 
 ## Evidência
+
+- GIF-S01: `ea1920b`, `VERSAO_PERGUNTAS` 2026-10-05.1, cinco faixas, `nao_cabe` mantido como id da
+  faixa que reprova.
+- GIF-S02: `npx vitest run tests/diagnostico`: 407 passaram, 2 falhas em `contrato-brain.test.ts`
+  e a suíte `auth-painel` sem `pg`, idênticas no base `9fb30e9` sem a mudança (pré-existentes).
+  `tsc --noEmit`: só os 2 erros pré-existentes de `tests/instalar`.
+- GIF-S03: `deploy/vps/deploy.sh` na VPS, EXIT=0, "useinfuser-site release ea1920bcc7af is
+  healthy". Chunk `app/diagnostico/page-*.js` servido em `useinfuser.com` contém o enunciado novo e
+  "Entre R$ 9 mil"; zero ocorrência de "pelo menos R$ 3 mil".
