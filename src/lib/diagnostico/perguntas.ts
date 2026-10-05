@@ -8,16 +8,14 @@
  * SITUAÇÃO. Dor subjetiva, urgência e orçamento ficam para a call, onde o
  * cliente articula em voz alta. Nenhuma pergunta daqui pode violar isso.
  *
- * 🔴 Exceção única, e ela é do Yan (30/08/2026, emenda 1.1.0 da constitution):
+ * 🔴 Exceção única, e ela é do Yan (emendas 1.1.0 de 30/08 e 1.2.0 de 05/10):
  * as duas ÚLTIMAS perguntas da trilha de empresa não qualificam, elas GATEIAM.
- * `tempo_call` e `investimento` não pontuam, não mapeiam para critério do ICP e
- * não perguntam faixa nenhuma: declaram o que a call custa em tempo e o PISO do
- * que a Infuser cobra por projeto, e registram se aquilo cabe. A diferença que
- * sustenta a exceção é que quem nomeia o número somos nós, e ele é LIMIAR, não
- * cotação: não diz quanto o projeto custa, diz abaixo de quanto não há projeto.
- * O risco que a decisão de 25/08 aponta (perguntar orçamento cedo ancora baixo)
- * vem de o CLIENTE jogar um número pequeno, e aqui ele não joga número.
- * Ver `_decisions/2026-08-30-gate-de-tempo-e-investimento-no-formulario.md`.
+ * `tempo_call` e `investimento` não pontuam e não mapeiam para critério do ICP.
+ * `investimento` pergunta FAIXA, com faixas nossas e fechadas: a mais baixa
+ * (abaixo do piso de R$ 3 mil) reprova, as outras passam e chegam à call como
+ * informação para quem conduz. Trocou o sim/não de 30/08 porque sim/não é fácil
+ * de dizer sim (o primeiro lead pelo gate disse sim declarando aperto de caixa).
+ * Ver `_decisions/2026-10-05-gate-de-investimento-por-faixa.md`.
  */
 
 import type { Pergunta, Trilha } from "./tipos";
@@ -27,7 +25,7 @@ import type { Pergunta, Trilha } from "./tipos";
  * Sem ela, resposta antiga fica órfã de significado quando a copy muda.
  * Subir sempre que uma pergunta for adicionada, removida ou tiver opção alterada.
  */
-export const VERSAO_PERGUNTAS = "2026-09-16.1";
+export const VERSAO_PERGUNTAS = "2026-10-05.1";
 
 /** Identificadores estáveis. Reescrever a copy de uma pergunta não pode invalidar histórico. */
 export const P = {
@@ -280,33 +278,33 @@ export const PERGUNTAS: readonly Pergunta[] = [
     ordem: 15,
     trilha: "empresa",
     tipo: "escolha_unica",
-    // 🔴 UM número, e ele é LIMIAR, não cotação (regra do Yan, 30/08).
+    // 🔴 Faixa, e as faixas são NOSSAS (regra do Yan, 05/10).
     //
-    // R$ 3 mil é o piso do que a Infuser cobra por projeto. O que a pergunta
-    // faz é medir disposição contra esse piso, e é só isso que ela pode fazer:
+    // Os cortes são os degraus de setup do `pricing.md` v3: R$ 3 mil é o piso
+    // (Fundação Essencial), 5 e 9 abrem os degraus seguintes, e acima de 12
+    // não há preço de tabela. O lead escolhe entre faixas fechadas, nunca
+    // digita um número: é o que impede o "quanto você tem?" de virar âncora
+    // baixa escrita por ele.
     //
-    //   - NÃO diz quanto o projeto custa, então não é preço antes do
-    //     diagnóstico e não vira âncora que a proposta herda;
-    //   - NÃO cita mensalidade, setup, nome de plano nem degrau da tabela.
-    //     A versão anterior dizia "começa em R$ 3 mil de implantação e R$ 500
-    //     por mês depois", e isso é a ESTRUTURA do SKU (Fundação Essencial)
-    //     exposta na primeira superfície que o lead toca. Limiar é uma linha no
-    //     chão; cotação é a tabela. Só a linha no chão pode aparecer aqui.
+    // O enunciado diz "o que você descreveu", não "esse processo": o lead pode
+    // ter trazido mais de um problema nas respostas anteriores.
     //
-    // Nunca escrever aqui número que não seja o piso do `pricing.md` vivo, e
-    // nunca acrescentar um segundo número: `copy.test.ts` prende os dois lados.
+    // Continua proibido: mensalidade, setup, nome de plano, e qualquer valor
+    // fora destes cortes. `copy.test.ts` prende a lista exata.
     enunciado:
-      "A sua empresa está disposta a investir pelo menos R$ 3 mil para resolver isso?",
+      "Quanto a sua empresa está disposta a investir hoje para resolver o que você descreveu?",
     obrigatoria: true,
     opcoes: [
-      { id: "cabe", rotulo: "Sim, se o resultado justificar" },
-      { id: "cabe_com_aprovacao", rotulo: "Sim, mas preciso aprovar internamente" },
-      // "Hoje não" e não "Não": o lead volta a ser abordável mais para frente,
-      // e o princípio IV diz que ele é dado, não lixo.
+      // Mantém o id da versão sim/não: reprova pelo mesmo motivo, então o
+      // histórico de `nao_cabe` continua comparável entre as duas versões.
       //
       // Sem opção de "não sei": num gate de dinheiro ela é a saída que todo
       // mundo clica para não responder, e o gate deixa de gatear.
-      { id: "nao_cabe", rotulo: "Hoje não" },
+      { id: "nao_cabe", rotulo: "Menos de R$ 3 mil" },
+      { id: "de_3_a_5", rotulo: "Entre R$ 3 mil e R$ 5 mil" },
+      { id: "de_5_a_9", rotulo: "Entre R$ 5 mil e R$ 9 mil" },
+      { id: "de_9_a_12", rotulo: "Entre R$ 9 mil e R$ 12 mil" },
+      { id: "acima_de_12", rotulo: "Mais de R$ 12 mil" },
     ],
   },
   {

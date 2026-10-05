@@ -70,6 +70,6 @@
     "decisaoAusente": "nao_sou_eu",
     "_nota_gates": "Os dois gates sao LISTA DE PERMISSAO e nao de eliminacao, ao contrario dos cortes acima. Motivo: a rota de submissao e publica, e resposta ausente ou desconhecida precisa REPROVAR o gate, nao passar por omissao. Gate que um POST sem o campo atravessa nao e gate.",
     "tempoAceito": ["sim", "so_eu"],
-    "investimentoAceito": ["cabe", "cabe_com_aprovacao"]
+    "investimentoAceito": ["de_3_a_5", "de_5_a_9", "de_9_a_12", "acima_de_12"]
   }
 }

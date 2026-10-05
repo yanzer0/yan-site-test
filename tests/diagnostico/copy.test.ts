@@ -151,37 +151,49 @@ describe("nunca dizer que o material foi gerado por IA", () => {
 
 describe("principio I: nenhum preco antes do diagnostico", () => {
   /**
-   * 🔴 Regra amendada em 30/08 (constitution 1.1.0, decisão do Yan).
+   * 🔴 Regra amendada em 30/08 (constitution 1.1.0) e em 05/10 (1.2.0),
+   * decisões do Yan.
    *
    * Antes: nenhuma pergunta podia citar valor. Agora: UMA pode, e só ela, e só
-   * o piso verificado. O guard ficou mais apertado do lado que importa, porque
-   * agora ele também prende o NÚMERO: mudar o piso sem passar pela tabela viva
-   * reprova aqui.
+   * com os cortes da tabela viva. O guard prende os NÚMEROS: mudar a tabela sem
+   * passar por aqui reprova.
    */
   it("so a pergunta-gate de investimento cita valor", () => {
-    const comValor = PERGUNTAS.filter((p) => /r\$|reais/i.test(p.enunciado));
+    const comValor = PERGUNTAS.filter((p) =>
+      /r\$|reais/i.test([p.enunciado, ...(p.opcoes ?? []).map((o) => o.rotulo)].join(" ")),
+    );
     expect(comValor.map((p) => p.id)).toEqual([P.INVESTIMENTO]);
   });
 
-  it("o gate cita UM numero, e ele e o piso: limiar, nunca cotacao", () => {
-    // Regra do Yan, 30/08: a pergunta mostra que existe custo e onde está o
-    // chão, e não quanto o projeto custa. Um segundo número transforma limiar
-    // em cotação, porque passa a descrever a ESTRUTURA do que se cobra. Foi
-    // exatamente o que a primeira versão fez ao dizer "R$ 3 mil de implantação
-    // e R$ 500 por mês", que é a Fundação Essencial exposta antes da Call 1.
+  it("o gate cita so os cortes da tabela, e o enunciado nao cita numero", () => {
+    // Regra do Yan, 05/10: a pergunta é de FAIXA, e as faixas são nossas. Os
+    // cortes são os degraus de setup do `pricing.md` v3 (3, 5, 9, 12). Mudar a
+    // tabela sem passar por aqui reprova.
     //
     // Lista fechada, e não busca por proibido: assim reprova QUALQUER número
     // novo ou alterado, inclusive um que ninguém pensou em proibir.
-    const gate = PERGUNTAS.find((p) => p.id === P.INVESTIMENTO)?.enunciado ?? "";
-    const valores = gate.match(/R\$\s?[\d.,]+(?:\s?mil)?/g) ?? [];
-    expect(valores).toEqual(["R$ 3 mil"]);
+    const gate = PERGUNTAS.find((p) => p.id === P.INVESTIMENTO);
+    const valor = /R\$\s?[\d.,]+(?:\s?mil)?/g;
+    expect(gate?.enunciado.match(valor) ?? []).toEqual([]);
+    const nasOpcoes = (gate?.opcoes ?? []).flatMap((o) => o.rotulo.match(valor) ?? []);
+    expect([...new Set(nasOpcoes)]).toEqual(["R$ 3 mil", "R$ 5 mil", "R$ 9 mil", "R$ 12 mil"]);
+  });
+
+  it("o gate nao presume um processo so", () => {
+    // O lead pode ter trazido mais de um problema. "esse processo" no gate
+    // de dinheiro mede disposição para uma parte do que ele descreveu.
+    const gate = (PERGUNTAS.find((p) => p.id === P.INVESTIMENTO)?.enunciado ?? "").toLowerCase();
+    expect(gate).not.toContain("esse processo");
   });
 
   it("o gate nao descreve estrutura de cobranca", () => {
     // Mensalidade, setup, nome de plano e degrau continuam banidos da
-    // superfície inteira: é o princípio I, e a emenda 1.1.0 abriu exceção
-    // só para o piso.
-    const gate = (PERGUNTAS.find((p) => p.id === P.INVESTIMENTO)?.enunciado ?? "").toLowerCase();
+    // superfície inteira (princípio I). As emendas abriram exceção só para os
+    // cortes de faixa, no enunciado e nas opções.
+    const gate = PERGUNTAS.find((p) => p.id === P.INVESTIMENTO);
+    const texto = [gate?.enunciado ?? "", ...(gate?.opcoes ?? []).map((o) => o.rotulo)]
+      .join(" ")
+      .toLowerCase();
     for (const estrutura of [
       "por mês",
       "mensal",
@@ -192,7 +204,7 @@ describe("principio I: nenhum preco antes do diagnostico", () => {
       "fundação",
       "recorrência",
     ]) {
-      expect(gate, `o gate virou cotação ao citar "${estrutura}"`).not.toContain(estrutura);
+      expect(texto, `o gate virou cotação ao citar "${estrutura}"`).not.toContain(estrutura);
     }
   });
 

@@ -12,19 +12,19 @@ A venda tem duas conversas. A Call 1 é diagnóstico puro: sem demo comercial, s
 
 Nenhuma superfície construída aqui pode exibir faixa de preço, tabela, nome de plano ou promessa de entrega antes do diagnóstico. Isso inclui formulário, e-mail de confirmação, página de agendamento, mensagem automática e o próprio mapa de diagnóstico.
 
-**Exceção única, decidida pelo Yan em 30/08/2026 (emenda 1.1.0): o PISO declarado no gate de investimento do formulário.** O que o princípio protege é o lead entrar na Call 1 com uma faixa na cabeça, e faixa é o que ancora. Um piso não ancora: ele não diz quanto o projeto vai custar, diz abaixo de quanto não existe projeto.
+**Exceção única, decidida pelo Yan (emenda 1.1.0 de 30/08/2026, reescrita pela 1.2.0 de 05/10/2026): o gate de investimento do formulário pergunta FAIXA.** As faixas são nossas e fechadas, com os cortes exatos dos degraus de setup do `pricing.md` (R$ 3, 5, 9 e 12 mil). A mais baixa, abaixo do piso, reprova. O lead escolhe entre elas, nunca digita um número.
 
-A exceção é de **limiar, nunca de cotação**, e a fronteira é literal: **um número só, e nada que descreva como se cobra.** Mensalidade, setup, nome de plano, degrau e faixa continuam proibidos em toda superfície, a pergunta incluída. Dois números já descrevem a estrutura do SKU, e estrutura é tabela: a primeira versão desta pergunta dizia "começa em R$ 3 mil de implantação e R$ 500 por mês depois", que é a Fundação Essencial inteira exposta antes do diagnóstico, e foi corrigida no mesmo dia. O guard `copy.test.ts` prende os dois lados: o valor exato (mudar o piso sem passar pelo `pricing.md` reprova) e o vocabulário de estrutura.
+O que continua proibido em toda superfície, a pergunta incluída: mensalidade, setup, nome de plano, e qualquer valor fora desses cortes. O guard `copy.test.ts` prende a lista exata de valores e o vocabulário de estrutura.
 
-Fonte: `_knowledge/comercial/direcionamento-estrategico.md` (decisão de 02/08/2026), `_empresa/identidade/pricing.md` (política v3, princípio 2) e `_decisions/2026-08-30-gate-de-tempo-e-investimento-no-formulario.md`.
+Fonte: `_knowledge/comercial/direcionamento-estrategico.md` (decisão de 02/08/2026), `_empresa/identidade/pricing.md` (política v3, princípio 2), `_decisions/2026-08-30-gate-de-tempo-e-investimento-no-formulario.md` e `_decisions/2026-10-05-gate-de-investimento-por-faixa.md`.
 
 ### II. Qualificação é GPCT, nunca BANT
 
 Por texto se pergunta situação: processo, volume, fontes de informação, tentativas anteriores, decisor. Dor, número e urgência ficam para a call, porque o valor está no cliente articular em voz alta.
 
-**Nunca se pede ao lead que ele nomeie uma faixa, um valor ou um orçamento.** É essa a regra, e ela não tem exceção: número dito pelo cliente antes do custo da dor prende a proposta inteira nele, que é o risco 3 da decisão de 25/08/2026.
+**Nunca se pede ao lead que ele nomeie um valor ou um orçamento em campo aberto.** Número digitado pelo cliente antes do custo da dor prende a proposta nele, que é o risco 3 da decisão de 25/08/2026.
 
-O que a emenda 1.1.0 permitiu é o movimento inverso, e só ele: **nós declaramos o piso e perguntamos se cabe**, em pergunta que não pontua e existe só para gatear a agenda gratuita. Quem nomeia o número somos nós.
+A única pergunta de dinheiro é o gate de investimento (princípio I): faixas fechadas definidas por nós, em pergunta que não pontua. A faixa declarada chega à Call 1 como informação para quem conduz, nunca como preço da proposta.
 
 Toda pergunta nova que PONTUA precisa passar no teste original: ela coleta situação verificável, ou está tentando extrair dor e verba por escrito? Se for a segunda, não entra. Pergunta pontuável com valor em dinheiro é reprovada por `perguntas.test.ts`.
 
@@ -32,7 +32,7 @@ Fonte: `_knowledge/comercial/abordagem-leads-dm.md`, seção "Questionário pré
 
 ### II-b. Gate de compromisso não é critério de qualificação
 
-Existem dois gates, e eles são de natureza diferente do score: **tempo** (a hora que a call custa) e **investimento** (o piso que o projeto custa). Eles não pontuam, não mapeiam para critério do ICP e não entram no cálculo. Reprovam.
+Existem dois gates, e eles são de natureza diferente do score: **tempo** (a hora que a call custa) e **investimento** (a faixa que a empresa declara, com corte no piso). Eles não pontuam, não mapeiam para critério do ICP e não entram no cálculo. Reprovam.
 
 Três regras que os governam:
 
@@ -40,7 +40,7 @@ Três regras que os governam:
 2. **Quem reprova sai da agenda gratuita, nunca do funil.** Fica gravado com respostas, score e motivo, como todo lead (princípio IV), e recebe alternativa honesta sem ler veredito sobre o próprio encaixe (FR-017).
 3. **A alternativa corresponde ao que ele disse que não tem.** Quem declarou não ter a hora não recebe oferta de reunião paga: seria devolver o obstáculo com preço. Recebe o produto que usa sozinho.
 
-Fonte: `_decisions/2026-08-30-gate-de-tempo-e-investimento-no-formulario.md`.
+Fonte: `_decisions/2026-08-30-gate-de-tempo-e-investimento-no-formulario.md` e `_decisions/2026-10-05-gate-de-investimento-por-faixa.md`.
 
 ### III. O score é derivado do ICP, e o ICP é uma tabela, não uma intuição
 
@@ -122,6 +122,18 @@ Todo pull request declara quais princípios ele toca e como os respeita.
 
 ## Emendas
 
+### 1.2.0 (2026-10-05) - gate de investimento por faixa
+
+**O que muda:** a pergunta 15 deixa de ser sim/não sobre o piso e vira escolha entre faixas: Menos de R$ 3 mil (reprova), Entre R$ 3 mil e R$ 5 mil, Entre R$ 5 mil e R$ 9 mil, Entre R$ 9 mil e R$ 12 mil, Mais de R$ 12 mil. Enunciado: "Quanto a sua empresa está disposta a investir hoje para resolver o que você descreveu?". Princípios I, II e II-b reescritos.
+
+**Por que muda:** sim/não é fácil de dizer sim. O primeiro lead pelo gate de 30/08 marcou "sim" no mesmo formulário em que declarou aperto de caixa. Faixa discrimina mais e já informa quem conduz a call.
+
+**O que foi recusado, e por quê:** ancorar a pergunta no custo da dor. O formulário não sabe esse número (dor e número ficam para a call), então a âncora seria genérica. O enunciado também não diz "esse processo", porque o lead pode ter trazido mais de um problema.
+
+**Risco assumido:** o lead que marca a faixa mais baixa que passa pode puxar a proposta para baixo, contra a regra de ancorar no escopo máximo. Mitigação: a faixa é informação de condução, e a âncora da Call 2 continua sendo a soma do escopo.
+
+**Qual fonte do brain mudou junto:** `_decisions/2026-10-05-gate-de-investimento-por-faixa.md`. `pricing.md` não mudou: os cortes são os degraus que já estão lá.
+
 ### 1.1.0 (2026-08-30) - gate de tempo e de investimento no formulário
 
 **O que muda:** o formulário passa a ter duas perguntas de compromisso no fim da trilha de empresa, e a segunda declara o piso de investimento. Novo princípio II-b. Exceção nomeada no princípio I. Princípio II reescrito para separar "o lead nomeia um número" (proibido, sem exceção) de "nós declaramos o piso" (permitido, só no gate).
@@ -136,4 +148,4 @@ Todo pull request declara quais princípios ele toca e como os respeita.
 
 **Risco assumido, declarado:** o lead passa a conhecer o piso antes da Call 1. É piso e não faixa, mas é preço, e o princípio I existia justamente para não haver nenhum. Sinal de reavaliação: taxa de abandono na pergunta 15 e proporção de leads que reprovam só o gate de dinheiro.
 
-**Version**: 1.1.0 | **Ratified**: 2026-08-14 | **Last Amended**: 2026-08-30
+**Version**: 1.2.0 | **Ratified**: 2026-08-14 | **Last Amended**: 2026-10-05

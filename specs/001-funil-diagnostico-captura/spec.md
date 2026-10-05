@@ -126,7 +126,7 @@ Um visitante responde metade das perguntas e sai. O que ele já respondeu é pre
 **Perguntas e ramificação**
 
 - **FR-005**: O sistema MUST cobrir os 6 critérios de entrada do ICP com pelo menos uma pergunta cada: operação existente, consequência observável quando o processo falha, onde a informação está, quem responde pelo processo, quem mais decide, e disposição de dar acesso e tempo do time.
-- **FR-006**: O sistema MUST NOT perguntar orçamento, faixa de investimento, ou qualquer variação de "quanto você pretende investir".
+- **FR-006**: O sistema MUST NOT pedir orçamento ou valor em campo aberto. A única pergunta de dinheiro é o gate de investimento (constitution 1.2.0): escolha entre faixas fechadas com os cortes do `pricing.md`, a mais baixa reprovando.
 - **FR-007**: O sistema MUST NOT perguntar dor subjetiva, urgência, ou "o que te fez procurar a gente agora". Esses ficam para a call.
 - **FR-008**: O sistema MUST ramificar: quem declara uso pessoal segue caminho curto de não-ICP e nunca vê agendamento.
 - **FR-009**: O sistema MUST coletar nome, empresa, papel na empresa, WhatsApp com DDD, e-mail e origem declarada.

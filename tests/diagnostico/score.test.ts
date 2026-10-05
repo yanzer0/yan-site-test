@@ -25,7 +25,7 @@ function respostas(sobrescreve: Record<string, string | string[]> = {}): Respost
     // Os gates passam por padrão na fixture: ela representa uma submissão
     // COMPLETA, e cada teste de pontuação abaixo mede pontuação, não gate.
     [P.TEMPO_CALL]: "sim",
-    [P.INVESTIMENTO]: "cabe",
+    [P.INVESTIMENTO]: "de_3_a_5",
     ...sobrescreve,
   };
 }
@@ -176,10 +176,19 @@ describe("gates de tempo e investimento", () => {
     expect(r.motivoCorte).toBeNull();
   });
 
-  it("cabe com aprovacao interna PASSA no gate de investimento", () => {
-    const r = avaliar(excelente({ [P.INVESTIMENTO]: "cabe_com_aprovacao" }), CONFIG);
-    expect(r.faixa).toBe("qualificado");
-    expect(r.motivoCorte).toBeNull();
+  it.each(["de_3_a_5", "de_5_a_9", "de_9_a_12", "acima_de_12"])(
+    "faixa %s PASSA no gate de investimento",
+    (faixa) => {
+      const r = avaliar(excelente({ [P.INVESTIMENTO]: faixa }), CONFIG);
+      expect(r.faixa).toBe("qualificado");
+      expect(r.motivoCorte).toBeNull();
+    },
+  );
+
+  it("a resposta sim/nao da versao anterior nao passa mais", () => {
+    // Lista de permissão: id que saiu do contrato reprova, nunca passa por herança.
+    const r = avaliar(excelente({ [P.INVESTIMENTO]: "cabe" }), CONFIG);
+    expect(r.motivoCorte).toBe(MOTIVOS_CORTE.SEM_INVESTIMENTO);
   });
 
   it("o gate vem ANTES dos cortes de ICP, porque e ele que escolhe a alternativa", () => {
