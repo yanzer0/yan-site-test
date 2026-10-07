@@ -12,6 +12,7 @@ const publicPaths = [
   "/demodome",
   "/99comandos",
   "/guia-99-comandos",
+  "/guiamotion",
   "/guia-agentes",
   "/guia-comandos-gpt",
   "/guia-gpt6-astra",
