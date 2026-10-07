@@ -1,6 +1,6 @@
 ---
 work_order: WO-GUIA-MOTION-URL-001
-status: active
+status: complete
 central_branch: main
 owner: Claude
 authorized_by: Yan
@@ -24,7 +24,7 @@ scope_lock:
     background_jobs: []
   acceptance_ids: [GM-S01, GM-S02]
   stop_when: [GM-S01, GM-S02]
-  passed_acceptance_ids: []
+  passed_acceptance_ids: [GM-S01, GM-S02]
 ---
 
 # Guia de vídeos em motion em /guiamotion
@@ -38,3 +38,8 @@ Yan, 07/10/2026: "suba em useinfuser.com/guiamotion". HTML vindo de `Downloads/g
 
 - GM-S01: `/guiamotion` responde 200 com o guia nos dois hosts.
 - GM-S02: deploy na VPS saudável (`/api/health` + smoke).
+
+## Evidência
+
+- GM-S01: curl em 07/10/2026, `useinfuser.com` e `www.useinfuser.com`, `/guiamotion`: 200 com o título do guia.
+- GM-S02: `deploy/vps/deploy.sh` na VPS com EXIT=0, "useinfuser-site release 7cdaf7c0a6e6 is healthy"; `/api/health` 200.
