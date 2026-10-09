@@ -10,6 +10,9 @@ const nextConfig: NextConfig = {
       // URL que o Yan usa pra se referir a pagina; a canonica (e a dos anuncios)
       // segue sendo /kit-segundo-cerebro.
       { source: "/segundo-cerebro", destination: "/kit-segundo-cerebro", permanent: false },
+      // URL que o desfecho qualificado assume via history (conversão do pixel),
+      // sem página própria. Refresh nela volta ao formulário, com a query.
+      { source: "/diagnostico/qualificado", destination: "/diagnostico", permanent: false },
     ];
   },
   async rewrites() {

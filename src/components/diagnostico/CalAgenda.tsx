@@ -21,9 +21,14 @@ interface CalAgendaProps {
   readonly nome: string;
   readonly email: string;
   readonly aoFalhar: () => void;
+  /**
+   * Chamado quando o Cal.com confirma a reserva. Passe uma referência estável
+   * (função de módulo): o efeito registra o listener de novo a cada troca.
+   */
+  readonly aoAgendar?: () => void;
 }
 
-export function CalAgenda({ link, nome, email, aoFalhar }: CalAgendaProps) {
+export function CalAgenda({ link, nome, email, aoFalhar, aoAgendar }: CalAgendaProps) {
   useEffect(() => {
     let vivo = true;
 
@@ -43,6 +48,8 @@ export function CalAgenda({ link, nome, email, aoFalhar }: CalAgendaProps) {
             light: { "cal-brand": "#C6FF34" },
           },
         });
+
+        if (aoAgendar) cal("on", { action: "bookingSuccessfulV2", callback: aoAgendar });
       } catch {
         // Se o embed não carregar, o lead qualificado NAO pode ver erro cru:
         // cai no caminho alternativo, que preserva o contato (FR-021).
@@ -53,7 +60,7 @@ export function CalAgenda({ link, nome, email, aoFalhar }: CalAgendaProps) {
     return () => {
       vivo = false;
     };
-  }, [aoFalhar]);
+  }, [aoFalhar, aoAgendar]);
 
   return (
     <Cal

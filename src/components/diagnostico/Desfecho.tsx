@@ -10,12 +10,24 @@
  * Os textos são contrato, não copy livre: contracts/score.md.
  */
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import type { Faixa, OfertaAlternativa } from "@/lib/diagnostico/tipos";
 import { CalAgenda } from "./CalAgenda";
 
 const LINK_KIT = "https://useinfuser.com/kit-segundo-cerebro";
+
+// URLs que o GTM usa como conversão do pixel (pedido do Iago, 09/10/2026). A
+// query string vai junto porque é nela que chega o rastreio de origem (?sck=).
+// Só o caminho gratuito usa: o pago divide o evento do Cal.com, e o pixel não
+// pode aprender com quem está fora do ICP.
+const URL_QUALIFICADO = "/diagnostico/qualificado";
+const URL_AGENDADO = "/diagnostico/obrigado";
+
+// De módulo, não inline: referência estável para o listener do Cal.com.
+function irParaObrigado() {
+  window.location.assign(URL_AGENDADO + window.location.search);
+}
 
 interface DesfechoProps {
   readonly faixa: Faixa;
@@ -162,6 +174,15 @@ export function Desfecho({ faixa, nome, processo, email, oferta, urlCal, urlMapa
   const [calFalhou, setCalFalhou] = useState(false);
   const eu = primeiroNome(nome);
 
+  // Troca a URL sem recarregar: a agenda continua na tela e o GTM vê a troca
+  // como "Alteração no histórico". Refresh aqui volta para /diagnostico
+  // (redirect em next.config.ts), nunca 404.
+  useEffect(() => {
+    if (faixa === "qualificado" && window.location.pathname !== URL_QUALIFICADO) {
+      window.history.replaceState(null, "", URL_QUALIFICADO + window.location.search);
+    }
+  }, [faixa]);
+
   if (faixa === "qualificado") {
     // O embed oficial quer `usuario/evento`, não a URL inteira. Nome e e-mail
     // vão pela config do componente, não na query string.
@@ -182,6 +203,7 @@ export function Desfecho({ faixa, nome, processo, email, oferta, urlCal, urlMapa
               nome={nome}
               email={email}
               aoFalhar={() => setCalFalhou(true)}
+              aoAgendar={irParaObrigado}
             />
           </div>
         ) : (

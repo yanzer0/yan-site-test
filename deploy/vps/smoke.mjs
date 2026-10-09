@@ -9,6 +9,7 @@ const publicPaths = [
   "/club",
   "/comunidade",
   "/diagnostico",
+  "/diagnostico/obrigado",
   "/demodome",
   "/99comandos",
   "/guia-99-comandos",
@@ -144,6 +145,10 @@ await check("/diagnostico/pago", [200]);
 await check("/icon.svg", [200]);
 await check("/segundo-cerebro", [307]);
 await check("/legiaodeagentes", [307]);
+const qualificado = await check("/diagnostico/qualificado?sck=smoke", [307]);
+if (!qualificado.response.headers.get("location")?.endsWith("/diagnostico?sck=smoke")) {
+  throw new Error("/diagnostico/qualificado: redirect lost the destination or the query");
+}
 await check("/__smoke_missing__", [404]);
 
 console.log(JSON.stringify({ ok: true, baseUrl: baseUrl.origin, checks }, null, 2));
