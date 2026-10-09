@@ -13,6 +13,7 @@ const publicPaths = [
   "/99comandos",
   "/guia-99-comandos",
   "/guiamotion",
+  "/guiacarrossel",
   "/guia-agentes",
   "/guia-comandos-gpt",
   "/guia-gpt6-astra",
