@@ -1,6 +1,6 @@
 ---
 work_order: WO-DIAGNOSTICO-TRACKING-URLS-001
-status: active
+status: complete
 central_branch: claude/tracking-diagnostico
 owner: Claude
 authorized_by: Yan
@@ -30,7 +30,7 @@ scope_lock:
     background_jobs: []
   acceptance_ids: [TRK-S01, TRK-S02, TRK-S03, TRK-S04]
   stop_when: [TRK-S01, TRK-S02, TRK-S03, TRK-S04]
-  passed_acceptance_ids: [TRK-S01, TRK-S02, TRK-S03]
+  passed_acceptance_ids: [TRK-S01, TRK-S02, TRK-S03, TRK-S04]
 ---
 
 # URLs de conversão do funil de diagnóstico
@@ -77,3 +77,4 @@ Build de produção local (`next start -p 3021`), 09/10/2026. Nenhum lead nem re
 - TRK-S03: `curl /diagnostico/qualificado?sck=123_456` → `307`, `location: /diagnostico?sck=123_456`.
 - Testes: `vitest run` 433 passaram, 3 falharam (`contrato-brain` x2, `instalar` x1, mais a suíte
   `validate-env`); as mesmas 3 falham com o diff guardado em stash, então não são desta ordem.
+- TRK-S04: build local exit 0 e eslint limpo nos arquivos tocados. Deploy na VPS em 09/10/2026: `deploy/vps/deploy.sh` EXIT=0, "useinfuser-site release 2a8266f3a92a is healthy", smoke com `/diagnostico/obrigado` 200 e `/diagnostico/qualificado?sck=smoke` 307. De fora: `https://useinfuser.com/diagnostico/obrigado` com h1 e noindex; `/diagnostico/qualificado?sck=abc_123` 307 para `/diagnostico?sck=abc_123`.
