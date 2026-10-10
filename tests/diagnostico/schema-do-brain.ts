@@ -33,10 +33,13 @@ export const REQUIRED_FIELDS = [
 export const ENUM_STATUS = new Set([
   "call-marcada",
   "diagnostico-feito",
+  "material-pronto",
   "proposta-enviada",
+  "follow-up",
   "fechado-aguardando-pagamento",
   "ativo",
   "concluido",
+  "perdido-stand-by",
 ]);
 
 export const ENUM_ORIGEM = new Set([
@@ -49,7 +52,7 @@ export const ENUM_ORIGEM = new Set([
   "outro",
 ]);
 
-export const ENUM_MODELO = new Set(["recorrencia", "one-shot", "indefinido"]);
+export const ENUM_MODELO = new Set(["recorrencia", "one-shot", "indefinido", "parceria"]);
 
 interface SchemaDoBrain {
   readonly REQUIRED_FIELDS: readonly string[];

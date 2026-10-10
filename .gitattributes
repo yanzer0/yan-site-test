@@ -1,0 +1,4 @@
+# Textos sempre em LF, inclusive no Windows com core.autocrlf=true. O git já guarda
+# tudo em LF; sem esta linha o checkout no Windows troca para CRLF e quebra teste que
+# lê bytes (hash do logo, shebang do validate-env.mjs, template do mapa).
+* text=auto eol=lf
