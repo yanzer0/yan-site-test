@@ -173,11 +173,6 @@ b,strong{font-weight:700;color:var(--warm)}
 .steps li span{font-size:16px;color:var(--warm)}
 
 /* provas / outputs */
-.proof-card{background:var(--onyx);border:1px solid var(--line);border-radius:var(--r);padding:24px 26px;margin-top:16px}
-.proof-card .tag{font-family:var(--font-mono);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--teal-1);margin-bottom:10px;display:block}
-.proof-card .score{font-family:var(--font-mono);font-size:13px;color:var(--lime);margin-bottom:8px}
-.proof-card blockquote{margin:0;font-family:var(--font-display);font-weight:600;font-size:17px;line-height:1.46;color:var(--warm);letter-spacing:-.005em}
-.proof-card footer{margin-top:10px;font-size:14px;color:var(--faint)}
 
 /* depoimentos */
 .testi{display:grid;grid-template-columns:1fr;gap:14px;margin-top:36px}
@@ -358,6 +353,43 @@ footer p{font-size:13px;color:var(--faint)}
 .shot figcaption{padding:14px 18px;font-size:14px;line-height:1.5;color:var(--muted);text-align:left;border-top:1px solid var(--line-2)}
 .shot-row{display:grid;gap:16px}
 @media (min-width:760px){.shot-row{grid-template-columns:1fr 1fr}}
+/* prova: chat animado dos agentes (casos de demonstração) */
+.dm-seal{margin-top:14px;font-size:13px;color:var(--faint)}
+.dm{margin-top:28px;text-align:left}
+.dm-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.dm-tab{font-family:var(--font-mono);font-size:12px;padding:8px 13px;border-radius:var(--r-full);cursor:pointer;background:var(--onyx);border:1px solid var(--line);color:var(--muted);transition:color .15s,border-color .15s,background .15s}
+.dm-tab:hover{color:var(--warm);border-color:rgba(198,255,52,.4)}
+.dm-tab[aria-selected="true"]{background:rgba(198,255,52,.1);border-color:var(--lime);color:var(--lime)}
+.dm-tab:focus-visible,.dm-replay:focus-visible{outline:2px solid var(--lime);outline-offset:2px}
+.dm-window{background:var(--onyx);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.dm-bar{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--line-2)}
+.dm-dot{width:9px;height:9px;border-radius:50%;background:var(--lime);box-shadow:0 0 10px rgba(198,255,52,.6);flex:none}
+.dm-name{font-family:var(--font-display);font-weight:700;font-size:14.5px;color:var(--warm)}
+.dm-tag{margin-left:auto;white-space:nowrap;font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--teal-1)}
+.dm-chat{height:460px;overflow-y:auto;padding:18px 16px;display:flex;flex-direction:column;gap:12px;scroll-behavior:smooth}
+.dm-row{display:flex}
+.dm-user{justify-content:flex-end}
+.dm-bub{max-width:84%;padding:11px 14px;border-radius:14px;font-size:14.5px;line-height:1.55;white-space:pre-wrap;color:var(--warm)}
+.dm-user .dm-bub{background:rgba(198,255,52,.07);border:1px solid rgba(198,255,52,.22);border-radius:14px 14px 4px 14px}
+.dm-agent .dm-bub{background:var(--carbon);border:1px solid var(--line);border-radius:14px 14px 14px 4px}
+.dm-agent .dm-diagnostico{border-left:3px solid var(--teal-1)}
+.dm-agent .dm-output{border-color:rgba(198,255,52,.55);background:rgba(198,255,52,.05)}
+.dm-who{display:block;margin-bottom:4px;font-family:var(--font-mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
+.dm-output .dm-who{color:var(--lime)}
+.dm-diagnostico .dm-who{color:var(--teal-1)}
+.dm-typing{display:inline-flex;gap:4px;padding:13px 15px;background:var(--carbon);border:1px solid var(--line);border-radius:14px}
+.dm-typing span{width:7px;height:7px;border-radius:50%;background:var(--muted);animation:dmBlink 1.2s infinite}
+.dm-typing span:nth-child(2){animation-delay:.2s}
+.dm-typing span:nth-child(3){animation-delay:.4s}
+@keyframes dmBlink{0%,60%,100%{opacity:.25;transform:translateY(0)}30%{opacity:1;transform:translateY(-3px)}}
+.dm-proves{margin-top:14px;font-size:14px;line-height:1.6;color:var(--muted)}
+.dm-proves b{color:var(--warm)}
+.dm-controls{margin-top:14px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.dm-replay{font-family:var(--font-body);font-size:13.5px;font-weight:700;padding:9px 18px;border-radius:var(--r-full);border:1px solid var(--lime);background:transparent;color:var(--lime);cursor:pointer}
+.dm-replay:hover{background:rgba(198,255,52,.1)}
+.dm-hint{font-size:12.5px;color:var(--faint)}
+@media (max-width:560px){.dm-chat{height:430px;padding:14px 12px}.dm-bub{max-width:92%;font-size:14px}}
+@media (prefers-reduced-motion:reduce){.dm-chat{scroll-behavior:auto}.dm-typing span{animation:none}}
 </style>
 </head>
 <body>
@@ -516,26 +548,79 @@ footer p{font-size:13px;color:var(--faint)}
   <div class="wrap">
     <span class="eyebrow">Prova</span>
     <h2 class="punch" style="margin-top:14px">Não vou pedir pra confiar. <span class="accent">Vou mostrar o agente trabalhando.</span></h2>
-    <p class="muted" style="display:block;margin-top:16px;font-size:16px;line-height:1.6">A maioria dos pacotes te mostra print de depoimento. Aqui embaixo é o que SAI: outputs reais dos agentes, casos de demonstração, pra você ver o nível antes de comprar.</p>
+    <p class="muted" style="display:block;margin-top:16px;font-size:16px;line-height:1.6">A maioria dos pacotes te mostra print de depoimento. Aqui embaixo você vê o agente conduzindo a conversa: pergunta o que falta, diagnostica e entrega, sem inventar prova.</p>
 
-    <div class="proof-card">
-      <span class="tag">Output · Auditor de Conta Meta</span>
-      <div class="score">Score: 48/100</div>
-      <blockquote>A conta não está pronta pra escalar. Gargalo dominante: o sinal. O Gerenciador conta 6 compras, o checkout conta 11. Cerca de 45% das vendas não chegam ao otimizador.</blockquote>
-      <footer>Ele não disse "seu CTR tá ruim". Achou o furo de tracking que um olhar superficial leria como performance ruim.</footer>
-    </div>
+    <p class="dm-seal">Casos de demonstração: o output de cada agente é real, recriado em formato de conversa.</p>
+    <div class="dm" id="dm">
+      <div class="dm-tabs" role="tablist" aria-label="Escolha o agente"><button class="dm-tab" type="button" role="tab" aria-selected="true" data-i="0">Auditor de Conta Meta</button><button class="dm-tab" type="button" role="tab" aria-selected="false" data-i="1">Forja de Página de Vendas</button><button class="dm-tab" type="button" role="tab" aria-selected="false" data-i="2">Mestre da Big Idea</button><button class="dm-tab" type="button" role="tab" aria-selected="false" data-i="3">Recuperação WhatsApp</button><button class="dm-tab" type="button" role="tab" aria-selected="false" data-i="4">Arquiteto de VSL</button></div>
+      <div class="dm-window">
+        <div class="dm-bar"><span class="dm-dot" aria-hidden="true"></span><span class="dm-name" id="dm-name">Auditor de Conta Meta (Score 0-100)</span><span class="dm-tag">A Legião</span></div>
+        <div class="dm-chat" id="dm-chat" aria-live="off"><div class="dm-row dm-user"><div class="dm-bub"><span class="dm-who">Você</span>Herdei uma conta de tráfego de infoprodutor, objetivo Compra, R$300/dia. Quero saber se posso escalar ou tô jogando verba no lixo.</div></div><div class="dm-row dm-agent"><div class="dm-bub dm-message"><span class="dm-who">Agente</span>Sou o Auditor de Conta Meta. Faço diagnóstico 0-100 nas 4 dimensões que a Meta usa pra te entregar (criativo, sinal/evento, público e estrutura) e te digo o que arrumar primeiro. Me passa o que conseguir: objetivo, gasto, CTR dos tops, número de compras na última semana, se tem CAPI ligada, e quantos conjuntos. Não sabe onde achar? Te guio na tela.</div></div><div class="dm-row dm-user"><div class="dm-bub"><span class="dm-who">Você</span>14 anúncios ativos, 2 vídeos antigos levam 80% do gasto, CTR geral 0,9%. Umas 6 compras na semana pelo Gerenciador, mas o checkout (Hotmart) mostra 11 no mesmo período. CAPI não sei dizer. 5 conjuntos, ABO.</div></div><div class="dm-row dm-agent"><div class="dm-bub dm-diagnostico"><span class="dm-who">Diagnóstico</span>Gargalo dominante: SINAL/EVENTO. O Gerenciador conta 6 compras, o checkout conta 11. Isso é ~45% das vendas sumindo antes de chegar ao otimizador. A conta não está otimizando mal: ela está otimizando cega. Qualquer leitura de qual criativo ou público funciona está enviesada por esse furo.</div></div><div class="dm-row dm-agent"><div class="dm-bub dm-output"><span class="dm-who">Output</span>Score: 48/100. A conta NÃO está pronta pra escalar.
 
-    <div class="proof-card">
-      <span class="tag">Mestre da Big Idea · Schwartz</span>
-      <blockquote>Você não tem um problema de inglês. Você tem um problema de inglês técnico em tempo real, e nenhum curso de inglês foi feito pra isso.</blockquote>
-      <footer>Curso de inglês pra programadores. Diagnóstico (consciência nível 3, sofisticação estágio 4) e ângulo, na mesma resposta.</footer>
-    </div>
+Criativo 14/25: 2 vídeos de 40 dias com 80% do gasto, dependência frágil.
+Sinal/evento 8/25: furo de tracking. Prioridade 1.
+Público 13/25: 3 lookalike da mesma origem concorrem no leilão.
+Estrutura 13/25: 5 conjuntos dividem os poucos eventos.
 
-    <div class="proof-card">
-      <span class="tag">Forja de Página de Vendas</span>
-      <blockquote>Você faz um bolo que todo mundo elogia, mas que ninguém nunca te pagou pra fazer? Existe um motivo, e não tem nada a ver com o seu bolo.</blockquote>
-      <footer>Curso de confeitaria. O agente reposicionou o problema antes de escrever a primeira linha da página.</footer>
+Ordem: (1) fechar o tracking com o Auditor de Tracking, sem isso toda otimização é dado pela metade; (2) consolidar conjuntos; (3) checar sobreposição; (4) só então renovar criativo.</div></div><div class="dm-row dm-agent"><div class="dm-bub dm-message"><span class="dm-who">Agente</span>E não vou cravar que seu CTR 0,9% é ruim como verdade universal [SUPOSIÇÃO: varia por nicho]. Me traz o histórico dos meses bons que eu digo se é queda ou se é o normal dessa conta.</div></div></div>
+      </div>
+      <p class="dm-proves" id="dm-proves"><b>O que isso prova:</b> Diagnostica pelas 4 dimensões que a Meta usa pra entregar e acha o furo de tracking que um olhar superficial leria como &quot;performance ruim&quot;. Nível consultor, não texto bonito.</p>
+      <div class="dm-controls"><button class="dm-replay" id="dm-replay" type="button">Rodar de novo</button><span class="dm-hint">Troque de agente nas abas acima.</span></div>
     </div>
+    <script>
+    (function legiaoDemo() {
+      var DATA = [{"agent": "Auditor de Conta Meta (Score 0-100)", "proves": "Diagnostica pelas 4 dimensões que a Meta usa pra entregar e acha o furo de tracking que um olhar superficial leria como \"performance ruim\". Nível consultor, não texto bonito.", "turns": [["user", "message", "Herdei uma conta de tráfego de infoprodutor, objetivo Compra, R$300/dia. Quero saber se posso escalar ou tô jogando verba no lixo."], ["agent", "message", "Sou o Auditor de Conta Meta. Faço diagnóstico 0-100 nas 4 dimensões que a Meta usa pra te entregar (criativo, sinal/evento, público e estrutura) e te digo o que arrumar primeiro. Me passa o que conseguir: objetivo, gasto, CTR dos tops, número de compras na última semana, se tem CAPI ligada, e quantos conjuntos. Não sabe onde achar? Te guio na tela."], ["user", "message", "14 anúncios ativos, 2 vídeos antigos levam 80% do gasto, CTR geral 0,9%. Umas 6 compras na semana pelo Gerenciador, mas o checkout (Hotmart) mostra 11 no mesmo período. CAPI não sei dizer. 5 conjuntos, ABO."], ["agent", "diagnostico", "Gargalo dominante: SINAL/EVENTO. O Gerenciador conta 6 compras, o checkout conta 11. Isso é ~45% das vendas sumindo antes de chegar ao otimizador. A conta não está otimizando mal: ela está otimizando cega. Qualquer leitura de qual criativo ou público funciona está enviesada por esse furo."], ["agent", "output", "Score: 48/100. A conta NÃO está pronta pra escalar.\n\nCriativo 14/25: 2 vídeos de 40 dias com 80% do gasto, dependência frágil.\nSinal/evento 8/25: furo de tracking. Prioridade 1.\nPúblico 13/25: 3 lookalike da mesma origem concorrem no leilão.\nEstrutura 13/25: 5 conjuntos dividem os poucos eventos.\n\nOrdem: (1) fechar o tracking com o Auditor de Tracking, sem isso toda otimização é dado pela metade; (2) consolidar conjuntos; (3) checar sobreposição; (4) só então renovar criativo."], ["agent", "message", "E não vou cravar que seu CTR 0,9% é ruim como verdade universal [SUPOSIÇÃO: varia por nicho]. Me traz o histórico dos meses bons que eu digo se é queda ou se é o normal dessa conta."]]}, {"agent": "Forja de Página de Vendas", "proves": "Não cospe texto: constrói o mecanismo com você, diagnostica o nível de consciência do público antes de escrever uma linha e se recusa a inventar prova social.", "turns": [["user", "message", "Tenho um curso de confeitaria pra fazer renda extra vendendo bolo caseiro. R$ 297, tráfego frio de anúncio. Público é mãe que sabe fazer bolo bonito mas não consegue vender. Já formei várias alunas mas não tenho número exato nem mecanismo nomeado."], ["agent", "message", "Tenho o suficiente pra forjar a página. Vou calibrar a sequência pro tráfego frio, construir o mecanismo com você e marcar onde falta prova, que eu não invento."], ["agent", "diagnostico", "Público consciente do problema mas NÃO da solução: ela sabe fazer bolo, sente que não vira dinheiro. A página abre LONGE da oferta, pela conversa interna dela (\"faço bolo lindo, todo mundo elogia, mas não sai do elogio pro pagamento\"). Abrir com \"Conheça o Curso X\" pra tráfego frio mata. O problema não é técnica de bolo, é não ter sistema de venda e preço. Vou chamar o mecanismo de \"Método Bolo que Paga\" e o problema de \"Confeiteira de Elogio\"."], ["agent", "output", "HEADLINE: \"Você faz um bolo que todo mundo elogia, mas que ninguém nunca te pagou pra fazer? Existe um motivo, e não tem nada a ver com o seu bolo. Tem a ver com o que ninguém te ensinou DEPOIS que o bolo fica pronto.\"\n\nMétodo Bolo que Paga, 3 frentes: (1) precificar pra lucrar, a conta que inclui o seu tempo, não só o ingrediente; (2) cardápio e fotos que fazem a pessoa perguntar o preço já querendo comprar; (3) as 3 primeiras clientes pagantes em quem você já tem por perto."], ["agent", "message", "[SUPOSIÇÃO: confirme] Você disse \"várias alunas\" mas sem número nem case. Eu NÃO vou escrever \"mais de 500 alunas\" nem inventar depoimento. Me mande o número real + 2-3 prints com autorização. É o que sustenta R$297 pra tráfego frio. Sem prova real, esse bloco não vai ao ar."]]}, {"agent": "Mestre da Big Idea (Schwartz)", "proves": "Cruza as 2 réguas de Schwartz (consciência e sofisticação) a partir do que o cliente JÁ tentou, marca [SUPOSIÇÃO] onde falta voz real e entrega 3 ângulos rankeados com lógica e risco.", "turns": [["user", "message", "Quero lançar um curso de inglês pra programadores. A pessoa lê documentação tranquilo, mas trava na hora de falar em daily ou code review com gringo. Já tentou Duolingo, cursinho e Anki. Ticket R$997, tráfego frio no Instagram, primeiro lançamento."], ["agent", "message", "Antes de te dar a Big Idea, deixa eu cravar o diagnóstico, é dele que sai o ângulo. Já tenho quase tudo. Só me confirma: tem alguma frase literal do seu público descrevendo a frustração? Comentário, DM, resposta de formulário, qualquer coisa na voz deles."], ["user", "message", "Não tenho reviews, é o primeiro lançamento. Mas converso com esse povo todo dia no Instagram."], ["agent", "diagnostico", "Diagnóstico: nível 3 de consciência (ele já sabe que precisa praticar fala, não perca tempo provando isso) e estágio 4 de sofisticação (já viu \"método de imersão\", \"inglês na ponta da língua\", está cínico com promessa grande). Isso vem do histórico de tentativas que você listou. [SUPOSIÇÃO] Não tenho a voz literal dele reclamando. Recomendo o Minerador de Voz do Cliente em comentários de posts de inglês pra dev antes de escrever."], ["agent", "output", "Big Idea: \"Você não tem um problema de inglês. Você tem um problema de inglês técnico em tempo real, e nenhum curso de inglês foi feito pra isso.\"\n\nÂngulo 1 (recomendado): \"Por que você lê inglês perfeito mas trava de falar\", entra pelo mecanismo, onde nível 3 deve começar.\nÂngulo 2: \"O inglês que você aprendeu não é o de uma daily\".\nÂngulo 3: \"Imersão não funciona pra quem não tem 6 meses sobrando\", só se a mineração mostrar cinismo alto.\n\nEstágio 4 exige mecanismo único nomeado: leve pro Arquiteto de Mecanismo Único, sem nome o cinismo não fura."]]}, {"agent": "Estrategista de Recuperação WhatsApp", "proves": "Diagnostica o tipo de gatilho (inativo vs carrinho quente), monta a árvore de toques com intervalo, tom e ponto de parada, e checa o opt-in antes de dar qualquer fala.", "turns": [["user", "message", "Tenho uma loja de suplementos, vendo pelo WhatsApp. Clientes que compravam todo mês sumiram, último pedido há uns 2 meses. Ticket médio uns R$ 180. Me dá as falas prontas, não sou bom de escrever."], ["agent", "message", "Entendido. Antes das falas: eles compraram de você e te chamaram no zap antes? Preciso confirmar se é opt-in real (contato legítimo) ou se você só tem o número salvo. Isso muda o que dá pra fazer legalmente no WhatsApp."], ["user", "message", "Sim, todos compraram de mim e mandaram mensagem primeiro."], ["agent", "diagnostico", "Gatilho: inativo recorrente. Diferente de carrinho quente (que pede horas), aqui o intervalo é em dias e o ângulo é reconexão + utilidade, não \"volta a comprar\". O cliente não te esqueceu, ele só saiu do hábito. Fluxo de 3 toques reativa o hábito sem soar desespero."], ["agent", "output", "Árvore:\nToque 1 (Dia 0): \"Oi [nome], tava revendo meus clientes e vi que faz um tempinho que a gente não se fala. Como tá indo o [produto]? Conseguiu manter a rotina?\"\nToque 2 (Dia 3-4): \"Pelo seu último pedido você deve tar chegando no fim do pote. Quer que eu já separe pra você não ficar sem? Sem compromisso.\"\nToque 3 (Dia 8-10): \"Não vou ficar te enchendo, prometo. Quando quiser repor é só me chamar.\"\nDepois disso PARA. 3 toques pensados batem 8 repetidos. Taxa de reativação não cravo [SUPOSIÇÃO: levante o seu número real com 30-50 contatos]."]]}, {"agent": "Arquiteto de VSL", "proves": "Diagnostica o nível de consciência, nomeia um mecanismo que o cliente não tinha e marca [SUPOSIÇÃO] onde falta prova real, em vez de cuspir roteiro genérico.", "turns": [["user", "message", "Tenho uma mentoria de finanças pra dentista autônomo. Fatura R$ 40-60k/mês no consultório mas nunca sobra nada, não sabe quanto é dele e quanto é da clínica. Ticket R$ 3.500. Tráfego frio no Instagram. Sou dentista e contador, atendi uns 30. Mecanismo eu não tenho nomeado."], ["agent", "message", "Tenho o suficiente pra montar o roteiro. Vou cravar o nível de consciência, construir o mecanismo com você (você não tinha nomeado) e marcar onde falta prova, que eu não vou inventar."], ["agent", "diagnostico", "O dentista sente a dor (aperto apesar do faturamento alto) mas acha que o problema é \"ganhar mais\" ou \"cortar gasto\". Não enxerga a causa. Tráfego frio, então o lead abre agitando a dor nomeada, nunca pelo mecanismo. Mecanismo: problema = \"Caixa Único\" (PF e PJ misturados, a clínica come o salário antes dele ver); solução = \"Separação em 3 Caixas\" (clínica, pró-labore, reserva). O dinheiro não muda, ele para de sumir porque ele enxerga quanto é dele."], ["agent", "output", "LEAD (0:00-0:45): \"Se você é dentista, fatura mais de R$ 40 mil por mês e mesmo assim chega no fim do mês sem saber pra onde foi o dinheiro... o problema não é o que te disseram. Não tem nada a ver com ganhar mais. Tem a ver com um erro que quase todo dentista comete, e que ninguém te ensinou na faculdade nem o seu contador te falou.\""], ["agent", "message", "[SUPOSIÇÃO: confirme] Você disse que atendeu ~30 dentistas mas não passou case. Não vou inventar \"dentista que economizou R$ X\". Me mande 1-2 cases reais ou rode o Minerador de Voz do Cliente nos seus atendimentos. Sem isso o bloco de prova fica oco e a VSL não sustenta o ticket de R$ 3.500."]]}];
+      var root = document.getElementById("dm"); if (!root) return;
+      var chat = document.getElementById("dm-chat"), nameEl = document.getElementById("dm-name"), provesEl = document.getElementById("dm-proves");
+      var tabs = root.querySelectorAll(".dm-tab");
+      var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      var WHO = { message: "Agente", diagnostico: "Diagnóstico", output: "Output" };
+      var current = 0, token = 0;
+      function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+      function bubble(t) {
+        var who = t[0] === "user" ? "Você" : WHO[t[1]];
+        var cls = t[0] === "user" ? "dm-bub" : "dm-bub dm-" + t[1];
+        return '<div class="dm-row dm-' + t[0] + '"><div class="' + cls + '"><span class="dm-who">' + who + "</span>" + esc(t[2]) + "</div></div>";
+      }
+      function sleep(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
+      function toEnd() { chat.scrollTop = chat.scrollHeight; }
+      async function play(i) {
+        var mine = ++token, d = DATA[i];
+        chat.innerHTML = "";
+        for (var k = 0; k < d.turns.length; k++) {
+          var t = d.turns[k];
+          if (mine !== token) return;
+          if (t[0] === "agent" && !reduce) {
+            var typing = document.createElement("div");
+            typing.className = "dm-row dm-agent";
+            typing.innerHTML = '<div class="dm-typing"><span></span><span></span><span></span></div>';
+            chat.appendChild(typing); toEnd();
+            await sleep(Math.min(1400, 350 + t[2].length * 10));
+            if (mine !== token) return;
+            typing.remove();
+          }
+          chat.insertAdjacentHTML("beforeend", bubble(t)); toEnd();
+          await sleep(reduce ? 0 : 520);
+        }
+      }
+      function select(i) {
+        current = i;
+        nameEl.textContent = DATA[i].agent;
+        provesEl.innerHTML = "<b>O que isso prova:</b> " + esc(DATA[i].proves);
+        tabs.forEach(function (b) { b.setAttribute("aria-selected", String(Number(b.dataset.i) === i)); });
+        play(i);
+      }
+      tabs.forEach(function (b) { b.addEventListener("click", function () { select(Number(b.dataset.i)); }); });
+      document.getElementById("dm-replay").addEventListener("click", function () { play(current); });
+      var started = false;
+      function start() { if (!started) { started = true; play(current); } }
+      if ("IntersectionObserver" in window) {
+        new IntersectionObserver(function (entries, observer) {
+          if (entries.some(function (e) { return e.isIntersecting; })) { observer.disconnect(); start(); }
+        }, { threshold: 0.25 }).observe(chat);
+      } else start();
+    })();
+    </script>
 
     <div class="section-cta">
       <a class="btn btn-primary" href="#oferta">QUERO ESSE NÍVEL →</a>
