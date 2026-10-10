@@ -6,354 +6,228 @@
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s);j.async=true;j.src="https://api.useinfuser.com/etrthkooc.js?"+i;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','7=CgtSLDw5X0EwOTcoUUFEUhVSXUVZUhYaXhocDgEaFAEQCh1FCxsf');</script>
 <!-- End Google Tag Manager -->
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>A Legião · 80 especialistas de IA dentro do seu Claude</title>
-<meta name="description" content="80 agentes de IA com o método e os anti-padrões de um especialista de verdade, dentro do seu Claude. R$47, pagamento único, vitalício. 7 dias de garantia.">
+<title>A Legião · 80 especialistas de marketing e vendas dentro do seu Claude</title>
+<meta name="description" content="80 especialistas de copy, tráfego, vendas e oferta, com o método de quem é referência, dentro do seu Claude ou do Codex. R$47, pagamento único. 7 dias de garantia.">
 <meta name="robots" content="noindex">
 <meta property="og:type" content="website">
-<meta property="og:title" content="A Legião · 80 especialistas de IA dentro do seu Claude">
-<meta property="og:description" content="80 agentes de IA com o método e os anti-padrões de um especialista de verdade, a um pedido de distância dentro do seu Claude.">
-<meta name="theme-color" content="#171717">
+<meta property="og:title" content="A Legião · 80 especialistas de marketing e vendas dentro do seu Claude">
+<meta property="og:description" content="Você pede como pediria pra um funcionário. O especialista certo assume, pergunta o que falta e entrega com método.">
+<meta name="theme-color" content="#020202">
 <link rel="icon" href="/icon-warm-on-black.svg">
-<!-- Fontes self-hosted (mesma origem, HTTP/2 ja aberto: zero round-trip cross-origin
-     no caminho critico). Preload so das 2 acima da dobra: Inter (H1 = elemento LCP)
-     e Onest (corpo). Geist Mono carrega sem preload (mono, abaixo da dobra). -->
 <link rel="preload" href="/legiao/fonts/inter-latin-var.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/legiao/fonts/onest-latin-var.woff2" as="font" type="font/woff2" crossorigin>
-<!-- Trackers (Meta Pixel + UTMify) carregam FORA do caminho critico: na 1a interacao
-     do usuario ou em load+idle, o que vier primeiro. Loader no fim do <body>.
-     dns-prefetch mantido pra aquecer o DNS antes desse carregamento tardio. -->
+<link rel="preload" href="/legiao/predio-torre.webp" as="image" type="image/webp" fetchpriority="high">
 <style>
-/* Fontes self-hosted, subset latino (cobre acentos PT-BR). Inter e Onest sao
-   variable fonts: um woff2 cobre toda a faixa de peso. font-display:swap =
-   texto visivel de imediato no fallback, troca rapida (mesma origem). */
 @font-face{font-family:"Inter";font-weight:100 900;font-style:normal;font-display:swap;src:url(/legiao/fonts/inter-latin-var.woff2) format("woff2")}
 @font-face{font-family:"Onest";font-weight:100 900;font-style:normal;font-display:swap;src:url(/legiao/fonts/onest-latin-var.woff2) format("woff2")}
 @font-face{font-family:"Geist Mono";font-weight:500;font-style:normal;font-display:swap;src:url(/legiao/fonts/geistmono-latin-500.woff2) format("woff2")}
+/* Identidade Infuser v2: Onyx/Carbon, Lime so onde ha luz ou acao, rampa Teal pra prova e diagnostico.
+   Raio: cartoes 18px, quadros de print 14px, botoes e chips em pilula. */
 :root{
-  --carbon:#171717; --onyx:#020202; --warm:#f0f0e4;
+  --onyx:#020202; --carbon:#171717; --carbon-2:#0d0d0d; --warm:#f0f0e4;
   --lime:#c6ff34; --lime-ink:#0c0c08;
   --teal-1:#3bd0a0; --teal-2:#2fa084; --teal-3:#1f6f5f; --teal-4:#143a31;
-  /* alphas ajustados p/ passar WCAG AA (4.5:1) sobre carbon E sobre os cards tintados:
-     faint .42->.58 (era 3.7:1 = falha) ; muted .66->.70 (mantem hierarquia faint<muted<warm) */
-  --muted:rgba(240,240,228,.70); --faint:rgba(240,240,228,.58);
-  --line:rgba(240,240,228,.14); --line-2:rgba(240,240,228,.08);
-  --danger:#e5484d; --danger-bg:rgba(229,72,77,.1); --danger-line:rgba(229,72,77,.3);
+  --muted:rgba(240,240,228,.72); --faint:rgba(240,240,228,.58);
+  --line:rgba(240,240,228,.13); --line-2:rgba(240,240,228,.07);
   --font-display:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
   --font-body:"Onest",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
   --font-mono:"Geist Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
-  --wrap:760px; --r:16px; --r-sm:10px; --r-full:999px;
+  --max:1180px; --text:680px; --r:18px; --r-sm:14px; --r-full:999px;
+  --ease:cubic-bezier(.16,1,.3,1);
 }
 *,*::before,*::after{box-sizing:border-box}
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-body{margin:0;background:var(--carbon);color:var(--warm);font-family:var(--font-body);
-  font-size:17px;line-height:1.6;font-weight:400;letter-spacing:-.005em;
+body{margin:0;background:var(--onyx);color:var(--warm);font-family:var(--font-body);font-size:17px;line-height:1.6;
   -webkit-font-smoothing:antialiased;overflow-x:hidden}
-h1,h2,h3{font-family:var(--font-display);font-weight:800;line-height:1.08;letter-spacing:-.03em;margin:0}
+h1,h2,h3{font-family:var(--font-display);font-weight:800;letter-spacing:-.035em;margin:0;text-wrap:balance}
 p{margin:0}
 a{color:inherit;text-decoration:none}
-ul{margin:0;padding:0;list-style:none}
-img,svg{display:block;max-width:100%}
-.wrap{max-width:var(--wrap);margin-inline:auto;padding-inline:24px;text-align:center}
-.eyebrow{font-family:var(--font-mono);font-size:12px;font-weight:500;letter-spacing:.18em;
-  text-transform:uppercase;color:var(--teal-1)}
-section{padding:64px 0}
-@media (min-width:760px){section{padding:96px 0}}
-.center{text-align:center}
-b,strong{font-weight:700;color:var(--warm)}
-.muted{color:var(--muted)}
-
-/* botao */
-.btn{display:inline-flex;align-items:center;gap:8px;justify-content:center;
-  font-family:var(--font-display);font-weight:700;font-size:16px;letter-spacing:-.01em;
-  padding:16px 28px;border-radius:var(--r-full);border:none;cursor:pointer;
-  transition:transform .15s,background .15s;white-space:nowrap}
-.btn:active{transform:scale(.98)}
-.btn-primary{background:var(--lime);color:var(--lime-ink);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.5),0 8px 24px rgba(198,255,52,.22)}
+ul,ol{margin:0;padding:0;list-style:none}
+img{display:block;max-width:100%;height:auto}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--lime);outline-offset:3px;border-radius:6px}
+.container{width:100%;max-width:var(--max);margin-inline:auto;padding-inline:24px}
+.narrow{max-width:var(--text)}
+.hl{color:var(--lime)}
+.eyebrow{display:inline-block;font-family:var(--font-mono);font-size:12px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--teal-1)}
+section{padding:112px 0;position:relative}
+@media (max-width:760px){section{padding:76px 0}}
+.h2{font-size:clamp(32px,4.3vw,54px);line-height:1.04}
+.lede{margin-top:20px;max-width:62ch;font-size:clamp(17px,1.5vw,19px);color:var(--muted)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:54px;padding:0 30px;border-radius:var(--r-full);
+  font-family:var(--font-display);font-weight:700;font-size:16px;letter-spacing:-.01em;white-space:nowrap;cursor:pointer;
+  transition:transform .2s var(--ease),background-color .2s,border-color .2s,box-shadow .2s}
+.btn:active{transform:translateY(1px) scale(.99)}
+.btn-primary{background:var(--lime);color:var(--lime-ink);box-shadow:0 10px 40px -12px rgba(198,255,52,.55)}
 .btn-primary:hover{background:#d4ff5c}
-.btn-secondary{background:transparent;color:var(--warm);border:1.5px solid var(--line)}
-.btn-secondary:hover{background:rgba(240,240,228,.06);border-color:rgba(240,240,228,.32)}
-.btn-block{display:flex;width:100%}
-.microcopy{font-family:var(--font-mono);font-size:12.5px;letter-spacing:.06em;color:var(--faint);margin-top:14px}
+.btn-ghost{border:1px solid var(--line);color:var(--warm);background:rgba(240,240,228,.03)}
+.btn-ghost:hover{border-color:rgba(198,255,52,.45)}
+.btn-teal{border:1px solid rgba(59,208,160,.55);color:var(--warm);background:rgba(59,208,160,.08)}
+.btn-teal:hover{background:rgba(59,208,160,.16)}
 
-/* glass: solido, sem backdrop-filter (custa caro em cada frame de scroll, cortado por performance) */
-.glass{
-  position:relative;border-radius:var(--r);
-  background:linear-gradient(155deg,rgba(240,240,228,.07),rgba(240,240,228,.025));
-  border:1px solid rgba(240,240,228,.14);
-  box-shadow:0 22px 56px rgba(0,0,0,.4),inset 0 1px 1px rgba(255,255,255,.06);
-}
+/* nav */
+.nav{position:sticky;top:0;z-index:30;background:rgba(2,2,2,.72);-webkit-backdrop-filter:blur(14px) saturate(140%);backdrop-filter:blur(14px) saturate(140%);
+  border-bottom:1px solid var(--line-2)}
+.nav-in{height:64px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.nav-logo svg{height:24px;width:auto;display:block}
+.nav .btn{min-height:40px;padding:0 18px;font-size:14px}
 
 /* hero */
-.hero{padding:56px 0 64px;text-align:center}
-@media (min-width:760px){.hero{padding:88px 0 96px}}
-.badge{display:inline-flex;align-items:center;gap:9px;font-family:var(--font-mono);font-size:10px;
-  letter-spacing:.06em;text-transform:uppercase;color:var(--warm);background:rgba(198,255,52,.1);
-  border:1px solid var(--line);padding:8px 14px;border-radius:14px;margin-bottom:24px;text-align:center}
-.badge .dot{width:6px;height:6px;border-radius:50%;background:var(--lime);flex-shrink:0}
-@media (min-width:480px){.badge{font-size:11.5px;letter-spacing:.14em;padding:8px 16px;border-radius:var(--r-full)}}
-.hero h1{font-size:clamp(28px,5.6vw,58px);line-height:1.16;margin-inline:auto;margin-bottom:22px}
-@media (min-width:560px){.hero h1{max-width:18ch}}
-.hero h1 .accent{color:var(--lime)}
-.cycle{position:relative;display:inline-grid;vertical-align:middle;margin:.12em 2px}
-.cycle span{grid-area:1/1;place-self:center;white-space:nowrap;background:var(--lime);color:var(--lime-ink);
-  border-radius:.28em;padding:.08em .38em;font-weight:800;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 6px 18px rgba(198,255,52,.22);
-  opacity:0;animation:cycle 22s infinite;will-change:transform,opacity}
-.cycle span:nth-child(1){animation-delay:0s}
-.cycle span:nth-child(2){animation-delay:2.2s}
-.cycle span:nth-child(3){animation-delay:4.4s}
-.cycle span:nth-child(4){animation-delay:6.6s}
-.cycle span:nth-child(5){animation-delay:8.8s}
-.cycle span:nth-child(6){animation-delay:11s}
-.cycle span:nth-child(7){animation-delay:13.2s}
-.cycle span:nth-child(8){animation-delay:15.4s}
-.cycle span:nth-child(9){animation-delay:17.6s}
-.cycle span:nth-child(10){animation-delay:19.8s}
-@keyframes cycle{
-  0%{opacity:0;transform:translateY(10px)}
-  1%{opacity:1;transform:translateY(0)}
-  8%{opacity:1;transform:translateY(0)}
-  10%{opacity:0;transform:translateY(-10px)}
-  100%{opacity:0}
+.hero{padding:40px 0 64px;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:-20% -10% auto auto;width:70%;height:120%;pointer-events:none;
+  background:radial-gradient(closest-side,rgba(198,255,52,.10),transparent 70%)}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);gap:32px;align-items:center;min-height:calc(100dvh - 64px - 104px)}
+.hero h1{margin-top:18px;font-size:clamp(40px,4.9vw,68px);line-height:1.02;max-width:12.5em}
+.hero .sub{margin-top:22px;max-width:34em;font-size:clamp(17px,1.55vw,20px);color:var(--muted)}
+.hero .ctas{margin-top:34px;display:flex;flex-wrap:wrap;gap:12px}
+@media (max-width:900px){
+  .hero{padding:28px 0 40px}
+  .hero-grid{grid-template-columns:1fr;min-height:0;gap:8px}
 }
+
+/* tower: o predio acende andar por andar (so CSS, sem JS) */
+.tower{position:relative;margin:0;height:min(76vh,700px);aspect-ratio:620/1150;justify-self:start;margin-left:6%}
+/* a arte tem fundo preto proprio: a mascara dissolve a borda do quadro no Onyx da pagina */
+.tower-art{position:absolute;inset:0;
+  -webkit-mask-image:radial-gradient(64% 58% at 54% 52%,#000 72%,transparent 100%);mask-image:radial-gradient(64% 58% at 54% 52%,#000 72%,transparent 100%)}
+.tower-art img{position:absolute;inset:0;width:100%;height:100%}
+.tower-img{animation:towerIn .9s var(--ease) both,towerPower 1.1s ease 1.45s both}
+.fl{opacity:0;animation:floorOn .55s ease both;transition:filter .25s}
+.f1{clip-path:inset(14.5% 17.7% 76.1% 31.2%);animation-delay:1.27s}
+.f2{clip-path:inset(24.6% 17.7% 65.9% 31.2%);animation-delay:1.14s}
+.f3{clip-path:inset(35.1% 17.7% 55.8% 31.2%);animation-delay:1.01s}
+.f4{clip-path:inset(45.3% 17.7% 45.7% 31.2%);animation-delay:.88s}
+.f5{clip-path:inset(55.8% 17.7% 35.9% 31.2%);animation-delay:.75s}
+.f6{clip-path:inset(65.2% 17.7% 26.1% 31.2%);animation-delay:.62s}
+.f7{clip-path:inset(75% 17.7% 16.7% 31.2%);animation-delay:.49s}
+@keyframes towerIn{from{opacity:0;transform:translateY(22px)}}
+@keyframes towerPower{from{filter:brightness(.26) saturate(.35)}to{filter:none}}
+@keyframes floorOn{0%{opacity:0}35%{opacity:.95}48%{opacity:.35}70%,100%{opacity:1}}
+.elevator{position:absolute;left:27.6%;top:0;width:3.2%;height:9%;border-radius:50%;pointer-events:none;opacity:0;mix-blend-mode:screen;
+  background:radial-gradient(closest-side,rgba(214,255,120,.95),rgba(198,255,52,0));filter:blur(1.5px);
+  animation:lift 9s ease-in-out 2.8s infinite alternate}
+@keyframes lift{0%{opacity:0;transform:translateY(820%)}10%,90%{opacity:.9}100%{opacity:0;transform:translateY(165%)}}
+.tags{position:absolute;left:83%;top:0;bottom:0;width:200px}
+.tags li{position:absolute;left:0;top:var(--y);transform:translateY(-50%);opacity:0;animation:tagIn .5s var(--ease) both;animation-delay:var(--d)}
+.tags a{display:flex;align-items:center;gap:10px;padding:5px 12px 5px 8px;border-radius:var(--r-full);white-space:nowrap;
+  border:1px solid transparent;transition:border-color .2s,background-color .2s}
+.tags a::before{content:"";width:18px;height:1px;background:rgba(198,255,52,.55)}
+.tags b{font-family:var(--font-display);font-size:14px;font-weight:700;letter-spacing:-.01em}
+.tags span{font-family:var(--font-mono);font-size:11.5px;color:var(--faint)}
+.tags a:hover,.tags a:focus-visible{border-color:rgba(198,255,52,.4);background:rgba(198,255,52,.07)}
+.tags a:hover span,.tags a:focus-visible span{color:var(--lime)}
+@keyframes tagIn{from{opacity:0;transform:translate(-10px,-50%)}to{opacity:1;transform:translate(0,-50%)}}
+.tower:has(li:nth-child(1) a:is(:hover,:focus-visible)) .f1,
+.tower:has(li:nth-child(2) a:is(:hover,:focus-visible)) .f2,
+.tower:has(li:nth-child(3) a:is(:hover,:focus-visible)) .f3,
+.tower:has(li:nth-child(4) a:is(:hover,:focus-visible)) .f4,
+.tower:has(li:nth-child(5) a:is(:hover,:focus-visible)) .f5,
+.tower:has(li:nth-child(6) a:is(:hover,:focus-visible)) .f6,
+.tower:has(li:nth-child(7) a:is(:hover,:focus-visible)) .f7{filter:brightness(1.55) saturate(1.25)}
+@media (max-width:900px){
+  .tower{height:440px;justify-self:center;margin-left:-120px}
+  .tags{width:150px}
+  .tags b{font-size:12.5px}.tags span{display:none}
+  .tags a{padding:3px 8px 3px 4px;gap:6px}.tags a::before{width:10px}
+}
+@media (max-width:380px){.tower{height:400px;margin-left:-100px}}
 @media (prefers-reduced-motion:reduce){
-  .cycle span{animation:none;opacity:0}
-  .cycle span:first-child{opacity:1}
+  .tower-img,.fl,.tags li{animation:none;opacity:1}
+  .fl{opacity:0}
+  .tags li{transform:translateY(-50%)}
+  .elevator{display:none}
 }
-.hero .sub{font-size:clamp(16px,1.9vw,19px);color:var(--muted);max-width:52ch;margin-inline:auto 34px;margin-bottom:34px;line-height:1.62}
-.hero .ctas{display:flex;flex-direction:column;align-items:center;gap:0}
-.section-cta{margin-top:36px;display:flex;justify-content:center}
-.trust-row{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 22px;margin-top:22px}
-.trust-row span{display:inline-flex;align-items:center;gap:7px;font-size:13.5px;color:var(--muted)}
-.trust-row span::before{content:"✓";color:var(--lime);font-weight:700}
-
-/* dor / reframe */
-.punch{font-family:var(--font-display);font-weight:700;font-size:clamp(24px,3.6vw,36px);
-  color:var(--warm);line-height:1.22;letter-spacing:-.02em}
-.punch .accent{color:var(--lime)}
-.stack{display:flex;flex-direction:column;gap:18px;margin-top:26px}
-.stack p{color:var(--muted);font-size:clamp(16px,1.8vw,18px);line-height:1.66}
-.statement{display:flex;flex-direction:column;gap:18px;margin-top:28px}
-.statement p{font-family:var(--font-display);font-weight:800;font-size:clamp(23px,4.2vw,36px);line-height:1.24;letter-spacing:-.02em;color:var(--warm)}
-.statement .accent{color:var(--lime)}
-
-/* grid generico */
-.grid-3{display:grid;grid-template-columns:1fr;gap:16px;margin-top:40px}
-@media (min-width:640px){.grid-3{grid-template-columns:repeat(3,1fr)}}
-.card{background:var(--onyx);border:1px solid var(--line);border-radius:var(--r);padding:26px}
-.card h3{font-size:15px;font-family:var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--teal-1);margin-bottom:10px}
-.card p{color:var(--muted);font-size:15px;line-height:1.6}
-
-/* como funciona callout */
-.callout{border-left:3px solid var(--lime);padding:4px 0 4px 20px;margin-top:28px}
-.callout p{font-family:var(--font-display);font-weight:700;font-size:clamp(16px,2vw,19px);color:var(--warm);letter-spacing:-.01em;text-align:left}
-
-/* terminal mockup */
-.terminal{margin-top:28px;background:var(--onyx);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
-.terminal-bar{display:flex;align-items:center;gap:8px;padding:13px 16px;border-bottom:1px solid var(--line-2);background:rgba(240,240,228,.03)}
-.terminal-bar .dot{width:10px;height:10px;border-radius:50%}
-.terminal-bar .dot.r{background:#ff5f56}
-.terminal-bar .dot.y{background:#ffbd2e}
-.terminal-bar .dot.g{background:#27c93f}
-.terminal-title{margin-left:6px;font-family:var(--font-mono);font-size:12px;color:var(--faint)}
-.terminal-body{padding:20px 22px;font-family:var(--font-mono);font-size:13.5px;line-height:1.9;text-align:left}
-.terminal-body p{margin:0}
-.t-muted{color:var(--faint)}
-.t-prompt{color:var(--warm)}
-.t-prompt::before{content:"❯ ";color:var(--lime)}
-.t-line{color:var(--muted)}
-.t-ok{color:var(--teal-1);margin-top:2px}
-
-/* salas de guerra - lista numerada */
-.steps{counter-reset:step;display:grid;grid-template-columns:1fr;gap:0;margin-top:32px;border-top:1px solid var(--line-2)}
-.steps li{counter-increment:step;display:flex;align-items:baseline;gap:18px;padding:15px 0;border-bottom:1px solid var(--line-2)}
-.steps li::before{content:counter(step,decimal-leading-zero);font-family:var(--font-mono);font-size:13px;color:var(--lime);flex-shrink:0}
-.steps li span{font-size:16px;color:var(--warm)}
-
-/* provas / outputs */
-
-/* depoimentos */
-.testi{display:grid;grid-template-columns:1fr;gap:14px;margin-top:36px}
-@media (min-width:640px){.testi{grid-template-columns:repeat(3,1fr)}}
-.testi-card{background:var(--onyx);border:1px solid var(--line);border-radius:var(--r);padding:22px}
-.testi-card .who{display:flex;align-items:center;gap:11px;margin-bottom:14px}
-.avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;
-  font-family:var(--font-mono);font-size:13px;font-weight:600;color:var(--lime-ink);
-  background:linear-gradient(135deg,var(--lime),var(--teal-1));flex-shrink:0}
-.testi-card .name{font-weight:600;font-size:14.5px;color:var(--warm)}
-.testi-card .time{font-family:var(--font-mono);font-size:11px;color:var(--faint)}
-.testi-card p{font-size:14.5px;color:var(--muted);line-height:1.58}
-
-/* pra quem / claude box */
-.who-grid{display:grid;grid-template-columns:1fr;gap:32px;margin-top:36px}
-@media (min-width:640px){.who-grid{grid-template-columns:1fr 1fr}}
-.who-col h3{font-family:var(--font-mono);font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:16px}
-.who-col.yes h3{color:var(--lime)}
-.who-col.no h3{color:var(--faint)}
-.who-col li{padding:10px 0 10px 26px;position:relative;color:var(--muted);font-size:15.5px;line-height:1.5;border-bottom:1px solid var(--line-2);text-align:left}
-.who-col.yes li::before{content:"✓";position:absolute;left:0;color:var(--lime);font-weight:700}
-.who-col.no li::before{content:"✕";position:absolute;left:0;color:var(--faint)}
-.claude-box{margin-top:32px;background:rgba(198,255,52,.06);border:1px solid rgba(198,255,52,.2);border-radius:var(--r);padding:22px 24px}
-.claude-box .tag{font-family:var(--font-mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--lime);display:block;margin-bottom:8px}
-.claude-box p{font-size:15px;color:var(--muted);line-height:1.6}
-
-/* stack de entregaveis */
-.deliver{margin-top:32px;display:flex;flex-direction:column;gap:0;border-top:1px solid var(--line-2)}
-.deliver li{display:flex;gap:16px;padding:18px 0;border-bottom:1px solid var(--line-2)}
-.deliver .num{font-family:var(--font-mono);font-size:13px;color:var(--lime);flex-shrink:0;padding-top:3px}
-.deliver strong{display:block;font-size:16px;margin-bottom:3px}
-.deliver p{color:var(--muted);font-size:14.5px;line-height:1.5}
-.deliver a{color:var(--teal-1);font-size:13.5px;font-family:var(--font-mono)}
-
-/* agentes vitrine */
-.agents{display:grid;grid-template-columns:1fr;gap:12px;margin-top:36px}
-@media (min-width:640px){.agents{grid-template-columns:repeat(2,1fr)}}
-.agent{background:var(--onyx);border:1px solid var(--line);border-radius:var(--r-sm);padding:18px 20px}
-.agent .n{font-weight:700;font-size:15px;margin-bottom:4px}
-.agent .dna{font-family:var(--font-mono);font-size:11px;color:var(--teal-1);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
-.agent p{font-size:14px;color:var(--muted);line-height:1.5}
-.agents-more{margin-top:18px;text-align:center;font-size:14.5px;color:var(--muted)}
-.agents-more a{color:var(--lime);font-weight:600}
-
-/* squads (vitrine em carrossel) */
-.squad-card{background:var(--onyx);border:1px solid var(--line);border-radius:var(--r);padding:24px 26px;margin-top:16px;overflow:hidden}
-.squad-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap;text-align:left}
-.squad-head-main{display:flex;align-items:center;gap:14px}
-.squad-icon{font-size:28px;line-height:1;flex-shrink:0}
-.squad-title{text-align:left}
-.squad-title h3{font-size:19px;margin-top:4px}
-.squad-count{font-family:var(--font-mono);font-size:12px;letter-spacing:.04em;color:var(--lime);background:rgba(198,255,52,.1);border:1px solid var(--line);padding:6px 14px;border-radius:var(--r-full);white-space:nowrap;flex-shrink:0}
-.squad-desc{color:var(--muted);font-size:15px;line-height:1.6;margin-top:14px;text-align:left}
-.squad-marquee{margin-top:22px;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
-.squad-track{display:flex;gap:22px;width:max-content;animation:squad-scroll 34s linear infinite;will-change:transform}
-.squad-avatar{display:flex;flex-direction:column;align-items:center;gap:8px;width:82px;flex-shrink:0;text-align:center}
-.av-circle{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-weight:600;font-size:14px;color:var(--lime-ink);background:linear-gradient(135deg,var(--lime),var(--teal-1));background-size:cover;background-position:center;flex-shrink:0}
-.squad-avatar span{font-size:11px;color:var(--muted);line-height:1.3}
-.squad-avatar small{font-size:9.5px;color:var(--faint);font-family:var(--font-mono);text-transform:uppercase;letter-spacing:.04em}
-@keyframes squad-scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-@media (prefers-reduced-motion:reduce){.squad-track{animation:none}}
-
-/* fotos dos agentes (thumbnails 120x120 jpeg, base64) */
-.ph-auditar_conta_meta{background-image:url(/legiao/avatars/auditar_conta_meta.webp)}
-.ph-auditar_copy{background-image:url(/legiao/avatars/auditar_copy.webp)}
-.ph-auditar_oferta{background-image:url(/legiao/avatars/auditar_oferta.webp)}
-.ph-big_idea_schwartz{background-image:url(/legiao/avatars/big_idea_schwartz.webp)}
-.ph-cbo_ou_abo{background-image:url(/legiao/avatars/cbo_ou_abo.webp)}
-.ph-criativo_meta{background-image:url(/legiao/avatars/criativo_meta.webp)}
-.ph-criativo_video_rd{background-image:url(/legiao/avatars/criativo_video_rd.webp)}
-.ph-diagnostico_metrica{background-image:url(/legiao/avatars/diagnostico_metrica.webp)}
-.ph-diagnostico_spin{background-image:url(/legiao/avatars/diagnostico_spin.webp)}
-.ph-email_copy{background-image:url(/legiao/avatars/email_copy.webp)}
-.ph-esteira_ascensao{background-image:url(/legiao/avatars/esteira_ascensao.webp)}
-.ph-fadiga_criativo{background-image:url(/legiao/avatars/fadiga_criativo.webp)}
-.ph-follow_up{background-image:url(/legiao/avatars/follow_up.webp)}
-.ph-garantia{background-image:url(/legiao/avatars/garantia.webp)}
-.ph-google_ads_estrutura{background-image:url(/legiao/avatars/google_ads_estrutura.webp)}
-.ph-headlines{background-image:url(/legiao/avatars/headlines.webp)}
-.ph-ltv{background-image:url(/legiao/avatars/ltv.webp)}
-.ph-message_mining{background-image:url(/legiao/avatars/message_mining.webp)}
-.ph-negociacao{background-image:url(/legiao/avatars/negociacao.webp)}
-.ph-objecoes{background-image:url(/legiao/avatars/objecoes.webp)}
-.ph-oferta_grand_slam{background-image:url(/legiao/avatars/oferta_grand_slam.webp)}
-.ph-pagina_de_vendas{background-image:url(/legiao/avatars/pagina_de_vendas.webp)}
-.ph-persuasao_cialdini{background-image:url(/legiao/avatars/persuasao_cialdini.webp)}
-.ph-pmax_auditor{background-image:url(/legiao/avatars/pmax_auditor.webp)}
-.ph-precificacao{background-image:url(/legiao/avatars/precificacao.webp)}
-.ph-proposta_trafego{background-image:url(/legiao/avatars/proposta_trafego.webp)}
-.ph-quebra_objecao{background-image:url(/legiao/avatars/quebra_objecao.webp)}
-.ph-script_whatsapp{background-image:url(/legiao/avatars/script_whatsapp.webp)}
-.ph-sdr_qualifica{background-image:url(/legiao/avatars/sdr_qualifica.webp)}
-.ph-tracking_meta{background-image:url(/legiao/avatars/tracking_meta.webp)}
-.ph-tracking_server_side{background-image:url(/legiao/avatars/tracking_server_side.webp)}
-.ph-upsell_downsell{background-image:url(/legiao/avatars/upsell_downsell.webp)}
-.ph-vsl_copy{background-image:url(/legiao/avatars/vsl_copy.webp)}
-
-
-/* comparacao visual (mesmo pedido, resultado diferente) */
-.vs-demo{margin-top:32px}
-.vs-head{text-align:center;margin-bottom:20px}
-.vs-grid{display:grid;grid-template-columns:1fr;gap:14px}
-@media (min-width:640px){.vs-grid{grid-template-columns:1fr 1fr}}
-.vs-card{border-radius:var(--r);padding:22px;border-top:2px solid}
-.vs-card.bad{background:var(--danger-bg);border-color:var(--danger)}
-.vs-card.good{background:rgba(198,255,52,.06);border-color:var(--lime)}
-.vs-badge{display:inline-block;font-family:var(--font-mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;
-  padding:5px 12px;border-radius:var(--r-full);margin-bottom:16px}
-.vs-badge.bad{color:#ff6b6f;background:rgba(229,72,77,.14)}/* vermelho claro p/ passar AA sobre o fundo tintado (o --danger escuro so dava 3.97:1) */
-.vs-badge.good{color:var(--lime-ink);background:var(--lime)}
-.vs-prompt{font-size:13.5px;color:var(--faint);margin-bottom:12px;line-height:1.5}
-.vs-out{font-family:var(--font-display);font-weight:600;font-size:16px;color:var(--warm);line-height:1.46;margin-bottom:12px}
-.vs-note{font-size:13.5px;color:var(--muted);line-height:1.5}
 
 /* comparacao */
-.compare{margin-top:32px;display:flex;flex-direction:column;gap:22px}
-.compare-item{border-left:2px solid var(--line);padding-left:20px}
-.compare-item .vs{font-family:var(--font-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);margin-bottom:8px}
-.compare-item p{color:var(--muted);font-size:16px;line-height:1.6}
-.compare-item b{color:var(--warm)}
+.vs{margin-top:48px;display:grid;grid-template-columns:1fr 1.15fr;gap:20px;align-items:stretch}
+.vs-card{border-radius:var(--r);padding:30px;border:1px solid var(--line);background:var(--carbon-2);display:flex;flex-direction:column;gap:16px}
+.vs-card.good{border-color:rgba(198,255,52,.38);background:linear-gradient(180deg,rgba(198,255,52,.06),rgba(198,255,52,.015) 60%),var(--carbon-2)}
+.vs-who{font-family:var(--font-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
+.vs-card.good .vs-who{color:var(--lime)}
+.vs-ask{font-size:15px;color:var(--muted)}
+.vs-ask q{color:var(--warm)}
+.vs-card p.how{font-size:17px}
+.vs-quote{margin-top:auto;border-left:2px solid var(--lime);padding:4px 0 4px 16px;font-family:var(--font-display);font-weight:700;font-size:clamp(18px,1.7vw,21px);line-height:1.35;letter-spacing:-.015em}
+.vs-quote small{display:block;margin-top:8px;font-family:var(--font-mono);font-weight:500;font-size:11.5px;letter-spacing:.04em;color:var(--faint)}
+@media (max-width:760px){.vs{grid-template-columns:1fr}.vs-card{padding:24px}}
 
-/* oferta */
-.offer-anchor{margin-top:8px;color:var(--muted);font-size:15.5px;line-height:1.7;text-align:left}
-.offer-anchor li{padding:6px 0;padding-left:22px;position:relative}
-.offer-anchor li::before{content:"→";position:absolute;left:0;color:var(--teal-1)}
-.offer-list{text-align:left;margin:0 0 28px;display:flex;flex-direction:column;gap:12px}
-.offer-list li{position:relative;padding-left:26px;color:var(--warm);font-size:15px;line-height:1.5}
-.offer-list li::before{content:"✓";position:absolute;left:0;color:var(--lime);font-weight:700}
-.price-card{margin-top:32px;padding:38px 32px;text-align:center}
-.price-old{font-family:var(--font-mono);font-size:18px;color:var(--faint);text-decoration:line-through;margin-bottom:4px}
-.price-new{display:flex;align-items:baseline;justify-content:center;gap:6px;margin-bottom:6px}
-.price-new .cifrao{font-family:var(--font-display);font-weight:700;font-size:28px;color:var(--lime);align-self:flex-start;margin-top:10px}
-.price-new .valor{font-family:var(--font-display);font-weight:900;font-size:clamp(56px,10vw,84px);color:var(--lime);letter-spacing:-.03em;line-height:1}
-.price-card .terms{font-size:14.5px;color:var(--muted);margin-bottom:26px}
-.price-card .btn{width:100%;max-width:360px;padding:20px 28px;font-size:18px;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.5),0 12px 34px rgba(198,255,52,.32)}
+/* como funciona */
+.how-grid{margin-top:52px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.9fr);gap:56px;align-items:start}
+.pieces li{padding:24px 0;border-top:1px solid var(--line)}
+.pieces li:first-child{border-top:0;padding-top:0}
+.pieces h3{font-size:21px;letter-spacing:-.02em}
+.pieces p{margin-top:8px;color:var(--muted)}
+.agent-card{position:sticky;top:96px;border-radius:var(--r);border:1px solid var(--line);background:var(--carbon);padding:26px;box-shadow:0 30px 80px -40px rgba(0,0,0,.9)}
+.agent-head{display:flex;gap:16px;align-items:center}
+.agent-head img{width:64px;height:64px;border-radius:50%;object-fit:cover;border:1px solid rgba(198,255,52,.35)}
+.agent-head h3{font-size:19px;letter-spacing:-.02em}
+.agent-head p{font-family:var(--font-mono);font-size:11.5px;color:var(--teal-1);margin-top:4px;letter-spacing:.02em}
+.agent-card .what{margin-top:18px;color:var(--muted);font-size:15.5px}
+.ask{margin-top:18px;border-radius:var(--r-sm);background:var(--onyx);border:1px solid var(--line-2);padding:14px 16px}
+.ask span{display:block;font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
+.ask q{display:block;margin-top:6px;font-family:var(--font-mono);font-size:14px;color:var(--lime)}
+.agent-card .note{margin-top:14px;font-size:13px;color:var(--faint)}
+@media (max-width:900px){.how-grid{grid-template-columns:1fr;gap:36px}.agent-card{position:static}}
 
-/* garantia */
-.guarantee{margin-top:32px;padding:38px 32px;text-align:center}
-.guarantee .days{font-family:var(--font-display);font-weight:900;font-size:clamp(44px,7vw,64px);color:var(--teal-1);letter-spacing:-.03em}
-.guarantee .days-label{font-family:var(--font-mono);font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
-.guarantee p{max-width:48ch;margin:16px auto 0;color:var(--muted);font-size:16px;line-height:1.6}
-.guarantee .seal{margin-top:20px;font-family:var(--font-mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--teal-1)}
+/* por dentro: lista de passos + quadro do print */
+.inside{margin-top:52px;display:grid;grid-template-columns:minmax(0,.62fr) minmax(0,1.38fr);gap:28px;align-items:start}
+.steps{display:flex;flex-direction:column;gap:6px}
+.step{all:unset;box-sizing:border-box;display:block;cursor:pointer;padding:16px 18px;border-radius:var(--r-sm);border:1px solid transparent;transition:background-color .2s,border-color .2s}
+.step b{display:flex;align-items:baseline;gap:10px;font-family:var(--font-display);font-size:17px;letter-spacing:-.015em}
+.step b i{font-style:normal;font-family:var(--font-mono);font-size:12px;font-weight:500;color:var(--faint)}
+.step span{display:block;margin-top:6px;font-size:14.5px;color:var(--muted)}
+.step:hover{background:rgba(240,240,228,.03)}
+.step[aria-selected="true"]{background:rgba(198,255,52,.06);border-color:rgba(198,255,52,.32)}
+.step[aria-selected="true"] b i{color:var(--lime)}
+.step:focus-visible{outline:2px solid var(--lime);outline-offset:2px}
+.frames{position:relative;border-radius:var(--r);border:1px solid var(--line);background:var(--carbon-2);overflow:hidden;height:min(640px,72vh)}
+.frame{margin:0;position:absolute;inset:0;display:flex;flex-direction:column;opacity:0;visibility:hidden;transition:opacity .35s ease,visibility .35s}
+.frame.on{opacity:1;visibility:visible}
+.frame .pic{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;padding:18px}
+.frame img{max-height:100%;width:auto;max-width:100%;border-radius:10px;box-shadow:0 20px 60px -30px rgba(0,0,0,.9)}
+.frame figcaption{padding:14px 20px;border-top:1px solid var(--line-2);font-size:13.5px;color:var(--muted)}
+.no-js .frames{height:auto;overflow:visible;border:0;background:none;display:grid;gap:20px}
+.no-js .frame{position:static;opacity:1;visibility:visible;border:1px solid var(--line);border-radius:var(--r)}
+.no-js .steps{display:none}
+@media (max-width:900px){
+  .inside{grid-template-columns:1fr}
+  .steps{flex-direction:row;overflow-x:auto;scroll-snap-type:x mandatory;gap:8px;padding-bottom:4px;scrollbar-width:none}
+  .steps::-webkit-scrollbar{display:none}
+  .step{flex:0 0 auto;scroll-snap-align:start;padding:10px 14px;border-color:var(--line)}
+  .step span{display:none}
+  .frames{height:min(460px,64vh)}
+  .frame .pic{padding:12px}
+}
 
-/* custo da inacao */
-.cost-grid{display:grid;grid-template-columns:1fr;gap:14px;margin-top:28px}
-@media (min-width:640px){.cost-grid{grid-template-columns:repeat(2,1fr)}}
-.cost-card{background:var(--onyx);border:1px solid var(--line);border-radius:var(--r-sm);padding:20px 22px}
-.cost-card .k{font-family:var(--font-display);font-weight:800;font-size:22px;color:var(--lime);margin-bottom:4px}
-.cost-card .v{font-size:14px;color:var(--muted)}
+/* salas de guerra */
+.flow{margin-top:56px;position:relative;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px}
+.flow::before,.flow::after{content:"";position:absolute;left:28px;right:calc((100% - 64px) / 5 - 28px);top:27px;height:2px;border-radius:2px}
+.flow::before{background:var(--line)}
+.flow::after{background:linear-gradient(90deg,var(--teal-1),var(--lime));transform:scaleX(0);transform-origin:left;transition:transform 2.2s var(--ease)}
+.flow.run::after{transform:scaleX(1)}
+.node{position:relative;z-index:1}
+.node .dot{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--carbon);border:1px solid var(--line);
+  font-family:var(--font-mono);font-size:14px;color:var(--faint);transition:border-color .4s,color .4s,box-shadow .4s;transition-delay:var(--d)}
+.flow.run .node .dot{border-color:var(--lime);color:var(--lime);box-shadow:0 0 0 6px rgba(198,255,52,.08)}
+.node h3{margin-top:18px;font-size:16.5px;letter-spacing:-.015em;line-height:1.25}
+.node p{margin-top:6px;font-size:14px;color:var(--muted)}
+.node small{display:block;margin-top:8px;font-family:var(--font-mono);font-size:11px;color:var(--teal-1);letter-spacing:.02em}
+.flow-foot{margin-top:40px;color:var(--muted);max-width:62ch}
+@media (max-width:900px){
+  .flow{grid-template-columns:1fr;gap:0;padding-left:0}
+  .flow::before,.flow::after{left:27px;right:auto;top:28px;bottom:28px;width:2px;height:auto}
+  .flow::after{transform:scaleY(0);transform-origin:top}
+  .flow.run::after{transform:scaleY(1)}
+  .node{display:grid;grid-template-columns:56px 1fr;column-gap:18px;padding-bottom:26px}
+  .node .dot{grid-row:span 3}
+  .node h3{margin-top:4px}
+}
+@media (prefers-reduced-motion:reduce){.flow::after{transition:none}.node .dot{transition:none}}
 
-/* faq */
-.faq{margin-top:32px;border-top:1px solid var(--line-2)}
-.faq details{border-bottom:1px solid var(--line-2);padding:20px 0}
-.faq summary{cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:16px;
-  font-family:var(--font-display);font-weight:700;font-size:16.5px;color:var(--warm)}
-.faq summary::-webkit-details-marker{display:none}
-.faq summary::after{content:"+";font-family:var(--font-mono);font-size:20px;color:var(--teal-1);flex-shrink:0;transition:transform .2s}
-.faq details[open] summary::after{transform:rotate(45deg)}
-.faq .a{margin-top:14px;color:var(--muted);font-size:15.5px;line-height:1.62;padding-right:28px}
-.faq .a a{color:var(--teal-1);text-decoration:underline}
-
-/* final */
-.final{text-align:center}
-.final h2{font-size:clamp(28px,4.4vw,42px);max-width:16ch;margin-inline:auto}
-.final .sub2{margin-top:16px;color:var(--muted);font-size:16px;max-width:50ch;margin-inline:auto;line-height:1.6}
-.final .ctas{margin-top:34px}
-.ps{margin-top:44px;max-width:52ch;margin-inline:auto;color:var(--faint);font-size:13.5px;line-height:1.6}
-.ps b{color:var(--muted)}
-.ps+.ps{margin-top:14px}
-
-footer{padding:36px 0 48px;text-align:center;border-top:1px solid var(--line-2)}
-footer p{font-size:13px;color:var(--faint)}
-/* prédio da Legião: prints mais largos que a coluna de texto */
-.predio-shots{max-width:1080px;margin:40px auto 0;padding-inline:24px;display:grid;gap:16px}
-.shot{margin:0;background:var(--onyx);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
-.shot img{width:100%;height:auto}
-.shot figcaption{padding:14px 18px;font-size:14px;line-height:1.5;color:var(--muted);text-align:left;border-top:1px solid var(--line-2)}
-.shot-row{display:grid;gap:16px}
-@media (min-width:760px){.shot-row{grid-template-columns:1fr 1fr}}
-/* prova: chat animado dos agentes (casos de demonstração) */
+/* provas: o chat animado ja publicado (estilo portado) */
+.proof-head{max-width:var(--text)}
+#provas .dm{max-width:860px}
 .dm-seal{margin-top:14px;font-size:13px;color:var(--faint)}
 .dm{margin-top:28px;text-align:left}
 .dm-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
@@ -390,166 +264,393 @@ footer p{font-size:13px;color:var(--faint)}
 .dm-hint{font-size:12.5px;color:var(--faint)}
 @media (max-width:560px){.dm-chat{height:430px;padding:14px 12px}.dm-bub{max-width:92%;font-size:14px}}
 @media (prefers-reduced-motion:reduce){.dm-chat{scroll-behavior:auto}.dm-typing span{animation:none}}
+
+/* pra quem */
+.fit{margin-top:52px;display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.fit-col{border-radius:var(--r);padding:30px;border:1px solid var(--line);background:var(--carbon-2)}
+.fit-col.yes{border-color:rgba(198,255,52,.3)}
+.fit-col h3{font-size:14px;font-family:var(--font-mono);font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
+.fit-col.yes h3{color:var(--lime)}
+.fit-col li{position:relative;padding:18px 0 18px 34px;border-top:1px solid var(--line-2);font-size:16.5px}
+.fit-col li:first-of-type{border-top:0}
+.fit-col li::before{content:"";position:absolute;left:2px;top:23px;width:16px;height:16px}
+.fit-col.no li::before{background:linear-gradient(45deg,transparent 46%,rgba(240,240,228,.5) 46% 54%,transparent 54%),linear-gradient(-45deg,transparent 46%,rgba(240,240,228,.5) 46% 54%,transparent 54%)}
+.fit-col.yes li::before{width:7px;height:13px;left:6px;top:21px;border:solid var(--lime);border-width:0 2px 2px 0;transform:rotate(45deg)}
+.fit-col li a{color:var(--teal-1);text-decoration:underline;text-underline-offset:3px}
+.fit-col li b{color:var(--warm)}
+@media (max-width:760px){.fit{grid-template-columns:1fr}.fit-col{padding:24px}}
+
+/* o que entra: bento */
+.bento{margin-top:52px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(3,auto);gap:16px}
+.tile{border-radius:var(--r);border:1px solid var(--line);background:var(--carbon-2);padding:26px;display:flex;flex-direction:column;gap:10px}
+.tile h3{font-size:21px;letter-spacing:-.02em}
+.tile p{color:var(--muted);font-size:15.5px}
+.tile.big{grid-column:span 2;grid-row:span 3;padding:32px;overflow:hidden;
+  background:radial-gradient(120% 80% at 100% 0%,rgba(198,255,52,.10),transparent 60%),var(--carbon-2);border-color:rgba(198,255,52,.28)}
+.tile.big .num{font-family:var(--font-display);font-weight:800;font-size:clamp(64px,8vw,104px);line-height:.9;letter-spacing:-.05em;color:var(--lime)}
+.tile.big h3{font-size:26px}
+.areas{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.areas li{padding:6px 12px;border-radius:var(--r-full);border:1px solid var(--line);font-size:13.5px;color:var(--muted);background:rgba(240,240,228,.02)}
+.tile .more{margin-top:auto;padding-top:8px;font-family:var(--font-display);font-weight:700;font-size:15px;color:var(--teal-1)}
+.tile .more:hover{text-decoration:underline;text-underline-offset:4px}
+.tile.teal{background:linear-gradient(180deg,rgba(59,208,160,.08),transparent 70%),var(--carbon-2)}
+.marquee{margin:18px -32px 4px;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.marquee-track{display:flex;gap:14px;width:max-content;animation:roll 60s linear infinite}
+.marquee:hover .marquee-track{animation-play-state:paused}
+.mq{display:flex;align-items:center;gap:10px;padding:8px 14px 8px 8px;border-radius:var(--r-full);border:1px solid var(--line);background:rgba(2,2,2,.6);white-space:nowrap;font-size:13.5px}
+.mq img{width:34px;height:34px;border-radius:50%;object-fit:cover}
+@keyframes roll{to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){.marquee{overflow-x:auto}.marquee-track{animation:none}}
+@media (max-width:900px){.bento{grid-template-columns:1fr}.tile.big{grid-column:auto;grid-row:auto;padding:26px}.marquee{margin-inline:-26px}}
+
+/* oferta */
+.offer{margin-top:52px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.95fr);gap:24px;align-items:stretch}
+.anchor p{color:var(--muted);font-size:17px}
+.anchor p+p{margin-top:16px}
+.anchor b{color:var(--warm)}
+.guarantee{margin-top:28px;border-radius:var(--r);border:1px solid rgba(59,208,160,.4);background:linear-gradient(180deg,rgba(59,208,160,.07),transparent 80%);padding:24px 26px;display:flex;gap:20px;align-items:center}
+.guarantee .days{flex:0 0 auto;width:78px;height:78px;border-radius:50%;border:1px solid rgba(59,208,160,.6);display:flex;flex-direction:column;align-items:center;justify-content:center;
+  font-family:var(--font-display);font-weight:800;font-size:28px;line-height:1;color:var(--teal-1)}
+.guarantee .days small{font-family:var(--font-mono);font-weight:500;font-size:10px;letter-spacing:.12em;margin-top:4px}
+.guarantee h3{font-size:19px;letter-spacing:-.015em}
+.guarantee p{margin-top:6px;color:var(--muted);font-size:15px}
+.price{border-radius:var(--r);border:1px solid rgba(198,255,52,.45);background:radial-gradient(100% 70% at 50% 0%,rgba(198,255,52,.12),transparent 70%),var(--carbon);padding:34px 32px;display:flex;flex-direction:column}
+.price ul li{position:relative;padding:9px 0 9px 28px;font-size:16px}
+.price ul li::before{content:"";position:absolute;left:4px;top:15px;width:6px;height:11px;border:solid var(--lime);border-width:0 2px 2px 0;transform:rotate(45deg)}
+.price .old{margin-top:26px;font-size:15px;color:var(--faint)}
+.price .old s{text-decoration-color:rgba(240,240,228,.6)}
+.price .now{font-family:var(--font-display);font-weight:800;font-size:clamp(64px,7vw,88px);line-height:1;letter-spacing:-.05em;margin-top:4px}
+.price .now sup{font-size:.36em;vertical-align:top;position:relative;top:.35em;margin-right:4px;letter-spacing:0}
+.price .terms{margin-top:8px;color:var(--muted);font-size:15px}
+.price .btn{margin-top:26px;width:100%}
+.price .safe{margin-top:16px;display:flex;flex-wrap:wrap;justify-content:center;gap:6px 18px;font-size:13px;color:var(--faint)}
+@media (max-width:900px){.offer{grid-template-columns:1fr}.price{padding:28px 24px}}
+
+/* faq */
+.faq{margin-top:44px;max-width:820px}
+.faq details{border-top:1px solid var(--line)}
+.faq details:last-child{border-bottom:1px solid var(--line)}
+.faq summary{list-style:none;cursor:pointer;padding:22px 44px 22px 0;position:relative;font-family:var(--font-display);font-weight:700;font-size:18px;letter-spacing:-.015em}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"";position:absolute;right:8px;top:50%;width:10px;height:10px;border:solid var(--faint);border-width:0 2px 2px 0;transform:translateY(-70%) rotate(45deg);transition:transform .25s}
+.faq details[open] summary::after{transform:translateY(-30%) rotate(-135deg);border-color:var(--lime)}
+.faq .a{padding:0 0 22px;color:var(--muted);max-width:68ch}
+.faq .a a{color:var(--teal-1);text-decoration:underline;text-underline-offset:3px}
+
+/* final + implementacao */
+.final{text-align:center;padding-bottom:96px}
+.final::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(60% 60% at 50% 100%,rgba(198,255,52,.10),transparent 70%)}
+.final p{margin:20px auto 0;max-width:56ch;color:var(--muted);font-size:18px}
+.final .btn{margin-top:32px}
+.impl{padding:0 0 96px}
+.impl-box{border-radius:calc(var(--r) + 6px);border:1px solid rgba(59,208,160,.4);padding:48px;display:grid;grid-template-columns:minmax(0,1.4fr) auto;gap:32px;align-items:center;
+  background:radial-gradient(90% 120% at 0% 0%,rgba(59,208,160,.14),transparent 60%),linear-gradient(180deg,var(--teal-4),#08130f)}
+.impl-box h2{margin-top:14px;font-size:clamp(28px,3.2vw,40px);line-height:1.08}
+.impl-box p{margin-top:16px;color:var(--muted);max-width:60ch}
+@media (max-width:900px){.impl-box{grid-template-columns:1fr;padding:30px 24px}.impl-box .btn{width:100%}}
+
+footer{border-top:1px solid var(--line-2);padding:32px 0 44px;color:var(--faint);font-size:14px}
+.foot{display:flex;flex-wrap:wrap;gap:16px 28px;align-items:center;justify-content:space-between}
+.foot svg{height:22px;width:auto;display:block;opacity:.85}
+.foot a{color:var(--muted)}
+.foot a:hover{color:var(--warm)}
+
+/* entrada das secoes conforme o scroll (so onde o navegador suporta, e nunca com reduced-motion) */
+@supports (animation-timeline:view()){
+  @media (prefers-reduced-motion:no-preference){
+    .reveal{animation:rise linear both;animation-timeline:view();animation-range:entry 5% cover 22%}
+    @keyframes rise{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
+  }
+}
 </style>
 </head>
-<body>
+<body class="no-js">
+<script>document.body.classList.replace("no-js","js")</script>
 
-<main>
+<header class="nav">
+  <div class="container nav-in">
+    <a class="nav-logo" href="#topo" aria-label="Infuser"><svg role="img" aria-label="Infuser" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 332 70"><svg x="0" y="5" width="83" height="60" viewBox="0 0 655 473"><path d="M 173.500 1.067 C 130.798 1.541, 121.513 1.899, 116.432 3.263 C 88.419 10.784, 70.684 26.004, 61.500 50.404 C 56.005 65.002, 55.821 66.970, 55.047 119.500 C 54.377 164.931, 54.171 169.061, 52.217 176.197 C 45.690 200.031, 33.274 210.989, 10 213.455 C -1.053 214.626, 0 212.202, 0 236.488 L 0 257.841 6.750 258.497 C 32.449 260.995, 45.489 271.915, 52.132 296.500 C 54.151 303.969, 54.342 307.718, 55.017 353 C 55.796 405.227, 55.805 405.326, 61.705 421.665 C 70.476 445.956, 88.086 461.845, 113.922 468.778 L 123.500 471.348 174.868 471.740 L 226.236 472.131 220.288 464.816 C 217.017 460.792, 211.773 453.818, 208.635 449.317 C 195.091 429.897, 183.880 423.863, 157.999 422.065 C 150.574 421.549, 142.211 420.428, 139.414 419.573 C 129.601 416.576, 122.599 409.725, 118.748 399.355 C 116.689 393.807, 116.541 391.294, 115.935 351.500 C 115.442 319.195, 114.922 307.538, 113.681 301 C 107.952 270.828, 94.717 251.664, 71.583 240.042 L 64.134 236.300 72.459 232.079 C 91.360 222.495, 102.883 208.836, 109.329 188.374 C 114.715 171.276, 115.272 165.531, 115.644 123.178 C 116.072 74.511, 117.029 69.013, 126.665 59.856 C 134.036 52.852, 142.301 50.192, 158.500 49.610 C 180.152 48.832, 196.117 39.588, 210.242 19.650 C 214.197 14.068, 219.202 7.578, 221.363 5.230 C 223.524 2.881, 225.114 0.856, 224.896 0.730 C 224.678 0.603, 201.550 0.755, 173.500 1.067 M 267 2.017 C 251.073 4.786, 236.474 16.385, 230.954 30.656 C 227.705 39.055, 227.647 52.518, 230.829 59.500 C 233.886 66.210, 236.760 69.043, 248.163 76.586 C 253.478 80.103, 259.684 85.122, 261.954 87.740 C 270.215 97.267, 275.956 112.957, 275.985 126.090 C 276.002 133.740, 272.758 147.505, 270.297 150.224 C 267.781 153.005, 262.252 152.245, 259.663 148.762 C 257.703 146.125, 257.687 145.828, 259.247 140.762 C 263.045 128.422, 262.388 117.682, 257.154 106.537 C 253.140 97.988, 249.924 94.606, 238.896 87.334 C 224.497 77.839, 218.576 70.625, 215.959 59.384 C 215.334 56.698, 214.668 53.982, 214.480 53.349 C 214.246 52.560, 212.081 52.945, 207.597 54.572 C 178.466 65.146, 157.688 86.027, 147.727 114.738 C 143.867 125.862, 143.623 127.259, 143.217 140.500 C 142.831 153.077, 143.051 155.563, 145.381 164.957 C 149.981 183.505, 157.865 197.073, 171.369 209.684 C 178.063 215.935, 192.374 224.959, 193.620 223.714 C 193.880 223.454, 192.774 220.599, 191.162 217.371 C 185.664 206.353, 184.514 201.450, 184.510 189 C 184.503 170.842, 189.768 156.867, 196.875 156.180 C 200.719 155.808, 204.004 158.220, 203.993 161.405 C 203.989 162.557, 202.897 166.710, 201.565 170.633 C 193.267 195.082, 202.013 219.249, 222.565 228.658 C 230.174 232.142, 233.945 232.463, 244.947 230.563 C 284.384 223.754, 310.885 196.347, 317.528 155.500 C 319.300 144.605, 319.648 43.525, 317.939 36.112 C 312.719 13.465, 289.715 -1.931, 267 2.017 M 429.613 2.418 C 430.774 3.245, 435.231 8.551, 439.516 14.210 C 450.049 28.122, 455.177 33.372, 463.793 39.068 C 474.075 45.865, 480.194 47.870, 495.607 49.493 C 515.895 51.631, 521.793 53.708, 528.431 61.055 C 537.605 71.209, 538.998 79.467, 539.006 123.708 C 539.014 169.353, 540.731 181.831, 549.436 199.500 C 556.748 214.339, 566.088 223.744, 581.337 231.620 L 590.264 236.230 582.618 240.004 C 561.061 250.644, 548.204 268.799, 541.899 297.500 C 539.908 306.562, 539.640 311.438, 539.039 349.500 C 538.417 388.967, 538.245 391.897, 536.199 398.085 C 530.694 414.732, 518.769 421.976, 496.803 422.015 C 474.016 422.055, 460.125 430.088, 442.484 453.424 C 437.879 459.516, 432.666 466.220, 430.901 468.322 L 427.690 472.145 479.595 471.739 L 531.500 471.333 541.211 468.738 C 567.493 461.713, 586.406 444.131, 593.853 419.800 C 598.862 403.437, 599.237 399.091, 600.005 348.500 C 600.625 307.604, 600.988 299.612, 602.453 294.500 C 608.329 274.002, 623.345 261.210, 644.482 258.697 L 654 257.565 654 236.302 C 654 211.960, 655.280 214.679, 643.268 213.511 C 625.816 211.814, 612.569 202.584, 605.879 187.460 C 600.806 175.991, 600.743 175.312, 599.987 124 C 599.206 70.959, 598.808 66.786, 592.994 50.770 C 584.300 26.817, 566.952 11.311, 540.500 3.849 C 532.740 1.659, 530.927 1.582, 480 1.254 C 433.079 0.951, 427.724 1.075, 429.613 2.418 M 365.549 4.059 C 349.296 9.795, 338.473 22.690, 335.868 39.420 C 334.124 50.622, 335.361 152.710, 337.342 161.083 C 342.951 184.789, 356.132 204.958, 373.825 216.905 C 386.650 225.566, 403.426 231.114, 417.500 231.349 C 425.748 231.487, 426.960 231.250, 432 228.512 C 452.933 217.138, 461.071 192.362, 451.561 168.959 C 450.208 165.627, 449.371 162.137, 449.702 161.201 C 451.468 156.209, 456.424 154.508, 460.625 157.450 C 464.510 160.171, 470.023 179.308, 469.983 189.934 C 469.953 197.717, 467.233 208.159, 463.117 216.290 C 458.825 224.770, 458.998 225.024, 466.500 221.229 C 486.026 211.349, 501.597 191.072, 508.140 166.999 C 511.245 155.578, 511.492 131.281, 508.612 120.584 C 501.655 94.746, 485.655 74.355, 462 61.182 C 456.092 57.892, 440.889 51.777, 440.238 52.429 C 440.020 52.647, 439.165 55.795, 438.337 59.425 C 435.583 71.495, 429.451 78.729, 413.841 88.322 C 404.787 93.886, 400.715 98.239, 396.885 106.453 C 392.659 115.511, 391.272 125.265, 392.932 134.250 C 395.327 147.214, 395.351 147.954, 393.460 150.045 C 391.132 152.617, 385.863 152.611, 383.530 150.033 C 380.692 146.897, 378 135.432, 378 126.482 C 378 104.799, 388.433 87.121, 408.319 75.109 C 421.872 66.923, 426 60.127, 426 46 C 426 28.956, 415.727 13.471, 399.288 5.737 C 390.198 1.460, 375.050 0.707, 365.549 4.059 M 129.948 183.575 C 125.596 189.902, 120.508 201.208, 117.787 210.605 C 115.797 217.475, 115.504 220.706, 115.527 235.500 C 115.559 255.254, 117.266 262.223, 125.510 276.269 C 139.106 299.430, 160.496 312.671, 186.340 313.925 C 197.222 314.454, 198.335 314.691, 200.090 316.861 C 202.629 319.999, 202.498 322.310, 199.589 325.692 C 197.234 328.429, 196.945 328.492, 187.339 328.370 C 175.075 328.214, 162.662 325.344, 151.375 320.055 L 143.005 316.132 142.294 318.816 C 141.902 320.292, 141.604 325.775, 141.629 331 C 141.772 359.939, 158.692 387.212, 185.020 400.941 C 191.793 404.472, 205.456 408.877, 206.476 407.858 C 206.698 407.636, 207.346 402.964, 207.916 397.477 C 209.308 384.077, 211.212 377.218, 216.536 366.429 C 226.297 346.645, 242.466 332.747, 263.596 325.979 C 272.219 323.216, 275.570 323.749, 277.432 328.177 C 279.895 334.033, 277.650 336.871, 268.500 339.473 C 250.046 344.721, 236.338 356.951, 227.798 375.786 C 216.093 401.601, 222.029 436.446, 241.382 455.514 C 269.987 483.699, 311.105 474.356, 317.979 438.109 C 318.637 434.639, 319 390.831, 319 314.802 L 319 196.877 313.040 204.786 C 291.046 233.975, 258.211 248.711, 221.500 245.869 C 185.326 243.069, 155.537 222.340, 138.505 188.117 C 136.009 183.103, 133.771 179, 133.532 179 C 133.292 179, 131.680 181.059, 129.948 183.575 M 516.149 187.106 C 509.832 200.211, 504.453 207.727, 494.035 218 C 476.861 234.936, 459.416 243.005, 433.656 245.928 C 398.260 249.944, 357.921 230.988, 338.604 201.262 C 337.447 199.482, 336.163 198.019, 335.750 198.012 C 334.283 197.988, 334.927 429.700, 336.417 438.050 C 339.989 458.072, 353.912 470.777, 373.403 471.800 C 405.533 473.486, 432.015 443.510, 431.976 405.500 C 431.942 372.644, 414.165 347.889, 384.265 339.060 C 376.796 336.855, 375 335.243, 375 330.740 C 375 327.674, 378.897 324, 382.149 324 C 383.536 324, 387.557 324.942, 391.085 326.092 C 421.951 336.160, 443.856 364.826, 445.711 397.578 C 446.404 409.812, 446.208 409.687, 458.179 405.505 C 486.536 395.598, 506.342 372.008, 511.586 341.896 C 513.108 333.156, 513.066 320.941, 511.499 316.859 C 511.064 315.724, 509.117 316.325, 502.224 319.723 C 490.218 325.640, 480.012 328.109, 466.671 328.325 C 456.395 328.491, 455.744 328.379, 453.921 326.139 C 451.652 323.351, 451.435 319.156, 453.418 316.441 C 454.649 314.757, 456.533 314.420, 467.668 313.895 C 478.929 313.364, 481.517 312.893, 488.809 310.049 C 507.199 302.878, 521.575 289.814, 530.043 272.579 C 536.814 258.796, 538.179 253.110, 538.699 236.500 C 539.094 223.913, 538.881 221.491, 536.588 212.500 C 534.003 202.363, 527 186.893, 522.602 181.606 L 520.195 178.711 516.149 187.106" fill="#C6FF34" fill-rule="evenodd"/></svg><svg x="108" y="0" width="224" height="70" viewBox="138 574 3726 1164"><g transform="translate(0,2180) scale(0.1,-0.1)" fill="#F0F0E4" stroke="none">
+    <path d="M3185 16038 c-22 -5 -89 -20 -150 -34 -189 -41 -440 -104 -510 -128
+-22 -8 -74 -24 -115 -36 -128 -39 -331 -119 -418 -165 -121 -64 -236 -149
+-324 -237 -123 -125 -208 -268 -253 -425 -59 -209 -46 -438 35 -633 34 -80
+122 -210 186 -274 78 -77 179 -142 306 -196 110 -47 289 -76 410 -67 109 9
+240 43 334 88 98 46 223 139 301 222 77 84 161 214 207 322 22 51 49 140 62
+205 18 88 24 148 24 253 0 76 -8 220 -17 320 -11 112 -18 259 -17 382 1 155 6
+221 21 296 10 52 17 101 15 107 -4 14 -41 14 -97 0z"/>
+    <path d="M13695 16004 c-60 -7 -153 -20 -205 -29 -119 -21 -374 -87 -460 -119
+-95 -35 -274 -122 -360 -174 -191 -117 -367 -273 -515 -457 -141 -175 -262
+-399 -350 -644 -31 -87 -101 -332 -114 -401 -6 -30 -17 -89 -25 -130 -8 -41
+-17 -102 -21 -135 -3 -33 -13 -114 -22 -180 -8 -66 -18 -244 -22 -395 l-6
+-275 -505 -5 -505 -5 -3 -564 c-1 -408 1 -568 9 -577 9 -12 100 -14 504 -14
+440 0 494 -2 499 -16 10 -26 6 -3620 -4 -3895 -15 -392 -34 -590 -81 -834 -42
+-221 -105 -448 -151 -545 -11 -25 -33 -73 -49 -108 -74 -163 -197 -339 -323
+-460 -47 -45 -114 -101 -148 -123 -124 -80 -371 -190 -498 -221 -19 -4 -87
+-17 -150 -28 -83 -14 -161 -20 -280 -19 -228 0 -387 22 -590 80 -187 54 -305
+99 -474 182 -54 26 -106 47 -114 45 -17 -3 -36 -53 -87 -223 -14 -49 -43 -144
+-64 -210 -21 -66 -62 -196 -91 -290 -29 -93 -67 -212 -86 -264 -19 -52 -34
+-102 -34 -111 0 -10 6 -22 13 -28 25 -21 206 -110 317 -157 175 -73 516 -172
+675 -196 312 -47 373 -53 630 -53 257 -1 310 3 580 45 87 14 299 64 385 91
+103 32 337 127 425 170 182 92 367 208 495 311 271 220 474 451 667 759 93
+150 196 374 270 588 39 113 76 228 83 255 7 28 23 86 35 130 20 72 62 266 95
+445 7 36 16 106 21 155 5 50 17 158 26 240 14 133 17 383 20 2195 1 1125 5
+2055 8 2068 l5 22 1019 0 c920 0 1019 -2 1025 -16 3 -9 6 -579 6 -1267 0 -807
+4 -1301 11 -1391 11 -142 55 -425 85 -546 27 -105 90 -307 134 -423 41 -110
+110 -256 170 -357 56 -95 180 -273 235 -335 82 -93 223 -228 300 -287 39 -30
+100 -72 136 -95 96 -60 272 -146 370 -181 91 -32 265 -80 389 -106 99 -21 367
+-46 496 -46 125 0 336 23 464 50 184 39 434 130 570 208 74 42 220 146 300
+213 129 108 269 267 378 430 71 105 112 181 176 322 20 45 41 77 49 77 17 0
+23 -43 32 -225 27 -532 55 -908 69 -917 16 -11 1288 -9 1305 2 12 7 12 44 -2
+262 -14 203 -17 410 -17 1053 0 790 0 802 25 1000 65 522 105 698 239 1055 20
+52 40 104 45 115 5 11 16 38 24 60 37 99 197 425 250 508 95 151 228 341 296
+426 85 104 243 277 290 317 16 13 34 24 40 24 16 0 14 -23 -8 -99 -32 -108
+-44 -271 -38 -494 5 -216 21 -326 63 -461 36 -112 133 -307 196 -391 107 -145
+322 -332 500 -436 95 -56 241 -128 348 -172 216 -88 573 -185 945 -257 33 -6
+92 -17 130 -25 39 -8 133 -26 210 -40 513 -95 692 -142 857 -225 98 -50 147
+-85 224 -161 46 -45 72 -82 102 -147 49 -103 66 -199 56 -317 -7 -88 -45 -207
+-87 -270 -45 -70 -129 -152 -209 -203 -115 -74 -263 -123 -498 -163 -30 -6
+-163 -10 -295 -10 -248 -1 -255 0 -486 51 -314 70 -567 238 -723 480 -64 98
+-104 197 -140 337 -17 71 -35 134 -40 141 -9 15 3 16 -306 -45 -124 -24 -261
+-50 -305 -58 -125 -20 -433 -75 -510 -91 -38 -7 -114 -21 -168 -30 -59 -10
+-101 -22 -104 -30 -13 -33 34 -224 93 -384 35 -93 133 -286 171 -336 18 -24
+33 -45 33 -49 0 -3 26 -43 57 -88 96 -138 346 -375 548 -518 134 -95 354 -210
+505 -264 126 -45 252 -85 320 -101 36 -8 101 -24 145 -34 102 -24 262 -49 390
+-61 169 -15 414 -28 547 -29 133 0 454 22 573 40 146 22 312 52 370 67 33 8
+76 18 95 23 218 53 522 188 713 316 176 120 284 218 444 404 49 57 128 179
+170 265 43 86 93 212 113 285 7 25 19 65 26 90 61 198 70 624 19 856 -30 139
+-63 241 -104 324 -78 159 -88 175 -192 315 -45 60 -193 207 -269 267 -74 58
+-119 87 -226 145 -218 119 -617 259 -959 337 -127 29 -427 89 -530 106 -38 6
+-97 18 -130 26 -56 12 -107 22 -321 59 -382 65 -618 156 -762 294 -55 52 -80
+85 -108 145 -28 58 -39 97 -45 159 -10 95 -5 156 22 247 41 142 151 273 304
+361 93 53 136 72 225 98 142 42 179 46 425 45 190 -1 256 -5 315 -18 41 -10
+93 -22 116 -26 63 -14 224 -83 313 -134 44 -26 111 -76 150 -112 128 -119 227
+-277 294 -471 28 -80 38 -99 56 -101 20 -3 287 43 389 68 23 5 56 10 72 10 17
+0 56 6 88 14 67 17 179 40 277 57 130 22 476 97 483 104 25 25 -50 296 -131
+470 -68 146 -137 258 -240 385 -178 220 -379 382 -642 515 -185 94 -272 130
+-440 180 -162 49 -181 54 -289 75 -54 11 -103 23 -109 27 -11 7 -112 16 -362
+34 -292 20 -812 -1 -1036 -41 -179 -33 -489 -103 -599 -135 -324 -96 -528
+-169 -839 -302 -111 -47 -369 -174 -411 -203 -14 -9 -56 -34 -95 -55 -68 -36
+-261 -161 -377 -244 -134 -95 -324 -258 -501 -431 -253 -246 -528 -585 -726
+-895 -232 -364 -455 -780 -590 -1099 -35 -82 -79 -183 -98 -225 -19 -42 -46
+-103 -61 -136 -15 -33 -75 -157 -134 -277 -160 -325 -270 -490 -435 -652 -145
+-143 -313 -253 -467 -306 -32 -11 -113 -31 -179 -45 -93 -20 -151 -26 -261
+-26 -161 -1 -258 11 -401 50 -312 87 -540 280 -693 586 -41 82 -100 261 -122
+370 -43 217 -42 135 -47 2065 -3 1226 -8 1839 -15 1848 -8 9 -373 12 -1762 12
+-1090 0 -1757 4 -1766 10 -13 8 -15 48 -14 267 0 323 22 519 79 725 37 131
+121 298 195 385 73 87 205 193 298 238 38 18 118 46 178 61 98 25 130 28 314
+32 219 4 304 -3 475 -43 107 -26 286 -85 347 -116 31 -16 38 -16 48 -4 10 13
+42 130 124 465 13 52 48 194 79 315 76 303 82 334 65 350 -16 15 -137 62 -309
+120 -200 68 -444 119 -669 141 -177 17 -496 16 -645 -2z"/>
+    <path d="M7460 13204 c-134 -8 -355 -52 -470 -93 -252 -90 -442 -189 -610
+-319 -156 -121 -328 -302 -442 -467 -57 -83 -146 -238 -188 -329 -23 -52 -45
+-86 -54 -86 -8 0 -17 4 -20 8 -4 7 -12 115 -36 517 -13 217 -38 533 -46 570
+-3 17 -11 36 -16 43 -8 9 -156 12 -678 12 -535 0 -670 -3 -678 -13 -8 -9 -7
+-50 3 -142 27 -239 53 -598 60 -805 3 -113 8 -1301 10 -2640 4 -2300 5 -2435
+21 -2447 14 -10 169 -13 730 -13 431 0 723 4 738 10 l25 9 3 1688 c4 1549 5
+1698 21 1808 28 185 53 296 101 440 54 162 133 323 217 441 94 133 237 275
+339 339 47 29 109 64 138 79 61 31 263 99 342 116 30 6 124 15 209 21 136 8
+166 7 270 -11 148 -26 265 -62 366 -112 122 -62 203 -119 276 -194 162 -169
+274 -401 333 -690 9 -44 24 -134 33 -200 15 -106 17 -315 20 -1924 3 -1405 6
+-1806 16 -1812 7 -4 339 -7 738 -7 559 0 730 2 743 12 16 11 16 141 13 1927
+-3 1706 -5 1929 -20 2045 -18 140 -47 310 -72 415 -8 36 -22 95 -30 131 -8 37
+-33 118 -56 180 -22 63 -44 125 -48 139 -5 14 -33 77 -63 140 -136 286 -319
+535 -516 702 -126 106 -275 206 -403 270 -120 60 -294 129 -369 148 -25 6 -63
+18 -85 25 -22 8 -107 26 -190 40 -124 22 -189 26 -380 29 -126 2 -259 2 -295
+0z"/>
+    <path d="M30425 13185 c-409 -61 -654 -133 -1008 -299 -174 -82 -381 -212
+-538 -338 -270 -217 -518 -498 -681 -771 -107 -179 -241 -492 -311 -722 -53
+-179 -71 -252 -97 -405 -33 -200 -45 -367 -45 -630 0 -265 13 -441 45 -620 52
+-289 107 -487 203 -725 62 -153 231 -454 333 -592 201 -272 382 -452 654 -653
+156 -115 275 -185 478 -279 218 -101 515 -197 710 -231 34 -5 88 -14 121 -20
+117 -20 360 -41 541 -47 244 -7 526 13 785 55 130 22 145 25 340 76 191 50
+289 87 491 186 345 170 596 361 833 635 108 124 180 221 271 367 77 121 220
+407 220 438 0 23 6 21 -195 60 -62 12 -82 16 -225 49 -47 11 -119 27 -160 35
+-41 8 -124 27 -185 41 -60 13 -132 30 -160 36 -130 28 -186 40 -260 55 -44 9
+-106 22 -139 30 -39 9 -65 10 -76 4 -10 -6 -24 -27 -30 -47 -16 -49 -91 -189
+-149 -278 -25 -38 -88 -113 -141 -166 -70 -70 -125 -114 -210 -166 -106 -66
+-274 -145 -345 -164 -16 -5 -55 -15 -85 -24 -127 -36 -277 -55 -432 -55 -185
+0 -412 28 -523 65 -22 7 -78 25 -125 41 -47 15 -128 49 -180 75 -248 125 -436
+293 -600 538 -114 171 -236 503 -275 751 -8 54 -9 91 -4 103 9 16 128 17 2278
+17 2089 0 2270 1 2282 16 11 13 14 81 14 333 0 194 -5 360 -13 431 -7 63 -18
+156 -23 205 -22 190 -84 468 -150 665 -78 236 -217 523 -341 709 -82 120 -206
+280 -292 375 -107 118 -274 260 -421 359 -134 90 -197 126 -331 192 -160 77
+-207 97 -384 158 -71 25 -209 63 -275 77 -33 7 -76 17 -95 21 -19 5 -102 18
+-185 29 -125 16 -206 20 -485 19 -221 -1 -366 -6 -425 -14z m706 -1145 c278
+-46 557 -179 727 -347 82 -81 192 -228 249 -333 95 -173 198 -498 205 -645 l3
+-60 -1515 0 -1515 0 3 50 c4 83 101 382 168 515 46 94 150 243 227 326 40 43
+82 90 93 102 33 41 156 136 249 193 141 87 297 148 465 184 144 30 175 35 225
+39 94 7 300 -5 416 -24z"/>
+    <path d="M37885 13183 c-264 -23 -563 -129 -795 -281 -95 -62 -149 -105 -262
+-205 -152 -135 -288 -326 -403 -562 -40 -82 -92 -202 -115 -265 -23 -63 -48
+-121 -56 -129 -10 -11 -16 -12 -27 -3 -10 9 -17 64 -26 209 -7 109 -16 250
+-22 313 -6 63 -15 210 -20 325 -22 440 -23 455 -39 465 -9 6 -274 9 -685 7
+l-670 -2 1 -70 c0 -38 6 -146 13 -240 7 -93 17 -237 23 -320 7 -98 12 -1057
+15 -2774 3 -1968 7 -2628 15 -2639 10 -12 128 -13 752 -10 408 1 747 7 754 11
+9 7 12 336 12 1590 0 970 4 1619 10 1677 12 118 54 333 81 420 59 186 160 398
+241 507 28 37 92 109 142 158 144 143 318 250 540 329 212 77 374 101 622 92
+215 -7 324 -21 484 -63 103 -28 109 -28 114 -2 3 13 7 137 11 274 8 334 33
+1000 40 1051 3 22 3 48 0 56 -8 19 -91 39 -291 68 -97 14 -185 19 -280 18 -77
+-1 -157 -3 -179 -5z"/>
+    <path d="M1570 13041 c-7 -14 -10 -969 -10 -3015 0 -2709 1 -2996 16 -3010 14
+-14 94 -16 733 -16 570 0 721 3 735 13 17 12 17 158 17 3020 0 1654 -3 3012
+-6 3017 -4 6 -281 10 -740 10 -716 0 -735 0 -745 -19z"/>
+    <path d="M19332 13048 c-9 -9 -12 -305 -12 -1268 0 -1240 5 -1560 22 -1560 5
+0 14 15 20 33 13 38 162 336 226 451 62 112 228 377 326 519 283 413 485 647
+854 993 l52 49 1 387 c0 213 -2 392 -6 398 -4 7 -245 10 -739 10 -556 0 -735
+-3 -744 -12z"/>
+  </g></svg></svg></a>
+    <a class="btn btn-primary" href="#oferta">Quero a Legião</a>
+  </div>
+</header>
+
+<main id="topo">
 
 <section class="hero">
-  <div class="wrap">
-    <h1>As maiores mentes de <span class="cycle"><span>copy</span><span>tráfego</span><span>vendas</span><span>oferta</span><span>branding</span><span>funis</span><span>conteúdo</span><span>vídeo</span><span>estratégia</span><span>retenção</span></span> trabalhando para você <span class="accent">dentro do Claude</span></h1>
-    <p class="sub">São 80 agentes de IA e 11 orquestradores que assumem o trabalho técnico dentro do seu Claude. Você entrega no mesmo dia o que levava a semana inteira, trabalhando menos, não mais.</p>
-    <div class="ctas">
-      <a class="btn btn-primary" href="#oferta">QUERO A LEGIÃO →</a>
-      <p class="microcopy">R$47 pagamento único · vitalício · 7 dias de garantia</p>
-      <div class="trust-row">
-        <span>Acesso imediato</span>
-        <span>Garantia de 7 dias</span>
-        <span>Pagamento seguro</span>
+  <div class="container hero-grid">
+    <div class="hero-copy">
+      <span class="eyebrow">Funciona no Claude e no Codex</span>
+      <h1>Você paga o Claude e recebe <span class="hl">texto genérico.</span></h1>
+      <p class="sub">Porque pede pra uma IA. Na Legião você pede pro especialista: 80 deles, de copy a tráfego, dentro do seu Claude.</p>
+      <div class="ctas">
+        <a class="btn btn-primary" href="#oferta">Quero a Legião</a>
+        <a class="btn btn-ghost" href="#provas">Ver o agente trabalhando</a>
       </div>
+    </div>
+    <figure class="tower" aria-label="O prédio da Legião: sete andares, do Comando à Operação">
+      <div class="tower-art">
+        <img class="tower-img" src="/legiao/predio-torre.webp" width="620" height="1150" alt="O prédio da Legião, uma torre de sete andares com as salas iluminadas" fetchpriority="high" decoding="async">
+        <img class="fl f1" src="/legiao/predio-torre.webp" width="620" height="1150" alt="" aria-hidden="true" decoding="async">
+        <img class="fl f2" src="/legiao/predio-torre.webp" width="620" height="1150" alt="" aria-hidden="true" decoding="async">
+        <img class="fl f3" src="/legiao/predio-torre.webp" width="620" height="1150" alt="" aria-hidden="true" decoding="async">
+        <img class="fl f4" src="/legiao/predio-torre.webp" width="620" height="1150" alt="" aria-hidden="true" decoding="async">
+        <img class="fl f5" src="/legiao/predio-torre.webp" width="620" height="1150" alt="" aria-hidden="true" decoding="async">
+        <img class="fl f6" src="/legiao/predio-torre.webp" width="620" height="1150" alt="" aria-hidden="true" decoding="async">
+        <img class="fl f7" src="/legiao/predio-torre.webp" width="620" height="1150" alt="" aria-hidden="true" decoding="async">
+        <span class="elevator" aria-hidden="true"></span>
+      </div>
+      <ol class="tags">
+        <li style="--y:19.2%;--d:1.37s"><a href="#predio"><b>Comando</b><span>11 salas de guerra</span></a></li>
+        <li style="--y:29.4%;--d:1.24s"><a href="#predio"><b>Copy</b><span>14 especialistas</span></a></li>
+        <li style="--y:39.6%;--d:1.11s"><a href="#predio"><b>Aquisição</b><span>16 especialistas</span></a></li>
+        <li style="--y:49.8%;--d:.98s"><a href="#predio"><b>Vendas</b><span>11 especialistas</span></a></li>
+        <li style="--y:60%;--d:.85s"><a href="#predio"><b>Oferta</b><span>12 especialistas</span></a></li>
+        <li style="--y:69.6%;--d:.72s"><a href="#predio"><b>Estratégia</b><span>17 especialistas</span></a></li>
+        <li style="--y:79.2%;--d:.59s"><a href="#predio"><b>Operação</b><span>10 especialistas</span></a></li>
+      </ol>
+    </figure>
+  </div>
+</section>
+
+<section id="comparacao">
+  <div class="container">
+    <div class="narrow reveal">
+      <h2 class="h2">Mesmo pedido. <span class="hl">Duas respostas.</span></h2>
+      <p class="lede">O Claude puro é bom. O problema é que ele escreve com o que tem na hora, e na hora ele não sabe quem compra, qual é a dor nem que prova você tem. Aí ele preenche o buraco com frase pronta.</p>
+    </div>
+    <div class="vs reveal">
+      <article class="vs-card">
+        <span class="vs-who">Claude puro</span>
+        <p class="vs-ask">Você pede: <q>escreve um roteiro de anúncio em vídeo pro meu colchão</q></p>
+        <p class="how">Ele escreve na hora, com o que tem. Sem a dor do seu cliente e sem a sua prova, o roteiro sai genérico: serviria pra qualquer colchão de qualquer loja.</p>
+      </article>
+      <article class="vs-card good">
+        <span class="vs-who">Roteirista de Anúncio em Vídeo, da Legião</span>
+        <p class="vs-ask">Você pede: <q>o mesmo roteiro</q></p>
+        <p class="how">Antes de escrever, ele pergunta o que falta: a oferta, a etapa do funil e a prova que você tem. Depois entrega na lógica de anúncio: gancho que qualifica, dor, prova, oferta e um CTA só.</p>
+        <p class="vs-quote">“Se você acorda mais cansado e com mais dor do que quando deitou, não é a idade. É o seu colchão.”<small>Gancho de um roteiro real entregue pelo agente</small></p>
+      </article>
     </div>
   </div>
 </section>
 
-<section id="dor">
-  <div class="wrap">
-    <h2 class="punch">A maioria das pessoas usa o Claude do <span class="accent">jeito raso.</span></h2>
-
-    <div class="statement">
-      <p>Você pede uma página ou um roteiro de vídeo pro Claude puro. Sai <span class="accent">genérico.</span></p>
-      <p>Com agente, o mesmo Claude faz <span class="accent">muito mais</span> do que qualquer ChatGPT sozinho.</p>
-      <p>E quase ninguém usa isso.</p>
+<section id="como">
+  <div class="container">
+    <div class="narrow reveal">
+      <h2 class="h2">Você não aprende <span class="hl">comando nenhum.</span></h2>
+      <p class="lede">Continua no Claude que você já usa. Escreve o que precisa como escreveria pra um funcionário. A Legião entende o assunto, chama o especialista certo, e ele conduz o trabalho como um profissional da área conduziria.</p>
     </div>
-
-    <div class="vs-demo" style="margin-top:36px">
-      <p class="vs-head eyebrow">Veja a diferença na prática</p>
-      <div class="vs-grid">
-        <div class="vs-card bad">
-          <span class="vs-badge bad">✕ Claude comum</span>
-          <p class="vs-prompt">Você: "escreve um roteiro de anúncio em vídeo pro meu colchão"</p>
-          <p class="vs-out">"Conheça o colchão ideal para você. Conforto e qualidade que você merece. Peça já o seu."</p>
-          <p class="vs-note">→ Frase pronta, sem gancho, sem prova. Poderia ser de qualquer produto.</p>
+    <div class="how-grid">
+      <ol class="pieces reveal">
+        <li><h3>O método de quem é referência</h3><p>Cada agente trabalha do jeito de uma referência real da área: Halbert e Sugarman na página de vendas, Hormozi na oferta, Jeff Walker no lançamento.</p></li>
+        <li><h3>A ordem que um consultor seguiria</h3><p>Do diagnóstico até a entrega, na sequência certa. Ele pergunta antes de escrever, porque é o que um profissional faria.</p></li>
+        <li><h3>O que ele não faz</h3><p>Não inventa prova, não chuta número e marca no texto o que precisa da sua confirmação. Você vê isso nos prints logo abaixo.</p></li>
+      </ol>
+      <aside class="agent-card reveal" aria-label="Ficha real de um agente">
+        <div class="agent-head">
+          <img src="/legiao/avatars/pagina_de_vendas.webp" width="64" height="64" alt="" loading="lazy" decoding="async">
+          <div><h3>Forja de Página de Vendas</h3><p>Método: Halbert, Sugarman, Collier e Hopkins</p></div>
         </div>
-        <div class="vs-card good">
-          <span class="vs-badge good">✓ Roteirista de Anúncio em Vídeo</span>
-          <p class="vs-prompt">Você: mesmo pedido</p>
-          <p class="vs-out">"Se você acorda mais cansado e com mais dor do que quando deitou, não é a idade. É o seu colchão."</p>
-          <p class="vs-note">→ Gancho que já qualifica quem sente aquela dor, seguido de roteiro completo: agitação, prova real, garantia e CTA único.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="section-cta">
-      <a class="btn btn-primary" href="#oferta">QUERO O MÉTODO →</a>
-    </div>
-  </div>
-</section>
-
-<section id="como-funciona">
-  <div class="wrap">
-    <h2 class="punch">A Legião é isso: 80 agentes que já sabem <span class="accent">o método,</span> dentro do seu Claude.</h2>
-    <div class="stack">
-      <p>Você não muda de ferramenta. Continua no mesmo Claude que já usa. A diferença é que, em vez de pedir pra uma IA genérica, você pede pro agente que já é especialista naquele assunto. Copy, tráfego, vídeo, oferta, o que for.</p>
-    </div>
-
-    <div class="grid-3">
-      <div class="card">
-        <h3>DNA</h3>
-        <p>A referência real embutida: Schwartz na big idea, Hormozi na oferta, Voss na objeção.</p>
-      </div>
-      <div class="card">
-        <h3>Método</h3>
-        <p>A ordem que um consultor de verdade seguiria, do primeiro passo até a entrega.</p>
-      </div>
-      <div class="card">
-        <h3>O que nunca faz</h3>
-        <p>Os anti-padrões que separam trabalho de consultor de texto genérico.</p>
-      </div>
-    </div>
-
-    <div class="callout">
-      <p>Você só pede o que precisa, em conversa normal com o Claude, nada de comando ou atalho. Ele percebe qual especialista chamar, entra no personagem, faz as perguntas certas e conduz o trabalho na ordem que um profissional de verdade seguiria, até entregar pronto.</p>
-    </div>
-
-    <div class="terminal">
-      <div class="terminal-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="terminal-title">claude — legião</span></div>
-      <div class="terminal-body">
-        <p class="t-muted"># você só conversa, sem comando:</p>
-        <p class="t-prompt">"tenho cliente que sumiu, como recupero sem parecer chato?"</p>
-        <p class="t-muted" style="margin-top:14px"># a Legião identifica e executa:</p>
-        <p class="t-line">▸ Agente: Estrategista de Recuperação WhatsApp</p>
-        <p class="t-line">▸ Montando a árvore de reconexão, sem soar como cobrança...</p>
-        <p class="t-ok">✓ "Como tá indo o whey? Conseguiu manter a rotina?" · abre pelo cliente, não pela venda</p>
-      </div>
-    </div>
-
-    <div class="section-cta">
-      <a class="btn btn-primary" href="#oferta">QUERO MEU TIME →</a>
+        <p class="what">Constrói a página de vendas longa na sequência psicológica certa: lead, mecanismo, prova, oferta, objeções e fechamento.</p>
+        <div class="ask"><span>Como chamar</span><q>preciso de uma página de vendas que converte</q></div>
+        <p class="note">Ficha real do agente, como aparece no prédio. Você cola a frase no Claude e ele assume.</p>
+      </aside>
     </div>
   </div>
 </section>
 
 <section id="predio">
-  <div class="wrap">
-    <span class="eyebrow">O prédio da Legião</span>
-    <h2 class="punch" style="margin-top:14px">Seu time inteiro num prédio. <span class="accent">Andar por andar.</span></h2>
-    <div class="stack">
-      <p>Junto com o acesso, você recebe o prédio da Legião: os 80 agentes e as 11 Salas de Guerra organizados em sete andares, do Comando à Operação. Você abre o andar, clica no agente e ele mostra o que faz e a frase pronta pra chamar no Claude. Copia, cola e o especialista começa a trabalhar.</p>
+  <div class="container">
+    <div class="narrow reveal">
+      <span class="eyebrow">Prints reais</span>
+      <h2 class="h2" style="margin-top:14px">Isso não é um PDF de prompts. <span class="hl">Olha por dentro.</span></h2>
+      <p class="lede">Telas de verdade, do link de acesso até a conversa no Claude. Nada aqui é montagem.</p>
     </div>
-  </div>
-  <div class="predio-shots">
-    <figure class="shot">
-      <img src="/legiao/predio-mapa.webp" width="1600" height="764" loading="lazy" decoding="async" alt="Mapa do prédio da Legião com os sete andares ao redor do núcleo e a torre do prédio ao lado">
-      <figcaption>Os sete andares: Comando, Copy, Aquisição, Vendas, Oferta, Estratégia e Operação.</figcaption>
-    </figure>
-    <div class="shot-row">
-      <figure class="shot">
-        <img src="/legiao/predio-andar.webp" width="1600" height="765" loading="lazy" decoding="async" alt="Andar de Estratégia aberto, com os agentes separados em Negócio, Mentores e Nichos">
-        <figcaption>Cada andar abre os agentes dele, separados por área. Esse é o andar de Estratégia.</figcaption>
-      </figure>
-      <figure class="shot">
-        <img src="/legiao/predio-agente.webp" width="1600" height="760" loading="lazy" decoding="async" alt="Painel do agente Mestre do Naming com a frase pronta para chamar no Claude e o botão Copiar frase">
-        <figcaption>Clicou no agente, aparece o que ele faz e a frase pronta. É só copiar e colar no Claude.</figcaption>
-      </figure>
-    </div>
-  </div>
-  <div class="wrap">
-    <div class="section-cta">
-      <a class="btn btn-primary" href="#oferta">QUERO ENTRAR NO PRÉDIO →</a>
+    <div class="inside reveal">
+      <div class="steps" role="tablist" aria-label="Telas da Legião">
+        <button class="step" type="button" role="tab" id="st-1" aria-controls="fr-1" aria-selected="true"><b><i>01</i>O acesso</b><span>O link do e-mail abre o guia, que conecta a Legião no Claude ou no Codex.</span></button>
+        <button class="step" type="button" role="tab" id="st-2" aria-controls="fr-2" aria-selected="false" tabindex="-1"><b><i>02</i>O prédio</b><span>Os 80 especialistas e as 11 salas de guerra, em sete andares.</span></button>
+        <button class="step" type="button" role="tab" id="st-3" aria-controls="fr-3" aria-selected="false" tabindex="-1"><b><i>03</i>O agente</b><span>O que ele faz e a frase pronta pra colar no Claude.</span></button>
+        <button class="step" type="button" role="tab" id="st-4" aria-controls="fr-4" aria-selected="false" tabindex="-1"><b><i>04</i>Ele pergunta</b><span>Antes de escrever, pede a oferta, o funil e a prova.</span></button>
+        <button class="step" type="button" role="tab" id="st-5" aria-controls="fr-5" aria-selected="false" tabindex="-1"><b><i>05</i>Ele entrega</b><span>O diagnóstico de ângulo e o roteiro, sem inventar prova.</span></button>
+      </div>
+      <div class="frames">
+        <figure class="frame on" id="fr-1" role="tabpanel" aria-labelledby="st-1">
+          <div class="pic"><img src="/legiao/predio-guia.webp" width="1200" height="633" alt="Guia de ativação da Legião com os botões Abrir o prédio, Usar no Claude e Usar no Codex" loading="lazy" decoding="async"></div>
+          <figcaption>O guia que abre depois da compra. A conexão é feita uma vez por aplicativo.</figcaption>
+        </figure>
+        <figure class="frame" id="fr-2" role="tabpanel" aria-labelledby="st-2">
+          <div class="pic"><img src="/legiao/predio-mapa.webp" width="1600" height="764" alt="O prédio da Legião no navegador, com os sete andares" loading="lazy" decoding="async"></div>
+          <figcaption>O prédio no navegador: Comando, Copy, Aquisição, Vendas, Oferta, Estratégia e Operação.</figcaption>
+        </figure>
+        <figure class="frame" id="fr-3" role="tabpanel" aria-labelledby="st-3">
+          <div class="pic"><img src="/legiao/predio-agente.webp" width="1600" height="760" alt="Painel de um agente da Legião com a frase pronta para chamar" loading="lazy" decoding="async"></div>
+          <figcaption>Clicou no agente: o que ele faz e a frase pronta. É só copiar e colar no Claude.</figcaption>
+        </figure>
+        <figure class="frame" id="fr-4" role="tabpanel" aria-labelledby="st-4">
+          <div class="pic"><img src="/legiao/bastidor-claude-pergunta.webp" width="789" height="1095" alt="Conversa no Claude em que o Roteirista de Anúncio em Vídeo da Legião pede a oferta, a etapa do funil e a prova" loading="lazy" decoding="async"></div>
+          <figcaption>Conversa real no Claude com a Legião conectada, num pedido de exemplo. O agente pede o que falta antes de escrever.</figcaption>
+        </figure>
+        <figure class="frame" id="fr-5" role="tabpanel" aria-labelledby="st-5">
+          <div class="pic"><img src="/legiao/bastidor-claude-roteiro.webp" width="789" height="1060" alt="Resposta do agente no Claude com diagnóstico de ângulo e roteiro em tabela" loading="lazy" decoding="async"></div>
+          <figcaption>A entrega na mesma conversa: diagnóstico de ângulo, roteiro em tabela e o aviso de que falta prova. Ele não inventa depoimento.</figcaption>
+        </figure>
+      </div>
     </div>
   </div>
 </section>
 
-<section id="salas-de-guerra">
-  <div class="wrap">
-    <span class="eyebrow">As salas de guerra · 11 orquestradores</span>
-    <h2 class="punch" style="margin-top:14px">E quando o trabalho precisa de mais de um especialista, <span class="accent">eles trabalham juntos.</span></h2>
-    <div class="stack">
-      <p>Um lançamento não é uma tarefa. É uma sequência: entender o público, montar a oferta, escrever a VSL, montar a página, a sequência de e-mail, o tráfego. Você pede <b>"monta meu lançamento"</b> e seis especialistas entram na ordem certa.</p>
+<section id="salas">
+  <div class="container">
+    <div class="narrow reveal">
+      <h2 class="h2">Lançamento não é uma tarefa. <span class="hl">É uma fila de especialistas.</span></h2>
+      <p class="lede">Quando o trabalho pede mais de um especialista, você chama uma Sala de Guerra. A de lançamento roda cinco em sequência, e cada um recebe o trabalho do anterior.</p>
     </div>
-    <ol class="steps">
-      <li><span>Entender o público</span></li>
-      <li><span>Montar a oferta</span></li>
-      <li><span>Escrever a VSL</span></li>
-      <li><span>Montar a página</span></li>
-      <li><span>A sequência de e-mail</span></li>
-      <li><span>O tráfego</span></li>
+    <ol class="flow" id="flow">
+      <li class="node" style="--d:.1s"><div class="dot">01</div><h3>Estrategista de Lançamento PLF</h3><p>O cronograma do lançamento, dia a dia.</p><small>Método: Jeff Walker</small></li>
+      <li class="node" style="--d:.55s"><div class="dot">02</div><h3>Roteirista de Webinar de Conversão</h3><p>O roteiro da aula que vende no final.</p><small>Método: Russell Brunson</small></li>
+      <li class="node" style="--d:1s"><div class="dot">03</div><h3>Forja de Página de Vendas</h3><p>A página longa, na sequência certa.</p><small>Método: Halbert e Sugarman</small></li>
+      <li class="node" style="--d:1.45s"><div class="dot">04</div><h3>Sequência de Email que Vende</h3><p>Os e-mails do aquecimento ao fechamento.</p><small>Método: Halbert e Chaperon</small></li>
+      <li class="node" style="--d:1.9s"><div class="dot">05</div><h3>Campanha de Tráfego Completa</h3><p>Proposta, criativos, tracking e métrica.</p><small>Sala de guerra própria</small></li>
     </ol>
-    <p class="stack" style="margin-top:26px"><strong>Você pede pelo resultado. O time se organiza sozinho e entrega o que você pediu como uma equipe profissional.</strong></p>
-
-    <div class="section-cta">
-      <a class="btn btn-primary" href="#oferta">QUERO ESSE COMBO →</a>
-    </div>
+    <p class="flow-foot reveal">São 11 salas como essa, de oferta e página até tráfego, funil, e-mail e marca. Você pede o resultado e elas organizam quem entra e em que ordem.</p>
   </div>
 </section>
 
 <section id="provas">
-  <div class="wrap">
-    <span class="eyebrow">Prova</span>
-    <h2 class="punch" style="margin-top:14px">Não vou pedir pra confiar. <span class="accent">Vou mostrar o agente trabalhando.</span></h2>
-    <p class="muted" style="display:block;margin-top:16px;font-size:16px;line-height:1.6">A maioria dos pacotes te mostra print de depoimento. Aqui embaixo você vê o agente conduzindo a conversa: pergunta o que falta, diagnostica e entrega, sem inventar prova.</p>
-
+  <div class="container">
+    <div class="proof-head reveal">
+      <h2 class="h2">Não vou pedir pra você confiar. <span class="hl">Olha o agente trabalhando.</span></h2>
+      <p class="lede">Cinco agentes conduzindo a conversa: perguntam o que falta, diagnosticam e entregam. Troque de agente nas abas.</p>
+    </div>
     <p class="dm-seal">Casos de demonstração: o output de cada agente é real, recriado em formato de conversa.</p>
     <div class="dm" id="dm">
       <div class="dm-tabs" role="tablist" aria-label="Escolha o agente"><button class="dm-tab" type="button" role="tab" aria-selected="true" data-i="0">Auditor de Conta Meta</button><button class="dm-tab" type="button" role="tab" aria-selected="false" data-i="1">Forja de Página de Vendas</button><button class="dm-tab" type="button" role="tab" aria-selected="false" data-i="2">Mestre da Big Idea</button><button class="dm-tab" type="button" role="tab" aria-selected="false" data-i="3">Recuperação WhatsApp</button><button class="dm-tab" type="button" role="tab" aria-selected="false" data-i="4">Arquiteto de VSL</button></div>
@@ -621,358 +722,293 @@ Ordem: (1) fechar o tracking com o Auditor de Tracking, sem isso toda otimizaç�
       } else start();
     })();
     </script>
-
-    <div class="section-cta">
-      <a class="btn btn-primary" href="#oferta">QUERO ESSE NÍVEL →</a>
-    </div>
-  </div>
-</section>
-
-<section id="depoimentos">
-  <div class="wrap">
-    <h2 class="punch center">Veja o que estão dizendo <span class="accent">da Legião</span></h2>
-    <div class="testi">
-      <div class="testi-card">
-        <div class="who">
-          <div class="avatar">BN</div>
-          <div><div class="name">Beatriz Nakamura</div><div class="time">09:55</div></div>
-        </div>
-        <p>Estou viciada em usar os agentes no Claude. Agiliza muito o meu trabalho, é como se eu tivesse um funcionário para cada tarefa que eu faço e eu só preciso revisar. O que me tomaria 2 horas de trabalho está levando 20 a 30 minutos. Muito fácil de usar e instalar também, obrigada!</p>
-      </div>
-      <div class="testi-card">
-        <div class="who">
-          <div class="avatar">JP</div>
-          <div><div class="name">Juliana Prado</div><div class="time">14:55</div></div>
-        </div>
-        <p>Sim, os agentes foram super tranquilos de instalar! Além disso, eles são realmente muito úteis e trabalham muito bem. Muito obrigada, estou satisfeita com minha compra!</p>
-      </div>
-      <div class="testi-card">
-        <div class="who">
-          <div class="avatar">DA</div>
-          <div><div class="name">Diego Almeida</div><div class="time">19:35</div></div>
-        </div>
-        <p>Os agentes me ajudam muito no dia a dia, não consigo mais fazer meu trabalho sem eles!</p>
-      </div>
-    </div>
-
-    <div class="section-cta">
-      <a class="btn btn-primary" href="#oferta">QUERO RESULTADOS ASSIM →</a>
-    </div>
   </div>
 </section>
 
 <section id="pra-quem">
-  <div class="wrap">
-    <h2 class="punch center">Pra quem é <span class="accent">(e pra quem não é)</span></h2>
-    <div class="who-grid">
-      <div class="who-col yes">
-        <h3>É pra você</h3>
+  <div class="container">
+    <div class="narrow reveal">
+      <h2 class="h2">Não compre a Legião <span class="hl">se você...</span></h2>
+      <p class="lede">Prefiro perder a venda do que vender pra quem não vai usar.</p>
+    </div>
+    <div class="fit reveal">
+      <div class="fit-col no">
+        <h3>Não é pra você se</h3>
         <ul>
-          <li>Você já usa o Claude (no plano pago, Pro ou Max) pra trabalhar e quer parar de fazer tudo na mão.</li>
-          <li>Você vende algo (curso, mentoria, serviço, produto) e vive de copy, tráfego, oferta e funil.</li>
-          <li>Você é solo ou tem um time pequeno e faz o trabalho de cinco pessoas sozinho.</li>
+          <li>Você quer um botão que fatura sozinho. A Legião trabalha com você: ela pergunta, entrega, e quem revisa e decide é você.</li>
+          <li>Você não vai abrir o Claude nem o Codex essa semana. Especialista parado não escreve nada.</li>
+          <li>Você quer IA implantada na empresa inteira, com processo, integração e equipe. Aí o caminho é outro, e ele está <a href="#implementacao">no fim desta página</a>.</li>
         </ul>
       </div>
-      <div class="who-col no">
-        <h3>Não é pra você</h3>
+      <div class="fit-col yes">
+        <h3>É pra você se</h3>
         <ul>
-          <li>Você ainda não usa o Claude pago. A Legião roda dentro do seu Claude, é a sua assinatura que faz o motor girar.</li>
-          <li>Você quer um botão mágico que fatura sozinho. Isso aqui é um time que executa com você, não no seu lugar.</li>
+          <li>Você vende curso, mentoria, serviço ou produto, e quem escreve a página, sobe o anúncio e responde o lead é <b>você</b>.</li>
+          <li>Você já paga o Claude ou o ChatGPT e sente que usa ele como um corretor de texto caro.</li>
+          <li>Você não vai contratar um copywriter agora, mas também não aceita publicar texto com cara de IA.</li>
         </ul>
       </div>
-    </div>
-
-    <div class="section-cta">
-      <a class="btn btn-primary" href="#oferta">QUERO ENTRAR PRO TIME →</a>
-    </div>
-  </div>
-</section>
-
-<section id="entregaveis">
-  <div class="wrap">
-    <span class="eyebrow">O que você recebe</span>
-    <h2 class="punch" style="margin-top:14px">O que entra no seu time <span class="accent">hoje</span></h2>
-    <ul class="deliver">
-      <li><span class="num">01</span><div><strong>80 agentes especialistas</strong><p>Em 13 categorias, cada um com o método de uma referência real embutido.</p></div></li>
-      <li><span class="num">02</span><div><strong>11 Salas de Guerra</strong><p>Encadeiam os agentes certos, na ordem certa, pra entregar o resultado completo.</p></div></li>
-      <li><span class="num">03</span><div><strong>Caixa de Provas</strong><p>Os outputs reais dos agentes-vitrine, pra você ver o nível antes de usar.</p></div></li>
-      <li><span class="num">04</span><div><strong>Atualizações vitalícias</strong><p>O modelo evolui, o método evolui, o seu time acompanha. Você não paga de novo.</p></div></li>
-      <li><span class="num">05</span><div><strong>Prédio da Legião</strong><p>Os sete andares do seu time no navegador: cada agente com o que faz e a frase pronta pra chamar. <a href="#predio">Ver o prédio ↑</a></p></div></li>
-    </ul>
-
-    <div class="section-cta">
-      <a class="btn btn-primary" href="#oferta">QUERO TUDO ISSO →</a>
     </div>
   </div>
 </section>
 
 <section id="agentes">
-  <div class="wrap">
-    <h2 class="punch center">Alguns dos especialistas <span class="accent">que entram pro seu time</span></h2>
-
-    <div class="squad-card">
-      <div class="squad-head">
-        <div class="squad-head-main">
-          <div class="squad-icon">✍️</div>
-          <div class="squad-title">
-            <span class="eyebrow">Squad 01</span>
-            <h3>Copy &amp; Resposta Direta</h3>
-          </div>
-        </div>
-        <span class="squad-count">9 agentes</span>
-      </div>
-      <p class="squad-desc">Big idea, VSL, página de vendas, e-mail, headline e objeção — o método de resposta direta embutido em cada um.</p>
-      <div class="squad-marquee">
-        <div class="squad-track">
-          <div class="squad-avatar"><div class="av-circle ph-big_idea_schwartz"></div><span>Mestre da Big Idea</span><small>Schwartz</small></div>
-          <div class="squad-avatar"><div class="av-circle ph-pagina_de_vendas"></div><span>Forja de Página de Vendas</span></div>
-          <div class="squad-avatar"><div class="av-circle ph-vsl_copy"></div><span>Arquiteto de VSL</span></div>
-          <div class="squad-avatar"><div class="av-circle ph-email_copy"></div><span>Sequência de Email que Vende</span></div>
-          <div class="squad-avatar"><div class="av-circle ph-headlines"></div><span>Laboratório de Headlines</span></div>
-          <div class="squad-avatar"><div class="av-circle ph-message_mining"></div><span>Minerador de Voz do Cliente</span></div>
-          <div class="squad-avatar"><div class="av-circle ph-objecoes"></div><span>Demolidor de Objeções</span></div>
-          <div class="squad-avatar"><div class="av-circle ph-auditar_copy"></div><span>Auditor de Copy</span></div>
-          <div class="squad-avatar"><div class="av-circle ph-persuasao_cialdini"></div><span>Persuasor Cialdini</span><small>Cialdini</small></div>
-          <div class="squad-avatar" aria-hidden="true"><div class="av-circle ph-big_idea_schwartz"></div><span>Mestre da Big Idea</span><small>Schwartz</small></div>
-          <div class="squad-avatar" aria-hidden="true"><div class="av-circle ph-pagina_de_vendas"></div><span>Forja de Página de Vendas</span></div>
-          <div class="squad-avatar" aria-hidden="true"><div class="av-circle ph-vsl_copy"></div><span>Arquiteto de VSL</span></div>
-          <div class="squad-avatar" aria-hidden="true"><div class="av-circle ph-email_copy"></div><span>Sequência de Email que Vende</span></div>
-          <div class="squad-avatar" aria-hidden="true"><div class="av-circle ph-headlines"></div><span>Laboratório de Headlines</span></div>
-          <div class="squad-avatar" aria-hidden="true"><div class="av-circle ph-message_mining"></div><span>Minerador de Voz do Cliente</span></div>
-          <div class="squad-avatar" aria-hidden="true"><div class="av-circle ph-objecoes"></div><span>Demolidor de Objeções</span></div>
-          <div class="squad-avatar" aria-hidden="true"><div class="av-circle ph-auditar_copy"></div><span>Auditor de Copy</span></div>
-          <div class="squad-avatar" aria-hidden="true"><div class="av-circle ph-persuasao_cialdini"></div><span>Persuasor Cialdini</span><small>Cialdini</small></div>
-        </div>
-      </div>
+  <div class="container">
+    <div class="narrow reveal">
+      <h2 class="h2">O que entra no seu time <span class="hl">hoje</span></h2>
     </div>
-
-    <div class="squad-card">
-      <div class="squad-head">
-        <div class="squad-head-main">
-          <div class="squad-icon">📈</div>
-          <div class="squad-title">
-            <span class="eyebrow">Squad 02</span>
-            <h3>Tráfego &amp; Aquisição</h3>
-          </div>
-        </div>
-        <span class="squad-count">11 agentes</span>
-      </div>
-      <p class="squad-desc">Auditoria de conta, métrica, criativo e tracking — o time que mantém a campanha saudável do clique ao CAC.</p>
-      <div class="squad-marquee">
-        <div class="squad-track">
-          <div class="squad-avatar"><div class="av-circle ph-auditar_conta_meta"></div><span>Auditor de Conta Meta</span></div>
-          <div class="squad-avatar"><div class="av-circle ph-diagnostico_metrica"></div><span>Doutor da Métrica</span></div>
-          <div class="squad-avatar"><div class="av-circle ph-cbo_ou_abo"></div><span>Estrategista CBO vs ABO</span></div>
-          <div class="squad-avatar"><div class="av-circle ph-criativo_meta"></div><span>Roteirista de Criativo (Meta)</span></div>
-          <div class="squad-avatar"><div class="av-circle ph-criativo_video_rd"></div><span>Diretor de Criativo de Vídeo</span></div>
-          <div class="squad-avatar"><div class="av-circle ph-pmax_auditor"></div><span>Auditor de Performance Max</span></div>
-          <div class="squad-avatar"><div class="av-circle ph-proposta_trafego"></div><span>Calculadora de Proposta</span></div>
-          <div class="squad-avatar"><div class="av-circle ph-fadiga_criativo"></div><span>Caçador de Fadiga</span></div>
-          <div class="squad-avatar"><div class="av-circle ph-google_ads_estrutura"></div><span>Arquiteto de Conta Google Ads</span></div>
-          <div class="squad-avatar"><div class="av-circle ph-tracking_meta"></div><span>Auditor de Tracking</span></div>
-          <div class="squad-avatar"><div class="av-circle ph-tracking_server_side"></div><span>Engenheiro de Tracking Server-Side</span></div>
-          <div class="squad-avatar" aria-hidden="true"><div class="av-circle ph-auditar_conta_meta"></div><span>Auditor de Conta Meta</span></div>
-          <div class="squad-avatar" aria-hidden="true"><div class="av-circle ph-diagnostico_metrica"></div><span>Doutor da Métrica</span></div>
-          <div class="squad-avatar" aria-hidden="true"><div class="av-circle ph-cbo_ou_abo"></div><span>Estrategista CBO vs ABO</span></div>
-          <div class="squad-avatar" aria-hidden="true"><div class="av-circle ph-criativo_meta"></div><span>Roteirista de Criativo (Meta)</span></div>
-          <div class="squad-avatar" aria-hidden="true"><div class="av-circle ph-criativo_video_rd"></div><span>Diretor de Criativo de Vídeo</span></div>
-          <div class="squad-avatar" aria-hidden="true"><div class="av-circle ph-pmax_auditor"></div><span>Auditor de Performance Max</span></div>
-          <div class="squad-avatar" aria-hidden="true"><div class="av-circle ph-proposta_trafego"></div><span>Calculadora de Proposta</span></div>
-          <div class="squad-avatar" aria-hidden="true"><div class="av-circle ph-fadiga_criativo"></div><span>Caçador de Fadiga</span></div>
-          <div class="squad-avatar" aria-hidden="true"><div class="av-circle ph-google_ads_estrutura"></div><span>Arquiteto de Conta Google Ads</span></div>
-          <div class="squad-avatar" aria-hidden="true"><div class="av-circle ph-tracking_meta"></div><span>Auditor de Tracking</span></div>
-          <div class="squad-avatar" aria-hidden="true"><div class="av-circle ph-tracking_server_side"></div><span>Engenheiro de Tracking Server-Side</span></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="squad-card">
-      <div class="squad-head">
-        <div class="squad-head-main">
-          <div class="squad-icon">🤝</div>
-          <div class="squad-title">
-            <span class="eyebrow">Squad 03</span>
-            <h3>Vendas &amp; Fechamento</h3>
-          </div>
-        </div>
-        <span class="squad-count">6 agentes</span>
-      </div>
-      <p class="squad-desc">Objeção, negociação, follow-up e qualificação — o time que fecha 1 a 1, no WhatsApp ou na chamada.</p>
-      <div class="squad-marquee">
-        <div class="squad-track">
-          <div class="squad-avatar"><div class="av-circle ph-quebra_objecao"></div><span>Mestre das Objeções</span><small>Voss</small></div>
-          <div class="squad-avatar"><div class="av-circle ph-script_whatsapp"></div><span>Roteiro de WhatsApp que Vende</span></div>
-          <div class="squad-avatar"><div class="av-circle ph-diagnostico_spin"></div><span>Diagnóstico SPIN</span></div>
-          <div class="squad-avatar"><div class="av-circle ph-follow_up"></div><span>Máquina de Follow-up</span></div>
-          <div class="squad-avatar"><div class="av-circle ph-sdr_qualifica"></div><span>SDR de Qualificação</span></div>
-          <div class="squad-avatar"><div class="av-circle ph-negociacao"></div><span>Negociador de Preço</span></div>
-          <div class="squad-avatar" aria-hidden="true"><div class="av-circle ph-quebra_objecao"></div><span>Mestre das Objeções</span><small>Voss</small></div>
-          <div class="squad-avatar" aria-hidden="true"><div class="av-circle ph-script_whatsapp"></div><span>Roteiro de WhatsApp que Vende</span></div>
-          <div class="squad-avatar" aria-hidden="true"><div class="av-circle ph-diagnostico_spin"></div><span>Diagnóstico SPIN</span></div>
-          <div class="squad-avatar" aria-hidden="true"><div class="av-circle ph-follow_up"></div><span>Máquina de Follow-up</span></div>
-          <div class="squad-avatar" aria-hidden="true"><div class="av-circle ph-sdr_qualifica"></div><span>SDR de Qualificação</span></div>
-          <div class="squad-avatar" aria-hidden="true"><div class="av-circle ph-negociacao"></div><span>Negociador de Preço</span></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="squad-card">
-      <div class="squad-head">
-        <div class="squad-head-main">
-          <div class="squad-icon">🎯</div>
-          <div class="squad-title">
-            <span class="eyebrow">Squad 04</span>
-            <h3>Ofertas &amp; Monetização</h3>
-          </div>
-        </div>
-        <span class="squad-count">7 agentes</span>
-      </div>
-      <p class="squad-desc">Oferta, preço, garantia e upsell — o time que decide o que você vende e por quanto.</p>
-      <div class="squad-marquee">
-        <div class="squad-track">
-          <div class="squad-avatar"><div class="av-circle ph-oferta_grand_slam"></div><span>Arquiteto de Oferta Grand Slam</span><small>Hormozi</small></div>
-          <div class="squad-avatar"><div class="av-circle ph-precificacao"></div><span>Engenheiro de Precificação</span></div>
-          <div class="squad-avatar"><div class="av-circle ph-esteira_ascensao"></div><span>Estrategista de Esteira</span></div>
-          <div class="squad-avatar"><div class="av-circle ph-garantia"></div><span>Designer de Garantia</span></div>
-          <div class="squad-avatar"><div class="av-circle ph-upsell_downsell"></div><span>Arquiteto de Upsell e Downsell</span></div>
-          <div class="squad-avatar"><div class="av-circle ph-auditar_oferta"></div><span>Auditor de Money Model</span></div>
-          <div class="squad-avatar"><div class="av-circle ph-ltv"></div><span>Otimizador de LTV</span></div>
-          <div class="squad-avatar" aria-hidden="true"><div class="av-circle ph-oferta_grand_slam"></div><span>Arquiteto de Oferta Grand Slam</span><small>Hormozi</small></div>
-          <div class="squad-avatar" aria-hidden="true"><div class="av-circle ph-precificacao"></div><span>Engenheiro de Precificação</span></div>
-          <div class="squad-avatar" aria-hidden="true"><div class="av-circle ph-esteira_ascensao"></div><span>Estrategista de Esteira</span></div>
-          <div class="squad-avatar" aria-hidden="true"><div class="av-circle ph-garantia"></div><span>Designer de Garantia</span></div>
-          <div class="squad-avatar" aria-hidden="true"><div class="av-circle ph-upsell_downsell"></div><span>Arquiteto de Upsell e Downsell</span></div>
-          <div class="squad-avatar" aria-hidden="true"><div class="av-circle ph-auditar_oferta"></div><span>Auditor de Money Model</span></div>
-          <div class="squad-avatar" aria-hidden="true"><div class="av-circle ph-ltv"></div><span>Otimizador de LTV</span></div>
-        </div>
-      </div>
-    </div>
-
-    <p class="agents-more">Isso é só 4 dos 13 squads. Mais 47 agentes no catálogo completo. <a href="https://mcp.useinfuser.com/catalogo-legiao" target="_blank" rel="noopener">Ver o índice completo dos 80 →</a></p>
-
-    <div class="section-cta">
-      <a class="btn btn-primary" href="#oferta">QUERO OS 80 AGENTES →</a>
+    <div class="bento reveal">
+      <article class="tile big">
+        <span class="num">80</span>
+        <h3>especialistas em 13 áreas</h3>
+        <p>Cada um com o método de uma referência da área.</p>
+        <ul class="areas"><li>Copy</li><li>Roteiros de vídeo</li><li>Tráfego</li><li>Conteúdo e social</li><li>Vendas</li><li>Funis e lançamentos</li><li>Oferta</li><li>Marca</li><li>Estratégia</li><li>Mentores</li><li>Verticais e nichos</li><li>Retenção e e-mail</li><li>Operação</li></ul>
+        <div class="marquee" aria-hidden="true"><div class="marquee-track"><span class="mq"><img src="/legiao/avatars/auditar_conta_meta.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Auditor de Conta Meta (Score 0-100)</span><span class="mq"><img src="/legiao/avatars/auditar_copy.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Auditor de Copy (Conversão)</span><span class="mq"><img src="/legiao/avatars/auditar_oferta.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Auditor de Oferta e Money Model</span><span class="mq"><img src="/legiao/avatars/big_idea_schwartz.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Mestre da Big Idea (Schwartz)</span><span class="mq"><img src="/legiao/avatars/cbo_ou_abo.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Estrategista CBO vs ABO</span><span class="mq"><img src="/legiao/avatars/criativo_meta.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Roteirista de Criativo que Escala (Meta)</span><span class="mq"><img src="/legiao/avatars/criativo_video_rd.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Diretor de Criativo de Vídeo (Paid)</span><span class="mq"><img src="/legiao/avatars/diagnostico_metrica.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Doutor da Métrica (CPA/ROAS/CTR)</span><span class="mq"><img src="/legiao/avatars/diagnostico_spin.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Diagnóstico SPIN</span><span class="mq"><img src="/legiao/avatars/email_copy.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Sequência de Email que Vende</span><span class="mq"><img src="/legiao/avatars/esteira_ascensao.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Estrategista de Esteira e Ascensão</span><span class="mq"><img src="/legiao/avatars/fadiga_criativo.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Caçador de Fadiga de Criativo</span><span class="mq"><img src="/legiao/avatars/follow_up.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Máquina de Follow-up</span><span class="mq"><img src="/legiao/avatars/garantia.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Designer de Garantia e Reversão de Risco</span><span class="mq"><img src="/legiao/avatars/google_ads_estrutura.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Arquiteto de Conta Google Ads</span><span class="mq"><img src="/legiao/avatars/headlines.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Laboratório de Headlines</span><span class="mq"><img src="/legiao/avatars/ltv.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Otimizador de LTV e Recorrência</span><span class="mq"><img src="/legiao/avatars/message_mining.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Minerador de Voz do Cliente</span><span class="mq"><img src="/legiao/avatars/negociacao.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Negociador de Preço e Reunião</span><span class="mq"><img src="/legiao/avatars/objecoes.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Demolidor de Objeções na Copy</span><span class="mq"><img src="/legiao/avatars/oferta_grand_slam.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Arquiteto de Oferta Grand Slam</span><span class="mq"><img src="/legiao/avatars/pagina_de_vendas.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Forja de Página de Vendas</span><span class="mq"><img src="/legiao/avatars/persuasao_cialdini.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Persuasor Cialdini</span><span class="mq"><img src="/legiao/avatars/pmax_auditor.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Auditor de Performance Max</span><span class="mq"><img src="/legiao/avatars/precificacao.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Engenheiro de Precificação</span><span class="mq"><img src="/legiao/avatars/proposta_trafego.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Calculadora de Proposta de Tráfego</span><span class="mq"><img src="/legiao/avatars/quebra_objecao.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Mestre das Objeções (Voss)</span><span class="mq"><img src="/legiao/avatars/script_whatsapp.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Roteiro de WhatsApp que Vende</span><span class="mq"><img src="/legiao/avatars/sdr_qualifica.webp" width="34" height="34" alt="" loading="lazy" decoding="async">SDR de Qualificação</span><span class="mq"><img src="/legiao/avatars/tracking_meta.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Auditor de Tracking (Pixel + CAPI)</span><span class="mq"><img src="/legiao/avatars/tracking_server_side.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Engenheiro de Tracking Server-Side</span><span class="mq"><img src="/legiao/avatars/upsell_downsell.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Arquiteto de Funil de Upsell e Downsell</span><span class="mq"><img src="/legiao/avatars/vsl_copy.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Arquiteto de VSL</span><span class="mq"><img src="/legiao/avatars/auditar_conta_meta.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Auditor de Conta Meta (Score 0-100)</span><span class="mq"><img src="/legiao/avatars/auditar_copy.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Auditor de Copy (Conversão)</span><span class="mq"><img src="/legiao/avatars/auditar_oferta.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Auditor de Oferta e Money Model</span><span class="mq"><img src="/legiao/avatars/big_idea_schwartz.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Mestre da Big Idea (Schwartz)</span><span class="mq"><img src="/legiao/avatars/cbo_ou_abo.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Estrategista CBO vs ABO</span><span class="mq"><img src="/legiao/avatars/criativo_meta.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Roteirista de Criativo que Escala (Meta)</span><span class="mq"><img src="/legiao/avatars/criativo_video_rd.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Diretor de Criativo de Vídeo (Paid)</span><span class="mq"><img src="/legiao/avatars/diagnostico_metrica.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Doutor da Métrica (CPA/ROAS/CTR)</span><span class="mq"><img src="/legiao/avatars/diagnostico_spin.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Diagnóstico SPIN</span><span class="mq"><img src="/legiao/avatars/email_copy.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Sequência de Email que Vende</span><span class="mq"><img src="/legiao/avatars/esteira_ascensao.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Estrategista de Esteira e Ascensão</span><span class="mq"><img src="/legiao/avatars/fadiga_criativo.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Caçador de Fadiga de Criativo</span><span class="mq"><img src="/legiao/avatars/follow_up.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Máquina de Follow-up</span><span class="mq"><img src="/legiao/avatars/garantia.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Designer de Garantia e Reversão de Risco</span><span class="mq"><img src="/legiao/avatars/google_ads_estrutura.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Arquiteto de Conta Google Ads</span><span class="mq"><img src="/legiao/avatars/headlines.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Laboratório de Headlines</span><span class="mq"><img src="/legiao/avatars/ltv.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Otimizador de LTV e Recorrência</span><span class="mq"><img src="/legiao/avatars/message_mining.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Minerador de Voz do Cliente</span><span class="mq"><img src="/legiao/avatars/negociacao.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Negociador de Preço e Reunião</span><span class="mq"><img src="/legiao/avatars/objecoes.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Demolidor de Objeções na Copy</span><span class="mq"><img src="/legiao/avatars/oferta_grand_slam.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Arquiteto de Oferta Grand Slam</span><span class="mq"><img src="/legiao/avatars/pagina_de_vendas.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Forja de Página de Vendas</span><span class="mq"><img src="/legiao/avatars/persuasao_cialdini.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Persuasor Cialdini</span><span class="mq"><img src="/legiao/avatars/pmax_auditor.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Auditor de Performance Max</span><span class="mq"><img src="/legiao/avatars/precificacao.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Engenheiro de Precificação</span><span class="mq"><img src="/legiao/avatars/proposta_trafego.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Calculadora de Proposta de Tráfego</span><span class="mq"><img src="/legiao/avatars/quebra_objecao.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Mestre das Objeções (Voss)</span><span class="mq"><img src="/legiao/avatars/script_whatsapp.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Roteiro de WhatsApp que Vende</span><span class="mq"><img src="/legiao/avatars/sdr_qualifica.webp" width="34" height="34" alt="" loading="lazy" decoding="async">SDR de Qualificação</span><span class="mq"><img src="/legiao/avatars/tracking_meta.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Auditor de Tracking (Pixel + CAPI)</span><span class="mq"><img src="/legiao/avatars/tracking_server_side.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Engenheiro de Tracking Server-Side</span><span class="mq"><img src="/legiao/avatars/upsell_downsell.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Arquiteto de Funil de Upsell e Downsell</span><span class="mq"><img src="/legiao/avatars/vsl_copy.webp" width="34" height="34" alt="" loading="lazy" decoding="async">Arquiteto de VSL</span></div></div>
+        <a class="more" href="https://mcp.useinfuser.com/catalogo-legiao" target="_blank" rel="noopener">Ver o índice completo dos 80</a>
+      </article>
+      <article class="tile"><h3>11 Salas de Guerra</h3><p>Encadeiam os especialistas certos, na ordem certa, pra entregar o trabalho inteiro.</p></article>
+      <article class="tile teal"><h3>O prédio no navegador</h3><p>Cada agente com o que faz e a frase pronta pra chamar. <a href="#predio" style="color:var(--teal-1)">Ver o prédio</a></p></article>
+      <article class="tile"><h3>Atualizações sem pagar de novo</h3><p>Agente novo ou método revisado entra no seu acesso. Você não compra de novo.</p></article>
     </div>
   </div>
 </section>
 
 <section id="oferta">
-  <div class="wrap">
-    <span class="eyebrow">A oferta</span>
-    <h2 class="punch" style="margin-top:14px">O time inteiro por menos que <span class="accent">UMA entrega avulsa</span></h2>
-
-    <div class="price-card glass">
-      <ul class="offer-list">
-        <li>80 agentes especialistas em 13 categorias — substitui o copywriter (R$3.000-8.000/projeto) e o gestor de tráfego (R$1.500-3.000/mês)</li>
-        <li>11 Salas de Guerra, os orquestradores que encadeiam os agentes certos na ordem certa</li>
-        <li>Caixa de Provas com outputs reais dos agentes, não só promessa</li>
-        <li>Atualizações vitalícias — o time evolui, você não paga de novo</li>
-        <li>Garantia de 7 dias, 100% do valor de volta</li>
-      </ul>
-      <div class="price-old">R$97</div>
-      <div class="price-new"><span class="cifrao">R$</span><span class="valor">47</span></div>
-      <p class="terms">à vista · pagamento único · acesso vitalício</p>
-      <a class="btn btn-primary" href="https://pay.hub.la/2fldN9TfkxumT7OlbUcn" target="_blank" rel="noopener">QUERO ACESSAR A LEGIÃO →</a>
-      <p class="microcopy">7 dias de garantia · risco meu</p>
+  <div class="container">
+    <div class="narrow reveal">
+      <h2 class="h2">O time inteiro por menos que <span class="hl">uma entrega avulsa.</span></h2>
     </div>
-  </div>
-</section>
-
-<section id="garantia">
-  <div class="wrap">
-    <div class="guarantee glass">
-      <div class="days-label">Garantia</div>
-      <div class="days">7 DIAS</div>
-      <p>Teste o time inteiro por 7 dias, por minha conta. Conecta, usa os 80, roda as salas de guerra. Se em 7 dias achar que não é pra você, devolvo 100% do valor. Sem pergunta, sem letra miúda. O risco é meu, não seu.</p>
-      <div class="seal">7 dias de garantia · 100% do valor de volta</div>
-    </div>
-
-    <div class="section-cta">
-      <a class="btn btn-primary" href="#oferta">QUERO TESTAR SEM RISCO →</a>
-    </div>
-  </div>
-</section>
-
-<section id="custo">
-  <div class="wrap">
-    <h2 class="punch center">Não tem contagem regressiva aqui. <span class="accent">Tem uma conta simples.</span></h2>
-    <p class="stack center" style="margin-top:18px">Não vou inventar um relógio piscando pra te apressar. A conta que importa é outra: cada semana que você adia, continua sendo o gargalo, escrevendo a copy na mão, montando o anúncio do zero, deixando a sequência de e-mail pra "quando der tempo".</p>
-    <div class="cost-grid">
-      <div class="cost-card"><div class="k">1 entrega</div><div class="v">que você não precisou refazer</div></div>
-      <div class="cost-card"><div class="k">1 freelancer</div><div class="v">que você não precisou contratar</div></div>
-    </div>
-    <p class="stack center" style="margin-top:22px">R$47, pagamento único. Uma dessas duas coisas já paga a Legião inteira. O custo não é o R$47. O custo é continuar fazendo tudo sozinho mais um mês.</p>
-
-    <div class="section-cta">
-      <a class="btn btn-primary" href="#oferta">QUERO PARAR DE ADIAR →</a>
+    <div class="offer">
+      <div class="anchor reveal">
+        <p>Um copywriter costuma cobrar de <b>R$3.000 a R$8.000</b> por projeto. Um gestor de tráfego, de <b>R$1.500 a R$3.000</b> por mês.</p>
+        <p>A Legião não substitui um bom profissional. Ela faz o diagnóstico, o primeiro rascunho e o roteiro que hoje param na sua mão, com o método de quem é referência, a hora que você precisar.</p>
+        <div class="guarantee">
+          <div class="days">7<small>DIAS</small></div>
+          <div><h3>Testa por minha conta</h3><p>Conecta, usa os 80, roda as salas de guerra. Se em 7 dias achar que não é pra você, devolvo os R$47. Sem pergunta e sem letra miúda.</p></div>
+        </div>
+      </div>
+      <div class="price reveal">
+        <ul>
+          <li>80 especialistas em 13 áreas</li>
+          <li>11 Salas de Guerra</li>
+          <li>O prédio da Legião no navegador</li>
+          <li>Funciona no Claude e no Codex</li>
+          <li>Atualizações sem pagar de novo</li>
+        </ul>
+        <p class="old">De <s>R$97</s> por</p>
+        <p class="now"><sup>R$</sup>47</p>
+        <p class="terms">À vista, pagamento único, acesso vitalício.</p>
+        <a class="btn btn-primary" href="https://pay.hub.la/2fldN9TfkxumT7OlbUcn" target="_blank" rel="noopener">Quero a Legião</a>
+        <p class="safe"><span>Acesso imediato por e-mail</span><span>Pagamento pela Hubla</span><span>7 dias de garantia</span></p>
+      </div>
     </div>
   </div>
 </section>
 
 <section id="faq">
-  <div class="wrap">
-    <h2 class="punch center">Perguntas frequentes</h2>
+  <div class="container">
+    <h2 class="h2 reveal">Perguntas frequentes</h2>
     <div class="faq">
-      <details>
-        <summary>Preciso pagar o Claude além dos R$47?</summary>
-        <p class="a">Sim, mas só isso. A Legião roda dentro do Claude Pro ou Max que você já paga (ou vai precisar assinar). Nenhum custo extra além da sua assinatura.</p>
-      </details>
-      <details>
-        <summary>Isso é só um pacote de prompts caro?</summary>
-        <p class="a">Não. Prompt é instrução solta; agente é especialista com método e anti-padrões. A diferença fica óbvia na primeira vez que você aciona um, veja a <a href="#provas">Caixa de Provas</a> acima.</p>
-      </details>
-      <details>
-        <summary>Já pago Claude, pra quê isso?</summary>
-        <p class="a">O Claude é o motor. A Legião é o time que sabe dirigir. Sem ele, você prompta do zero toda vez.</p>
-      </details>
-      <details>
-        <summary>80 não é exagero? Quantos vou usar?</summary>
-        <p class="a">Você usa os 5 a 10 do seu negócio todo dia. Os outros são cobertura: no dia que precisar de um roteiro de webinar ou recuperar carrinho, o especialista já tá lá, sem comprar nada novo.</p>
-      </details>
-      <details>
-        <summary>Funciona pro meu nicho?</summary>
-        <p class="a">O núcleo (copy, tráfego, vendas, oferta) serve qualquer negócio que vende. E tem uma squad de verticais e nichos. Confere o <a href="https://mcp.useinfuser.com/catalogo-legiao" target="_blank" rel="noopener">índice completo</a>.</p>
-      </details>
-      <details>
-        <summary>Sou leigo, é difícil?</summary>
-        <p class="a">Se você usa o Claude no chat, você usa a Legião. É o mesmo lugar, com o time montado.</p>
-      </details>
-    </div>
-
-    <div class="section-cta">
-      <a class="btn btn-primary" href="#oferta">QUERO COMEÇAR AGORA →</a>
+      <details><summary>Funciona no ChatGPT ou só no Claude?</summary><p class="a">Funciona no Claude, pelo conector, e no Codex e no ChatGPT desktop, como servidor MCP. O guia de ativação mostra os dois caminhos, passo a passo.</p></details>
+      <details><summary>Preciso pagar mais alguma coisa?</summary><p class="a">A Legião custa R$47, uma vez. Pra usar, você precisa de uma conta paga do Claude (Pro ou Max) ou de uma conta do ChatGPT com acesso ao Codex.</p></details>
+      <details><summary>Isso é um pacote de prompts?</summary><p class="a">Não. Prompt é uma instrução solta que você cola e torce. Agente é um especialista com método, ordem de trabalho e uma lista do que nunca faz. Ele pergunta antes de escrever, e dá pra ver isso <a href="#predio">nos prints</a>.</p></details>
+      <details><summary>80 não é exagero? Quantos eu vou usar?</summary><p class="a">Você vai usar os 5 a 10 do seu negócio todo dia. Os outros são cobertura: no dia que precisar de um roteiro de webinar ou recuperar carrinho, o especialista já está lá.</p></details>
+      <details><summary>Funciona pro meu nicho?</summary><p class="a">O núcleo (copy, tráfego, vendas e oferta) serve pra qualquer negócio que vende. E tem um andar de verticais e nichos. Confere no <a href="https://mcp.useinfuser.com/catalogo-legiao" target="_blank" rel="noopener">índice completo</a>.</p></details>
+      <details><summary>Sou leigo. É difícil?</summary><p class="a">Se você conversa com o Claude, você usa a Legião. A conexão é feita uma vez, com o guia, e o link do e-mail funciona por 7 dias em qualquer aparelho.</p></details>
+      <details><summary>E se eu não gostar?</summary><p class="a">Você tem 7 dias. Pede o reembolso e recebe os R$47 de volta, sem pergunta.</p></details>
     </div>
   </div>
 </section>
 
-<section id="final" class="final">
-  <div class="wrap">
-    <h2>Você já tem o motor. <span class="accent" style="color:var(--lime)">Falta o time.</span></h2>
-    <p class="sub2">Todo dia que passa você faz na mão o que um time faria por você. O Claude já tá aberto na sua tela. A diferença entre hoje e a versão sua que entrega em outra velocidade é o time montado dentro dele.</p>
-    <div class="ctas">
-      <a class="btn btn-primary" href="#oferta">QUERO MINHA LEGIÃO →</a>
-      <p class="microcopy">7 dias de garantia · risco meu</p>
-    </div>
+<section class="final">
+  <div class="container reveal">
+    <h2 class="h2">Você já tem o motor. <span class="hl">Falta o time.</span></h2>
+    <p>O Claude já está aberto na sua tela. A diferença entre o texto genérico e o trabalho de especialista é o time montado dentro dele.</p>
+    <a class="btn btn-primary" href="#oferta">Quero a Legião</a>
+  </div>
+</section>
 
-    <div class="ps"><b>PS.</b> R$47 à vista, pagamento único, acesso vitalício. A primeira entrega que você não terceirizar já paga o investimento.</div>
-    <div class="ps"><b>PS.</b> 7 dias de garantia. Testa o time inteiro. Não serviu, devolvo tudo. O risco é meu.</div>
+<section class="impl" id="implementacao">
+  <div class="container">
+    <div class="impl-box reveal">
+      <div>
+        <span class="eyebrow">Para empresas</span>
+        <h2>Quer IA rodando na sua empresa, e não só no seu Claude?</h2>
+        <p>A Infuser implanta IA nos processos de empresas, como atendimento, vendas, financeiro e operação, ligada aos sistemas que você já usa. Conta o que trava hoje e a gente te diz qual processo automatizaria primeiro.</p>
+      </div>
+      <a class="btn btn-teal" href="https://useinfuser.com/diagnostico">Pedir meu diagnóstico</a>
+    </div>
   </div>
 </section>
 
 </main>
 
 <footer>
-  <div class="wrap">
-    <p>A Legião — Infuser. Compra processada com segurança via Hubla.</p>
+  <div class="container foot">
+    <svg role="img" aria-label="Infuser" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 332 70"><svg x="0" y="5" width="83" height="60" viewBox="0 0 655 473"><path d="M 173.500 1.067 C 130.798 1.541, 121.513 1.899, 116.432 3.263 C 88.419 10.784, 70.684 26.004, 61.500 50.404 C 56.005 65.002, 55.821 66.970, 55.047 119.500 C 54.377 164.931, 54.171 169.061, 52.217 176.197 C 45.690 200.031, 33.274 210.989, 10 213.455 C -1.053 214.626, 0 212.202, 0 236.488 L 0 257.841 6.750 258.497 C 32.449 260.995, 45.489 271.915, 52.132 296.500 C 54.151 303.969, 54.342 307.718, 55.017 353 C 55.796 405.227, 55.805 405.326, 61.705 421.665 C 70.476 445.956, 88.086 461.845, 113.922 468.778 L 123.500 471.348 174.868 471.740 L 226.236 472.131 220.288 464.816 C 217.017 460.792, 211.773 453.818, 208.635 449.317 C 195.091 429.897, 183.880 423.863, 157.999 422.065 C 150.574 421.549, 142.211 420.428, 139.414 419.573 C 129.601 416.576, 122.599 409.725, 118.748 399.355 C 116.689 393.807, 116.541 391.294, 115.935 351.500 C 115.442 319.195, 114.922 307.538, 113.681 301 C 107.952 270.828, 94.717 251.664, 71.583 240.042 L 64.134 236.300 72.459 232.079 C 91.360 222.495, 102.883 208.836, 109.329 188.374 C 114.715 171.276, 115.272 165.531, 115.644 123.178 C 116.072 74.511, 117.029 69.013, 126.665 59.856 C 134.036 52.852, 142.301 50.192, 158.500 49.610 C 180.152 48.832, 196.117 39.588, 210.242 19.650 C 214.197 14.068, 219.202 7.578, 221.363 5.230 C 223.524 2.881, 225.114 0.856, 224.896 0.730 C 224.678 0.603, 201.550 0.755, 173.500 1.067 M 267 2.017 C 251.073 4.786, 236.474 16.385, 230.954 30.656 C 227.705 39.055, 227.647 52.518, 230.829 59.500 C 233.886 66.210, 236.760 69.043, 248.163 76.586 C 253.478 80.103, 259.684 85.122, 261.954 87.740 C 270.215 97.267, 275.956 112.957, 275.985 126.090 C 276.002 133.740, 272.758 147.505, 270.297 150.224 C 267.781 153.005, 262.252 152.245, 259.663 148.762 C 257.703 146.125, 257.687 145.828, 259.247 140.762 C 263.045 128.422, 262.388 117.682, 257.154 106.537 C 253.140 97.988, 249.924 94.606, 238.896 87.334 C 224.497 77.839, 218.576 70.625, 215.959 59.384 C 215.334 56.698, 214.668 53.982, 214.480 53.349 C 214.246 52.560, 212.081 52.945, 207.597 54.572 C 178.466 65.146, 157.688 86.027, 147.727 114.738 C 143.867 125.862, 143.623 127.259, 143.217 140.500 C 142.831 153.077, 143.051 155.563, 145.381 164.957 C 149.981 183.505, 157.865 197.073, 171.369 209.684 C 178.063 215.935, 192.374 224.959, 193.620 223.714 C 193.880 223.454, 192.774 220.599, 191.162 217.371 C 185.664 206.353, 184.514 201.450, 184.510 189 C 184.503 170.842, 189.768 156.867, 196.875 156.180 C 200.719 155.808, 204.004 158.220, 203.993 161.405 C 203.989 162.557, 202.897 166.710, 201.565 170.633 C 193.267 195.082, 202.013 219.249, 222.565 228.658 C 230.174 232.142, 233.945 232.463, 244.947 230.563 C 284.384 223.754, 310.885 196.347, 317.528 155.500 C 319.300 144.605, 319.648 43.525, 317.939 36.112 C 312.719 13.465, 289.715 -1.931, 267 2.017 M 429.613 2.418 C 430.774 3.245, 435.231 8.551, 439.516 14.210 C 450.049 28.122, 455.177 33.372, 463.793 39.068 C 474.075 45.865, 480.194 47.870, 495.607 49.493 C 515.895 51.631, 521.793 53.708, 528.431 61.055 C 537.605 71.209, 538.998 79.467, 539.006 123.708 C 539.014 169.353, 540.731 181.831, 549.436 199.500 C 556.748 214.339, 566.088 223.744, 581.337 231.620 L 590.264 236.230 582.618 240.004 C 561.061 250.644, 548.204 268.799, 541.899 297.500 C 539.908 306.562, 539.640 311.438, 539.039 349.500 C 538.417 388.967, 538.245 391.897, 536.199 398.085 C 530.694 414.732, 518.769 421.976, 496.803 422.015 C 474.016 422.055, 460.125 430.088, 442.484 453.424 C 437.879 459.516, 432.666 466.220, 430.901 468.322 L 427.690 472.145 479.595 471.739 L 531.500 471.333 541.211 468.738 C 567.493 461.713, 586.406 444.131, 593.853 419.800 C 598.862 403.437, 599.237 399.091, 600.005 348.500 C 600.625 307.604, 600.988 299.612, 602.453 294.500 C 608.329 274.002, 623.345 261.210, 644.482 258.697 L 654 257.565 654 236.302 C 654 211.960, 655.280 214.679, 643.268 213.511 C 625.816 211.814, 612.569 202.584, 605.879 187.460 C 600.806 175.991, 600.743 175.312, 599.987 124 C 599.206 70.959, 598.808 66.786, 592.994 50.770 C 584.300 26.817, 566.952 11.311, 540.500 3.849 C 532.740 1.659, 530.927 1.582, 480 1.254 C 433.079 0.951, 427.724 1.075, 429.613 2.418 M 365.549 4.059 C 349.296 9.795, 338.473 22.690, 335.868 39.420 C 334.124 50.622, 335.361 152.710, 337.342 161.083 C 342.951 184.789, 356.132 204.958, 373.825 216.905 C 386.650 225.566, 403.426 231.114, 417.500 231.349 C 425.748 231.487, 426.960 231.250, 432 228.512 C 452.933 217.138, 461.071 192.362, 451.561 168.959 C 450.208 165.627, 449.371 162.137, 449.702 161.201 C 451.468 156.209, 456.424 154.508, 460.625 157.450 C 464.510 160.171, 470.023 179.308, 469.983 189.934 C 469.953 197.717, 467.233 208.159, 463.117 216.290 C 458.825 224.770, 458.998 225.024, 466.500 221.229 C 486.026 211.349, 501.597 191.072, 508.140 166.999 C 511.245 155.578, 511.492 131.281, 508.612 120.584 C 501.655 94.746, 485.655 74.355, 462 61.182 C 456.092 57.892, 440.889 51.777, 440.238 52.429 C 440.020 52.647, 439.165 55.795, 438.337 59.425 C 435.583 71.495, 429.451 78.729, 413.841 88.322 C 404.787 93.886, 400.715 98.239, 396.885 106.453 C 392.659 115.511, 391.272 125.265, 392.932 134.250 C 395.327 147.214, 395.351 147.954, 393.460 150.045 C 391.132 152.617, 385.863 152.611, 383.530 150.033 C 380.692 146.897, 378 135.432, 378 126.482 C 378 104.799, 388.433 87.121, 408.319 75.109 C 421.872 66.923, 426 60.127, 426 46 C 426 28.956, 415.727 13.471, 399.288 5.737 C 390.198 1.460, 375.050 0.707, 365.549 4.059 M 129.948 183.575 C 125.596 189.902, 120.508 201.208, 117.787 210.605 C 115.797 217.475, 115.504 220.706, 115.527 235.500 C 115.559 255.254, 117.266 262.223, 125.510 276.269 C 139.106 299.430, 160.496 312.671, 186.340 313.925 C 197.222 314.454, 198.335 314.691, 200.090 316.861 C 202.629 319.999, 202.498 322.310, 199.589 325.692 C 197.234 328.429, 196.945 328.492, 187.339 328.370 C 175.075 328.214, 162.662 325.344, 151.375 320.055 L 143.005 316.132 142.294 318.816 C 141.902 320.292, 141.604 325.775, 141.629 331 C 141.772 359.939, 158.692 387.212, 185.020 400.941 C 191.793 404.472, 205.456 408.877, 206.476 407.858 C 206.698 407.636, 207.346 402.964, 207.916 397.477 C 209.308 384.077, 211.212 377.218, 216.536 366.429 C 226.297 346.645, 242.466 332.747, 263.596 325.979 C 272.219 323.216, 275.570 323.749, 277.432 328.177 C 279.895 334.033, 277.650 336.871, 268.500 339.473 C 250.046 344.721, 236.338 356.951, 227.798 375.786 C 216.093 401.601, 222.029 436.446, 241.382 455.514 C 269.987 483.699, 311.105 474.356, 317.979 438.109 C 318.637 434.639, 319 390.831, 319 314.802 L 319 196.877 313.040 204.786 C 291.046 233.975, 258.211 248.711, 221.500 245.869 C 185.326 243.069, 155.537 222.340, 138.505 188.117 C 136.009 183.103, 133.771 179, 133.532 179 C 133.292 179, 131.680 181.059, 129.948 183.575 M 516.149 187.106 C 509.832 200.211, 504.453 207.727, 494.035 218 C 476.861 234.936, 459.416 243.005, 433.656 245.928 C 398.260 249.944, 357.921 230.988, 338.604 201.262 C 337.447 199.482, 336.163 198.019, 335.750 198.012 C 334.283 197.988, 334.927 429.700, 336.417 438.050 C 339.989 458.072, 353.912 470.777, 373.403 471.800 C 405.533 473.486, 432.015 443.510, 431.976 405.500 C 431.942 372.644, 414.165 347.889, 384.265 339.060 C 376.796 336.855, 375 335.243, 375 330.740 C 375 327.674, 378.897 324, 382.149 324 C 383.536 324, 387.557 324.942, 391.085 326.092 C 421.951 336.160, 443.856 364.826, 445.711 397.578 C 446.404 409.812, 446.208 409.687, 458.179 405.505 C 486.536 395.598, 506.342 372.008, 511.586 341.896 C 513.108 333.156, 513.066 320.941, 511.499 316.859 C 511.064 315.724, 509.117 316.325, 502.224 319.723 C 490.218 325.640, 480.012 328.109, 466.671 328.325 C 456.395 328.491, 455.744 328.379, 453.921 326.139 C 451.652 323.351, 451.435 319.156, 453.418 316.441 C 454.649 314.757, 456.533 314.420, 467.668 313.895 C 478.929 313.364, 481.517 312.893, 488.809 310.049 C 507.199 302.878, 521.575 289.814, 530.043 272.579 C 536.814 258.796, 538.179 253.110, 538.699 236.500 C 539.094 223.913, 538.881 221.491, 536.588 212.500 C 534.003 202.363, 527 186.893, 522.602 181.606 L 520.195 178.711 516.149 187.106" fill="#C6FF34" fill-rule="evenodd"/></svg><svg x="108" y="0" width="224" height="70" viewBox="138 574 3726 1164"><g transform="translate(0,2180) scale(0.1,-0.1)" fill="#F0F0E4" stroke="none">
+    <path d="M3185 16038 c-22 -5 -89 -20 -150 -34 -189 -41 -440 -104 -510 -128
+-22 -8 -74 -24 -115 -36 -128 -39 -331 -119 -418 -165 -121 -64 -236 -149
+-324 -237 -123 -125 -208 -268 -253 -425 -59 -209 -46 -438 35 -633 34 -80
+122 -210 186 -274 78 -77 179 -142 306 -196 110 -47 289 -76 410 -67 109 9
+240 43 334 88 98 46 223 139 301 222 77 84 161 214 207 322 22 51 49 140 62
+205 18 88 24 148 24 253 0 76 -8 220 -17 320 -11 112 -18 259 -17 382 1 155 6
+221 21 296 10 52 17 101 15 107 -4 14 -41 14 -97 0z"/>
+    <path d="M13695 16004 c-60 -7 -153 -20 -205 -29 -119 -21 -374 -87 -460 -119
+-95 -35 -274 -122 -360 -174 -191 -117 -367 -273 -515 -457 -141 -175 -262
+-399 -350 -644 -31 -87 -101 -332 -114 -401 -6 -30 -17 -89 -25 -130 -8 -41
+-17 -102 -21 -135 -3 -33 -13 -114 -22 -180 -8 -66 -18 -244 -22 -395 l-6
+-275 -505 -5 -505 -5 -3 -564 c-1 -408 1 -568 9 -577 9 -12 100 -14 504 -14
+440 0 494 -2 499 -16 10 -26 6 -3620 -4 -3895 -15 -392 -34 -590 -81 -834 -42
+-221 -105 -448 -151 -545 -11 -25 -33 -73 -49 -108 -74 -163 -197 -339 -323
+-460 -47 -45 -114 -101 -148 -123 -124 -80 -371 -190 -498 -221 -19 -4 -87
+-17 -150 -28 -83 -14 -161 -20 -280 -19 -228 0 -387 22 -590 80 -187 54 -305
+99 -474 182 -54 26 -106 47 -114 45 -17 -3 -36 -53 -87 -223 -14 -49 -43 -144
+-64 -210 -21 -66 -62 -196 -91 -290 -29 -93 -67 -212 -86 -264 -19 -52 -34
+-102 -34 -111 0 -10 6 -22 13 -28 25 -21 206 -110 317 -157 175 -73 516 -172
+675 -196 312 -47 373 -53 630 -53 257 -1 310 3 580 45 87 14 299 64 385 91
+103 32 337 127 425 170 182 92 367 208 495 311 271 220 474 451 667 759 93
+150 196 374 270 588 39 113 76 228 83 255 7 28 23 86 35 130 20 72 62 266 95
+445 7 36 16 106 21 155 5 50 17 158 26 240 14 133 17 383 20 2195 1 1125 5
+2055 8 2068 l5 22 1019 0 c920 0 1019 -2 1025 -16 3 -9 6 -579 6 -1267 0 -807
+4 -1301 11 -1391 11 -142 55 -425 85 -546 27 -105 90 -307 134 -423 41 -110
+110 -256 170 -357 56 -95 180 -273 235 -335 82 -93 223 -228 300 -287 39 -30
+100 -72 136 -95 96 -60 272 -146 370 -181 91 -32 265 -80 389 -106 99 -21 367
+-46 496 -46 125 0 336 23 464 50 184 39 434 130 570 208 74 42 220 146 300
+213 129 108 269 267 378 430 71 105 112 181 176 322 20 45 41 77 49 77 17 0
+23 -43 32 -225 27 -532 55 -908 69 -917 16 -11 1288 -9 1305 2 12 7 12 44 -2
+262 -14 203 -17 410 -17 1053 0 790 0 802 25 1000 65 522 105 698 239 1055 20
+52 40 104 45 115 5 11 16 38 24 60 37 99 197 425 250 508 95 151 228 341 296
+426 85 104 243 277 290 317 16 13 34 24 40 24 16 0 14 -23 -8 -99 -32 -108
+-44 -271 -38 -494 5 -216 21 -326 63 -461 36 -112 133 -307 196 -391 107 -145
+322 -332 500 -436 95 -56 241 -128 348 -172 216 -88 573 -185 945 -257 33 -6
+92 -17 130 -25 39 -8 133 -26 210 -40 513 -95 692 -142 857 -225 98 -50 147
+-85 224 -161 46 -45 72 -82 102 -147 49 -103 66 -199 56 -317 -7 -88 -45 -207
+-87 -270 -45 -70 -129 -152 -209 -203 -115 -74 -263 -123 -498 -163 -30 -6
+-163 -10 -295 -10 -248 -1 -255 0 -486 51 -314 70 -567 238 -723 480 -64 98
+-104 197 -140 337 -17 71 -35 134 -40 141 -9 15 3 16 -306 -45 -124 -24 -261
+-50 -305 -58 -125 -20 -433 -75 -510 -91 -38 -7 -114 -21 -168 -30 -59 -10
+-101 -22 -104 -30 -13 -33 34 -224 93 -384 35 -93 133 -286 171 -336 18 -24
+33 -45 33 -49 0 -3 26 -43 57 -88 96 -138 346 -375 548 -518 134 -95 354 -210
+505 -264 126 -45 252 -85 320 -101 36 -8 101 -24 145 -34 102 -24 262 -49 390
+-61 169 -15 414 -28 547 -29 133 0 454 22 573 40 146 22 312 52 370 67 33 8
+76 18 95 23 218 53 522 188 713 316 176 120 284 218 444 404 49 57 128 179
+170 265 43 86 93 212 113 285 7 25 19 65 26 90 61 198 70 624 19 856 -30 139
+-63 241 -104 324 -78 159 -88 175 -192 315 -45 60 -193 207 -269 267 -74 58
+-119 87 -226 145 -218 119 -617 259 -959 337 -127 29 -427 89 -530 106 -38 6
+-97 18 -130 26 -56 12 -107 22 -321 59 -382 65 -618 156 -762 294 -55 52 -80
+85 -108 145 -28 58 -39 97 -45 159 -10 95 -5 156 22 247 41 142 151 273 304
+361 93 53 136 72 225 98 142 42 179 46 425 45 190 -1 256 -5 315 -18 41 -10
+93 -22 116 -26 63 -14 224 -83 313 -134 44 -26 111 -76 150 -112 128 -119 227
+-277 294 -471 28 -80 38 -99 56 -101 20 -3 287 43 389 68 23 5 56 10 72 10 17
+0 56 6 88 14 67 17 179 40 277 57 130 22 476 97 483 104 25 25 -50 296 -131
+470 -68 146 -137 258 -240 385 -178 220 -379 382 -642 515 -185 94 -272 130
+-440 180 -162 49 -181 54 -289 75 -54 11 -103 23 -109 27 -11 7 -112 16 -362
+34 -292 20 -812 -1 -1036 -41 -179 -33 -489 -103 -599 -135 -324 -96 -528
+-169 -839 -302 -111 -47 -369 -174 -411 -203 -14 -9 -56 -34 -95 -55 -68 -36
+-261 -161 -377 -244 -134 -95 -324 -258 -501 -431 -253 -246 -528 -585 -726
+-895 -232 -364 -455 -780 -590 -1099 -35 -82 -79 -183 -98 -225 -19 -42 -46
+-103 -61 -136 -15 -33 -75 -157 -134 -277 -160 -325 -270 -490 -435 -652 -145
+-143 -313 -253 -467 -306 -32 -11 -113 -31 -179 -45 -93 -20 -151 -26 -261
+-26 -161 -1 -258 11 -401 50 -312 87 -540 280 -693 586 -41 82 -100 261 -122
+370 -43 217 -42 135 -47 2065 -3 1226 -8 1839 -15 1848 -8 9 -373 12 -1762 12
+-1090 0 -1757 4 -1766 10 -13 8 -15 48 -14 267 0 323 22 519 79 725 37 131
+121 298 195 385 73 87 205 193 298 238 38 18 118 46 178 61 98 25 130 28 314
+32 219 4 304 -3 475 -43 107 -26 286 -85 347 -116 31 -16 38 -16 48 -4 10 13
+42 130 124 465 13 52 48 194 79 315 76 303 82 334 65 350 -16 15 -137 62 -309
+120 -200 68 -444 119 -669 141 -177 17 -496 16 -645 -2z"/>
+    <path d="M7460 13204 c-134 -8 -355 -52 -470 -93 -252 -90 -442 -189 -610
+-319 -156 -121 -328 -302 -442 -467 -57 -83 -146 -238 -188 -329 -23 -52 -45
+-86 -54 -86 -8 0 -17 4 -20 8 -4 7 -12 115 -36 517 -13 217 -38 533 -46 570
+-3 17 -11 36 -16 43 -8 9 -156 12 -678 12 -535 0 -670 -3 -678 -13 -8 -9 -7
+-50 3 -142 27 -239 53 -598 60 -805 3 -113 8 -1301 10 -2640 4 -2300 5 -2435
+21 -2447 14 -10 169 -13 730 -13 431 0 723 4 738 10 l25 9 3 1688 c4 1549 5
+1698 21 1808 28 185 53 296 101 440 54 162 133 323 217 441 94 133 237 275
+339 339 47 29 109 64 138 79 61 31 263 99 342 116 30 6 124 15 209 21 136 8
+166 7 270 -11 148 -26 265 -62 366 -112 122 -62 203 -119 276 -194 162 -169
+274 -401 333 -690 9 -44 24 -134 33 -200 15 -106 17 -315 20 -1924 3 -1405 6
+-1806 16 -1812 7 -4 339 -7 738 -7 559 0 730 2 743 12 16 11 16 141 13 1927
+-3 1706 -5 1929 -20 2045 -18 140 -47 310 -72 415 -8 36 -22 95 -30 131 -8 37
+-33 118 -56 180 -22 63 -44 125 -48 139 -5 14 -33 77 -63 140 -136 286 -319
+535 -516 702 -126 106 -275 206 -403 270 -120 60 -294 129 -369 148 -25 6 -63
+18 -85 25 -22 8 -107 26 -190 40 -124 22 -189 26 -380 29 -126 2 -259 2 -295
+0z"/>
+    <path d="M30425 13185 c-409 -61 -654 -133 -1008 -299 -174 -82 -381 -212
+-538 -338 -270 -217 -518 -498 -681 -771 -107 -179 -241 -492 -311 -722 -53
+-179 -71 -252 -97 -405 -33 -200 -45 -367 -45 -630 0 -265 13 -441 45 -620 52
+-289 107 -487 203 -725 62 -153 231 -454 333 -592 201 -272 382 -452 654 -653
+156 -115 275 -185 478 -279 218 -101 515 -197 710 -231 34 -5 88 -14 121 -20
+117 -20 360 -41 541 -47 244 -7 526 13 785 55 130 22 145 25 340 76 191 50
+289 87 491 186 345 170 596 361 833 635 108 124 180 221 271 367 77 121 220
+407 220 438 0 23 6 21 -195 60 -62 12 -82 16 -225 49 -47 11 -119 27 -160 35
+-41 8 -124 27 -185 41 -60 13 -132 30 -160 36 -130 28 -186 40 -260 55 -44 9
+-106 22 -139 30 -39 9 -65 10 -76 4 -10 -6 -24 -27 -30 -47 -16 -49 -91 -189
+-149 -278 -25 -38 -88 -113 -141 -166 -70 -70 -125 -114 -210 -166 -106 -66
+-274 -145 -345 -164 -16 -5 -55 -15 -85 -24 -127 -36 -277 -55 -432 -55 -185
+0 -412 28 -523 65 -22 7 -78 25 -125 41 -47 15 -128 49 -180 75 -248 125 -436
+293 -600 538 -114 171 -236 503 -275 751 -8 54 -9 91 -4 103 9 16 128 17 2278
+17 2089 0 2270 1 2282 16 11 13 14 81 14 333 0 194 -5 360 -13 431 -7 63 -18
+156 -23 205 -22 190 -84 468 -150 665 -78 236 -217 523 -341 709 -82 120 -206
+280 -292 375 -107 118 -274 260 -421 359 -134 90 -197 126 -331 192 -160 77
+-207 97 -384 158 -71 25 -209 63 -275 77 -33 7 -76 17 -95 21 -19 5 -102 18
+-185 29 -125 16 -206 20 -485 19 -221 -1 -366 -6 -425 -14z m706 -1145 c278
+-46 557 -179 727 -347 82 -81 192 -228 249 -333 95 -173 198 -498 205 -645 l3
+-60 -1515 0 -1515 0 3 50 c4 83 101 382 168 515 46 94 150 243 227 326 40 43
+82 90 93 102 33 41 156 136 249 193 141 87 297 148 465 184 144 30 175 35 225
+39 94 7 300 -5 416 -24z"/>
+    <path d="M37885 13183 c-264 -23 -563 -129 -795 -281 -95 -62 -149 -105 -262
+-205 -152 -135 -288 -326 -403 -562 -40 -82 -92 -202 -115 -265 -23 -63 -48
+-121 -56 -129 -10 -11 -16 -12 -27 -3 -10 9 -17 64 -26 209 -7 109 -16 250
+-22 313 -6 63 -15 210 -20 325 -22 440 -23 455 -39 465 -9 6 -274 9 -685 7
+l-670 -2 1 -70 c0 -38 6 -146 13 -240 7 -93 17 -237 23 -320 7 -98 12 -1057
+15 -2774 3 -1968 7 -2628 15 -2639 10 -12 128 -13 752 -10 408 1 747 7 754 11
+9 7 12 336 12 1590 0 970 4 1619 10 1677 12 118 54 333 81 420 59 186 160 398
+241 507 28 37 92 109 142 158 144 143 318 250 540 329 212 77 374 101 622 92
+215 -7 324 -21 484 -63 103 -28 109 -28 114 -2 3 13 7 137 11 274 8 334 33
+1000 40 1051 3 22 3 48 0 56 -8 19 -91 39 -291 68 -97 14 -185 19 -280 18 -77
+-1 -157 -3 -179 -5z"/>
+    <path d="M1570 13041 c-7 -14 -10 -969 -10 -3015 0 -2709 1 -2996 16 -3010 14
+-14 94 -16 733 -16 570 0 721 3 735 13 17 12 17 158 17 3020 0 1654 -3 3012
+-6 3017 -4 6 -281 10 -740 10 -716 0 -735 0 -745 -19z"/>
+    <path d="M19332 13048 c-9 -9 -12 -305 -12 -1268 0 -1240 5 -1560 22 -1560 5
+0 14 15 20 33 13 38 162 336 226 451 62 112 228 377 326 519 283 413 485 647
+854 993 l52 49 1 387 c0 213 -2 392 -6 398 -4 7 -245 10 -739 10 -556 0 -735
+-3 -744 -12z"/>
+  </g></svg></svg>
+    <p>A Legião é um produto da Infuser. Pagamento processado pela Hubla.</p>
+    <a href="mailto:contato@useinfuser.com">contato@useinfuser.com</a>
   </div>
 </footer>
 
-<!-- Trackers (Meta Pixel + UTMify) carregados FORA do caminho critico de render.
-     Disparam na 1a interacao do usuario (pointer/scroll/touch/keydown) OU em load+idle,
-     o que vier primeiro. Assim nao competem por CPU/banda no first paint (mata os
-     long-tasks / unused-JS / forced-reflow do fbevents.js), mas ainda rodam bem antes
-     do usuario rolar ate o botao de compra — entao a atribuicao UTM->Hubla e o PageView
-     continuam intactos. PageView do browser + CAPI compartilham o mesmo eventID (dedup). -->
-
+<script>
+(function () {
+  // Por dentro: abas acessiveis (setas trocam o print).
+  var tabs = Array.prototype.slice.call(document.querySelectorAll(".step"));
+  function show(i, focus) {
+    tabs.forEach(function (t, k) {
+      var on = k === i;
+      t.setAttribute("aria-selected", String(on));
+      t.tabIndex = on ? 0 : -1;
+      document.getElementById(t.getAttribute("aria-controls")).classList.toggle("on", on);
+    });
+    if (focus) tabs[i].focus();
+  }
+  tabs.forEach(function (t, i) {
+    t.addEventListener("click", function () { show(i, false); });
+    t.addEventListener("keydown", function (e) {
+      var n = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }[e.key];
+      if (!n) return;
+      e.preventDefault();
+      show((i + n + tabs.length) % tabs.length, true);
+    });
+  });
+  // Salas de guerra: a linha corre quando a fila entra na tela.
+  var flow = document.getElementById("flow");
+  if (flow && "IntersectionObserver" in window) {
+    new IntersectionObserver(function (entries, obs) {
+      if (entries.some(function (e) { return e.isIntersecting; })) { flow.classList.add("run"); obs.disconnect(); }
+    }, { threshold: 0.4 }).observe(flow);
+  } else if (flow) flow.classList.add("run");
+})();
+</script>
 </body>
 </html>
