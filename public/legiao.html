@@ -36,7 +36,11 @@
   --ease:cubic-bezier(.16,1,.3,1);
 }
 *,*::before,*::after{box-sizing:border-box}
-html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;scrollbar-width:thin;scrollbar-color:rgba(198,255,52,.4) #050505}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:#050505}
+::-webkit-scrollbar-thumb{background:rgba(198,255,52,.32);border-radius:999px;border:2px solid #050505}
+::-webkit-scrollbar-thumb:hover{background:rgba(198,255,52,.6)}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 body{margin:0;background:var(--onyx);color:var(--warm);font-family:var(--font-body);font-size:17px;line-height:1.6;
   -webkit-font-smoothing:antialiased;overflow-x:hidden}
@@ -79,6 +83,14 @@ section{padding:112px 0;position:relative;scroll-margin-top:64px}
   background:radial-gradient(closest-side,rgba(198,255,52,.10),transparent 70%)}
 .hero-grid{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);gap:32px;align-items:center;min-height:calc(100dvh - 64px - 104px)}
 .hero h1{margin-top:18px;font-size:clamp(40px,4.9vw,68px);line-height:1.02;max-width:12.5em}
+.hero .kicker{margin-top:16px;font-family:var(--font-display);font-weight:700;font-size:clamp(22px,2.2vw,30px);letter-spacing:-.02em;line-height:1.2;color:var(--warm)}
+.swap{position:relative;display:inline-grid;vertical-align:bottom;overflow:hidden;width:6.2ch;height:1.25em;font-family:var(--font-mono);font-weight:500;color:var(--lime);letter-spacing:-.02em;text-align:left}
+.sw{grid-area:1/1;animation:swapA 5.6s var(--ease) infinite}
+.sw2{animation-name:swapB;opacity:0}
+@keyframes swapA{0%,42%{opacity:1;transform:translateY(0)}50%,92%{opacity:0;transform:translateY(-70%)}100%{opacity:1;transform:translateY(0)}}
+@keyframes swapB{0%,42%{opacity:0;transform:translateY(70%)}50%,92%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-70%)}}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (prefers-reduced-motion:reduce){.sw{animation:none}.sw2{display:none}}
 .hero .sub{margin-top:22px;max-width:34em;font-size:clamp(17px,1.55vw,20px);color:var(--muted)}
 .hero .ctas{margin-top:34px;display:flex;flex-wrap:wrap;gap:12px}
 @media (max-width:900px){
@@ -87,9 +99,9 @@ section{padding:112px 0;position:relative;scroll-margin-top:64px}
 }
 
 /* tower: o predio acende andar por andar (so CSS, sem JS) */
-.tower{position:relative;margin:0;height:min(76vh,700px);aspect-ratio:620/1150;justify-self:start;margin-left:6%}
+.tower{position:relative;margin:0;height:min(76vh,700px);aspect-ratio:620/1150;justify-self:center}
 /* a arte tem fundo preto proprio: a mascara dissolve a borda do quadro no Onyx da pagina */
-.tower-art{position:absolute;inset:0;
+.tower-art{position:absolute;inset:0;mix-blend-mode:lighten;
   -webkit-mask-image:radial-gradient(64% 58% at 54% 52%,#000 72%,transparent 100%);mask-image:radial-gradient(64% 58% at 54% 52%,#000 72%,transparent 100%)}
 .tower-art img{position:absolute;inset:0;width:100%;height:100%}
 .tower-img{animation:towerIn .9s var(--ease) both,towerPower 1.1s ease 1.45s both}
@@ -108,35 +120,46 @@ section{padding:112px 0;position:relative;scroll-margin-top:64px}
   background:radial-gradient(closest-side,rgba(214,255,120,.95),rgba(198,255,52,0));filter:blur(1.5px);
   animation:lift 9s ease-in-out 2.8s infinite alternate}
 @keyframes lift{0%{opacity:0;transform:translateY(820%)}10%,90%{opacity:.9}100%{opacity:0;transform:translateY(165%)}}
-.tags{position:absolute;left:83%;top:0;bottom:0;width:200px}
-.tags li{position:absolute;left:0;top:var(--y);transform:translateY(-50%);opacity:0;animation:tagIn .5s var(--ease) both;animation-delay:var(--d)}
-.tags a{display:flex;align-items:center;gap:10px;padding:5px 12px 5px 8px;border-radius:var(--r-full);white-space:nowrap;
-  border:1px solid transparent;transition:border-color .2s,background-color .2s}
-.tags a::before{content:"";width:18px;height:1px;background:rgba(198,255,52,.55)}
-.tags b{font-family:var(--font-display);font-size:14px;font-weight:700;letter-spacing:-.01em}
-.tags span{font-family:var(--font-mono);font-size:11.5px;color:var(--faint)}
-.tags a:hover,.tags a:focus-visible{border-color:rgba(198,255,52,.4);background:rgba(198,255,52,.07)}
-.tags a:hover span,.tags a:focus-visible span{color:var(--lime)}
-@keyframes tagIn{from{opacity:0;transform:translate(-10px,-50%)}to{opacity:1;transform:translate(0,-50%)}}
-.tower:has(li:nth-child(1) a:is(:hover,:focus-visible)) .f1,
-.tower:has(li:nth-child(2) a:is(:hover,:focus-visible)) .f2,
-.tower:has(li:nth-child(3) a:is(:hover,:focus-visible)) .f3,
-.tower:has(li:nth-child(4) a:is(:hover,:focus-visible)) .f4,
-.tower:has(li:nth-child(5) a:is(:hover,:focus-visible)) .f5,
-.tower:has(li:nth-child(6) a:is(:hover,:focus-visible)) .f6,
-.tower:has(li:nth-child(7) a:is(:hover,:focus-visible)) .f7{filter:brightness(1.55) saturate(1.25)}
+.floors{position:absolute;inset:0}
+.fh{position:absolute;left:31.2%;right:17.7%;top:var(--t);height:var(--h);border-radius:6px;cursor:pointer;outline-offset:2px}
+.fh .tip{position:absolute;left:calc(100% + 26px);top:50%;display:flex;align-items:baseline;gap:10px;white-space:nowrap;padding:7px 14px;border-radius:var(--r-full);
+  border:1px solid rgba(198,255,52,.45);background:rgba(2,2,2,.82);opacity:0;transform:translate(-8px,-50%);pointer-events:none;transition:opacity .2s,transform .25s var(--ease)}
+.fh .tip::before{content:"";position:absolute;right:100%;top:50%;width:22px;height:1px;background:rgba(198,255,52,.6)}
+.fh .tip b{font-family:var(--font-display);font-size:15px;font-weight:700}
+.fh .tip i{font-style:normal;font-family:var(--font-mono);font-size:12px;color:var(--lime)}
+.fh:hover .tip,.fh:focus-visible .tip{opacity:1;transform:translate(0,-50%)}
+.tower:has(.fh:nth-child(1):is(:hover,:focus-visible)) .f1,
+.tower:has(.fh:nth-child(2):is(:hover,:focus-visible)) .f2,
+.tower:has(.fh:nth-child(3):is(:hover,:focus-visible)) .f3,
+.tower:has(.fh:nth-child(4):is(:hover,:focus-visible)) .f4,
+.tower:has(.fh:nth-child(5):is(:hover,:focus-visible)) .f5,
+.tower:has(.fh:nth-child(6):is(:hover,:focus-visible)) .f6,
+.tower:has(.fh:nth-child(7):is(:hover,:focus-visible)) .f7{filter:brightness(1.6) saturate(1.3)}
+.tap-hint{display:none;position:absolute;left:-40px;right:-40px;bottom:-8px;text-align:center;font-family:var(--font-mono);font-size:12px;color:var(--faint)}
+@media (hover:none){.tap-hint{display:block}.elevator{display:none}}
 @media (max-width:900px){
-  .tower{height:440px;justify-self:center;margin-left:-120px}
-  .tags{width:150px}
-  .tags b{font-size:12.5px}.tags span{display:none}
-  .tags a{padding:3px 8px 3px 4px;gap:6px}.tags a::before{width:10px}
+  .tower{height:440px;justify-self:center;margin-left:0}
 }
-@media (max-width:380px){.tower{height:400px;margin-left:-100px}}
+@media (max-width:380px){.tower{height:400px}}
 @media (prefers-reduced-motion:reduce){
-  .tower-img,.fl,.tags li{animation:none;opacity:1}
+  .tower-img,.fl{animation:none;opacity:1}
   .fl{opacity:0}
-  .tags li{transform:translateY(-50%)}
   .elevator{display:none}
+}
+
+/* predio interativo: a moldura so carrega o app depois do clique (no desktop a roda do mouse e do mapa); no celular abre em tela cheia */
+.live{position:relative;margin-top:44px;border-radius:var(--r);border:1px solid var(--line);overflow:hidden;background:#000;aspect-ratio:16/9;max-height:80vh;width:100%}
+.live-poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.55}
+.live iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#000}
+.live-start{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:2;min-height:54px;padding:0 30px;border-radius:var(--r-full);border:0;cursor:pointer;
+  background:var(--lime);color:var(--lime-ink);font-family:var(--font-display);font-weight:700;font-size:16px;box-shadow:0 10px 40px -12px rgba(198,255,52,.55)}
+.live.on .live-start,.live.on .live-poster{display:none}
+.live-open{display:none}
+@media (max-width:760px){
+  .live{aspect-ratio:4/5;max-height:none}
+  .live-poster{opacity:.75}
+  .live-start{display:none}
+  .live-open{display:inline-flex;position:absolute;left:50%;bottom:20px;transform:translateX(-50%);z-index:2}
 }
 
 /* comparacao */
@@ -227,7 +250,13 @@ section{padding:112px 0;position:relative;scroll-margin-top:64px}
 
 /* provas: o chat animado ja publicado (estilo portado) */
 .proof-head{max-width:var(--text)}
-#provas .dm{max-width:860px}
+#provas .dm{max-width:none;width:100%}
+#provas .dm-chat{height:520px;scrollbar-width:thin;scrollbar-color:rgba(198,255,52,.45) transparent}
+#provas .dm-chat::-webkit-scrollbar{width:6px}
+#provas .dm-chat::-webkit-scrollbar-track{background:transparent}
+#provas .dm-chat::-webkit-scrollbar-thumb{background:rgba(198,255,52,.4);border-radius:999px}
+#provas .dm-chat::-webkit-scrollbar-thumb:hover{background:rgba(198,255,52,.7)}
+@media (max-width:560px){#provas .dm-chat{height:440px}}
 .dm-seal{margin-top:14px;font-size:13px;color:var(--faint)}
 .dm{margin-top:28px;text-align:left}
 .dm-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
@@ -394,15 +423,18 @@ footer{border-top:1px solid var(--line-2);padding:32px 0 44px;color:var(--faint)
 }
 @media (prefers-reduced-motion:reduce){.fpanel.on{animation:none}.ag{transition:none}}
 
+@media (max-width:760px){.nav{-webkit-backdrop-filter:none;backdrop-filter:none;background:rgba(2,2,2,.94)}.elevator{display:none}}
+
 /* celular: tudo centralizado e os botoes do hero embaixo do predio */
 @media (max-width:760px){
   .narrow,.proof-head,.hero-copy{text-align:center;margin-inline:auto}
   .lede{margin-inline:auto}
   .hero-grid{justify-items:center;text-align:center}
   .hero-copy{display:contents}
-  .hero-copy .eyebrow{order:1}.hero h1{order:2;margin-inline:auto}.hero .sub{order:3;margin-inline:auto}
-  .tower{order:4;justify-self:start;margin-left:calc(50% - 154px);margin-top:12px}
+  .hero h1{order:1;margin-inline:auto}.hero .kicker{order:2}.hero .sub{order:3;margin-inline:auto}
+  .tower{order:4;justify-self:center;margin-top:12px;margin-bottom:26px}
   .hero .ctas{order:5;justify-content:center;margin-top:20px;width:100%}
+  .hero .kicker{margin-top:12px}.hero .sub{margin-top:14px}
   .hero .ctas .btn{width:100%;max-width:340px}
   .vs-card,.tile,.pieces li,.agent-card,.fit-col h3,.price,.anchor,.final,.impl-box,.fhead,.grp{text-align:center}
   .vs-quote{border-left:0;border-top:2px solid var(--lime);padding:14px 0 0}
@@ -567,9 +599,9 @@ l-670 -2 1 -70 c0 -38 6 -146 13 -240 7 -93 17 -237 23 -320 7 -98 12 -1057
 <section class="hero">
   <div class="container hero-grid">
     <div class="hero-copy">
-      <span class="eyebrow">Funciona no Claude e no Codex</span>
-      <h1>Você paga o Claude e recebe <span class="hl">texto genérico.</span></h1>
-      <p class="sub">Porque pede pra uma IA. Na Legião você pede pro especialista: 80 deles, de copy a tráfego, dentro do seu Claude.</p>
+      <h1>Você pede, o andar certo <span class="hl">responde.</span></h1>
+      <p class="kicker">80 especialistas dentro do seu <span class="swap"><span class="sr">Claude ou Codex</span><span class="sw" aria-hidden="true">Claude</span><span class="sw sw2" aria-hidden="true">Codex</span></span></p>
+      <p class="sub">Copy, tráfego, vendas e oferta, cada especialista no seu andar. Você conversa normal e quem entende do assunto assume.</p>
       <div class="ctas">
         <a class="btn btn-primary" href="#oferta">Quero a Legião</a>
         <a class="btn btn-ghost" href="#provas">Ver o agente trabalhando</a>
@@ -587,16 +619,32 @@ l-670 -2 1 -70 c0 -38 6 -146 13 -240 7 -93 17 -237 23 -320 7 -98 12 -1057
         <img class="fl f7" src="/legiao/predio-torre.webp" width="620" height="1150" alt="" aria-hidden="true" decoding="async">
         <span class="elevator" aria-hidden="true"></span>
       </div>
-      <ol class="tags">
-        <li style="--y:19.2%;--d:1.37s"><a href="#andar-comando" data-floor="comando"><b>Comando</b><span>11 salas de guerra</span></a></li>
-        <li style="--y:29.4%;--d:1.24s"><a href="#andar-copy" data-floor="copy"><b>Copy</b><span>14 especialistas</span></a></li>
-        <li style="--y:39.6%;--d:1.11s"><a href="#andar-aquisicao" data-floor="aquisicao"><b>Aquisição</b><span>16 especialistas</span></a></li>
-        <li style="--y:49.8%;--d:.98s"><a href="#andar-vendas" data-floor="vendas"><b>Vendas</b><span>11 especialistas</span></a></li>
-        <li style="--y:60%;--d:.85s"><a href="#andar-oferta" data-floor="oferta"><b>Oferta</b><span>12 especialistas</span></a></li>
-        <li style="--y:69.6%;--d:.72s"><a href="#andar-estrategia" data-floor="estrategia"><b>Estratégia</b><span>17 especialistas</span></a></li>
-        <li style="--y:79.2%;--d:.59s"><a href="#andar-operacao" data-floor="operacao"><b>Operação</b><span>10 especialistas</span></a></li>
-      </ol>
+      <div class="floors">
+        <a class="fh" href="#andar-comando" data-floor="comando" style="--t:14.5%;--h:9.4%" aria-label="Andar Comando: 11 salas de guerra"><span class="tip"><b>Comando</b><i>11 salas de guerra</i></span></a>
+        <a class="fh" href="#andar-copy" data-floor="copy" style="--t:24.6%;--h:9.5%" aria-label="Andar Copy: 14 especialistas"><span class="tip"><b>Copy</b><i>14 especialistas</i></span></a>
+        <a class="fh" href="#andar-aquisicao" data-floor="aquisicao" style="--t:35.1%;--h:9.1%" aria-label="Andar Aquisição: 16 especialistas"><span class="tip"><b>Aquisição</b><i>16 especialistas</i></span></a>
+        <a class="fh" href="#andar-vendas" data-floor="vendas" style="--t:45.3%;--h:9.0%" aria-label="Andar Vendas: 11 especialistas"><span class="tip"><b>Vendas</b><i>11 especialistas</i></span></a>
+        <a class="fh" href="#andar-oferta" data-floor="oferta" style="--t:55.8%;--h:8.3%" aria-label="Andar Oferta: 12 especialistas"><span class="tip"><b>Oferta</b><i>12 especialistas</i></span></a>
+        <a class="fh" href="#andar-estrategia" data-floor="estrategia" style="--t:65.2%;--h:8.7%" aria-label="Andar Estratégia: 17 especialistas"><span class="tip"><b>Estratégia</b><i>17 especialistas</i></span></a>
+        <a class="fh" href="#andar-operacao" data-floor="operacao" style="--t:75.0%;--h:8.3%" aria-label="Andar Operação: 10 especialistas"><span class="tip"><b>Operação</b><i>10 especialistas</i></span></a>
+      </div>
+      <p class="tap-hint">Toque num andar pra ver quem trabalha nele</p>
     </figure>
+  </div>
+</section>
+
+<section id="predio-vivo">
+  <div class="container">
+    <div class="narrow reveal">
+      <span class="eyebrow">O prédio de verdade</span>
+      <h2 class="h2" style="margin-top:14px">Entra no prédio. <span class="hl">Clica num andar.</span></h2>
+      <p class="lede">É a mesma tela que você recebe depois da compra: cada andar abre os especialistas dele, e cada especialista mostra o que faz e a frase pronta pra chamar.</p>
+    </div>
+    <div class="live reveal" id="live">
+      <img class="live-poster" src="/legiao/predio-mapa.webp" width="1600" height="764" alt="O prédio da Legião com os sete andares" loading="lazy" decoding="async">
+      <button class="live-start" type="button" id="live-start">Explorar o prédio</button>
+      <a class="btn btn-primary live-open" href="/legiao/predio-v1.html">Abrir o prédio</a>
+    </div>
   </div>
 </section>
 
@@ -1051,6 +1099,18 @@ l-670 -2 1 -70 c0 -38 6 -146 13 -240 7 -93 17 -237 23 -320 7 -98 12 -1057
 
 <script>
 (function () {
+  // Predio interativo: no desktop o app entra na moldura depois do clique; no celular o botao abre em tela cheia.
+  var live = document.getElementById("live");
+  var start = document.getElementById("live-start");
+  if (live && start) start.addEventListener("click", function () {
+    var f = document.createElement("iframe");
+    f.src = "/legiao/predio-v1.html";
+    f.title = "Prédio interativo da Legião";
+    f.allow = "fullscreen";
+    live.appendChild(f);
+    live.classList.add("on");
+    f.focus();
+  });
   // Por dentro: abas acessiveis (setas trocam o print).
   var tabs = Array.prototype.slice.call(document.querySelectorAll(".step"));
   function show(i, focus) {
@@ -1092,7 +1152,7 @@ l-670 -2 1 -70 c0 -38 6 -146 13 -240 7 -93 17 -237 23 -320 7 -98 12 -1057
       floor(ftabs[(i + n + ftabs.length) % ftabs.length].dataset.floor, true);
     });
   });
-  Array.prototype.forEach.call(document.querySelectorAll(".tags a[data-floor]"), function (a) {
+  Array.prototype.forEach.call(document.querySelectorAll(".fh[data-floor]"), function (a) {
     a.addEventListener("click", function (e) {
       e.preventDefault();
       floor(a.dataset.floor, false);

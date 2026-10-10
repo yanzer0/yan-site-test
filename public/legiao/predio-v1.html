@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="pt-BR" class="st-standalone-route" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>O prédio da A Legião · Infuser</title>
+  <link rel="icon" href="/legiao/assets/favicon.svg" type="image/svg+xml">
+  <style>@font-face{font-family:"Inter";font-weight:100 900;font-display:swap;src:url(/legiao/fonts/inter-latin-var.woff2) format("woff2")}@font-face{font-family:"Onest";font-weight:100 900;font-display:swap;src:url(/legiao/fonts/onest-latin-var.woff2) format("woff2")}@font-face{font-family:"Geist Mono";font-weight:400 700;font-display:swap;src:url(/legiao/fonts/geistmono-latin-500.woff2) format("woff2")}</style>
+  <link rel="stylesheet" href="/legiao/assets/legiao.css">
+</head>
+<body>
+  <div class="st-page" id="st-page">
+    <header class="st-topbar">
+      <div class="st-mini-brand"><img src="/legiao/assets/infuser-icon.svg" alt="" aria-hidden="true"><span>A Legião</span></div>
+      <nav class="st-top-tabs" id="st-top-tabs" role="tablist" aria-label="Visualização do prédio">
+        <button class="st-top-tab" type="button" data-st-view="map" role="tab" aria-selected="true">MAPA</button>
+        <button class="st-top-tab" type="button" data-st-view="chart" role="tab" aria-selected="false">LISTA</button>
+      </nav>
+      <div class="st-top-actions">
+        <a class="lg-help" href="/legiao#oferta" target="_top">Quero a Legião</a>
+        <button class="st-icon-btn st-search-btn" id="st-search-open" type="button" title="Buscar agente" aria-label="Buscar agente">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+          <span>Buscar agente</span><kbd>Ctrl K</kbd>
+        </button>
+        <a class="st-icon-btn lg-app lg-app--claude" href="https://claude.com/download" target="_blank" rel="noopener noreferrer" title="Abrir ou baixar o Claude"><span class="lg-app-long">Usar no&nbsp;</span>Claude</a>
+        <a class="st-icon-btn lg-app" href="https://openai.com/codex/" target="_blank" rel="noopener noreferrer" title="Abrir ou baixar o Codex"><span class="lg-app-long">Usar no&nbsp;</span>Codex</a>
+        <button class="st-icon-btn st-fullscreen" id="st-fullscreen" type="button" title="Tela cheia" aria-label="Tela cheia">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 3H5a2 2 0 0 0-2 2v3M16 3h3a2 2 0 0 1 2 2v3M16 21h3a2 2 0 0 0 2-2v-3M8 21H5a2 2 0 0 1-2-2v-3"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <main class="st-main">
+      <section class="st-view" id="st-view-map">
+        <button class="st-map-back" id="st-map-back" type="button" hidden>← TODOS OS ANDARES</button>
+        <div class="st-map-layout">
+          <figure class="st-building" id="st-building" data-scene="overview">
+            <img class="st-building-image is-active" id="st-building-overview" src="/legiao/assets/predio.webp" alt="Prédio da A Legião" aria-hidden="false">
+            <img class="st-building-image" id="st-building-comando" src="/legiao/assets/andar-comando.webp" alt="Andar do Comando" aria-hidden="true">
+            <img class="st-building-image" id="st-building-copy" src="/legiao/assets/andar-copy.webp" alt="Andar de Copy" aria-hidden="true">
+            <img class="st-building-image" id="st-building-aquisicao" src="/legiao/assets/andar-aquisicao.webp" alt="Andar de Aquisição" aria-hidden="true">
+            <img class="st-building-image" id="st-building-vendas" src="/legiao/assets/andar-vendas.webp" alt="Andar de Vendas" aria-hidden="true">
+            <img class="st-building-image" id="st-building-oferta" src="/legiao/assets/andar-oferta.webp" alt="Andar de Oferta" aria-hidden="true">
+            <img class="st-building-image" id="st-building-estrategia" src="/legiao/assets/andar-estrategia.webp" alt="Andar de Estratégia" aria-hidden="true">
+            <img class="st-building-image" id="st-building-operacao" src="/legiao/assets/andar-operacao.webp" alt="Andar de Operação" aria-hidden="true">
+          </figure>
+          <div class="st-stage" id="st-stage">
+            <svg class="st-svg" id="st-svg" viewBox="-820 -820 1640 1640" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Mapa interativo dos andares e agentes da A Legião"></svg>
+            <div class="st-error" id="st-map-error">carregando A Legião…</div>
+          </div>
+        </div>
+        <aside class="st-reader" id="st-reader" aria-live="polite" hidden></aside>
+      </section>
+      <section class="st-view" id="st-view-chart" hidden><div id="st-chart"></div></section>
+    </main>
+
+    <div class="st-search-overlay" id="st-search" role="dialog" aria-modal="true" aria-label="Buscar agente" hidden>
+      <div class="st-search-backdrop" id="st-search-backdrop"></div>
+      <div class="st-search-panel">
+        <div class="st-search-head">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+          <input class="st-search-input" id="st-search-input" type="search" placeholder="Busque um agente, um andar ou o que você precisa…" autocomplete="off" aria-label="Buscar agente">
+          <button class="st-icon-btn" id="st-search-close" type="button" aria-label="Fechar busca">Esc</button>
+        </div>
+        <div class="st-search-results" id="st-search-results"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/legiao/assets/legiao-model.js"></script>
+  <script src="/legiao/assets/legiao.js"></script>
+</body>
+</html>
