@@ -12,12 +12,12 @@ scope_lock:
   allowed_write_globs:
     - .planning/work-orders/WO-LEGIAO-HERO-PREDIO-001.md
     - public/legiao.html
-    - public/legiao/predio-v1.html
+    - public/legiao/*.html
     - public/legiao/assets/**
   architecture_delta:
     production_files:
       - public/legiao.html
-      - public/legiao/predio-v1.html
+      - public/legiao/*.html
       - public/legiao/assets/**
     runtime_dependencies: []
     public_contracts: []

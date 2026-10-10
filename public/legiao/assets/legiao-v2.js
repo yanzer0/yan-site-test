@@ -6,7 +6,7 @@
   const model = window.LegiaoModel;
   if (!model) return;
 
-  const DATA_URL = '/legiao/assets/agents.json';
+  const DATA_URL = '/legiao/assets/agents-v2.json';
   const WHEEL_SCROLL_GAIN = 0.1;
   const WHEEL_EASE = 0.11;
   const CAMERA_EASE = 0.13;

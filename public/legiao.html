@@ -611,13 +611,13 @@ l-670 -2 1 -70 c0 -38 6 -146 13 -240 7 -93 17 -237 23 -320 7 -98 12 -1057
         <span class="elevator" aria-hidden="true"></span>
       </div>
       <div class="floors">
-        <a class="fh" href="/legiao/predio-v1.html?andar=comando" data-floor="comando" style="--t:14.5%;--h:9.4%" aria-label="Andar Comando: 11 salas de guerra"><span class="tip"><b>Comando</b><i>11 salas de guerra</i></span></a>
-        <a class="fh" href="/legiao/predio-v1.html?andar=copy" data-floor="copy" style="--t:24.6%;--h:9.5%" aria-label="Andar Copy: 14 especialistas"><span class="tip"><b>Copy</b><i>14 especialistas</i></span></a>
-        <a class="fh" href="/legiao/predio-v1.html?andar=aquisicao" data-floor="aquisicao" style="--t:35.1%;--h:9.1%" aria-label="Andar Aquisição: 16 especialistas"><span class="tip"><b>Aquisição</b><i>16 especialistas</i></span></a>
-        <a class="fh" href="/legiao/predio-v1.html?andar=vendas" data-floor="vendas" style="--t:45.3%;--h:9.0%" aria-label="Andar Vendas: 11 especialistas"><span class="tip"><b>Vendas</b><i>11 especialistas</i></span></a>
-        <a class="fh" href="/legiao/predio-v1.html?andar=oferta" data-floor="oferta" style="--t:55.8%;--h:8.3%" aria-label="Andar Oferta: 12 especialistas"><span class="tip"><b>Oferta</b><i>12 especialistas</i></span></a>
-        <a class="fh" href="/legiao/predio-v1.html?andar=estrategia" data-floor="estrategia" style="--t:65.2%;--h:8.7%" aria-label="Andar Estratégia: 17 especialistas"><span class="tip"><b>Estratégia</b><i>17 especialistas</i></span></a>
-        <a class="fh" href="/legiao/predio-v1.html?andar=operacao" data-floor="operacao" style="--t:75.0%;--h:8.3%" aria-label="Andar Operação: 10 especialistas"><span class="tip"><b>Operação</b><i>10 especialistas</i></span></a>
+        <a class="fh" href="/legiao/predio-v2.html?andar=comando" data-floor="comando" style="--t:14.5%;--h:9.4%" aria-label="Andar Comando: 11 salas de guerra"><span class="tip"><b>Comando</b><i>11 salas de guerra</i></span></a>
+        <a class="fh" href="/legiao/predio-v2.html?andar=copy" data-floor="copy" style="--t:24.6%;--h:9.5%" aria-label="Andar Copy: 14 especialistas"><span class="tip"><b>Copy</b><i>14 especialistas</i></span></a>
+        <a class="fh" href="/legiao/predio-v2.html?andar=aquisicao" data-floor="aquisicao" style="--t:35.1%;--h:9.1%" aria-label="Andar Aquisição: 16 especialistas"><span class="tip"><b>Aquisição</b><i>16 especialistas</i></span></a>
+        <a class="fh" href="/legiao/predio-v2.html?andar=vendas" data-floor="vendas" style="--t:45.3%;--h:9.0%" aria-label="Andar Vendas: 11 especialistas"><span class="tip"><b>Vendas</b><i>11 especialistas</i></span></a>
+        <a class="fh" href="/legiao/predio-v2.html?andar=oferta" data-floor="oferta" style="--t:55.8%;--h:8.3%" aria-label="Andar Oferta: 12 especialistas"><span class="tip"><b>Oferta</b><i>12 especialistas</i></span></a>
+        <a class="fh" href="/legiao/predio-v2.html?andar=estrategia" data-floor="estrategia" style="--t:65.2%;--h:8.7%" aria-label="Andar Estratégia: 17 especialistas"><span class="tip"><b>Estratégia</b><i>17 especialistas</i></span></a>
+        <a class="fh" href="/legiao/predio-v2.html?andar=operacao" data-floor="operacao" style="--t:75.0%;--h:8.3%" aria-label="Andar Operação: 10 especialistas"><span class="tip"><b>Operação</b><i>10 especialistas</i></span></a>
       </div>
       <p class="tap-hint">Toque num andar pra ver quem trabalha nele</p>
     </figure>
@@ -634,7 +634,7 @@ l-670 -2 1 -70 c0 -38 6 -146 13 -240 7 -93 17 -237 23 -320 7 -98 12 -1057
     <div class="live reveal" id="live">
       <img class="live-poster" src="/legiao/predio-mapa.webp" width="1600" height="764" alt="O prédio da Legião com os sete andares" loading="lazy" decoding="async">
       <button class="live-start" type="button" id="live-start">Explorar o prédio</button>
-      <a class="btn btn-primary live-open" href="/legiao/predio-v1.html">Abrir o prédio</a>
+      <a class="btn btn-primary live-open" href="/legiao/predio-v2.html">Abrir o prédio</a>
     </div>
   </div>
 </section>
@@ -1085,7 +1085,7 @@ l-670 -2 1 -70 c0 -38 6 -146 13 -240 7 -93 17 -237 23 -320 7 -98 12 -1057
   var start = document.getElementById("live-start");
   var wide = matchMedia("(min-width: 761px) and (hover: hover)");
   function openLive(andar) {
-    var src = "/legiao/predio-v1.html" + (andar ? "?andar=" + andar : "");
+    var src = "/legiao/predio-v2.html" + (andar ? "?andar=" + andar : "");
     var f = live.querySelector("iframe");
     if (!f) {
       f = document.createElement("iframe");
