@@ -1,6 +1,6 @@
 ---
 work_order: WO-LEGIAO-PREDIO-VENDAS-001
-status: active
+status: complete
 central_branch: claude/legiao-vendas-predio
 owner: Claude
 authorized_by: Yan
@@ -23,7 +23,7 @@ scope_lock:
     background_jobs: []
   acceptance_ids: [LPV-01, LPV-02, LPV-03]
   stop_when: [LPV-01, LPV-02, LPV-03]
-  passed_acceptance_ids: [LPV-01, LPV-02]
+  passed_acceptance_ids: [LPV-01, LPV-02, LPV-03]
 ---
 
 # Página de vendas da Legião mostra o prédio
@@ -50,3 +50,7 @@ de "O que você recebe" deixa de ser "Dashboard da Legião" e passa a ser o pré
   `git diff` sem travessão nas linhas novas. Prints reais do Yan (10/10), redimensionados para 1600 px.
 - `LPV-02`: Chromium headless contra `public/` servida localmente, 1440 px e 375 px: rolagem lateral 0,
   nenhum erro de página, os três prints com status 200 e carregados.
+- `LPV-03`: commit `6180f4c` em `main`; na VPS, `deploy/vps/deploy.sh` terminou com
+  `useinfuser-site release 6180f4c95f9e is healthy` e o smoke verde. `/legiao` 200 no apex e no `www`
+  com `id="predio"` e o item 05 "Prédio da Legião"; `predio-mapa.webp`, `predio-andar.webp` e
+  `predio-agente.webp` 200 nos dois hosts.
