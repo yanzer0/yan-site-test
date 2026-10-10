@@ -102,7 +102,7 @@ section{padding:112px 0;position:relative;scroll-margin-top:64px}
 .tower{position:relative;margin:0;height:min(76vh,700px);aspect-ratio:620/1150;justify-self:center}
 /* a arte tem fundo preto proprio: a mascara dissolve a borda do quadro no Onyx da pagina */
 .tower-art{position:absolute;inset:0;mix-blend-mode:lighten;
-  -webkit-mask-image:radial-gradient(64% 58% at 54% 52%,#000 72%,transparent 100%);mask-image:radial-gradient(64% 58% at 54% 52%,#000 72%,transparent 100%)}
+  -webkit-mask-image:radial-gradient(64% 58% at 54% 50%,#000 72%,transparent 100%),linear-gradient(180deg,#000 82%,transparent 99%);-webkit-mask-composite:source-in;mask-image:radial-gradient(64% 58% at 54% 50%,#000 72%,transparent 100%),linear-gradient(180deg,#000 82%,transparent 99%);mask-composite:intersect}
 .tower-art img{position:absolute;inset:0;width:100%;height:100%}
 .tower-img{animation:towerIn .9s var(--ease) both,towerPower 1.1s ease 1.45s both}
 .fl{opacity:0;animation:floorOn .55s ease both;transition:filter .25s}
@@ -385,43 +385,6 @@ footer{border-top:1px solid var(--line-2);padding:32px 0 44px;color:var(--faint)
 .foot a:hover{color:var(--warm)}
 
 
-/* quem trabalha em cada andar: abas por andar, cartoes com o que cada agente entrega */
-.ftabs{margin-top:44px;display:flex;flex-wrap:wrap;gap:8px}
-.ftab{all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;align-items:baseline;gap:8px;padding:11px 18px;border-radius:var(--r-full);border:1px solid var(--line);
-  background:rgba(240,240,228,.02);transition:background-color .2s,border-color .2s}
-.ftab b{font-family:var(--font-display);font-size:15px;font-weight:700;letter-spacing:-.01em}
-.ftab span{font-family:var(--font-mono);font-size:12px;color:var(--faint)}
-.ftab:hover{border-color:rgba(198,255,52,.4)}
-.ftab[aria-selected="true"]{background:var(--lime);border-color:var(--lime);color:var(--lime-ink)}
-.ftab[aria-selected="true"] span{color:rgba(12,12,8,.65)}
-.ftab:focus-visible{outline:2px solid var(--lime);outline-offset:3px}
-.fpanel{display:none;margin-top:30px}
-.fpanel.on{display:block;animation:panelIn .45s var(--ease) both}
-@keyframes panelIn{from{opacity:0;transform:translateY(10px)}}
-.no-js .ftabs{display:none}.no-js .fpanel{display:block;margin-top:48px}
-.fhead{font-family:var(--font-mono);font-size:12.5px;letter-spacing:.06em;color:var(--faint);text-transform:uppercase}
-.fhead b{color:var(--lime);font-weight:500}
-.grp{margin:30px 0 14px;font-size:13px;font-family:var(--font-mono);font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--teal-1)}
-.ags{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
-.ag{display:flex;gap:14px;align-items:flex-start;padding:20px;border-radius:var(--r);border:1px solid var(--line);background:var(--carbon-2);transition:border-color .2s,transform .2s var(--ease)}
-.ag:hover{border-color:rgba(198,255,52,.35);transform:translateY(-2px)}
-.ag-face{flex:0 0 44px;width:44px;height:44px;border-radius:50%;overflow:hidden;display:flex;align-items:center;justify-content:center;
-  background:linear-gradient(135deg,rgba(198,255,52,.9),var(--teal-1));color:var(--lime-ink);font-family:var(--font-mono);font-size:14px}
-.ag-face img{width:100%;height:100%;object-fit:cover}
-.ag h4{margin:0;font-family:var(--font-display);font-size:16px;font-weight:700;letter-spacing:-.015em;line-height:1.25}
-.ag small{display:inline-block;margin-top:6px;font-family:var(--font-mono);font-size:11px;color:var(--teal-1);letter-spacing:.02em}
-.ag p{margin-top:10px;font-size:15px;line-height:1.55;color:var(--warm)}
-.ag q{display:block;margin-top:12px;font-family:var(--font-mono);font-size:12.5px;line-height:1.45;color:var(--lime);opacity:.9}
-/* ultima linha incompleta: o card que sobra ocupa o espaco (sem buraco na grade) */
-@media (min-width:1001px){.ags>.ag:last-child:nth-child(3n+1){grid-column:1/-1}.ags>.ag:last-child:nth-child(3n+2){grid-column:span 2}}
-@media (max-width:1000px){.ags{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (min-width:641px) and (max-width:1000px){.ags>.ag:last-child:nth-child(2n+1){grid-column:1/-1}}
-@media (max-width:640px){
-  .ags{grid-template-columns:1fr}
-  .ftabs{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-inline:-24px;padding-inline:24px;scroll-snap-type:x mandatory}
-  .ftabs::-webkit-scrollbar{display:none}.ftab{flex:0 0 auto;scroll-snap-align:start}
-}
-@media (prefers-reduced-motion:reduce){.fpanel.on{animation:none}.ag{transition:none}}
 
 @media (max-width:760px){.nav{-webkit-backdrop-filter:none;backdrop-filter:none;background:rgba(2,2,2,.94)}.elevator{display:none}}
 
@@ -436,16 +399,44 @@ footer{border-top:1px solid var(--line-2);padding:32px 0 44px;color:var(--faint)
   .hero .ctas{order:5;justify-content:center;margin-top:20px;width:100%}
   .hero .kicker{margin-top:12px}.hero .sub{margin-top:14px}
   .hero .ctas .btn{width:100%;max-width:340px}
-  .vs-card,.tile,.pieces li,.agent-card,.fit-col h3,.price,.anchor,.final,.impl-box,.fhead,.grp{text-align:center}
+  .vs-card,.tile,.pieces li,.agent-card,.fit-col h3,.price,.anchor,.final,.impl-box{text-align:center}
   .vs-quote{border-left:0;border-top:2px solid var(--lime);padding:14px 0 0}
   .agent-head{flex-direction:column}
-  .ag{flex-direction:column;align-items:center;text-align:center}
-  .ftabs{justify-content:flex-start}
-  .guarantee{flex-direction:column;text-align:center}
+    .guarantee{flex-direction:column;text-align:center}
   .price ul{display:inline-block;text-align:left}
   .steps{justify-content:flex-start}
   .marquee{margin-inline:-26px}
 }
+
+
+/* fundos: pontinhos v2 (os dos guias) + blocos de cor da paleta v2 alternando ao longo da pagina */
+.dots::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:0;
+  background-image:radial-gradient(rgba(255,255,255,.055) 1.2px,transparent 1.2px);background-size:24px 24px;
+  -webkit-mask-image:linear-gradient(180deg,transparent,#000 10%,#000 90%,transparent);mask-image:linear-gradient(180deg,transparent,#000 10%,#000 90%,transparent)}
+section>.container{position:relative;z-index:1}
+.s-ink{background:#0C0C0A}
+.s-carbon{background:#171717}
+.s-green{background:radial-gradient(110% 80% at 0% 0%,rgba(59,208,160,.20),transparent 60%),linear-gradient(180deg,#143A31,#0b1f1a)}
+.s-green.dots::before{background-image:radial-gradient(rgba(59,208,160,.18) 1.2px,transparent 1.2px)}
+.s-green .eyebrow{color:var(--lime)}
+.light{background:#EEF4EF;color:#171717;--warm:#171717;--muted:rgba(23,23,23,.74);--faint:rgba(23,23,23,.6);--line:rgba(23,23,23,.13);--line-2:rgba(23,23,23,.07);--carbon-2:#ffffff;--carbon:#f6f8f5}
+.light.warm{background:#F0F0E4}
+.light.dots::before{background-image:radial-gradient(rgba(23,23,23,.09) 1.2px,transparent 1.2px)}
+.light .hl{color:inherit;background:linear-gradient(transparent 62%,rgba(198,255,52,.95) 62%);padding:0 .05em}
+.light .eyebrow{color:#1F6F5F}
+.light .vs-card.good,.light .fit-col.yes{background:#171717;color:#f0f0e4;border-color:#171717;
+  --warm:#f0f0e4;--muted:rgba(240,240,228,.74);--faint:rgba(240,240,228,.6);--line:rgba(240,240,228,.13);--line-2:rgba(240,240,228,.07)}
+.light .vs-card{box-shadow:0 18px 50px -30px rgba(23,23,23,.35)}
+.light .fit-col.no li::before{background:linear-gradient(45deg,transparent 46%,rgba(23,23,23,.55) 46% 54%,transparent 54%),linear-gradient(-45deg,transparent 46%,rgba(23,23,23,.55) 46% 54%,transparent 54%)}
+.light .fit-col li a,.light .faq .a a{color:#1F6F5F}
+.light .faq details[open] summary::after{border-color:#1F6F5F}
+.s-lime{background:var(--lime);color:var(--lime-ink)}
+.s-lime.final::before{display:none}
+.s-lime h2{color:#0C0C0A}
+.s-lime .hl{color:#143A31}
+.s-lime.final p{color:rgba(12,12,8,.74)}
+.s-lime .btn-primary{background:#0C0C0A;color:var(--lime);box-shadow:0 14px 40px -18px rgba(12,12,8,.6)}
+.s-lime .btn-primary:hover{background:#1d1d1a}
 
 /* entrada das secoes conforme o scroll (so onde o navegador suporta, e nunca com reduced-motion) */
 @supports (animation-timeline:view()){
@@ -596,7 +587,7 @@ l-670 -2 1 -70 c0 -38 6 -146 13 -240 7 -93 17 -237 23 -320 7 -98 12 -1057
 
 <main id="topo">
 
-<section class="hero">
+<section class="hero dots">
   <div class="container hero-grid">
     <div class="hero-copy">
       <h1>Você pede, o andar certo <span class="hl">responde.</span></h1>
@@ -620,20 +611,20 @@ l-670 -2 1 -70 c0 -38 6 -146 13 -240 7 -93 17 -237 23 -320 7 -98 12 -1057
         <span class="elevator" aria-hidden="true"></span>
       </div>
       <div class="floors">
-        <a class="fh" href="#andar-comando" data-floor="comando" style="--t:14.5%;--h:9.4%" aria-label="Andar Comando: 11 salas de guerra"><span class="tip"><b>Comando</b><i>11 salas de guerra</i></span></a>
-        <a class="fh" href="#andar-copy" data-floor="copy" style="--t:24.6%;--h:9.5%" aria-label="Andar Copy: 14 especialistas"><span class="tip"><b>Copy</b><i>14 especialistas</i></span></a>
-        <a class="fh" href="#andar-aquisicao" data-floor="aquisicao" style="--t:35.1%;--h:9.1%" aria-label="Andar Aquisição: 16 especialistas"><span class="tip"><b>Aquisição</b><i>16 especialistas</i></span></a>
-        <a class="fh" href="#andar-vendas" data-floor="vendas" style="--t:45.3%;--h:9.0%" aria-label="Andar Vendas: 11 especialistas"><span class="tip"><b>Vendas</b><i>11 especialistas</i></span></a>
-        <a class="fh" href="#andar-oferta" data-floor="oferta" style="--t:55.8%;--h:8.3%" aria-label="Andar Oferta: 12 especialistas"><span class="tip"><b>Oferta</b><i>12 especialistas</i></span></a>
-        <a class="fh" href="#andar-estrategia" data-floor="estrategia" style="--t:65.2%;--h:8.7%" aria-label="Andar Estratégia: 17 especialistas"><span class="tip"><b>Estratégia</b><i>17 especialistas</i></span></a>
-        <a class="fh" href="#andar-operacao" data-floor="operacao" style="--t:75.0%;--h:8.3%" aria-label="Andar Operação: 10 especialistas"><span class="tip"><b>Operação</b><i>10 especialistas</i></span></a>
+        <a class="fh" href="/legiao/predio-v1.html?andar=comando" data-floor="comando" style="--t:14.5%;--h:9.4%" aria-label="Andar Comando: 11 salas de guerra"><span class="tip"><b>Comando</b><i>11 salas de guerra</i></span></a>
+        <a class="fh" href="/legiao/predio-v1.html?andar=copy" data-floor="copy" style="--t:24.6%;--h:9.5%" aria-label="Andar Copy: 14 especialistas"><span class="tip"><b>Copy</b><i>14 especialistas</i></span></a>
+        <a class="fh" href="/legiao/predio-v1.html?andar=aquisicao" data-floor="aquisicao" style="--t:35.1%;--h:9.1%" aria-label="Andar Aquisição: 16 especialistas"><span class="tip"><b>Aquisição</b><i>16 especialistas</i></span></a>
+        <a class="fh" href="/legiao/predio-v1.html?andar=vendas" data-floor="vendas" style="--t:45.3%;--h:9.0%" aria-label="Andar Vendas: 11 especialistas"><span class="tip"><b>Vendas</b><i>11 especialistas</i></span></a>
+        <a class="fh" href="/legiao/predio-v1.html?andar=oferta" data-floor="oferta" style="--t:55.8%;--h:8.3%" aria-label="Andar Oferta: 12 especialistas"><span class="tip"><b>Oferta</b><i>12 especialistas</i></span></a>
+        <a class="fh" href="/legiao/predio-v1.html?andar=estrategia" data-floor="estrategia" style="--t:65.2%;--h:8.7%" aria-label="Andar Estratégia: 17 especialistas"><span class="tip"><b>Estratégia</b><i>17 especialistas</i></span></a>
+        <a class="fh" href="/legiao/predio-v1.html?andar=operacao" data-floor="operacao" style="--t:75.0%;--h:8.3%" aria-label="Andar Operação: 10 especialistas"><span class="tip"><b>Operação</b><i>10 especialistas</i></span></a>
       </div>
       <p class="tap-hint">Toque num andar pra ver quem trabalha nele</p>
     </figure>
   </div>
 </section>
 
-<section id="predio-vivo">
+<section id="predio-vivo" class="s-ink">
   <div class="container">
     <div class="narrow reveal">
       <span class="eyebrow">O prédio de verdade</span>
@@ -648,7 +639,7 @@ l-670 -2 1 -70 c0 -38 6 -146 13 -240 7 -93 17 -237 23 -320 7 -98 12 -1057
   </div>
 </section>
 
-<section id="comparacao">
+<section id="comparacao" class="light">
   <div class="container">
     <div class="narrow reveal">
       <h2 class="h2">Mesmo pedido. <span class="hl">Duas respostas.</span></h2>
@@ -670,7 +661,7 @@ l-670 -2 1 -70 c0 -38 6 -146 13 -240 7 -93 17 -237 23 -320 7 -98 12 -1057
   </div>
 </section>
 
-<section id="como">
+<section id="como" class="dots">
   <div class="container">
     <div class="narrow reveal">
       <h2 class="h2">Você não aprende <span class="hl">comando nenhum.</span></h2>
@@ -695,17 +686,7 @@ l-670 -2 1 -70 c0 -38 6 -146 13 -240 7 -93 17 -237 23 -320 7 -98 12 -1057
   </div>
 </section>
 
-<section id="andares">
-  <div class="container">
-    <div class="narrow reveal">
-      <h2 class="h2">Quem trabalha <span class="hl">em cada andar.</span></h2>
-      <p class="lede">Os 80 especialistas e as 11 salas de guerra, andar por andar. Cada um com o que entrega e a frase pra chamar no Claude.</p>
-    </div>
-    <div class="ftabs" role="tablist" aria-label="Andares do prédio"><button class="ftab" type="button" role="tab" id="ft-comando" aria-controls="andar-comando" aria-selected="false" tabindex="-1" data-floor="comando"><b>Comando</b><span>11</span></button><button class="ftab" type="button" role="tab" id="ft-copy" aria-controls="andar-copy" aria-selected="true" data-floor="copy"><b>Copy</b><span>14</span></button><button class="ftab" type="button" role="tab" id="ft-aquisicao" aria-controls="andar-aquisicao" aria-selected="false" tabindex="-1" data-floor="aquisicao"><b>Aquisição</b><span>16</span></button><button class="ftab" type="button" role="tab" id="ft-vendas" aria-controls="andar-vendas" aria-selected="false" tabindex="-1" data-floor="vendas"><b>Vendas</b><span>11</span></button><button class="ftab" type="button" role="tab" id="ft-oferta" aria-controls="andar-oferta" aria-selected="false" tabindex="-1" data-floor="oferta"><b>Oferta</b><span>12</span></button><button class="ftab" type="button" role="tab" id="ft-estrategia" aria-controls="andar-estrategia" aria-selected="false" tabindex="-1" data-floor="estrategia"><b>Estratégia</b><span>17</span></button><button class="ftab" type="button" role="tab" id="ft-operacao" aria-controls="andar-operacao" aria-selected="false" tabindex="-1" data-floor="operacao"><b>Operação</b><span>10</span></button></div><div class="fpanel" id="andar-comando" role="tabpanel" aria-labelledby="ft-comando"><p class="fhead"><b>Comando</b> · 11 salas de guerra</p><h3 class="grp">Ponto de partida</h3><ul class="ags"><li class="ag"><div class="ag-face"><span aria-hidden="true">E</span></div><div class="ag-body"><h4>Esquadrão (roteador universal)</h4><p>Não sabe qual dos mais de 80 agentes chamar? Diz seu objetivo do seu jeito e ele te leva direto ao especialista ou à Sala de Guerra certa.</p><q>não sei por onde começar, me orienta</q></div></li></ul><h3 class="grp">Oferta e venda</h3><ul class="ags"><li class="ag"><div class="ag-face"><span aria-hidden="true">OI</span></div><div class="ag-body"><h4>Oferta Irresistível (ponta a ponta)</h4><p>Sete especialistas em fila: pesquisa de mercado, voz do cliente, oferta, preço, garantia e auditoria final. Você sai com a oferta fechada.</p><q>quero sair com a oferta fechada de ponta a ponta</q></div></li><li class="ag"><div class="ag-face"><span aria-hidden="true">PV</span></div><div class="ag-body"><h4>Página de Vendas Completa</h4><p>Sete especialistas em sequência: voz do cliente, Big Idea, mecanismo, página longa, objeções, headlines e gatilhos. No fim, a página pronta.</p><q>preciso da página de vendas inteira pronta</q></div></li><li class="ag"><div class="ag-face"><span aria-hidden="true">MV</span></div><div class="ag-body"><h4>Máquina de Vendas (1-a-1)</h4><p>Seis especialistas em fila: SPIN, quebra de objeção, negociação, follow-up, script de WhatsApp e qualificação. Sai o playbook do atendimento inteiro.</p><q>quero o playbook inteiro de venda no atendimento</q></div></li></ul><h3 class="grp">Aquisição</h3><ul class="ags"><li class="ag"><div class="ag-face"><span aria-hidden="true">CT</span></div><div class="ag-body"><h4>Campanha de Tráfego Completa</h4><p>Você pede a campanha e seis especialistas rodam em fila: proposta, auditoria da conta, criativos em imagem e vídeo, tracking e diagnóstico.</p><q>quero subir uma campanha de tráfego do começo ao fim</q></div></li><li class="ag"><div class="ag-face"><span aria-hidden="true">CS</span></div><div class="ag-body"><h4>Conteúdo da Semana</h4><p>Sete especialistas em sequência: calendário, ângulos, carrosséis, reels, hooks afiados e reaproveitamento. No fim, a semana inteira pronta pra postar.</p><q>quero a semana de conteúdo inteira pronta</q></div></li><li class="ag"><div class="ag-face"><span aria-hidden="true">LC</span></div><div class="ag-body"><h4>Lançamento Completo</h4><p>Cinco especialistas em sequência: estratégia, roteiro do webinar, página, emails e campanha de tráfego. Você lança com cada peça conectada à outra.</p><q>vou lançar e quero tudo amarrado de uma vez</q></div></li></ul><h3 class="grp">Funil e marca</h3><ul class="ags"><li class="ag"><div class="ag-face"><span aria-hidden="true">FC</span></div><div class="ag-body"><h4>Funil Completo</h4><p>Cinco especialistas em sequência: fluxo do funil, upsell e downsell, escada de ascensão, perpétuo e emails. Você sai com tudo montado e conectado.</p><q>quero o funil inteiro montado de uma vez</q></div></li><li class="ag"><div class="ag-face"><span aria-hidden="true">ME</span></div><div class="ag-body"><h4>Máquina de Email</h4><p>Três especialistas em fila: a sequência que nutre e vende, a recuperação de carrinho abandonado e a entregabilidade. Sai o sistema de email inteiro.</p><q>quero toda minha máquina de email montada</q></div></li><li class="ag"><div class="ag-face"><span aria-hidden="true">MZ</span></div><div class="ag-body"><h4>Marca do Zero</h4><p>Cinco especialistas em sequência: posicionamento, StoryBrand, proposta de valor, tom de voz e nome. Sai a marca definida, nova ou reposicionada.</p><q>vou construir minha marca do zero</q></div></li><li class="ag"><div class="ag-face"><span aria-hidden="true">DN</span></div><div class="ag-body"><h4>Diagnóstico de Negócio</h4><p>Quatro especialistas em fila: job do cliente, concorrência, go-to-market e validação da ideia. No fim, você sabe por onde começar antes de gastar.</p><q>quero um diagnóstico do negócio antes de gastar</q></div></li></ul></div><div class="fpanel on" id="andar-copy" role="tabpanel" aria-labelledby="ft-copy"><p class="fhead"><b>Copy</b> · 14 especialistas</p><h3 class="grp">Copy</h3><ul class="ags"><li class="ag"><div class="ag-face"><img src="/legiao/avatars/vsl_copy.webp" width="44" height="44" alt="" loading="lazy" decoding="async"></div><div class="ag-body"><h4>Arquiteto de VSL</h4><small>Georgi, Halbert e Sugarman</small><p>Roteiro de VSL bloco a bloco, com o mecanismo único no centro e retenção frase a frase, pra quem vive da conversão do vídeo.</p><q>preciso de uma VSL que converte do começo ao fim</q></div></li><li class="ag"><div class="ag-face"><img src="/legiao/avatars/pagina_de_vendas.webp" width="44" height="44" alt="" loading="lazy" decoding="async"></div><div class="ag-body"><h4>Forja de Página de Vendas</h4><small>Halbert e Sugarman</small><p>Pede a página longa e recebe ela completa: lead, mecanismo, prova, oferta, objeções e fechamento, na sequência psicológica certa.</p><q>preciso de uma página de vendas que converte</q></div></li><li class="ag"><div class="ag-face"><img src="/legiao/avatars/big_idea_schwartz.webp" width="44" height="44" alt="" loading="lazy" decoding="async"></div><div class="ag-body"><h4>Mestre da Big Idea (Schwartz)</h4><small>Eugene Schwartz</small><p>Antes de escrever uma linha, você descobre o nível de consciência e de sofisticação do mercado e o ângulo certo pra sua copy.</p><q>qual o ângulo certo antes de escrever a copy?</q></div></li><li class="ag"><div class="ag-face"><img src="/legiao/avatars/objecoes.webp" width="44" height="44" alt="" loading="lazy" decoding="async"></div><div class="ag-body"><h4>Demolidor de Objeções na Copy</h4><small>Hopkins, Sugarman e Voss</small><p>Ele levanta as objeções reais do lead e responde cada uma na copy com prova e reframe, na ordem em que aparecem na cabeça dele.</p><q>quero matar as objeções já na minha página</q></div></li><li class="ag"><div class="ag-face"><img src="/legiao/avatars/headlines.webp" width="44" height="44" alt="" loading="lazy" decoding="async"></div><div class="ag-body"><h4>Laboratório de Headlines</h4><small>Caples, Ogilvy e Schwartz</small><p>Pede headlines, recebe uma lista ranqueada por fórmula testada, cada uma com ângulo e promessa no nível de consciência do seu mercado.</p><q>preciso de uma headline que pare o scroll</q></div></li><li class="ag"><div class="ag-face"><img src="/legiao/avatars/message_mining.webp" width="44" height="44" alt="" loading="lazy" decoding="async"></div><div class="ag-body"><h4>Minerador de Voz do Cliente</h4><small>Joanna Wiebe</small><p>Pare de adivinhar a dor. Você manda reviews, depoimentos, comentários e DMs e recebe dores, desejos, objeções e frases literais prontas pra copy.</p><q>quero parar de adivinhar a dor do meu cliente</q></div></li><li class="ag"><div class="ag-face"><img src="/legiao/avatars/email_copy.webp" width="44" height="44" alt="" loading="lazy" decoding="async"></div><div class="ag-body"><h4>Sequência de Email que Vende</h4><small>Halbert, Chaperon e Kennedy</small><p>Sua lista não compra? Você recebe a sequência inteira, de lançamento, nutrição ou recuperação, com arco entre os emails e CTA por estágio.</p><q>preciso de uma sequência de email que venda</q></div></li><li class="ag"><div class="ag-face"><img src="/legiao/avatars/auditar_copy.webp" width="44" height="44" alt="" loading="lazy" decoding="async"></div><div class="ag-body"><h4>Auditor de Copy (Conversão)</h4><small>Hopkins, Wiebe e Schwartz</small><p>Sua copy já está no ar? Ele dá nota em clareza, promessa, prova, fricção e CTA e devolve as correções antes de você gastar em tráfego.</p><q>já tenho a copy, como faço converter mais?</q></div></li><li class="ag"><div class="ag-face"><img src="/legiao/avatars/persuasao_cialdini.webp" width="44" height="44" alt="" loading="lazy" decoding="async"></div><div class="ag-body"><h4>Persuasor Cialdini</h4><small>Robert Cialdini</small><p>Os 7 princípios de influência e a pré-suasão aplicados na sua copy, oferta e sequência. Gatilho com fato real, nunca truque inventado.</p><q>como deixo minha copy mais persuasiva de verdade?</q></div></li></ul><h3 class="grp">Vídeo</h3><ul class="ags"><li class="ag"><div class="ag-face"><span aria-hidden="true">RR</span></div><div class="ag-body"><h4>Roteirista de Reels e TikTok (Curto)</h4><small>Joseph Sugarman e Joanna Wiebe</small><p>Roteiro pronto pra gravar, não rascunho: Reels e TikTok de 15 a 60 segundos em blocos de hook, valor, prova e CTA pra segurar retenção.</p><q>preciso de roteiro pronto pra gravar meu Reels</q></div></li><li class="ag"><div class="ag-face"><span aria-hidden="true">AH</span></div><div class="ag-body"><h4>Arquiteto de Hook 3 Segundos</h4><small>Schwartz, Sugarman e Hopkins</small><p>Testar em vez de chutar: 10 aberturas pro mesmo tema, cada uma com o gatilho psicológico nomeado e ranqueadas por força provável.</p><q>quero testar várias aberturas pro meu vídeo</q></div></li><li class="ag"><div class="ag-face"><span aria-hidden="true">RA</span></div><div class="ag-body"><h4>Roteirista de Anúncio em Vídeo (Paid)</h4><small>Alex Hormozi e resposta direta</small><p>Anúncio não é post orgânico. Você recebe roteiro de vídeo pago que interrompe, qualifica e converte: gancho, oferta clara e um CTA só.</p><q>quero um criativo de vídeo que vende, não post orgânico</q></div></li><li class="ag"><div class="ag-face"><span aria-hidden="true">AM</span></div><div class="ag-body"><h4>Arquiteto de Mecanismo Único</h4><small>Stefan Georgi e Eugene Schwartz</small><p>Ele cria e dá nome ao mecanismo do problema e ao da solução: por que você ainda não resolveu e por que isto funciona. Pra VSL e página.</p><q>preciso de um diferencial que ninguém tem</q></div></li><li class="ag"><div class="ag-face"><span aria-hidden="true">ER</span></div><div class="ag-body"><h4>Engenheiro de Retenção Long-form</h4><small>MrBeast, open loop e Save the Cat</small><p>Audiência sangrando no meio do vídeo? Ele estrutura seu vídeo longo com rehooks, open loops e tensão crescente pra segurar até o fim.</p><q>meu vídeo longo perde gente no meio</q></div></li></ul></div><div class="fpanel" id="andar-aquisicao" role="tabpanel" aria-labelledby="ft-aquisicao"><p class="fhead"><b>Aquisição</b> · 16 especialistas</p><h3 class="grp">Tráfego</h3><ul class="ags"><li class="ag"><div class="ag-face"><img src="/legiao/avatars/auditar_conta_meta.webp" width="44" height="44" alt="" loading="lazy" decoding="async"></div><div class="ag-body"><h4>Auditor de Conta Meta (Score 0-100)</h4><small>Modelo de qualidade de conta Meta</small><p>Pegou conta herdada? Você recebe uma nota de 0 a 100 nas 4 dimensões que a Meta usa pra distribuir entrega, antes de pôr verba.</p><q>peguei uma conta de anúncio, será que tá boa?</q></div></li><li class="ag"><div class="ag-face"><img src="/legiao/avatars/diagnostico_metrica.webp" width="44" height="44" alt="" loading="lazy" decoding="async"></div><div class="ag-body"><h4>Doutor da Métrica (CPA/ROAS/CTR)</h4><small>Funil de diagnóstico Meta</small><p>Campanha caiu? Cola o painel e ele decompõe o CPA até achar a causa: criativo, público, oferta ou tracking. Sem mexer em cinco coisas no desespero.</p><q>minha campanha caiu e não sei por quê</q></div></li><li class="ag"><div class="ag-face"><img src="/legiao/avatars/pmax_auditor.webp" width="44" height="44" alt="" loading="lazy" decoding="async"></div><div class="ag-body"><h4>Auditor de Performance Max</h4><small>Frederick Vallaeys</small><p>Performance Max gastando no escuro? Ele mostra pra onde a verba vai, por termo, canal e grupo de assets, e expõe o desperdício antes de escalar.</p><q>minha Performance Max gasta e não sei pra onde vai</q></div></li><li class="ag"><div class="ag-face"><img src="/legiao/avatars/proposta_trafego.webp" width="44" height="44" alt="" loading="lazy" decoding="async"></div><div class="ag-body"><h4>Calculadora de Proposta de Tráfego</h4><small>Fee de mercado e escopo defensável</small><p>Quanto cobrar pra gerir tráfego? Você recebe fee, escopo, SLA e expectativa realista de CPA e ROAS numa proposta que se sustenta na call.</p><q>quanto cobro pra gerir tráfego de um cliente?</q></div></li><li class="ag"><div class="ag-face"><img src="/legiao/avatars/criativo_video_rd.webp" width="44" height="44" alt="" loading="lazy" decoding="async"></div><div class="ag-body"><h4>Diretor de Criativo de Vídeo (Paid)</h4><small>Savannah Sanchez e Nick Shackelford</small><p>Volume no vídeo pago sem perder qualidade: roteiros com hook nos 3 primeiros segundos e matriz de ângulos testáveis no formato de cada plataforma.</p><q>me dá vários roteiros de vídeo pra anúncio</q></div></li><li class="ag"><div class="ag-face"><img src="/legiao/avatars/cbo_ou_abo.webp" width="44" height="44" alt="" loading="lazy" decoding="async"></div><div class="ag-body"><h4>Estrategista CBO vs ABO</h4><small>Pedro Sobral</small><p>Trava a verba no conjunto ou deixa o algoritmo decidir? Ele responde pela fase: ABO pra testar com controle, CBO pra escalar o que provou.</p><q>travo a verba no conjunto ou deixo o algoritmo?</q></div></li><li class="ag"><div class="ag-face"><img src="/legiao/avatars/criativo_meta.webp" width="44" height="44" alt="" loading="lazy" decoding="async"></div><div class="ag-body"><h4>Roteirista de Criativo que Escala (Meta)</h4><small>Eugene Schwartz</small><p>Pede ângulos novos, recebe hook, ângulo e roteiro UGC mapeados pelo nível de consciência do mercado, com variação pronta pra testar.</p><q>preciso de ângulos novos pros meus criativos</q></div></li><li class="ag"><div class="ag-face"><img src="/legiao/avatars/google_ads_estrutura.webp" width="44" height="44" alt="" loading="lazy" decoding="async"></div><div class="ag-body"><h4>Arquiteto de Conta Google Ads</h4><small>Brad Geddes</small><p>Conta do zero sem errar a fundação: Search, Performance Max e Demand Gen alinhados ao funil e ao orçamento, com o porquê de consolidar ou separar.</p><q>vou montar minha conta do Google Ads do zero</q></div></li><li class="ag"><div class="ag-face"><img src="/legiao/avatars/tracking_meta.webp" width="44" height="44" alt="" loading="lazy" decoding="async"></div><div class="ag-body"><h4>Auditor de Tracking (Pixel + CAPI)</h4><small>Qualidade de sinal Meta</small><p>Desconfia que a conta vende mais ou menos do que o Gerenciador mostra? Ele audita Pixel, CAPI e eventos: duplicado, mudo ou com match baixo.</p><q>será que minha conta vende mais do que aparece?</q></div></li><li class="ag"><div class="ag-face"><img src="/legiao/avatars/fadiga_criativo.webp" width="44" height="44" alt="" loading="lazy" decoding="async"></div><div class="ag-body"><h4>Caçador de Fadiga de Criativo</h4><small>Burn window de criativo</small><p>Ele lê hook rate, frequência e CPM e avisa a hora de trocar o anúncio antes da performance desabar, não depois.</p><q>meus anúncios estão cansando, quando troco?</q></div></li><li class="ag"><div class="ag-face"><img src="/legiao/avatars/tracking_server_side.webp" width="44" height="44" alt="" loading="lazy" decoding="async"></div><div class="ag-body"><h4>Engenheiro de Tracking Server-Side</h4><small>Simo Ahava e Julian Juenemann</small><p>Entrega tracking como serviço? Ele planeja e valida o server-side evento a evento, com deduplicação que não quebra a coleta.</p><q>quero entregar tracking certinho pros meus clientes</q></div></li></ul><h3 class="grp">Conteúdo</h3><ul class="ags"><li class="ag"><div class="ag-face"><span aria-hidden="true">MR</span></div><div class="ag-body"><h4>Máquina de Repurposing</h4><small>Ali Abdaal e Justin Welsh</small><p>Grava uma vez, posta por semanas. Você manda um vídeo, live, podcast ou artigo e recebe 10 ou mais peças nativas por plataforma, na sua voz.</p><q>gravei um vídeo, quero virar vários conteúdos</q></div></li><li class="ag"><div class="ag-face"><span aria-hidden="true">AC</span></div><div class="ag-body"><h4>Arquiteto de Carrossel</h4><small>Nicolas Cole, Dickie Bush e Schwartz</small><p>Você dá o tema, ele desenha slide a slide: arco narrativo, gancho entre os slides, motivo pra salvar e CTA no objetivo certo.</p><q>quero um carrossel que vende, não só bonito</q></div></li><li class="ag"><div class="ag-face"><span aria-hidden="true">AM</span></div><div class="ag-body"><h4>Arquiteto de Marca Pessoal</h4><small>Justin Welsh, Ícaro e Donald Miller</small><p>Soa igual a todo mundo do nicho? Você recebe nicho, inimigo comum, tese central e narrativa de autoridade pra vender a sua expertise.</p><q>tô soando igual a todo mundo do meu nicho</q></div></li><li class="ag"><div class="ag-face"><span aria-hidden="true">EH</span></div><div class="ag-body"><h4>Engenheiro de Hooks</h4><small>Schwartz, Sugarman e Brendan Kane</small><p>Seu post morre nos primeiros segundos? Você recebe 15 ganchos ranqueados pro Reel, TikTok ou capa de carrossel, cada um com o motivo.</p><q>meus posts morrem nos primeiros segundos</q></div></li><li class="ag"><div class="ag-face"><span aria-hidden="true">EC</span></div><div class="ag-body"><h4>Estrategista de Calendário Editorial</h4><small>Justin Welsh e funil TOFU/MOFU/BOFU</small><p>Chega de decidir o post no improviso. Você recebe o mês planejado por pilares, cada peça ligada a uma etapa do funil e a um objetivo.</p><q>cansei de decidir o que postar no improviso</q></div></li></ul></div><div class="fpanel" id="andar-vendas" role="tabpanel" aria-labelledby="ft-vendas"><p class="fhead"><b>Vendas</b> · 11 especialistas</p><h3 class="grp">Fechamento</h3><ul class="ags"><li class="ag"><div class="ag-face"><img src="/legiao/avatars/quebra_objecao.webp" width="44" height="44" alt="" loading="lazy" decoding="async"></div><div class="ag-body"><h4>Mestre das Objeções (Voss)</h4><small>Chris Voss</small><p>Cliente disse que está caro? Ele acha a objeção real por trás da frase e te dá a resposta com rotulagem, espelho e pergunta calibrada.</p><q>o cliente falou que tá caro, como respondo?</q></div></li><li class="ag"><div class="ag-face"><img src="/legiao/avatars/script_whatsapp.webp" width="44" height="44" alt="" loading="lazy" decoding="async"></div><div class="ag-body"><h4>Roteiro de WhatsApp que Vende</h4><small>Jürgen Klaric</small><p>Vende pelo zap? Você recebe a sequência inteira de mensagens, do primeiro contato à decisão, com o tom certo pra cada etapa do funil.</p><q>como vender melhor pelo WhatsApp?</q></div></li><li class="ag"><div class="ag-face"><img src="/legiao/avatars/diagnostico_spin.webp" width="44" height="44" alt="" loading="lazy" decoding="async"></div><div class="ag-body"><h4>Diagnóstico SPIN</h4><small>Neil Rackham</small><p>Você recebe o roteiro da call de descoberta em Situação, Problema, Implicação e Necessidade, para o lead enxergar sozinho o tamanho do problema.</p><q>como conduzo a call pra fechar ticket alto?</q></div></li><li class="ag"><div class="ag-face"><img src="/legiao/avatars/follow_up.webp" width="44" height="44" alt="" loading="lazy" decoding="async"></div><div class="ag-body"><h4>Máquina de Follow-up</h4><small>Robert Cialdini</small><p>Mandou &#x27;ainda tem interesse?&#x27; e desistiu? Você recebe a cadência de retomada: quantas mensagens, intervalo, tom e gatilho legítimo em cada toque.</p><q>o lead esfriou, como retomo sem parecer desesperado?</q></div></li><li class="ag"><div class="ag-face"><img src="/legiao/avatars/sdr_qualifica.webp" width="44" height="44" alt="" loading="lazy" decoding="async"></div><div class="ag-body"><h4>SDR de Qualificação</h4><small>Aaron Ross, BANT e GPCT</small><p>Mais lead do que tempo? Ele separa curioso de comprador com critério e score e agenda só quem tem perfil, antes de você gastar uma call.</p><q>chega mais lead do que consigo atender, filtra pra mim</q></div></li><li class="ag"><div class="ag-face"><img src="/legiao/avatars/negociacao.webp" width="44" height="44" alt="" loading="lazy" decoding="async"></div><div class="ag-body"><h4>Negociador de Preço e Reunião</h4><small>Chris Voss e Oren Klaff</small><p>Chegou o &#x27;consegue melhorar?&#x27; e você já dá desconto? Ele conduz a negociação final ancorando o número a seu favor e protegendo a margem.</p><q>fecho a venda mas dou desconto e perco margem</q></div></li></ul><h3 class="grp">Funis</h3><ul class="ags"><li class="ag"><div class="ag-face"><span aria-hidden="true">EL</span></div><div class="ag-body"><h4>Estrategista de Lançamento PLF</h4><small>Jeff Walker</small><p>Data marcada? Você recebe o cronograma dia a dia, do aquecimento ao fechamento do carrinho, com objetivo e gatilho de cada etapa.</p><q>vou lançar com data, me dá o passo a passo</q></div></li><li class="ag"><div class="ag-face"><span aria-hidden="true">RW</span></div><div class="ag-body"><h4>Roteirista de Webinar de Conversão</h4><small>Russell Brunson</small><p>Sua live entrega valor e não vende? Ele estrutura a aula em One Thing, 3 quebras de crença, stack e fechamento, conduzindo até a compra.</p><q>minha live entrega valor mas não vende</q></div></li><li class="ag"><div class="ag-face"><span aria-hidden="true">AF</span></div><div class="ag-body"><h4>Arquiteto de Funil</h4><small>Russell Brunson</small><p>Pede o funil, recebe a planta de ponta a ponta: isca, páginas, upsell, downsell e emails, com a meta de conversão de cada etapa.</p><q>preciso enxergar meu funil inteiro no papel</q></div></li><li class="ag"><div class="ag-face"><span aria-hidden="true">EP</span></div><div class="ag-body"><h4>Estrategista de Perpétuo Evergreen</h4><small>Frank Kern e Russell Brunson</small><p>Vendeu no lançamento e quer vender todo dia? Ele monta o funil perpétuo com escassez honesta, automação por comportamento e relançamento pra base.</p><q>quero vender todo dia, não só na semana de carrinho</q></div></li><li class="ag"><div class="ag-face"><span aria-hidden="true">AF</span></div><div class="ag-body"><h4>Analista de Funil e Métricas</h4><small>Russell Brunson e Ryan Deiss</small><p>Seu funil vaza e você não sabe onde? Ele lê os números etapa por etapa e aponta o gargalo que mais pesa, em vez de mandar melhorar tudo.</p><q>meu funil gasta tráfego e não vejo onde vaza</q></div></li></ul></div><div class="fpanel" id="andar-oferta" role="tabpanel" aria-labelledby="ft-oferta"><p class="fhead"><b>Oferta</b> · 12 especialistas</p><h3 class="grp">Oferta</h3><ul class="ags"><li class="ag"><div class="ag-face"><img src="/legiao/avatars/oferta_grand_slam.webp" width="44" height="44" alt="" loading="lazy" decoding="async"></div><div class="ag-body"><h4>Arquiteto de Oferta Grand Slam</h4><small>Alex Hormozi</small><p>Cansou de disputar preço? Ele desmonta a Value Equation peça por peça e monta uma oferta irresistível pra quem vende transformação.</p><q>quero deixar minha oferta irresistível</q></div></li><li class="ag"><div class="ag-face"><img src="/legiao/avatars/precificacao.webp" width="44" height="44" alt="" loading="lazy" decoding="async"></div><div class="ag-body"><h4>Engenheiro de Precificação</h4><small>Dan Kennedy, Hormozi e Cialdini</small><p>Cobra barato por insegurança? Ele precifica por valor percebido e monta a tabela de 3 planos com âncora, para o plano-alvo parecer óbvio.</p><q>acho que cobro barato demais, como precifico?</q></div></li><li class="ag"><div class="ag-face"><img src="/legiao/avatars/upsell_downsell.webp" width="44" height="44" alt="" loading="lazy" decoding="async"></div><div class="ag-body"><h4>Arquiteto de Funil de Upsell e Downsell</h4><small>Russell Brunson e Alex Hormozi</small><p>Acabou de vender? É a hora do próximo passo. Você recebe upsell e downsell pós-compra pra subir o ticket médio, sem oferta empilhada no chute.</p><q>como subo o ticket logo depois da compra?</q></div></li><li class="ag"><div class="ag-face"><img src="/legiao/avatars/garantia.webp" width="44" height="44" alt="" loading="lazy" decoding="async"></div><div class="ag-body"><h4>Designer de Garantia e Reversão de Risco</h4><small>Alex Hormozi e Jay Abraham</small><p>Cliente trava no &#x27;e se não funcionar?&#x27;. Ele cria a garantia que tira o risco das costas de quem compra, calibrada ao risco real do seu produto.</p><q>o cliente trava no &#x27;e se não funcionar?&#x27;</q></div></li><li class="ag"><div class="ag-face"><img src="/legiao/avatars/esteira_ascensao.webp" width="44" height="44" alt="" loading="lazy" decoding="async"></div><div class="ag-body"><h4>Estrategista de Esteira e Ascensão</h4><small>Russell Brunson e Alex Hormozi</small><p>Tem um produto só? Ele desenha a escada inteira, da oferta de entrada ao high ticket, dizendo o que vem antes e depois de cada uma.</p><q>tenho um produto só, pra onde levo o cliente?</q></div></li><li class="ag"><div class="ag-face"><img src="/legiao/avatars/auditar_oferta.webp" width="44" height="44" alt="" loading="lazy" decoding="async"></div><div class="ag-body"><h4>Auditor de Oferta e Money Model</h4><small>Alex Hormozi</small><p>Oferta no ar vendendo mal? Ele aponta onde ela vaza valor, conversão e ticket, dimensão por dimensão, sem palpite cosmético.</p><q>minha oferta vende mal, onde tá o erro?</q></div></li><li class="ag"><div class="ag-face"><img src="/legiao/avatars/ltv.webp" width="44" height="44" alt="" loading="lazy" decoding="async"></div><div class="ag-body"><h4>Otimizador de LTV e Recorrência</h4><small>Jay Abraham</small><p>Vive só de venda nova? Ele monta recorrência, reativação de inativos e expansão de conta pra cada cliente valer mais ao longo do tempo.</p><q>vivo só de venda nova, como faço o cliente render mais?</q></div></li></ul><h3 class="grp">Marca</h3><ul class="ags"><li class="ag"><div class="ag-face"><span aria-hidden="true">AP</span></div><div class="ag-body"><h4>Arquiteto de Posicionamento (Dunford)</h4><small>April Dunford e Geoffrey Moore</small><p>Cliente te compara com a coisa errada e só olha preço? Ele roda os 5 componentes de Dunford e crava sua declaração de posicionamento.</p><q>o cliente me compara com a coisa errada e só vê preço</q></div></li><li class="ag"><div class="ag-face"><span aria-hidden="true">AP</span></div><div class="ag-body"><h4>Articulador de Proposta de Valor</h4><small>Osterwalder e Pigneur</small><p>Sua headline cabia no site de três concorrentes? Ele cruza a dor do cliente, o ganho que você entrega e a prova, e crava uma promessa só sua.</p><q>minha promessa parece a de qualquer concorrente</q></div></li><li class="ag"><div class="ag-face"><span aria-hidden="true">CS</span></div><div class="ag-body"><h4>Construtor de StoryBrand</h4><small>Donald Miller</small><p>Ninguém entende seu site em 5 segundos? Você recebe o BrandScript de 7 partes, com o cliente como herói e a sua marca como guia.</p><q>ninguém entende meu site em 5 segundos</q></div></li><li class="ag"><div class="ag-face"><span aria-hidden="true">ET</span></div><div class="ag-body"><h4>Engenheiro de Tom de Voz</h4><small>Nielsen Norman e Marty Neumeier</small><p>Time, freela ou ferramenta escrevendo pela marca e cada um soa de um jeito? Você recebe o guia de voz com eixos, faz e não faz e exemplos.</p><q>quero que tudo que escrevo soe com a mesma voz</q></div></li><li class="ag"><div class="ag-face"><span aria-hidden="true">MN</span></div><div class="ag-body"><h4>Mestre do Naming</h4><small>Marty Neumeier</small><p>Travou no nome? Ele gera e filtra opções por fonética, significado, memória, domínio e risco de colisão, e entrega uma shortlist defensável.</p><q>tô lançando algo e travei no nome</q></div></li></ul></div><div class="fpanel" id="andar-estrategia" role="tabpanel" aria-labelledby="ft-estrategia"><p class="fhead"><b>Estratégia</b> · 17 especialistas</p><h3 class="grp">Negócio</h3><ul class="ags"><li class="ag"><div class="ag-face"><span aria-hidden="true">DJ</span></div><div class="ag-body"><h4>Detetive de JTBD</h4><small>Clayton Christensen e Bob Moesta</small><p>Acha que o problema é o produto? Ele descobre o trabalho real que o cliente contrata ao comprar de você e a causa verdadeira do churn.</p><q>por que o cliente realmente compra de mim?</q></div></li><li class="ag"><div class="ag-face"><span aria-hidden="true">EC</span></div><div class="ag-body"><h4>Espião de Concorrência</h4><small>Porter e Oceano Azul</small><p>Nicho lotado? Ele coloca seus concorrentes lado a lado numa grade comparável e mostra o espaço em branco que ninguém ocupa.</p><q>vou entrar num nicho lotado, como me diferencio?</q></div></li><li class="ag"><div class="ag-face"><span aria-hidden="true">EG</span></div><div class="ag-body"><h4>Estrategista de Go-To-Market</h4><small>Geoffrey Moore e April Dunford</small><p>Terminou o produto e travou? Você recebe o plano de entrada: qual canal, qual mensagem e em que ordem, conforme o estágio do mercado.</p><q>terminei o produto e travei no como lançar</q></div></li><li class="ag"><div class="ag-face"><span aria-hidden="true">VI</span></div><div class="ag-body"><h4>Validador de Ideia (Lean)</h4><small>Eric Ries e Sean Ellis</small><p>Antes de construir, prove. Ele transforma sua ideia em hipóteses testáveis e desenha o MVP e o teste mais barato pra confirmar ou matar.</p><q>tenho uma ideia, vale a pena construir?</q></div></li></ul><h3 class="grp">Mentores</h3><ul class="ags"><li class="ag"><div class="ag-face"><span aria-hidden="true">AL</span></div><div class="ag-body"><h4>Arquiteto de Lançamento BR (Érico Rocha / PLF)</h4><small>Érico Rocha</small><p>Semente, interno ou PPL, com CPLs, evento e a coreografia de abrir e fechar carrinho no jeito brasileiro. Sai a campanha inteira, não ideias de live.</p><q>quero montar meu lançamento no estilo Érico Rocha</q></div></li><li class="ag"><div class="ag-face"><span aria-hidden="true">AO</span></div><div class="ag-body"><h4>Arquiteto de Oferta Hormozi (clone)</h4><small>Alex Hormozi</small><p>Seu negócio inteiro na cabeça do Hormozi: oferta difícil de recusar mais os money models de atração, upsell, downsell e continuidade.</p><q>quero pensar tudo na mentalidade do Hormozi</q></div></li><li class="ag"><div class="ag-face"><span aria-hidden="true">EF</span></div><div class="ag-body"><h4>Engenheiro de Funil Brunson</h4><small>Russell Brunson</small><p>Seu negócio na lente do Brunson: Value Ladder com todos os degraus, Hook-Story-Offer em cada etapa e a Epiphany Bridge que convence o cético.</p><q>quero pensar meu negócio na cabeça do Brunson</q></div></li><li class="ag"><div class="ag-face"><span aria-hidden="true">GT</span></div><div class="ag-body"><h4>Gestor de Tráfego Meta (Sobral)</h4><small>Pedro Sobral</small><p>Campanha no Meta do jeito enxuto: separação por função, teste de criativo antes de escalar e regra clara de quando subir verba ou pausar.</p><q>quero estruturar a campanha no estilo do Sobral</q></div></li><li class="ag"><div class="ag-face"><span aria-hidden="true">EA</span></div><div class="ag-body"><h4>Editor de Autoridade (Ícaro de Carvalho)</h4><small>Ícaro de Carvalho</small><p>Chega de texto morno. Você recebe post com tese declarada, inimigo comum e ponto de vista que polariza, com sua história a serviço da autoridade.</p><q>quero escrever post que me posiciona como autoridade</q></div></li></ul><h3 class="grp">Nichos</h3><ul class="ags"><li class="ag"><div class="ag-face"><span aria-hidden="true">EA</span></div><div class="ag-body"><h4>Estrategista de Agência Lucrativa</h4><small>Sabri Suby e Alex Hormozi</small><p>Cansou de projeto avulso? Ele nicha sua agência, produtiza o serviço e monta o retainer recorrente com preço por valor, não por hora.</p><q>minha agência vive de projeto avulso, como saio disso?</q></div></li><li class="ag"><div class="ag-face"><span aria-hidden="true">AO</span></div><div class="ag-body"><h4>Arquiteto de Oferta para Coach e Mentor</h4><small>Alex Hormozi e Russell Brunson</small><p>Quer subir o ticket sem virar mais um curso? Ele empacota sua mentoria em oferta high ticket com promessa clara, mecanismo único e escada de ascensão.</p><q>vendo mentoria e quero subir o ticket</q></div></li><li class="ag"><div class="ag-face"><span aria-hidden="true">OC</span></div><div class="ag-body"><h4>Otimizador de Conversão de E-commerce</h4><small>Schwartz e Halbert</small><p>Loja com visita e pouca venda? Ele audita página de produto, checkout e recuperação de carrinho por critério de conversão, não por achismo.</p><q>minha loja recebe visita mas vende pouco</q></div></li><li class="ag"><div class="ag-face"><span aria-hidden="true">PP</span></div><div class="ag-body"><h4>Paralegal de Petição e Contrato</h4><small>Prática forense brasileira</small><p>Volume sem perder rigor: minuta de petição, contrato e parecer no formato brasileiro e revisão por semáforo de risco. A palavra final é sua.</p><q>preciso adiantar minhas petições e contratos</q></div></li><li class="ag"><div class="ag-face"><span aria-hidden="true">AR</span></div><div class="ag-body"><h4>Anti-Taxa do Restaurante</h4><small>Canal direto e recompra</small><p>Cansou de sangrar margem pra taxa do app? Ele monta seu canal próprio de pedido no WhatsApp, com recompra e aumento de ticket.</p><q>meu restaurante perde margem pra taxa do app</q></div></li><li class="ag"><div class="ag-face"><span aria-hidden="true">GA</span></div><div class="ag-body"><h4>Gestor de Atendimento e Retenção de Clínica</h4><small>StoryBrand e recall de paciente</small><p>Paciente que some não volta sozinho. Você recebe atendimento, agendamento, recall e reativação com cadência definida e cuidado com claim médico.</p><q>minha clínica perde paciente por falta de retorno</q></div></li><li class="ag"><div class="ag-face"><span aria-hidden="true">MC</span></div><div class="ag-body"><h4>Motor de Captação Imobiliária</h4><small>Tom Ferry e Gary Keller</small><p>Corretor, você recebe scripts de captação, funil de leads e cadência de follow-up, com resposta pronta pras objeções clássicas do imobiliário.</p><q>preciso captar mais imóvel e converter comprador</q></div></li><li class="ag"><div class="ag-face"><span aria-hidden="true">NC</span></div><div class="ag-body"><h4>Navegador de Canais para Negócio Local</h4><small>Bullseye e Duct Tape Marketing</small><p>Pare de espalhar verba em tudo. Ele escolhe os 2 ou 3 canais certos pro seu negócio local, calibrados pelo orçamento e pelo tempo que você tem.</p><q>tenho negócio local e gasto verba espalhado</q></div></li></ul></div><div class="fpanel" id="andar-operacao" role="tabpanel" aria-labelledby="ft-operacao"><p class="fhead"><b>Operação</b> · 10 especialistas</p><h3 class="grp">Retenção</h3><ul class="ags"><li class="ag"><div class="ag-face"><span aria-hidden="true">ER</span></div><div class="ag-body"><h4>Estrategista de Recuperação WhatsApp</h4><small>Aaron Ross</small><p>Lead frio, carrinho parado, cliente inativo ou pós-venda: cada caso ganha cadência no WhatsApp com mensagem, intervalo e ponto de parada.</p><q>como recupero lead parado pelo WhatsApp sem virar spam?</q></div></li><li class="ag"><div class="ag-face"><span aria-hidden="true">RC</span></div><div class="ag-body"><h4>Recuperador de Carrinho Abandonado Multicanal</h4><small>Chase Dimond</small><p>Em vez de um email genérico, você recebe a árvore de recuperação: motivo do abandono, canal, momento e ângulo, entre email, WhatsApp e SMS.</p><q>abandonam meu carrinho, como recupero essas vendas?</q></div></li><li class="ag"><div class="ag-face"><span aria-hidden="true">ER</span></div><div class="ag-body"><h4>Especialista em Redução de Churn</h4><small>Lincoln Murphy e Nick Mehta</small><p>Cliente indo embora todo mês? Ele monta o health score verde, amarelo e vermelho e o playbook de retenção pra cada faixa de risco.</p><q>tô perdendo cliente todo mês, me ajuda</q></div></li><li class="ag"><div class="ag-face"><span aria-hidden="true">OC</span></div><div class="ag-body"><h4>Onboarding de Cliente (Time-to-Value)</h4><small>Wes Bush e Lincoln Murphy</small><p>Cliente novo cancela antes de entender o produto? Você recebe os primeiros 30 dias desenhados, com marcos de ativação e o que dispara em cada um.</p><q>cliente novo cancela antes de entender o produto</q></div></li><li class="ag"><div class="ag-face"><span aria-hidden="true">EE</span></div><div class="ag-body"><h4>Engenheiro de Entregabilidade</h4><small>SPF, DKIM, DMARC e regras Gmail/Yahoo</small><p>Email caindo no spam? Ele diagnostica autenticação, reputação e queixas e entrega o checklist por prioridade mais o protocolo de aquecimento.</p><q>meus emails estão caindo no spam</q></div></li></ul><h3 class="grp">Backoffice</h3><ul class="ags"><li class="ag"><div class="ag-face"><span aria-hidden="true">AA</span></div><div class="ag-body"><h4>Arquiteto de Automação</h4><small>Integração orientada a evento</small><p>Antes de abrir o editor, você recebe o fluxo inteiro no papel: gatilho, ação, ferramenta e o que fazer quando cada ponto falhar.</p><q>quero montar uma automação sem dar gambiarra</q></div></li><li class="ag"><div class="ag-face"><span aria-hidden="true">BC</span></div><div class="ag-body"><h4>Blindador de Contrato</h4><small>Direito brasileiro, semáforo de risco</small><p>Fechou pelo WhatsApp e teme calote? Ele gera ou revisa o contrato protegendo escopo, pagamento e rescisão, e aponta os riscos do que te mandaram.</p><q>esse contrato me protege ou vou tomar calote?</q></div></li><li class="ag"><div class="ag-face"><span aria-hidden="true">CB</span></div><div class="ag-body"><h4>CFO de Bolso</h4><small>Profit First e unit economics</small><p>Tira tudo da mesma conta? Ele separa pró-labore, lucro e imposto, projeta os próximos meses e mostra seu ponto de equilíbrio em português claro.</p><q>tiro tudo da mesma conta e não sei quanto sobra</q></div></li><li class="ag"><div class="ag-face"><span aria-hidden="true">AD</span></div><div class="ag-body"><h4>Analista de Dados Tradutor</h4><small>Avinash Kaushik e Cole Knaflic</small><p>Você cola a planilha, ele devolve o que está acontecendo, por quê, e o que você faz agora. Número virando decisão, sem jargão.</p><q>olho meu dashboard e não sei o que fazer</q></div></li><li class="ag"><div class="ag-face"><span aria-hidden="true">DI</span></div><div class="ag-body"><h4>Decifrador de Imposto BR</h4><small>Simples Nacional e reforma tributária</small><p>Não entende a própria guia? Ele explica qual regime te cabe, estima o DAS, mostra o anexo e avisa quando você chega perto do limite.</p><q>não entendo meu imposto, qual regime me cabe?</q></div></li></ul></div>
-  </div>
-</section>
-
-<section id="predio">
+<section id="predio" class="s-green dots">
   <div class="container">
     <div class="narrow reveal">
       <span class="eyebrow">Prints reais</span>
@@ -763,7 +744,7 @@ l-670 -2 1 -70 c0 -38 6 -146 13 -240 7 -93 17 -237 23 -320 7 -98 12 -1057
   </div>
 </section>
 
-<section id="provas">
+<section id="provas" class="s-ink dots">
   <div class="container">
     <div class="proof-head reveal">
       <h2 class="h2">Não vou pedir pra você confiar. <span class="hl">Olha o agente trabalhando.</span></h2>
@@ -843,7 +824,7 @@ Ordem: (1) fechar o tracking com o Auditor de Tracking, sem isso toda otimizaç�
   </div>
 </section>
 
-<section id="pra-quem">
+<section id="pra-quem" class="light warm dots">
   <div class="container">
     <div class="narrow reveal">
       <h2 class="h2">Não compre a Legião <span class="hl">se você...</span></h2>
@@ -870,7 +851,7 @@ Ordem: (1) fechar o tracking com o Auditor de Tracking, sem isso toda otimizaç�
   </div>
 </section>
 
-<section id="agentes">
+<section id="agentes" class="s-carbon">
   <div class="container">
     <div class="narrow reveal">
       <h2 class="h2">O que entra no seu time <span class="hl">hoje</span></h2>
@@ -891,7 +872,7 @@ Ordem: (1) fechar o tracking com o Auditor de Tracking, sem isso toda otimizaç�
   </div>
 </section>
 
-<section id="oferta">
+<section id="oferta" class="dots">
   <div class="container">
     <div class="narrow reveal">
       <h2 class="h2">O time inteiro por menos que <span class="hl">uma entrega avulsa.</span></h2>
@@ -923,7 +904,7 @@ Ordem: (1) fechar o tracking com o Auditor de Tracking, sem isso toda otimizaç�
   </div>
 </section>
 
-<section id="faq">
+<section id="faq" class="light">
   <div class="container">
     <h2 class="h2 reveal">Perguntas frequentes</h2>
     <div class="faq">
@@ -938,7 +919,7 @@ Ordem: (1) fechar o tracking com o Auditor de Tracking, sem isso toda otimizaç�
   </div>
 </section>
 
-<section class="final">
+<section class="final s-lime">
   <div class="container reveal">
     <h2 class="h2">Você já tem o motor. <span class="hl">Falta o time.</span></h2>
     <p>O Claude já está aberto na sua tela. A diferença entre o texto genérico e o trabalho de especialista é o time montado dentro dele.</p>
@@ -1102,14 +1083,28 @@ l-670 -2 1 -70 c0 -38 6 -146 13 -240 7 -93 17 -237 23 -320 7 -98 12 -1057
   // Predio interativo: no desktop o app entra na moldura depois do clique; no celular o botao abre em tela cheia.
   var live = document.getElementById("live");
   var start = document.getElementById("live-start");
-  if (live && start) start.addEventListener("click", function () {
-    var f = document.createElement("iframe");
-    f.src = "/legiao/predio-v1.html";
-    f.title = "Prédio interativo da Legião";
-    f.allow = "fullscreen";
-    live.appendChild(f);
+  var wide = matchMedia("(min-width: 761px) and (hover: hover)");
+  function openLive(andar) {
+    var src = "/legiao/predio-v1.html" + (andar ? "?andar=" + andar : "");
+    var f = live.querySelector("iframe");
+    if (!f) {
+      f = document.createElement("iframe");
+      f.title = "Prédio interativo da Legião";
+      f.allow = "fullscreen";
+      live.appendChild(f);
+    }
+    f.src = src;
     live.classList.add("on");
-    f.focus();
+  }
+  if (live && start) start.addEventListener("click", function () { openLive(""); });
+  // Andar do hero: no desktop desce ate o predio e entra no andar; no celular o link abre o app em tela cheia.
+  Array.prototype.forEach.call(document.querySelectorAll(".fh[data-floor]"), function (a) {
+    a.addEventListener("click", function (e) {
+      if (!live || !wide.matches) return;
+      e.preventDefault();
+      openLive(a.dataset.floor);
+      document.getElementById("predio-vivo").scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+    });
   });
   // Por dentro: abas acessiveis (setas trocam o print).
   var tabs = Array.prototype.slice.call(document.querySelectorAll(".step"));
@@ -1129,34 +1124,6 @@ l-670 -2 1 -70 c0 -38 6 -146 13 -240 7 -93 17 -237 23 -320 7 -98 12 -1057
       if (!n) return;
       e.preventDefault();
       show((i + n + tabs.length) % tabs.length, true);
-    });
-  });
-  // Andares: abas por andar; os rotulos do hero abrem o andar certo e rolam ate a secao.
-  var ftabs = Array.prototype.slice.call(document.querySelectorAll(".ftab"));
-  function floor(id, focus) {
-    ftabs.forEach(function (t) {
-      var on = t.dataset.floor === id;
-      t.setAttribute("aria-selected", String(on));
-      t.tabIndex = on ? 0 : -1;
-      document.getElementById("andar-" + t.dataset.floor).classList.toggle("on", on);
-      if (on && focus) t.focus();
-      if (on && t.parentNode.scrollWidth > t.parentNode.clientWidth) t.parentNode.scrollTo({ left: t.offsetLeft - 24, behavior: "smooth" });
-    });
-  }
-  ftabs.forEach(function (t, i) {
-    t.addEventListener("click", function () { floor(t.dataset.floor, false); });
-    t.addEventListener("keydown", function (e) {
-      var n = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key];
-      if (!n) return;
-      e.preventDefault();
-      floor(ftabs[(i + n + ftabs.length) % ftabs.length].dataset.floor, true);
-    });
-  });
-  Array.prototype.forEach.call(document.querySelectorAll(".fh[data-floor]"), function (a) {
-    a.addEventListener("click", function (e) {
-      e.preventDefault();
-      floor(a.dataset.floor, false);
-      document.getElementById("andares").scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
     });
   });
   // Salas de guerra: a linha corre quando a fila entra na tela.

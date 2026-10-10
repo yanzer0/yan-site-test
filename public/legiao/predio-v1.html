@@ -70,5 +70,25 @@
 
   <script src="/legiao/assets/legiao-model.js"></script>
   <script src="/legiao/assets/legiao.js"></script>
+  <style>
+    .lg-back{position:fixed;left:16px;bottom:16px;z-index:60;display:none;align-items:center;gap:8px;padding:12px 18px;border-radius:999px;
+      background:#C6FF34;color:#0C0C08;font:700 14px/1 Inter,system-ui,sans-serif;text-decoration:none;box-shadow:0 10px 30px -10px rgba(0,0,0,.7)}
+  </style>
+  <a class="lg-back" href="/legiao#predio-vivo">Voltar pra página</a>
+  <script>
+  (function () {
+    var back = document.querySelector(".lg-back");
+    // a folha do app esconde tudo fora de .st-page; o botao entra nela
+    if (window.top === window && back) { document.getElementById("st-page").appendChild(back); back.style.display = "inline-flex"; }
+    var id = new URLSearchParams(location.search).get("andar");
+    if (!id || !/^[a-z]+$/.test(id)) return;
+    var tries = 0;
+    (function open() {
+      var el = document.querySelector('#st-svg [data-dept="' + id + '"]');
+      if (el) { el.dispatchEvent(new MouseEvent("click", { bubbles: true })); return; }
+      if (++tries < 60) setTimeout(open, 100);
+    })();
+  })();
+  </script>
 </body>
 </html>

@@ -23,8 +23,8 @@ scope_lock:
     public_contracts: []
     persistence_surfaces: []
     background_jobs: []
-  acceptance_ids: [LH-01, LH-02, LH-03, LH-04]
-  stop_when: [LH-01, LH-02, LH-03, LH-04]
+  acceptance_ids: [LH-01, LH-02, LH-03, LH-04, LH-05]
+  stop_when: [LH-01, LH-02, LH-03, LH-04, LH-05]
   passed_acceptance_ids: []
 ---
 
@@ -44,6 +44,15 @@ scope_lock:
 - Demo de `#provas` em largura total e barra de rolagem própria (também na página).
 - Celular: sem desfoque na barra do topo e sem a animação do elevador.
 
+## Ajustes pedidos na mesma frente (10/10)
+
+- Fundo de pontinhos da Infuser (o padrão `.dots` dos guias v2) e blocos de cor alternando entre Onyx, Ink,
+  Carbon, teal profundo, Paper, Warm White e Lime; nos fundos claros o destaque vira marca-texto lime.
+- A seção "Quem trabalha em cada andar" sai: o andar clicado no hero leva ao SkillTree já dentro do andar
+  (`predio-v1.html?andar=<id>`, que aciona a animação de entrada do próprio app). Os 91 resumos de venda
+  passam para o `agents.json` da cópia do site, então aparecem no leitor do agente dentro do SkillTree.
+- A base do prédio esmaece (sem corte seco) e, no app aberto em tela cheia, há um botão "Voltar pra página".
+
 ## Critérios de aceite
 
 - `LH-01`: rotador troca Claude e Codex sem mudar a altura da linha; reduced-motion mostra só Claude; zero
@@ -54,6 +63,9 @@ scope_lock:
 - `LH-03`: o app do prédio carrega os 91 agentes dentro da moldura depois do clique; no celular o botão
   aponta para `/legiao/predio-v1.html`; a demo ocupa a largura do container; rolagem lateral 0 e nenhum
   erro em 1440 e 375 px.
+- `LH-05`: no desktop o clique no andar do hero desce ao `#predio-vivo` e o app entra naquele andar (um
+  segundo clique troca o andar); no celular o toque abre `predio-v1.html?andar=<id>` já no andar, com o botão
+  de voltar visível; o leitor mostra o resumo de venda.
 - `LH-04`: publicado pela VPS, `/legiao` e `/legiao/predio-v1.html` respondem 200, e o QA headless contra
   produção repete LH-01 a LH-03.
 
