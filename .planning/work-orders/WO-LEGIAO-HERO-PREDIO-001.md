@@ -1,6 +1,6 @@
 ---
 work_order: WO-LEGIAO-HERO-PREDIO-001
-status: active
+status: complete
 central_branch: claude/legiao-hero-skilltree
 owner: Claude
 authorized_by: Yan
@@ -25,7 +25,7 @@ scope_lock:
     background_jobs: []
   acceptance_ids: [LH-01, LH-02, LH-03, LH-04, LH-05]
   stop_when: [LH-01, LH-02, LH-03, LH-04, LH-05]
-  passed_acceptance_ids: []
+  passed_acceptance_ids: [LH-01, LH-02, LH-03, LH-04, LH-05]
 ---
 
 # Hero novo, andares clicáveis e o prédio interativo na página de vendas
@@ -71,4 +71,20 @@ scope_lock:
 
 ## Evidência
 
-(preenchida no fechamento)
+- `LH-01`: Chromium headless local e em produção: a linha do rotador mantém a altura enquanto Claude e Codex
+  trocam (opacidades 1/0 e depois 0/1); com reduced-motion o Codex some e o Claude fica parado; 0 travessão.
+- `LH-02`: no desktop o hover em Oferta deixa a etiqueta com opacidade 1 e o andar com
+  `brightness(1.6) saturate(1.3)`; no celular a dica de toque aparece e o elevador some; sem JavaScript os 7
+  andares são links para `predio-v2.html?andar=<id>`.
+- `LH-03`: o app carrega os 91 agentes na moldura; a demo mede 1132 de 1132 px (desktop) e 327 de 327
+  (celular); rolagem lateral 0 e nenhum erro nas duas larguras.
+- `LH-05`: o clique em Copy no hero deixa `#predio-vivo` a 64 px do topo e o app em `scene=copy` com o
+  botão "todos os andares" visível; um clique em Vendas troca para `scene=vendas`; no celular o toque em
+  Oferta abre `/legiao/predio-v2.html?andar=oferta` em `scene=oferta` com o botão "Voltar pra página"; o
+  leitor usa o resumo de venda (Negociador de Preço e Reunião: "Chegou o 'consegue melhorar?'...").
+- `LH-04`: commits `a9cf78a`, `8925332` e `50f3f18`. Como `/legiao/*` sai com cache imutável de 1 ano, o app
+  mudou de nome (`predio-v2.html`, `legiao-v2.js`, `agents-v2.json`) em vez de sobrescrever o arquivo antigo.
+  O primeiro `deploy.sh` do `50f3f18` falhou no build (`next/font` sem acesso à fonte) e mesmo assim saiu
+  com exit 0 sem trocar o container; o segundo terminou com `useinfuser-site release 50f3f1803996 is
+  healthy`. `/legiao`, `www`, `predio-v2.html`, `agents-v2.json` e `legiao-v2.js` respondem 200, e o QA
+  contra produção repetiu LH-02, LH-03 e LH-05.
