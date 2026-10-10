@@ -1,6 +1,6 @@
 ---
 work_order: WO-TESTES-EOL-SCHEMA-001
-status: active
+status: complete
 central_branch: claude/eol-schema-testes
 owner: Claude
 authorized_by: Yan
@@ -21,7 +21,7 @@ scope_lock:
     background_jobs: []
   acceptance_ids: [EOL-S01, EOL-S02, EOL-S03]
   stop_when: [EOL-S01, EOL-S02, EOL-S03]
-  passed_acceptance_ids: []
+  passed_acceptance_ids: [EOL-S01, EOL-S02, EOL-S03]
 ---
 
 # Suíte verde no Windows: fim de linha e cópia do schema
@@ -51,4 +51,13 @@ Nenhum teste é afrouxado. A trava byte a byte do logo (`1b7722d`) continua.
 
 ## Evidência
 
-(preenchida ao provar cada critério)
+Commit de conteúdo `539f64b`, 09/10/2026.
+
+- EOL-S01: depois do commit, `rm` + `git checkout --` em `public/instalar/assets/brands/infuser-v2-lockup.svg`
+  e `deploy/vps/validate-env.mjs`: 0 CR nos dois; sha do logo `7602deefc3198000…`, o esperado pelo teste.
+- EOL-S02: worktree rematerializado (`git rm -r --cached . && git reset --hard`), 0 textos `w/crlf`,
+  `npm ci` limpo, `vitest run`: 26 arquivos passaram, 1 pulado (`banco-integracao`, exige banco),
+  440 testes passaram, 0 falharam.
+- EOL-S03: clone principal com status vazio antes e depois do `pull` (0 linhas), mesmo com os arquivos
+  antigos ainda em CRLF no disco. Rematerializado em seguida: 0 `w/crlf`, status vazio, e os 3 testes
+  (`contrato-brain`, `instalar`, `validate-env`) passaram 19/19 ali.
