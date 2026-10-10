@@ -351,6 +351,13 @@ b,strong{font-weight:700;color:var(--warm)}
 
 footer{padding:36px 0 48px;text-align:center;border-top:1px solid var(--line-2)}
 footer p{font-size:13px;color:var(--faint)}
+/* prédio da Legião: prints mais largos que a coluna de texto */
+.predio-shots{max-width:1080px;margin:40px auto 0;padding-inline:24px;display:grid;gap:16px}
+.shot{margin:0;background:var(--onyx);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.shot img{width:100%;height:auto}
+.shot figcaption{padding:14px 18px;font-size:14px;line-height:1.5;color:var(--muted);text-align:left;border-top:1px solid var(--line-2)}
+.shot-row{display:grid;gap:16px}
+@media (min-width:760px){.shot-row{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
@@ -447,6 +454,37 @@ footer p{font-size:13px;color:var(--faint)}
 
     <div class="section-cta">
       <a class="btn btn-primary" href="#oferta">QUERO MEU TIME →</a>
+    </div>
+  </div>
+</section>
+
+<section id="predio">
+  <div class="wrap">
+    <span class="eyebrow">O prédio da Legião</span>
+    <h2 class="punch" style="margin-top:14px">Seu time inteiro num prédio. <span class="accent">Andar por andar.</span></h2>
+    <div class="stack">
+      <p>Junto com o acesso, você recebe o prédio da Legião: os 80 agentes e as 11 Salas de Guerra organizados em sete andares, do Comando à Operação. Você abre o andar, clica no agente e ele mostra o que faz e a frase pronta pra chamar no Claude. Copia, cola e o especialista começa a trabalhar.</p>
+    </div>
+  </div>
+  <div class="predio-shots">
+    <figure class="shot">
+      <img src="/legiao/predio-mapa.webp" width="1600" height="764" loading="lazy" decoding="async" alt="Mapa do prédio da Legião com os sete andares ao redor do núcleo e a torre do prédio ao lado">
+      <figcaption>Os sete andares: Comando, Copy, Aquisição, Vendas, Oferta, Estratégia e Operação.</figcaption>
+    </figure>
+    <div class="shot-row">
+      <figure class="shot">
+        <img src="/legiao/predio-andar.webp" width="1600" height="765" loading="lazy" decoding="async" alt="Andar de Estratégia aberto, com os agentes separados em Negócio, Mentores e Nichos">
+        <figcaption>Cada andar abre os agentes dele, separados por área. Esse é o andar de Estratégia.</figcaption>
+      </figure>
+      <figure class="shot">
+        <img src="/legiao/predio-agente.webp" width="1600" height="760" loading="lazy" decoding="async" alt="Painel do agente Mestre do Naming com a frase pronta para chamar no Claude e o botão Copiar frase">
+        <figcaption>Clicou no agente, aparece o que ele faz e a frase pronta. É só copiar e colar no Claude.</figcaption>
+      </figure>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="section-cta">
+      <a class="btn btn-primary" href="#oferta">QUERO ENTRAR NO PRÉDIO →</a>
     </div>
   </div>
 </section>
@@ -574,7 +612,7 @@ footer p{font-size:13px;color:var(--faint)}
       <li><span class="num">02</span><div><strong>11 Salas de Guerra</strong><p>Encadeiam os agentes certos, na ordem certa, pra entregar o resultado completo.</p></div></li>
       <li><span class="num">03</span><div><strong>Caixa de Provas</strong><p>Os outputs reais dos agentes-vitrine, pra você ver o nível antes de usar.</p></div></li>
       <li><span class="num">04</span><div><strong>Atualizações vitalícias</strong><p>O modelo evolui, o método evolui, o seu time acompanha. Você não paga de novo.</p></div></li>
-      <li><span class="num">05</span><div><strong>Dashboard da Legião</strong><p>Mapa visual de cada agente: o que faz, quando usar. <a href="https://mcp.useinfuser.com/catalogo-legiao" target="_blank" rel="noopener">Abrir o catálogo →</a></p></div></li>
+      <li><span class="num">05</span><div><strong>Prédio da Legião</strong><p>Os sete andares do seu time no navegador: cada agente com o que faz e a frase pronta pra chamar. <a href="#predio">Ver o prédio ↑</a></p></div></li>
     </ul>
 
     <div class="section-cta">
