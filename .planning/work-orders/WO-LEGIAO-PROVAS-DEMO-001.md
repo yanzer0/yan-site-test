@@ -1,6 +1,6 @@
 ---
 work_order: WO-LEGIAO-PROVAS-DEMO-001
-status: active
+status: complete
 central_branch: claude/legiao-provas-demo
 owner: Claude
 authorized_by: Yan
@@ -21,7 +21,7 @@ scope_lock:
     background_jobs: []
   acceptance_ids: [LPD-01, LPD-02, LPD-03]
   stop_when: [LPD-01, LPD-02, LPD-03]
-  passed_acceptance_ids: [LPD-01, LPD-02]
+  passed_acceptance_ids: [LPD-01, LPD-02, LPD-03]
 ---
 
 # A seção de prova mostra o agente trabalhando
@@ -54,3 +54,7 @@ R$97 e cita concorrente pelo nome) e toda menção a comando com barra, porque a
   página, a conversa anima (1 bolha no meio, 6 no fim), a seção mantém a altura durante a animação e a
   aba troca o agente. `reducedMotion: reduce`: 6 bolhas na hora, sem "digitando". Sem JavaScript: o
   primeiro caso completo (6 bolhas). CSS dos cartões removido (sem uso).
+- `LPD-03`: commit `4953666`; `deploy/vps/deploy.sh` com `useinfuser-site release 49536661f6d6 is healthy`.
+  `/legiao` 200 no apex e no `www`, com `#dm-chat`, 5 abas e nenhum cartão antigo. O mesmo QA headless
+  contra `https://useinfuser.com/legiao`: 1440 e 375 px sem erro e sem rolagem lateral, animação, troca
+  de aba, altura estável, reduced-motion e sem JS como no local.
