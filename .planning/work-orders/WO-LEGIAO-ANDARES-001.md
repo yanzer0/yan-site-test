@@ -1,6 +1,6 @@
 ---
 work_order: WO-LEGIAO-ANDARES-001
-status: active
+status: complete
 central_branch: claude/legiao-andares
 owner: Claude
 authorized_by: Yan
@@ -21,7 +21,7 @@ scope_lock:
     background_jobs: []
   acceptance_ids: [LA-01, LA-02, LA-03]
   stop_when: [LA-01, LA-02, LA-03]
-  passed_acceptance_ids: []
+  passed_acceptance_ids: [LA-01, LA-02, LA-03]
 ---
 
 # Quem trabalha em cada andar, e o celular centralizado
@@ -49,4 +49,15 @@ tenha, e sem travessão.
 
 ## Evidência
 
-(preenchida no fechamento)
+- `LA-01`: o build gera as 7 abas a partir do catálogo da Legião e recusa a página se algum dos 91 agentes
+  faltar; a página tem 91 cartões com 91 nomes distintos. Os resumos foram escritos a partir do campo
+  `resumo` de cada agente e validados (91 chaves, até 150 caracteres, sem travessão nem palavra vetada).
+  Texto visível com 0 travessão.
+- `LA-02`: Chromium headless local e em produção, 1440 e 375 px: clicar no rótulo "Vendas" do hero ativa
+  a aba Vendas e deixa a seção a 64 px do topo (logo abaixo da barra fixa); a seta troca de Copy para
+  Aquisição; sem JavaScript os 7 andares aparecem. Em 375 px os botões do hero ficam 28 px abaixo do
+  prédio e título e seção estão centralizados. Rolagem lateral 0 e nenhum erro. O QA da página inteira
+  (prédio acendendo, abas dos prints, fila, chat, reduced-motion e sem JS) continuou verde.
+- `LA-03`: commit `b89798c`; o primeiro `deploy.sh` saiu sem trocar o container e o segundo terminou com
+  `useinfuser-site release b89798ce4cc0 is healthy`. `/legiao` 200 no apex e no `www`, com 91 cartões, e o
+  QA de LA-02 contra `https://useinfuser.com/legiao` deu o mesmo resultado do local.
