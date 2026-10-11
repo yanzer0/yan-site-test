@@ -1,6 +1,6 @@
 ---
 work_order: WO-LEGIAO-PRECO-FOCO-001
-status: active
+status: complete
 central_branch: claude/legiao-preco-foco
 owner: Claude
 authorized_by: Yan
@@ -23,7 +23,7 @@ scope_lock:
     background_jobs: []
   acceptance_ids: [LPF-01, LPF-02, LPF-03, LPF-04]
   stop_when: [LPF-01, LPF-02, LPF-03, LPF-04]
-  passed_acceptance_ids: []
+  passed_acceptance_ids: [LPF-01, LPF-02, LPF-03, LPF-04]
 ---
 
 # Preço real e página só com o caminho da compra
@@ -58,4 +58,16 @@ R$ 9,86, e a página anunciava "De R$97 por R$47". Página e checkout divergiam.
 
 ## Evidência
 
-(preenchida no fechamento)
+- `LPF-01`: Chromium headless em 375 e 1440 px, local e em produção: nenhum "R$47" no texto; o card mostra
+  `R$97` e "ou 12x de R$9,86. Pagamento único, acesso vitalício."; a garantia começa 20 px abaixo do card;
+  sem `#salas`, sem `#implementacao`, 0 link de diagnóstico e 1 botão no hero.
+- `LPF-02`: o botão do hero passou por posição intermediária (scrollY 728 no celular e 186 no desktop aos
+  250 ms) e terminou com `#oferta` no topo (0 px); o botão do fechamento também (0 px); `.nav` com
+  `position:relative`; rolagem lateral 0, 0 travessão e nenhum erro.
+- `LPF-04`: em 375 px sem `.mvis-tower`; o grafo mede 375x336 px com o núcleo em x=188 (meio da tela
+  187,5); o ângulo do núcleo foi de 6,5° a 31,9° em 3 s; com a seção fora da tela o SVG fica
+  `is-paused`; no desktop `.mvis` é `display:none` e `mapa-vivo.svg` não é baixado. O SVG sai com gzip
+  (13.136 bytes).
+- `LPF-03`: commits `243419f` e `f4447cc`; `deploy.sh` com `useinfuser-site release 243419fc4e4e is
+  healthy` e depois `useinfuser-site release f4447cc84e2c is healthy`. `/legiao` respondeu 200, `www`
+  200 e `mapa-vivo.svg` 200; o QA contra produção repetiu LPF-01, LPF-02 e LPF-04.
