@@ -1,6 +1,6 @@
 ---
 work_order: WO-LEGIAO-HERO-CHIPS-001
-status: active
+status: complete
 central_branch: claude/legiao-headline-ajuste
 owner: Claude
 authorized_by: Yan
@@ -21,7 +21,7 @@ scope_lock:
     background_jobs: []
   acceptance_ids: [LHC-01, LHC-02, LHC-03]
   stop_when: [LHC-01, LHC-02, LHC-03]
-  passed_acceptance_ids: []
+  passed_acceptance_ids: [LHC-01, LHC-02, LHC-03]
 ---
 
 # Hero em três linhas e chips em grade
@@ -47,4 +47,14 @@ scope_lock:
 
 ## Evidência
 
-(preenchida no fechamento)
+- `LHC-01`: Chromium headless, local e em produção, nos 9 tamanhos: título sempre em "Um prédio inteiro /
+  trabalhando pra você. / Sem um único funcionário." (em 820 px, duas linhas: a primeira frase inteira e a
+  lima), de 24,4 px em 360 a 52 px no desktop; a linha Claude/Codex numa linha só; nenhuma linha com uma
+  palavra só. Botão do hero termina em 691/740 (360), 695/812 (375), 720/844 (390), 732/932 (430) e
+  632/900 (1440). Rolagem lateral 0.
+- `LHC-02`: em 360 e 390 px abas e áreas em 2 colunas, todas com 52 px de altura; em 390 px nenhuma área
+  quebra e as abas quebram balanceadas ("Auditor de / Conta Meta"); em 1440 px as áreas seguem em 11
+  posições de linha (36 px) e as abas em 5 (37 px); a 4ª aba fica `aria-selected=true` ao clicar.
+- `LHC-03`: commit `b5004da`; `deploy.sh` com `useinfuser-site release b5004dab738d is healthy`;
+  `/legiao` e `www` 200; o QA contra produção repetiu LHC-01, LHC-02, R$97, CTAs chegando à `#oferta`
+  (0 px) e o grafo girando (6,8° a 32° em 3 s), sem erro.
