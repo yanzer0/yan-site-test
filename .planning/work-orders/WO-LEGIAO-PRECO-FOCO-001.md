@@ -5,22 +5,24 @@ central_branch: claude/legiao-preco-foco
 owner: Claude
 authorized_by: Yan
 authorized_at: 2026-10-10
-definition_source: pedidos do Yan, do Iago e do Pedro em 10/10/2026 (preço é R$97; nenhum botão acompanhando o usuário; todo CTA leva à compra rolando a página; tirar a ancoragem e pôr a garantia embaixo da oferta; tirar o CTA de diagnóstico; tirar a seção de lançamento, que afunila a leitura; dois CTAs baixam a conversão)
+definition_source: pedidos do Yan, do Iago e do Pedro em 10/10/2026 (preço é R$97; nenhum botão acompanhando o usuário; todo CTA leva à compra rolando a página; tirar a ancoragem e pôr a garantia embaixo da oferta; tirar o CTA de diagnóstico; tirar a seção de lançamento, que afunila a leitura; dois CTAs baixam a conversão; no celular, tirar o prédio da seção do mapa e deixar só o grafo, maior, centralizado e com o centro girando como no GIF que o Yan mandou)
 scope_lock:
   version: 1
   base_commit: 0784d0c
   allowed_write_globs:
     - .planning/work-orders/WO-LEGIAO-PRECO-FOCO-001.md
     - public/legiao.html
+    - public/legiao/mapa-vivo.svg
   architecture_delta:
     production_files:
       - public/legiao.html
+      - public/legiao/mapa-vivo.svg
     runtime_dependencies: []
     public_contracts: []
     persistence_surfaces: []
     background_jobs: []
-  acceptance_ids: [LPF-01, LPF-02, LPF-03]
-  stop_when: [LPF-01, LPF-02, LPF-03]
+  acceptance_ids: [LPF-01, LPF-02, LPF-03, LPF-04]
+  stop_when: [LPF-01, LPF-02, LPF-03, LPF-04]
   passed_acceptance_ids: []
 ---
 
@@ -38,6 +40,8 @@ R$ 9,86, e a página anunciava "De R$97 por R$47". Página e checkout divergiam.
 - Saem o bloco de diagnóstico de implementação, a seção da sala de lançamento e o segundo botão do hero.
 - Todo botão "Quero a Legião" rola a página até a oferta (rolagem própria, que funciona em navegador de
   app), e a barra do topo deixa de acompanhar a rolagem no desktop.
+- No celular, a seção do mapa mostra só o grafo, na largura da tela: é o SVG real do SkillTree do app
+  (`mapa-vivo.svg`, na pose do GIF), com o núcleo girando; baixa perto da tela e pausa fora dela.
 - No celular, os prints reservam a altura antes de carregar (sem a página crescer no meio da rolagem).
 
 ## Critérios de aceite
@@ -46,6 +50,9 @@ R$ 9,86, e a página anunciava "De R$97 por R$47". Página e checkout divergiam.
   card; sem `#salas`, sem `#implementacao`, sem link de diagnóstico e com um botão só no hero.
 - `LPF-02`: em 375 e 1440 px o botão do hero rola (posição intermediária medida) e termina com a oferta no
   topo; o botão do fechamento também; a barra não é fixa; rolagem lateral 0 e nenhum erro.
+- `LPF-04`: em 375 px a seção `#predio-vivo` não tem o prédio, o grafo ocupa a largura toda com o núcleo
+  no centro da tela, o ângulo do núcleo muda entre duas leituras, a animação pausa fora da tela e o
+  desktop não baixa o SVG.
 - `LPF-03`: publicado pela VPS com a linha `is healthy` do SHA novo e o QA contra produção repete LPF-01 e
   LPF-02.
 

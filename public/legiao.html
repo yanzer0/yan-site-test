@@ -158,16 +158,10 @@ section{padding:112px 0;position:relative;scroll-margin-top:64px}
 @media (max-width:760px){
   .d-only,.live{display:none}
   .m-only{display:inline}
-  .mvis{display:grid;grid-template-columns:38% 1fr;align-items:center;gap:8px;margin-top:30px}
-  .mvis-tower{position:relative;mix-blend-mode:lighten;-webkit-mask-image:linear-gradient(180deg,#000 80%,transparent 99%);mask-image:linear-gradient(180deg,#000 80%,transparent 99%)}
-  .mvis-tower img{width:100%;height:auto}
-  .mvis-map{width:100%;height:auto;mix-blend-mode:lighten}
-  /* o predio acende andar por andar, de baixo pra cima (so transform e opacity) */
-  .scan{position:absolute;left:31%;width:51%;top:75%;height:8.6%;border-radius:4px;mix-blend-mode:screen;
-    background:linear-gradient(180deg,rgba(198,255,52,0),rgba(198,255,52,.55),rgba(198,255,52,0));animation:scanUp 7s steps(1,end) infinite}
+  .mvis{display:block;width:100vw;margin:26px 0 0 calc(50% - 50vw)}
+  .mvis-map,.mvis svg{display:block;width:100%;height:auto}
+  .mvis-map{mix-blend-mode:lighten}
 }
-@keyframes scanUp{0%{transform:translateY(0)}14%{transform:translateY(-116%)}28%{transform:translateY(-232%)}42%{transform:translateY(-349%)}56%{transform:translateY(-465%)}70%{transform:translateY(-581%)}84%{transform:translateY(-697%)}100%{transform:translateY(-697%)}}
-@media (prefers-reduced-motion:reduce){.scan{display:none}}
 
 /* comparacao */
 .vs{margin-top:48px;display:grid;grid-template-columns:1fr 1.15fr;gap:20px;align-items:stretch}
@@ -613,8 +607,7 @@ l-670 -2 1 -70 c0 -38 6 -146 13 -240 7 -93 17 -237 23 -320 7 -98 12 -1057
       <img class="live-poster" src="/legiao/predio-mapa.webp" width="1600" height="764" alt="O prédio da Legião com os sete andares" loading="lazy" decoding="async">
       <button class="live-start" type="button" id="live-start">Explorar o prédio</button>
     </div>
-    <div class="mvis" aria-hidden="true">
-      <div class="mvis-tower"><img src="/legiao/predio-torre.webp" width="620" height="1150" alt="" loading="lazy" decoding="async"><span class="scan"></span></div>
+    <div class="mvis" aria-hidden="true" data-svg="/legiao/mapa-vivo.svg">
       <img class="mvis-map" src="/legiao/mapa-skilltree.webp" width="560" height="454" alt="" loading="lazy" decoding="async">
     </div>
   </div>
@@ -1049,6 +1042,23 @@ l-670 -2 1 -70 c0 -38 6 -146 13 -240 7 -93 17 -237 23 -320 7 -98 12 -1057
       })(performance.now());
     });
   });
+  // Celular: o grafo vivo (SVG real do app) so baixa quando chega perto da tela e para de animar fora dela.
+  var mv = document.querySelector(".mvis[data-svg]");
+  if (mv && "IntersectionObserver" in window && matchMedia("(max-width:760px)").matches) {
+    var near = new IntersectionObserver(function (entries) {
+      if (!entries[0].isIntersecting) return;
+      near.disconnect();
+      fetch(mv.getAttribute("data-svg")).then(function (r) {
+        if (!r.ok) throw new Error("mapa-vivo " + r.status);
+        return r.text();
+      }).then(function (svgText) {
+        mv.innerHTML = svgText;
+        var svg = mv.querySelector("svg");
+        new IntersectionObserver(function (e) { svg.classList.toggle("is-paused", !e[0].isIntersecting); }).observe(mv);
+      }).catch(function () { /* fica a imagem parada */ });
+    }, { rootMargin: "900px 0px" });
+    near.observe(mv);
+  }
   // Predio interativo: no desktop o app entra na moldura depois do clique; no celular o botao abre em tela cheia.
   var live = document.getElementById("live");
   var start = document.getElementById("live-start");
