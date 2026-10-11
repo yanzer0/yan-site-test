@@ -1,6 +1,6 @@
 ---
 work_order: WO-LEGIAO-HEADLINE-PREDIO-001
-status: active
+status: complete
 central_branch: claude/legiao-headline-predio
 owner: Claude
 authorized_by: Yan
@@ -21,7 +21,7 @@ scope_lock:
     background_jobs: []
   acceptance_ids: [LHP-01, LHP-02]
   stop_when: [LHP-01, LHP-02]
-  passed_acceptance_ids: []
+  passed_acceptance_ids: [LHP-01, LHP-02]
 ---
 
 # Headline do prédio no hero
@@ -42,4 +42,10 @@ em 390 px (350 px abaixo de 380 px de largura), pra o botão continuar na primei
 
 ## Evidência
 
-(preenchida no fechamento)
+- `LHP-01`: Chromium headless, local e em produção: título "Um prédio inteiro trabalhando pra você. /
+  Sem um único funcionário." com o `.hl` em `display:block`; o botão do hero termina em 781 px (dobra
+  812) em 375x812, em 821 px (dobra 844) em 390x844 e em 724 px em 1440x900; rolagem lateral 0, 0
+  travessão e nenhum erro. O QA anterior repetiu: R$97, sem R$47, CTAs do hero e do fechamento chegando à
+  `#oferta` (0 px) e o grafo do celular girando (6,1° a 31,5° em 3 s), sem o prédio.
+- `LHP-02`: commit `3e717ca`; `deploy.sh` com `useinfuser-site release 3e717ca30a9c is healthy`;
+  `/legiao` e `www` responderam 200 e o HTML servido traz o `<h1>` novo.
