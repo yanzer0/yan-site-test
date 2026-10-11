@@ -1,6 +1,6 @@
 ---
 work_order: WO-LEGIAO-MOBILE-FOCO-001
-status: active
+status: complete
 central_branch: claude/legiao-mobile-foco
 owner: Claude
 authorized_by: Yan
@@ -23,7 +23,7 @@ scope_lock:
     background_jobs: []
   acceptance_ids: [LM-01, LM-02, LM-03]
   stop_when: [LM-01, LM-02, LM-03]
-  passed_acceptance_ids: []
+  passed_acceptance_ids: [LM-01, LM-02, LM-03]
 ---
 
 # Celular sem distração e prints sem caixa
@@ -50,4 +50,13 @@ scope_lock:
 
 ## Evidência
 
-(preenchida no fechamento)
+- `LM-01`: Chromium headless em 375 px, local e em produção: `.nav`, `#live` e a dica de toque com
+  `display:none`; `.mvis` em grid; o realce do prédio muda de posição em 1,4 s; os andares com
+  `pointer-events:none`; os 5 prints visíveis e, depois de desligar a animação de entrada no celular,
+  com opacidade 1 ao rolar até eles; rolagem lateral 0, 0 travessão e nenhum erro.
+- `LM-02`: em 1440 px a barra, o app interativo e as abas seguem; a aba 05 ativa o print 5; o fundo do
+  bloco dos prints é transparente; o bloco de empresas fica 100 px abaixo do fechamento (72 px no
+  celular); o clique em Copy no hero ainda abre o SkillTree no andar Copy e o de Vendas troca o andar.
+- `LM-03`: commit `a3e30d1`; `deploy.sh` com `useinfuser-site release a3e30d15f90c is healthy` (o SHA
+  novo). `/legiao`, `www` e `mapa-skilltree.webp` respondem 200, e o QA contra produção repetiu LM-01 e
+  LM-02.
