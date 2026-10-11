@@ -1,6 +1,6 @@
 ---
 work_order: WO-LEGIAO-HERO-SEM-SUB-001
-status: active
+status: complete
 central_branch: claude/legiao-hero-sem-sub
 owner: Claude
 authorized_by: Yan
@@ -21,7 +21,7 @@ scope_lock:
     background_jobs: []
   acceptance_ids: [LHS-01, LHS-02]
   stop_when: [LHS-01, LHS-02]
-  passed_acceptance_ids: []
+  passed_acceptance_ids: [LHS-01, LHS-02]
 ---
 
 # Hero sem a subheadline
@@ -41,4 +41,10 @@ normal e quem entende do assunto assume." e as regras de CSS dele. O hero fica c
 
 ## Evidência
 
-(preenchida no fechamento)
+- `LHS-01`: Chromium headless em 375 e 1440 px, local e em produção: o hero sem `.sub` e sem o texto da
+  subheadline; título e linha Claude/Codex visíveis; 1 botão (34 px abaixo da linha no desktop, embaixo do
+  prédio no celular); rolagem lateral 0, 0 travessão e nenhum erro. O QA anterior repetiu: R$97, sem R$47,
+  CTAs do hero e do fechamento rolando até `#oferta` (0 px), grafo do celular girando (6,8° a 32° em 3 s),
+  sem o prédio e pausado fora da tela.
+- `LHS-02`: commit `8a002e5`; `deploy.sh` com `useinfuser-site release 8a002e56c39f is healthy`;
+  `/legiao` e `www` responderam 200 e o QA contra produção repetiu LHS-01.
