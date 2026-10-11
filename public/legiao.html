@@ -154,13 +154,20 @@ section{padding:112px 0;position:relative;scroll-margin-top:64px}
 .live-start{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:2;min-height:54px;padding:0 30px;border-radius:var(--r-full);border:0;cursor:pointer;
   background:var(--lime);color:var(--lime-ink);font-family:var(--font-display);font-weight:700;font-size:16px;box-shadow:0 10px 40px -12px rgba(198,255,52,.55)}
 .live.on .live-start,.live.on .live-poster{display:none}
-.live-open{display:none}
+.m-only,.mvis{display:none}
 @media (max-width:760px){
-  .live{aspect-ratio:4/5;max-height:none}
-  .live-poster{opacity:.75}
-  .live-start{display:none}
-  .live-open{display:inline-flex;position:absolute;left:50%;bottom:20px;transform:translateX(-50%);z-index:2}
+  .d-only,.live{display:none}
+  .m-only{display:inline}
+  .mvis{display:grid;grid-template-columns:38% 1fr;align-items:center;gap:8px;margin-top:30px}
+  .mvis-tower{position:relative;mix-blend-mode:lighten;-webkit-mask-image:linear-gradient(180deg,#000 80%,transparent 99%);mask-image:linear-gradient(180deg,#000 80%,transparent 99%)}
+  .mvis-tower img{width:100%;height:auto}
+  .mvis-map{width:100%;height:auto;mix-blend-mode:lighten}
+  /* o predio acende andar por andar, de baixo pra cima (so transform e opacity) */
+  .scan{position:absolute;left:31%;width:51%;top:75%;height:8.6%;border-radius:4px;mix-blend-mode:screen;
+    background:linear-gradient(180deg,rgba(198,255,52,0),rgba(198,255,52,.55),rgba(198,255,52,0));animation:scanUp 7s steps(1,end) infinite}
 }
+@keyframes scanUp{0%{transform:translateY(0)}14%{transform:translateY(-116%)}28%{transform:translateY(-232%)}42%{transform:translateY(-349%)}56%{transform:translateY(-465%)}70%{transform:translateY(-581%)}84%{transform:translateY(-697%)}100%{transform:translateY(-697%)}}
+@media (prefers-reduced-motion:reduce){.scan{display:none}}
 
 /* comparacao */
 .vs{margin-top:48px;display:grid;grid-template-columns:1fr 1.15fr;gap:20px;align-items:stretch}
@@ -204,23 +211,24 @@ section{padding:112px 0;position:relative;scroll-margin-top:64px}
 .step[aria-selected="true"]{background:rgba(198,255,52,.06);border-color:rgba(198,255,52,.32)}
 .step[aria-selected="true"] b i{color:var(--lime)}
 .step:focus-visible{outline:2px solid var(--lime);outline-offset:2px}
-.frames{position:relative;border-radius:var(--r);border:1px solid var(--line);background:var(--carbon-2);overflow:hidden;height:min(640px,72vh)}
-.frame{margin:0;position:absolute;inset:0;display:flex;flex-direction:column;opacity:0;visibility:hidden;transition:opacity .35s ease,visibility .35s}
+.frames{position:relative;min-height:600px}
+.frame{margin:0;position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;opacity:0;visibility:hidden;transition:opacity .35s ease,visibility .35s}
 .frame.on{opacity:1;visibility:visible}
-.frame .pic{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;padding:18px}
-.frame img{max-height:100%;width:auto;max-width:100%;border-radius:10px;box-shadow:0 20px 60px -30px rgba(0,0,0,.9)}
-.frame figcaption{padding:14px 20px;border-top:1px solid var(--line-2);font-size:13.5px;color:var(--muted)}
+.frame .pic{display:flex;justify-content:center;max-width:100%}
+.frame img{max-height:540px;width:auto;max-width:100%;border-radius:12px;border:1px solid rgba(240,240,228,.14);box-shadow:0 30px 70px -30px rgba(0,0,0,.85)}
+.frame figcaption{max-width:62ch;text-align:center;font-size:14.5px;color:var(--muted)}
+.frame figcaption b{display:none}
 .no-js .frames{height:auto;overflow:visible;border:0;background:none;display:grid;gap:20px}
 .no-js .frame{position:static;opacity:1;visibility:visible;border:1px solid var(--line);border-radius:var(--r)}
 .no-js .steps{display:none}
 @media (max-width:900px){
   .inside{grid-template-columns:1fr}
-  .steps{flex-direction:row;overflow-x:auto;scroll-snap-type:x mandatory;gap:8px;padding-bottom:4px;scrollbar-width:none}
-  .steps::-webkit-scrollbar{display:none}
-  .step{flex:0 0 auto;scroll-snap-align:start;padding:10px 14px;border-color:var(--line)}
-  .step span{display:none}
-  .frames{height:min(460px,64vh)}
-  .frame .pic{padding:12px}
+  .steps{display:none}
+  .frames{min-height:0;display:grid;gap:36px}
+  .frame{position:static;opacity:1;visibility:visible}
+  .frame img{max-height:none;width:100%;height:auto}
+  .frame figcaption{order:-1;font-size:15px}
+  .frame figcaption b{display:block;margin-bottom:4px;font-family:var(--font-display);font-size:18px;color:var(--warm)}
 }
 
 /* salas de guerra */
@@ -371,7 +379,7 @@ section{padding:112px 0;position:relative;scroll-margin-top:64px}
 .final::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(60% 60% at 50% 100%,rgba(198,255,52,.10),transparent 70%)}
 .final p{margin:20px auto 0;max-width:56ch;color:var(--muted);font-size:18px}
 .final .btn{margin-top:32px}
-.impl{padding:0 0 96px}
+.impl{padding:72px 0 96px}
 .impl-box{border-radius:calc(var(--r) + 6px);border:1px solid rgba(59,208,160,.4);padding:48px;display:grid;grid-template-columns:minmax(0,1.4fr) auto;gap:32px;align-items:center;
   background:radial-gradient(90% 120% at 0% 0%,rgba(59,208,160,.14),transparent 60%),linear-gradient(180deg,var(--teal-4),#08130f)}
 .impl-box h2{margin-top:14px;font-size:clamp(28px,3.2vw,40px);line-height:1.08}
@@ -386,7 +394,7 @@ footer{border-top:1px solid var(--line-2);padding:32px 0 44px;color:var(--faint)
 
 
 
-@media (max-width:760px){.nav{-webkit-backdrop-filter:none;backdrop-filter:none;background:rgba(2,2,2,.94)}.elevator{display:none}}
+@media (max-width:760px){.reveal{animation:none!important}.nav{display:none}.elevator{display:none}.fh{pointer-events:none}.tap-hint{display:none!important}}
 
 /* celular: tudo centralizado e os botoes do hero embaixo do predio */
 @media (max-width:760px){
@@ -413,7 +421,7 @@ footer{border-top:1px solid var(--line-2);padding:32px 0 44px;color:var(--faint)
 .dots::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:0;
   background-image:radial-gradient(rgba(255,255,255,.055) 1.2px,transparent 1.2px);background-size:24px 24px;
   -webkit-mask-image:linear-gradient(180deg,transparent,#000 10%,#000 90%,transparent);mask-image:linear-gradient(180deg,transparent,#000 10%,#000 90%,transparent)}
-section>.container{position:relative;z-index:1}
+section>.container{position:relative}
 .s-ink{background:#0C0C0A}
 .s-carbon{background:#171717}
 .s-green{background:radial-gradient(110% 80% at 0% 0%,rgba(59,208,160,.20),transparent 60%),linear-gradient(180deg,#143A31,#0b1f1a)}
@@ -628,13 +636,16 @@ l-670 -2 1 -70 c0 -38 6 -146 13 -240 7 -93 17 -237 23 -320 7 -98 12 -1057
   <div class="container">
     <div class="narrow reveal">
       <span class="eyebrow">O prédio de verdade</span>
-      <h2 class="h2" style="margin-top:14px">Entra no prédio. <span class="hl">Clica num andar.</span></h2>
+      <h2 class="h2" style="margin-top:14px"><span class="d-only">Entra no prédio. <span class="hl">Clica num andar.</span></span><span class="m-only">Cada andar, <span class="hl">um time inteiro.</span></span></h2>
       <p class="lede">É a mesma tela que você recebe depois da compra: cada andar abre os especialistas dele, e cada especialista mostra o que faz e a frase pronta pra chamar.</p>
     </div>
     <div class="live reveal" id="live">
       <img class="live-poster" src="/legiao/predio-mapa.webp" width="1600" height="764" alt="O prédio da Legião com os sete andares" loading="lazy" decoding="async">
       <button class="live-start" type="button" id="live-start">Explorar o prédio</button>
-      <a class="btn btn-primary live-open" href="/legiao/predio-v2.html">Abrir o prédio</a>
+    </div>
+    <div class="mvis" aria-hidden="true">
+      <div class="mvis-tower"><img src="/legiao/predio-torre.webp" width="620" height="1150" alt="" loading="lazy" decoding="async"><span class="scan"></span></div>
+      <img class="mvis-map" src="/legiao/mapa-skilltree.webp" width="560" height="454" alt="" loading="lazy" decoding="async">
     </div>
   </div>
 </section>
@@ -704,23 +715,23 @@ l-670 -2 1 -70 c0 -38 6 -146 13 -240 7 -93 17 -237 23 -320 7 -98 12 -1057
       <div class="frames">
         <figure class="frame on" id="fr-1" role="tabpanel" aria-labelledby="st-1">
           <div class="pic"><img src="/legiao/predio-guia.webp" width="1200" height="633" alt="Guia de ativação da Legião com os botões Abrir o prédio, Usar no Claude e Usar no Codex" loading="lazy" decoding="async"></div>
-          <figcaption>O guia que abre depois da compra. A conexão é feita uma vez por aplicativo.</figcaption>
+          <figcaption><b>01 · O acesso</b>O guia que abre depois da compra. A conexão é feita uma vez por aplicativo.</figcaption>
         </figure>
         <figure class="frame" id="fr-2" role="tabpanel" aria-labelledby="st-2">
           <div class="pic"><img src="/legiao/predio-mapa.webp" width="1600" height="764" alt="O prédio da Legião no navegador, com os sete andares" loading="lazy" decoding="async"></div>
-          <figcaption>O prédio no navegador: Comando, Copy, Aquisição, Vendas, Oferta, Estratégia e Operação.</figcaption>
+          <figcaption><b>02 · O prédio</b>O prédio no navegador: Comando, Copy, Aquisição, Vendas, Oferta, Estratégia e Operação.</figcaption>
         </figure>
         <figure class="frame" id="fr-3" role="tabpanel" aria-labelledby="st-3">
           <div class="pic"><img src="/legiao/predio-agente.webp" width="1600" height="760" alt="Painel de um agente da Legião com a frase pronta para chamar" loading="lazy" decoding="async"></div>
-          <figcaption>Clicou no agente: o que ele faz e a frase pronta. É só copiar e colar no Claude.</figcaption>
+          <figcaption><b>03 · O agente</b>Clicou no agente: o que ele faz e a frase pronta. É só copiar e colar no Claude.</figcaption>
         </figure>
         <figure class="frame" id="fr-4" role="tabpanel" aria-labelledby="st-4">
           <div class="pic"><img src="/legiao/bastidor-claude-pergunta.webp" width="789" height="1095" alt="Conversa no Claude em que o Roteirista de Anúncio em Vídeo da Legião pede a oferta, a etapa do funil e a prova" loading="lazy" decoding="async"></div>
-          <figcaption>Conversa real no Claude com a Legião conectada, num pedido de exemplo. O agente pede o que falta antes de escrever.</figcaption>
+          <figcaption><b>04 · Ele pergunta</b>Conversa real no Claude com a Legião conectada, num pedido de exemplo. O agente pede o que falta antes de escrever.</figcaption>
         </figure>
         <figure class="frame" id="fr-5" role="tabpanel" aria-labelledby="st-5">
           <div class="pic"><img src="/legiao/bastidor-claude-roteiro.webp" width="789" height="1060" alt="Resposta do agente no Claude com diagnóstico de ângulo e roteiro em tabela" loading="lazy" decoding="async"></div>
-          <figcaption>A entrega na mesma conversa: diagnóstico de ângulo, roteiro em tabela e o aviso de que falta prova. Ele não inventa depoimento.</figcaption>
+          <figcaption><b>05 · Ele entrega</b>A entrega na mesma conversa: diagnóstico de ângulo, roteiro em tabela e o aviso de que falta prova. Ele não inventa depoimento.</figcaption>
         </figure>
       </div>
     </div>
