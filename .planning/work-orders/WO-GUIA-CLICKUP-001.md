@@ -1,6 +1,6 @@
 ---
 work_order: WO-GUIA-CLICKUP-001
-status: active
+status: complete
 central_branch: claude/guia-clickup
 owner: Claude
 authorized_by: Yan
@@ -27,7 +27,7 @@ scope_lock:
     background_jobs: []
   acceptance_ids: [GCU-01, GCU-02, GCU-03]
   stop_when: [GCU-01, GCU-02, GCU-03]
-  passed_acceptance_ids: []
+  passed_acceptance_ids: [GCU-01, GCU-02, GCU-03]
 ---
 
 # Guia da skill Implementar com ClickUp
@@ -48,3 +48,15 @@ scope_lock:
   nome de cliente, ID de workspace, caminho interno ou credencial.
 - `GCU-03`: publicado pela VPS com `is healthy` do SHA novo; `/guia-clickup` e
   `/downloads/implementar-com-clickup.zip` respondem 200 no apex e no `www`.
+
+## Evidência
+
+- `GCU-01`: preview local em 1024 e 375 px com rolagem lateral 0 (a coluna dos pedidos estourava a grade;
+  corrigido com `min-width:0` e quebra de linha no bloco de código), console sem erro, zero travessão,
+  CTA do Segundo Cérebro a 30% da altura e os três links de download no ZIP. Em produção: rolagem 0,
+  console sem erro, Onest carregada.
+- `GCU-02`: `claude mcp add --transport http clickup https://mcp.clickup.com/mcp` + `/mcp` conferidos em
+  developer.clickup.com em 17/10/2026; varredura do ZIP sem nome de cliente, ID, caminho interno ou senha.
+- `GCU-03`: commit `6bbf0bc`; `deploy.sh` com `useinfuser-site release 6bbf0bc4712d is healthy`;
+  `/guia-clickup` 200 `text/html; charset=utf-8` (54048 B) e `/downloads/implementar-com-clickup.zip`
+  200 `application/zip` (15993 B, sha256 igual ao pacote) no apex e no `www`.
