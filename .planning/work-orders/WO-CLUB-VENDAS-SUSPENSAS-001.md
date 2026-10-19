@@ -1,6 +1,6 @@
 ---
 work_order: WO-CLUB-VENDAS-SUSPENSAS-001
-status: active
+status: complete
 central_branch: claude/club-vendas-suspensas
 owner: Claude
 authorized_by: Yan
@@ -27,7 +27,7 @@ scope_lock:
     background_jobs: []
   acceptance_ids: [CLB-01, CLB-02, CLB-03]
   stop_when: [CLB-01, CLB-02, CLB-03]
-  passed_acceptance_ids: []
+  passed_acceptance_ids: [CLB-01, CLB-02, CLB-03]
 ---
 
 # Vendas do Infuser Club suspensas
@@ -48,3 +48,12 @@ scope_lock:
   `/club/infuser-club.webp` segue 200 com `immutable`.
 - `CLB-02`: home e `/comunidade` sem nenhum `href="/club"`; 375 e 1440 px sem rolagem lateral e console sem erro.
 - `CLB-03`: publicado pela VPS com `is healthy` do SHA novo; smoke verde no apex e no `www`.
+
+## Evidência
+
+- `CLB-01`: em produção `/club` 307 para `/`, `/pos` e `/pos/oferta-final` 307 para `/pos/obrigado`, nenhum com
+  `immutable`; `/club/infuser-club.webp` 200 com `public, max-age=31536000, immutable`.
+- `CLB-02`: zero `href="/club"` na home e na `/comunidade` em produção; preview local em 1440 e 375 px com
+  rolagem lateral 0, console sem erro, home com 2 cards. `vitest tests/pos` 3/3 e eslint dos arquivos tocados limpos.
+- `CLB-03`: commit `e024d3f`; `deploy.sh` com `useinfuser-site release e024d3fdd036 is healthy`; smoke externo
+  exit 0 no apex e no `www` com o release esperado.
