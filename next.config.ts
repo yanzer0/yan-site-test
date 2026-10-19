@@ -13,6 +13,12 @@ const nextConfig: NextConfig = {
       // URL que o desfecho qualificado assume via history (conversão do pixel),
       // sem página própria. Refresh nela volta ao formulário, com a query.
       { source: "/diagnostico/qualificado", destination: "/diagnostico", permanent: false },
+      // Vendas do Infuser Club suspensas (decisao Yan 19/10/2026). A pagina segue
+      // no repo; reabrir = apagar estas tres linhas. O /pos era o upsell do Club
+      // depois da compra do Kit, entao o comprador cai direto na confirmacao.
+      { source: "/club", destination: "/", permanent: false },
+      { source: "/pos", destination: "/pos/obrigado", permanent: false },
+      { source: "/pos/oferta-final", destination: "/pos/obrigado", permanent: false },
     ];
   },
   async rewrites() {
@@ -134,7 +140,8 @@ const nextConfig: NextConfig = {
         // immutable/1 ano e seguro (URL nova = cache novo) e da credito total
         // no "efficient cache policy" do PageSpeed. Se um dia precisar
         // substituir mantendo o mesmo nome, trocar o nome/versionar a URL.
-        source: "/club/:path*",
+        // `:path+` e nao `:path*`: o `*` casava a propria pagina /club.
+        source: "/club/:path+",
         headers: [
           {
             key: "Cache-Control",

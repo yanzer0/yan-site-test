@@ -38,16 +38,6 @@ const PRODUCTS = [
     cta: "Acessar o kit",
   },
   {
-    id: "club",
-    href: "/club",
-    cover: "/club/capa-infuser-club.webp",
-    eyebrow: "Comunidade · Recorrente",
-    title: "Infuser Club",
-    description:
-      "Calls ao vivo toda semana, desafio quinzenal com freelance real e 4 bônus pra quem quer viver de IA. A partir de R$57/mês no plano anual.",
-    cta: "Entrar para o Club",
-  },
-  {
     id: "servico",
     href: "/diagnostico",
     cover: "/capa-servico-personalizado.webp",
@@ -106,8 +96,8 @@ export function ProductSelector() {
           Selecione a opção que vai transformar sua rotina.
         </p>
 
-        {/* Product cards grid — mesma estrutura pros 3 itens, altura igualada por items-stretch + CTA fixado embaixo */}
-        <div className="animate-fade-in-up delay-300 grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 items-stretch">
+        {/* Product cards grid — mesma estrutura pros 2 itens, altura igualada por items-stretch + CTA fixado embaixo */}
+        <div className="animate-fade-in-up delay-300 grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 items-stretch max-w-3xl mx-auto">
           {PRODUCTS.map((product) => {
             const cardClassName =
               "group relative flex flex-col rounded-lg border border-white/10 bg-black/60 backdrop-blur shadow-lg overflow-hidden text-left transition-all duration-200 hover:scale-[1.02] hover:bg-black/50 cursor-pointer";

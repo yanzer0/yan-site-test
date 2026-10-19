@@ -6,7 +6,6 @@ const expectedRelease = process.argv[3] ?? process.env.APP_RELEASE;
 const publicPaths = [
   "/",
   "/agente-que-aprende",
-  "/club",
   "/comunidade",
   "/diagnostico",
   "/diagnostico/obrigado",
@@ -29,9 +28,7 @@ const publicPaths = [
   "/kit-vscode",
   "/legiao",
   "/opus5",
-  "/pos",
   "/pos/obrigado",
-  "/pos/oferta-final",
   "/privacidade",
   "/protocolo-de-autoria",
   "/termos",
@@ -117,6 +114,21 @@ await check("/instalar/assets/downloads/segundo-cerebro-autonomo.zip", [404]);
 const protectedDemo = await check("/demomarja", [401]);
 if (!protectedDemo.response.headers.get("www-authenticate")?.startsWith("Basic")) {
   throw new Error("/demomarja: Basic authentication challenge is missing");
+}
+// Vendas do Infuser Club suspensas em 19/10/2026: a pagina e o upsell pos-compra
+// redirecionam, e o redirect nao pode herdar o cache immutable dos assets.
+for (const [path, destination] of [
+  ["/club", "/"],
+  ["/pos", "/pos/obrigado"],
+  ["/pos/oferta-final", "/pos/obrigado"],
+]) {
+  const { response } = await check(path, [307]);
+  if (new URL(response.headers.get("location") ?? "", baseUrl).pathname !== destination) {
+    throw new Error(`${path}: expected redirect to ${destination}`);
+  }
+  if (response.headers.get("cache-control")?.includes("immutable")) {
+    throw new Error(`${path}: redirect must not be cached as immutable`);
+  }
 }
 await check("/leads", [302, 303, 307, 308]);
 const leadsLogin = await check("/leads/entrar", [200]);
