@@ -75,7 +75,7 @@ function ZoomableImage({ src, alt, width, height, className, containerClassName,
   );
 }
 
-const CHECKOUT_URL = "https://pay.hub.la/6VBtmQtyBG5lFjn12AFO";
+const CHECKOUT_URL = "https://pay.hotmart.com/O108099140A?checkoutMode=10&bid=1792518047033";
 
 const FINAL_CTA_ID = "cta-comprar-final";
 
@@ -1022,7 +1022,7 @@ function PricingSection() {
             Quero o Kit Segundo Cérebro <span className="transition-transform duration-200 group-hover:translate-x-1 inline-block">&rarr;</span>
           </a>
           <p className="font-mono text-[11px] text-zinc-500 mt-4">
-            Pagamento seguro via Hubla &middot; Entrega instantânea &middot; Acesso imediato
+            Pagamento seguro via Hotmart &middot; Entrega instantânea &middot; Acesso imediato
           </p>
         </div>
 
@@ -1103,7 +1103,7 @@ function SCFooter() {
           </a>
         </p>
         <p className="font-mono text-[11px] text-zinc-600 mt-1">
-          Produto digital &middot; Entrega instantânea via Hubla &middot; Sem assinatura
+          Produto digital &middot; Entrega instantânea via Hotmart &middot; Sem assinatura
         </p>
       </div>
     </footer>
