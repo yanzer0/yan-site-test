@@ -1,6 +1,6 @@
 ---
 work_order: WO-CHECKOUT-HOTMART-001
-status: active
+status: complete
 central_branch: claude/checkout-hotmart
 owner: Claude
 authorized_by: Yan
@@ -23,7 +23,7 @@ scope_lock:
     background_jobs: []
   acceptance_ids: [HOT-01, HOT-02]
   stop_when: [HOT-01, HOT-02]
-  passed_acceptance_ids: []
+  passed_acceptance_ids: [HOT-01, HOT-02]
 ---
 
 # Checkouts da A Legião e do Kit Segundo Cérebro na Hotmart
@@ -43,3 +43,10 @@ scope_lock:
 - `HOT-02`: publicado pela VPS com `is healthy` do SHA novo; smoke verde.
 
 ## Evidência
+
+- `HOT-01`: em produção `/legiao` e `/kit-segundo-cerebro` com zero `pay.hub.la`; `/legiao` aponta para
+  `pay.hotmart.com/J108099057B`, mostra "12x de R$10,03" e "Pagamento pela Hotmart"; `/kit-segundo-cerebro`
+  aponta para `pay.hotmart.com/O108099140A` e mostra "via Hotmart". Card de compra conferido em 375 px.
+- `HOT-02`: commit `b49c5dd`; `deploy.sh` com `useinfuser-site release b49c5dd43e2f is healthy` (a primeira
+  tentativa quebrou no download da fonte do `next/font`, a segunda passou sem mudança de código); smoke
+  exit 0 no apex e no `www`.
