@@ -18,6 +18,9 @@ scope_lock:
     public_contracts: []
     persistence_surfaces: []
     background_jobs: []
+  acceptance_ids: [AC-01, AC-02, AC-03]
+  stop_when: [AC-01, AC-02, AC-03]
+  passed_acceptance_ids: []
 ---
 
 # Checkout internacional do Kit nas páginas EN e ES
