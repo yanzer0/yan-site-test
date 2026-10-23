@@ -8,16 +8,18 @@ Escopo: três arquivos novos, sem alteração dos originais, dependências, trac
 - Inglês americano neutro. Sequência preservada: promessa, dor, mecanismo, demonstração, conteúdo, público, restrições, comparação, objeções, suporte, preço e fechamento.
 - A promessa vira “Set it up once. Keep your context for good.” O foco passa de “nunca esquece” a contexto persistente, trabalho acumulado e menos repetição. “Mais inteligente” vira acúmulo de contexto, sem sugerir treinamento do modelo.
 - Mantidos os 8 comandos, 4 prompts e 9 templates da fonte, além dos mesmos perfis, nomes de compradores e comportamento do toast. Nenhum depoimento ou número de vendas acrescentado. O toast segue a seleção aleatória original; não é um feed de compras verificado em tempo real, ponto que Yan deve validar antes de anunciar.
-- Rodízio japonês vira jantar fora; Netflix + Spotify vira streaming e música; corte de cabelo permanece. Todos os valores monetários editáveis, inclusive comparações, consultoria, curso, assinatura hipotética e preço riscado, estão somente em `PRICING`, com placeholders visíveis e `TODO(Yan): definir`. Moeda e valores não foram estimados nem convertidos.
-- A conta com R$50/hora, promessa de retorno em duas semanas e “50 semanas de lucro” saiu. Entrou uma hipótese de economia de 1 hora semanal, sem retorno garantido ou valor de hora presumido. A comparação não afirma que o kit será mais barato que o jantar enquanto os preços estiverem indefinidos.
-- O relato de consultoria já vendida por valor brasileiro saiu; as âncoras de consultoria, curso e assinatura são apresentadas como hipotéticas, com placeholders. A analogia do contrato que vale milhões e a generalização de preço de todo SaaS também saíram.
+- Preço aprovado por Yan na correção: Kit a US$ 27, pagamento único. O preço riscado foi removido, pois não existe preço cheio cobrado no exterior. `PRICING` contém somente `price` e `claudeProMonthly`, sem placeholders nem TODOs de preço. Não houve conversão de reais.
+- As comparações com jantar, streaming e corte de cabelo saíram, pois não havia fonte de preços para esses mercados. Entrou a comparação entre Claude Pro a US$ 20 por mês no plano mensal dos EUA e o Kit pago uma vez, por US$ 27. A página informa que os preços regionais e impostos variam e que o acesso ao Claude é separado do Kit.
+- Fonte primária consultada nesta correção: [What is the Pro plan?](https://support.claude.com/en/articles/8325606-what-is-the-pro-plan), seção “How much does the Pro plan cost?”. A fonte confirma o preço mensal dos EUA e a variação regional. Nenhum preço em euro foi presumido. A página inclui link para a fonte na comparação.
+- A conta com R$50/hora, promessa de retorno em duas semanas e “50 semanas de lucro” saiu. Permanece uma hipótese de economia de 1 hora semanal, sem retorno garantido ou valor de hora presumido.
+- Os valores brasileiros de consultoria, curso e assinatura saíram. A copy usa “I have sold this as a done-for-you setup for much more”, sem número convertido. A analogia do contrato que vale milhões e a generalização de preço de todo SaaS também saíram.
 - TCC e mestrado viram thesis, dissertation e research projects. A FAQ deixa claro que o acesso ao Claude é separado do kit. A promessa de compatibilidade com qualquer versão futura foi ajustada: Markdown permanece editável, mas mudanças nos recursos do Claude Code podem exigir ajuste. Não há PIX, CDC ou garantia brasileira na fonte atual, e nenhuma garantia internacional foi inventada.
 - O fechamento usa os mesmos 30-60 minutos de configuração já informados na seção de restrições, evitando prometer conclusão fixa em 30 minutos.
 - Botões, alt, aria-label de fechar, FAQ, modal e textos dinâmicos foram adaptados. A raiz do componente tem `lang="en"` e o mesmo wrapper `relative`; o layout raiz permanece intocado.
 
 ## Vídeo e assets
 
-A fonte atual contém um MP4 local no hero (`/video-segundo-cerebro.mp4`), não um player vturb/converteai. O player foi retirado desta versão. Não havia scripts vturb/converteai a copiar. O contêiner, borda, espaçamento, animação e proporção 16:9 foram mantidos, com chamada estática em inglês. Referências a “como mostro no vídeo” foram removidas dos textos do kit e da FAQ. Yan pode fornecer uma VSL em inglês numa próxima fatia.
+A ordem foi corrigida: o MP4 local do hero (`/video-segundo-cerebro.mp4`) é uma demonstração muda em loop, e não uma VSL. O bloco “Video” foi restaurado exatamente como está na fonte portuguesa, no mesmo lugar, incluindo contêiner, classes, `autoPlay`, `loop`, `muted`, `playsInline` e `preload="metadata"`. A chamada estática inserida na primeira entrega saiu. Não há player ou scripts vturb/converteai na fonte. Não há pendência de criar VSL para esta fatia.
 
 As oito imagens foram inspecionadas visualmente e permanecem sem alteração. Todas contêm português; devem ganhar capturas em inglês antes da campanha. A demonstração informa “Examples shown in Portuguese”. Caminhos permanecem em `/segundo-cerebro/`:
 
@@ -36,69 +38,70 @@ A exigência de manter os assets impede eliminar o português e os valores fixos
 
 ## Pendências para o Yan
 
-1. Definir USD ou EUR e preencher os oito campos de `PRICING`. Confirmar validade do preço riscado e das âncoras antes de publicar.
-2. Confirmar checkout internacional, idioma, moeda, meios de pagamento, impostos aplicáveis e entrega correta na URL Hotmart original: `https://pay.hotmart.com/O108099140A?checkoutMode=10&bid=1792518047033`. A constante mantém exatamente esse destino, com `TODO(Yan): confirmar checkout internacional`.
+1. Preço e moeda da página aprovados: US$ 27, pagamento único. Não há pendência de preço riscado, âncoras convertidas ou placeholders.
+2. Iago está criando as ofertas internacionais. Confirmar checkout internacional, idioma, moeda, meios de pagamento, impostos aplicáveis e entrega correta na URL Hotmart original: `https://pay.hotmart.com/O108099140A?checkoutMode=10&bid=1792518047033`. A constante mantém exatamente esse destino, com `TODO(Yan): confirmar checkout internacional`.
 3. Confirmar se o produto entregue, guias, prompts, onboarding e regras de idioma já têm versão em inglês. Esta fatia traduz apenas a página de vendas, sem prometer entrega de materiais já traduzidos.
-4. Refazer os oito screenshots em inglês e, se desejado, fornecer VSL em inglês. Validar a procedência e a apresentação temporal do toast de compradores antes de usar tráfego pago.
-5. Resolver, em outra fatia, os erros preexistentes do `tsc` em `tests/instalar/instalar.test.ts:94` e `:101`. O build conclui, mas o AC-03 permanece reprovado. O arquivo de testes está igual ao HEAD e não foi editado.
+4. Refazer os oito screenshots em inglês. Validar a procedência e a apresentação temporal do toast de compradores antes de usar tráfego pago.
+5. Os erros do `tsc` em `tests/instalar/instalar.test.ts:94` e `:101` foram confirmados pelo solicitante como preexistentes no main. O aceite corrigido exige ausência de erros nos arquivos desta fatia. Os testes permanecem intocados.
 
 ## Verificação
 
 O pacote instalado é Next.js 15.5.25 e não contém `node_modules/next/dist/docs/`. Após confirmar a ausência, foram consultados os guias oficiais de [rotas](https://nextjs.org/docs/15/app/getting-started/layouts-and-pages) e [metadata](https://nextjs.org/docs/15/app/api-reference/functions/generate-metadata) da versão 15. Sem mudanças em `node_modules`.
 
-### AC-01: aprovado, nenhuma correspondência
+### AC-01 e AC-02: aprovados
 
-```sh
-grep -nE "\b(você|não|seu|sua|também|então|agora|cérebro)|R\$" src/components/segundo-cerebro-en.tsx src/app/en/second-brain-kit/page.tsx
-```
-
-Saída do grep vazia. Registro da execução: `AC-01 grep exit=1` (1 significa nenhuma correspondência).
-
-### AC-02: aprovado, nenhuma correspondência
-
-```sh
-grep -n "—" src/components/segundo-cerebro-en.tsx src/app/en/second-brain-kit/page.tsx
-```
-
-Saída do grep vazia. Registro da execução: `AC-02 grep exit=1`.
-
-Os dois greps inicialmente falharam no sandbox com `CreateFileMapping ... Win32 error 5`. A repetição escalada executou normalmente e retornou os resultados acima.
-
-### AC-03: reprovado por erros preexistentes fora do escopo
-
-Comando: `npx tsc --noEmit`, executado com permissão escalada. Final da saída:
+Os greps da ordem de trabalho não produziram correspondências nos dois arquivos de código. Saída registrada:
 
 ```text
-
-tests/instalar/instalar.test.ts(94,26): error TS2493: Tuple type '[]' of length '0' has no element at index '0'.
-tests/instalar/instalar.test.ts(101,49): error TS2493: Tuple type '[]' of length '0' has no element at index '0'.
-AC-03 exit=2
+AC-01: no matches
+AC-02: no matches
 ```
 
-Os dois erros são de acesso ao primeiro argumento de mocks declarados sem argumentos em testes já existentes. Nenhum erro aponta para os arquivos novos. Não foi alterado o teste, a configuração de tipos ou a instalação de dependências para contornar o bloqueio.
+### Demo e placeholders: aprovados
 
-### AC-04: aprovado com um aviso herdado da cópia
+```sh
+grep -c "<video" src/components/segundo-cerebro-en.tsx
+# 1
+grep -cF '[price]' src/components/segundo-cerebro-en.tsx
+# 0
+```
 
-Comando: `npx eslint src/components/segundo-cerebro-en.tsx src/app/en/second-brain-kit/page.tsx`, executado com permissão escalada. Final da saída:
+No Windows, `-F` preserva a busca literal de `[price]` sem depender da passagem de barras invertidas pelo runtime MSYS. Código de saída 1 na contagem zero significa nenhuma correspondência. A comparação automatizada confirmou que todo o bloco “Video” do hero é idêntico à fonte. Também confirmou somente os valores US$ 27 e US$ 20 em `PRICING`, ausência de preço riscado, ausência dos antigos campos e manutenção do checkout e de seu TODO.
+
+### AC-03: aprovado conforme o aceite corrigido
+
+Comando: `npx tsc --noEmit`, com permissão escalada. Não há erro nos arquivos desta fatia. O processo global ainda retorna 2 pelos dois erros preexistentes confirmados pelo solicitante:
+
+```text
+tests/instalar/instalar.test.ts(94,26): error TS2493: Tuple type '[]' of length '0' has no element at index '0'.
+tests/instalar/instalar.test.ts(101,49): error TS2493: Tuple type '[]' of length '0' has no element at index '0'.
+AC-03 global exit=2
+```
+
+Nenhuma alteração em testes, configuração de tipos ou dependências para contornar esses erros.
+
+### AC-04: aprovado
+
+Comando: `npx eslint src/components/segundo-cerebro-en.tsx src/app/en/second-brain-kit/page.tsx`, com permissão escalada. Final da saída:
 
 ```text
 C:\dev\wt-site-kit-en\src\components\segundo-cerebro-en.tsx
-  94:10  warning  'scrollToFinalCta' is defined but never used  @typescript-eslint/no-unused-vars
+  89:10  warning  'scrollToFinalCta' is defined but never used  @typescript-eslint/no-unused-vars
 
 ✖ 1 problem (0 errors, 1 warning)
 AC-04 exit=0
 ```
 
-A função `scrollToFinalCta` já existe sem uso na fonte portuguesa e foi mantida conforme a regra de copiar sem refatorar. Zero erros de lint.
+A função sem uso já existe na fonte portuguesa e foi mantida conforme a regra de copiar sem refatorar. Zero erros de lint.
 
-### AC-05: aprovado, rota gerada
+### AC-05: aprovado
 
-Comando: `npx next build`, executado com permissão escalada. Trechos finais relevantes da saída:
+Comando: `npx next build`, com permissão escalada. Trechos finais relevantes da saída:
 
 ```text
- ✓ Compiled successfully in 54s
+ ✓ Compiled successfully in 33.6s
  ✓ Generating static pages (37/37)
-├ ○ /en/second-brain-kit                 13.1 kB         121 kB
+├ ○ /en/second-brain-kit                   13 kB         121 kB
 
 
 
@@ -109,10 +112,8 @@ Comando: `npx next build`, executado com permissão escalada. Trechos finais rel
 AC-05 exit=0
 ```
 
-O build concluiu com um aviso `EPERM` ao tentar criar o symlink de `node_modules` em `.next/standalone` no Windows. Não foi alterada a junção original, instalado pacote ou contornado o aviso. A saída standalone local exige atenção antes de ser usada como pacote de deploy; esta fatia não publica nada.
+O aviso local `EPERM` de symlink em `.next/standalone/node_modules` permanece no Windows. O build termina com código 0 e lista a rota estática. Não houve alteração na junção original, instalação de dependências, push ou deploy.
 
-### Conferências adicionais
+A inspeção do HTML estático gerado confirmou exatamente os atributos do demo, os preços aprovados, zero placeholders e ausência de português no texto extraído. As oito imagens mantidas continuam com o português rasterizado já documentado.
 
-A inspeção do HTML estático gerado confirmou textos e alt em inglês, metadata Open Graph em inglês com `en_US`, wrapper `lang="en"`, os oito placeholders de preço e ausência do player de vídeo. A conferência estrutural compara os caminhos das imagens, ordem das seções, lista de compradores, URL de checkout e classes CSS da fonte, preservando-os com a única substituição visual autorizada na área do vídeo. Imagens com texto rasterizado continuam sendo a exceção documentada acima.
-
-Resultado: AC-01, AC-02, AC-04 e AC-05 aprovados; AC-03 reprovado por dois erros preexistentes de testes. Nenhum push ou deploy realizado.
+Resultado da correção: todos os aceites aprovados conforme o escopo revisado do AC-03. Dois arquivos alterados nesta correção: componente em inglês e este relatório. Rota e metadata permanecem iguais.

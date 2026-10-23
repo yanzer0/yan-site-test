@@ -9,14 +9,9 @@ import Image from "next/image";
 const CHECKOUT_URL = "https://pay.hotmart.com/O108099140A?checkoutMode=10&bid=1792518047033";
 
 const PRICING = {
-  price: "[price]", // TODO(Yan): definir
-  listPrice: "[original price]", // TODO(Yan): definir
-  dinner: "[dinner price]", // TODO(Yan): definir
-  streaming: "[streaming price]", // TODO(Yan): definir
-  haircut: "[haircut price]", // TODO(Yan): definir
-  consultation: "[consultation price]", // TODO(Yan): definir
-  course: "[course price]", // TODO(Yan): definir
-  monthlySubscription: "[monthly subscription price]", // TODO(Yan): definir
+  price: "US$ 27",
+  // US monthly billing: https://support.claude.com/en/articles/8325606-what-is-the-pro-plan
+  claudeProMonthly: "US$ 20",
 };
 
 /* ─── Lightbox Modal ─── */
@@ -232,10 +227,15 @@ function HeroSection() {
 
         {/* Video */}
         <div className="animate-fade-in-up delay-300 mt-10 max-w-2xl mx-auto rounded-lg overflow-hidden border border-green-500/10">
-          <div className="w-full aspect-video flex flex-col items-center justify-center gap-4 p-6">
-            <p className="font-heading text-xl sm:text-2xl font-bold text-white">Your work. Your context. Ready when you are.</p>
-            <p className="text-sm text-zinc-400">Explore the system and see what is inside the kit below.</p>
-          </div>
+          <video
+            src="/video-segundo-cerebro.mp4"
+            className="w-full aspect-video object-cover"
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="metadata"
+          />
         </div>
 
         {/* CTA */}
@@ -821,10 +821,8 @@ function NotForSection() {
 /* ─── Section 8: Value Comparison ─── */
 function ValueComparisonSection() {
   const COMPARISONS = [
-    { price: PRICING.dinner, label: "Dinner out", duration: "lasts 2 hours", highlight: false },
-    { price: PRICING.streaming, label: "A month of streaming and music", duration: "lasts 30 days", highlight: false },
-    { price: PRICING.haircut, label: "A haircut", duration: "lasts 3 weeks", highlight: false },
-    { price: PRICING.price, label: "Second Brain Kit", duration: "yours to keep", highlight: true },
+    { price: PRICING.claudeProMonthly, label: "Claude Pro (US monthly billing)", duration: "per month", highlight: false },
+    { price: PRICING.price, label: "Second Brain Kit", duration: "one-time payment", highlight: true },
   ];
 
   const ref = useScrollReveal();
@@ -834,8 +832,8 @@ function ValueComparisonSection() {
     <section className="py-20 sm:py-28 bg-black/80">
       <div ref={ref} className="scroll-reveal mx-auto max-w-3xl px-4 sm:px-6">
         <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-center mb-12">
-          What else could you spend{" "}
-          <span className="font-punch text-gradient-green">{PRICING.price}</span> on?
+          A monthly subscription.{" "}
+          <span className="font-punch text-gradient-green">A one-time kit.</span>
         </h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-12">
@@ -863,13 +861,14 @@ function ValueComparisonSection() {
 
         <div className="space-y-5">
           <p className="text-[15px] text-zinc-400 leading-relaxed">
-            Dinner ends in 2 hours. Streaming renews next month. Your hair grows back.
+            Claude Pro costs {PRICING.claudeProMonthly} per month with US monthly billing. Regional prices and taxes vary.{" "}
+            <a href="https://support.claude.com/en/articles/8325606-what-is-the-pro-plan" target="_blank" rel="noopener noreferrer" className="text-green-400 hover:text-green-300 underline">Check Claude pricing.</a>
           </p>
           <p className="text-[15px] text-zinc-400 leading-relaxed">
             Your Second Brain <strong className="text-gradient-green font-semibold">builds more context every day you use it.</strong> It collects knowledge, records decisions, and saves lessons. Six months from now, you will have a record of your work you can keep building on.
           </p>
           <p className="text-[15px] text-zinc-400 leading-relaxed">
-            Dinner out costs {PRICING.dinner}. The kit is {PRICING.price}. One ends the same evening. The other gives you context you can build on every week.
+            The kit is {PRICING.price}, paid once. Your Claude plan is separate. The kit gives you a reusable system for your context, with no recurring kit fee.
           </p>
           <p className="text-[15px] text-zinc-400 leading-relaxed">
             If the kit saves you 1 hour a week, that is time you get back each week. Think about what that hour is worth to you. <strong className="text-white">Time for the work that matters, instead of repeating your background to AI.</strong>
@@ -1008,7 +1007,7 @@ function PricingSection() {
 
         <div className="space-y-4 text-[15px] text-zinc-400 leading-relaxed max-w-2xl mx-auto mb-10">
           <p>
-            A custom setup consultation would be {PRICING.consultation}. A video course would be {PRICING.course}. A monthly subscription with support would be {PRICING.monthlySubscription} per month.
+            I have sold this as a done-for-you setup for much more. With this kit, you get the system to set up yourself.
           </p>
           <p>
             Here, you get a ready-to-use kit. Download it, make it yours, and use it. One purchase.
@@ -1017,7 +1016,6 @@ function PricingSection() {
 
         {/* Price box */}
         <div className="mx-auto max-w-sm rounded-lg border-2 border-green-500/40 bg-green-500/[0.06] p-8 mb-6">
-          <div className="font-mono text-lg text-zinc-500 line-through mb-1">{PRICING.listPrice}</div>
           <div className="font-punch text-5xl sm:text-6xl font-extrabold text-gradient-green mb-2">{PRICING.price}</div>
           <p className="text-sm text-green-300/70 mb-6">
             One payment. No subscription. No renewal.
