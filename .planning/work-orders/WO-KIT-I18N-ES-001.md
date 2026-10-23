@@ -1,6 +1,6 @@
 ---
 work_order: WO-KIT-I18N-ES-001
-status: active
+status: completed
 report_status: pending
 code_artifact_commit: null
 central_branch: codex/kit-es-20261023
