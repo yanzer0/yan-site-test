@@ -7,15 +7,16 @@ import Image from "next/image";
 
 const PRICING = {
   usd: { kit: "US$ 17", claudeProMonth: "US$ 20" },
-  eur: { kit: "€ 19", claudeProMonth: "Un mes" },
+  // Single USD offer: Hotmart converts to the buyer's local currency at checkout (Iago, 23/10).
+  eur: { kit: "US$ 17", claudeProMonth: "US$ 20" },
 };
 
 type Currency = keyof typeof PRICING;
 type Pricing = (typeof PRICING)[Currency];
 
 const CHECKOUT_URL = {
-  usd: "https://pay.hotmart.com/O108099140A?checkoutMode=10&bid=1792518047033", // TODO(Yan/Iago): confirmar checkout internacional USD
-  eur: "https://pay.hotmart.com/O108099140A?checkoutMode=10&bid=1792518047033", // TODO(Yan/Iago): confirmar checkout internacional EUR
+  usd: "https://pay.hotmart.com/T108161703R",
+  eur: "https://pay.hotmart.com/T108161703R",
 };
 
 

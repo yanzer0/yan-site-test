@@ -6,10 +6,10 @@ import { useScrollReveal } from "@/lib/use-scroll-reveal";
 import Image from "next/image";
 
 // TODO(Yan): confirmar checkout internacional
-const CHECKOUT_URL = "https://pay.hotmart.com/O108099140A?checkoutMode=10&bid=1792518047033";
+const CHECKOUT_URL = "https://pay.hotmart.com/T108161703R";
 
 const PRICING = {
-  price: "US$ 27",
+  price: "US$ 17",
   // US monthly billing: https://support.claude.com/en/articles/8325606-what-is-the-pro-plan
   claudeProMonthly: "US$ 20",
 };
