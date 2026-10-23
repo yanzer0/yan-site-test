@@ -2,7 +2,7 @@
 
 import { useScrollReveal } from "@/lib/use-scroll-reveal";
 
-const PRICING = { price: "[price]" }; // TODO(Yan): definir
+const PRICING = { price: "US$ 47" };
 const PREMIUM_CHECKOUT_URL = "[checkout]"; // TODO(Yan): definir
 const DECLINE_URL = "[thank-you]"; // TODO(Yan): definir
 
@@ -64,6 +64,7 @@ export function PremiumUpsellEn() {
         <section aria-labelledby="premium-offer" className="mx-auto mt-8 max-w-lg rounded-2xl border border-green-500/40 bg-green-500/[0.04] p-6 text-center sm:p-8">
           <h2 id="premium-offer" className="font-heading text-xl font-bold">Upgrade to Premium</h2>
           <p className="my-4 font-punch text-5xl font-extrabold tracking-tight text-gradient-green">{PRICING.price}</p>
+          <p className="mb-5 text-sm text-zinc-400">One-time payment</p>
           <a
             id="hotmart-upsell-accept"
             href={PREMIUM_CHECKOUT_URL}

@@ -1,9 +1,13 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useScrollReveal } from "@/lib/use-scroll-reveal";
 
-const PRICING = { price: "[price]" }; // TODO(Yan): definir
-const PREMIUM_CHECKOUT_URL = "[checkout]"; // TODO(Yan): definir
+const PRICING = { usd: "US$ 27", eur: "€ 29" };
+const PREMIUM_CHECKOUT_URL = {
+  usd: "[checkout]", // TODO(Yan): definir checkout USD
+  eur: "[checkout]", // TODO(Yan): definir checkout EUR
+};
 const DECLINE_URL = "[thank-you]"; // TODO(Yan): definir
 
 const PREMIUM_ITEMS = [
@@ -20,6 +24,13 @@ const PREMIUM_ITEMS = [
 
 export function PremiumUpsellEs() {
   const revealRef = useScrollReveal();
+  const [currency, setCurrency] = useState<"usd" | "eur">("usd");
+
+  useEffect(() => {
+    if (new URLSearchParams(window.location.search).get("moneda") === "eur") {
+      setCurrency("eur");
+    }
+  }, []);
 
   return (
     <main lang="es" className="min-h-screen bg-black text-white">
@@ -63,10 +74,11 @@ export function PremiumUpsellEs() {
 
         <section aria-labelledby="premium-offer" className="mx-auto mt-8 max-w-lg rounded-2xl border border-green-500/40 bg-green-500/[0.04] p-6 text-center sm:p-8">
           <h2 id="premium-offer" className="font-heading text-xl font-bold">Mejora tu Kit con Premium</h2>
-          <p className="my-4 font-punch text-5xl font-extrabold tracking-tight text-gradient-green">{PRICING.price}</p>
+          <p className="my-4 font-punch text-5xl font-extrabold tracking-tight text-gradient-green">{PRICING[currency]}</p>
+          <p className="mb-5 text-sm text-zinc-400">Pago único</p>
           <a
             id="hotmart-upsell-accept"
-            href={PREMIUM_CHECKOUT_URL}
+            href={PREMIUM_CHECKOUT_URL[currency]}
             className="green-glow flex min-h-12 items-center justify-center rounded-xl bg-green-500 px-5 py-3 text-base font-bold text-black transition-colors hover:bg-green-400 focus-visible:outline-2 focus-visible:outline-solid focus-visible:outline-offset-4 focus-visible:outline-green-300"
           >
             Sí, añade Premium a mi Kit
