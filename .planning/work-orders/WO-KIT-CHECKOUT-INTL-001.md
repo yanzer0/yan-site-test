@@ -1,6 +1,6 @@
 ---
 work_order: WO-KIT-CHECKOUT-INTL-001
-status: active
+status: completed
 central_branch: claude/kit-checkout-intl-20261023
 owner: Yan
 authorized_by: Yan
@@ -20,7 +20,7 @@ scope_lock:
     background_jobs: []
   acceptance_ids: [AC-01, AC-02, AC-03]
   stop_when: [AC-01, AC-02, AC-03]
-  passed_acceptance_ids: []
+  passed_acceptance_ids: [AC-01, AC-02, AC-03]
 ---
 
 # Checkout internacional do Kit nas páginas EN e ES
