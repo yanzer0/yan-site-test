@@ -1,6 +1,6 @@
 ---
 work_order: WO-PREMIUM-UPSELL-I18N-001
-status: active
+status: completed
 report_status: pending
 code_artifact_commit: null
 central_branch: codex/premium-upsell-i18n-20261023
