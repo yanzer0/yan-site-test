@@ -6,19 +6,17 @@ import { useScrollReveal } from "@/lib/use-scroll-reveal";
 import Image from "next/image";
 
 const PRICING = {
-  kit: "[price]", // TODO(Yan): definir
-  original: "[original-price]", // TODO(Yan): definir
-  dinner: "[dinner-price]", // TODO(Yan): definir
-  streamingMonth: "[streaming-price]", // TODO(Yan): definir
-  haircut: "[haircut-price]", // TODO(Yan): definir
-  hourlyRate: "[hourly-rate]", // TODO(Yan): definir
-  consulting: "[consulting-price]", // TODO(Yan): definir
-  course: "[course-price]", // TODO(Yan): definir
-  supportMonth: "[monthly-support-price]", // TODO(Yan): definir
+  usd: { kit: "US$ 17", claudeProMonth: "US$ 20" },
+  eur: { kit: "€ 19", claudeProMonth: "Un mes" },
 };
 
-// TODO(Yan): confirmar checkout internacional
-const CHECKOUT_URL = "https://pay.hotmart.com/O108099140A?checkoutMode=10&bid=1792518047033";
+type Currency = keyof typeof PRICING;
+type Pricing = (typeof PRICING)[Currency];
+
+const CHECKOUT_URL = {
+  usd: "https://pay.hotmart.com/O108099140A?checkoutMode=10&bid=1792518047033", // TODO(Yan/Iago): confirmar checkout internacional USD
+  eur: "https://pay.hotmart.com/O108099140A?checkoutMode=10&bid=1792518047033", // TODO(Yan/Iago): confirmar checkout internacional EUR
+};
 
 
 
@@ -232,9 +230,15 @@ function HeroSection() {
 
 
         <div className="animate-fade-in-up delay-300 mt-10 max-w-2xl mx-auto rounded-lg overflow-hidden border border-green-500/10">
-          <div className="w-full aspect-video flex items-center justify-center px-6 text-sm text-zinc-400">
-            <p>Tu contexto, tus proyectos y tus decisiones, en un solo sistema.<br />Descubre cómo funciona a continuación.</p>
-          </div>
+          <video
+            src="/video-segundo-cerebro.mp4"
+            className="w-full aspect-video object-cover"
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="metadata"
+          />
         </div>
 
 
@@ -764,7 +768,7 @@ function AudienceSection() {
 }
 
 
-function NotForSection() {
+function NotForSection({ pricing }: { pricing: Pricing }) {
   const WARNINGS = [
     { title: "No tienes Claude Code.", desc: "Necesitas tener Claude Code funcionando en tu computadora. Sin él, los comandos del kit no se ejecutan." },
     { title: "Buscas resultados sin configurarlo.", desc: "Recibes las plantillas y las guías. Tú tienes que añadir TUS datos. Reserva entre 30 y 60 minutos para la configuración inicial. Esa parte requiere tu atención." },
@@ -808,7 +812,7 @@ function NotForSection() {
         </div>
 
         <p className="mt-10 text-base sm:text-lg text-zinc-400 text-center font-medium">
-          Si tienes Claude Code y quieres configurarlo, sigue leyendo. Esto es lo que recibes por <span className="text-gradient-green font-semibold">{PRICING.kit}.</span>
+          Si tienes Claude Code y quieres configurarlo, sigue leyendo. Esto es lo que recibes por <span className="text-gradient-green font-semibold">{pricing.kit}.</span>
         </p>
         <SectionCta />
       </div>
@@ -818,12 +822,10 @@ function NotForSection() {
 }
 
 
-function ValueComparisonSection() {
+function ValueComparisonSection({ pricing, currency }: { pricing: Pricing; currency: Currency }) {
   const COMPARISONS = [
-    { price: PRICING.dinner, label: "Una cena fuera", duration: "dura una noche", highlight: false },
-    { price: PRICING.streamingMonth, label: "Un mes de series y música", duration: "dura 30 días", highlight: false },
-    { price: PRICING.haircut, label: "Un corte de pelo", duration: "dura unas semanas", highlight: false },
-    { price: PRICING.kit, label: "Kit Segundo Cerebro", duration: "acceso de por vida", highlight: true },
+    { price: pricing.claudeProMonth, label: "Claude Pro", duration: "suscripción mensual", highlight: false },
+    { price: pricing.kit, label: "Kit Segundo Cerebro", duration: "un solo pago", highlight: true },
   ];
 
   const ref = useScrollReveal();
@@ -833,8 +835,8 @@ function ValueComparisonSection() {
     <section className="py-20 sm:py-28 bg-black/80">
       <div ref={ref} className="scroll-reveal mx-auto max-w-3xl px-4 sm:px-6">
         <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-center mb-12">
-          ¿Qué puedes comprar por{" "}
-          <span className="font-punch text-gradient-green">{PRICING.kit}</span>?
+          Tu Kit por{" "}
+          <span className="font-punch text-gradient-green">{pricing.kit}</span>, una sola vez.
         </h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-12">
@@ -862,16 +864,21 @@ function ValueComparisonSection() {
 
         <div className="space-y-5">
           <p className="text-[15px] text-zinc-400 leading-relaxed">
-            La cena termina esa noche. La suscripción se renueva al mes siguiente. El pelo vuelve a crecer.
+            Claude Pro es una suscripción mensual. El Kit es una compra de una sola vez. Son productos distintos: el Kit organiza tu contexto y necesita tu acceso a Claude Code por separado.
           </p>
           <p className="text-[15px] text-zinc-400 leading-relaxed">
             Tu segundo cerebro <strong className="text-gradient-green font-semibold">acumula contexto cada vez que lo usas.</strong> Guarda conocimientos, registra decisiones y reúne aprendizajes. Dentro de 6 meses podrás consultar un historial de tu trabajo que hoy todavía no tienes.
           </p>
           <p className="text-[15px] text-zinc-400 leading-relaxed">
-            Una cena fuera cuesta {PRICING.dinner}. El kit cuesta {PRICING.kit}. La cena termina esa noche. El contexto que guardas puede seguir ayudándote la semana siguiente.
+            {currency === "usd" ? (
+              <>Como referencia, Claude Pro cuesta {pricing.claudeProMonth} al mes en EE. UU. Los precios y los impuestos pueden variar según la región.</>
+            ) : (
+              <>Como referencia, piensa en un mes de Claude Pro. Su precio local puede variar según la región y los impuestos.</>
+            )}{" "}
+            <a href="https://support.claude.com/en/articles/8325606-what-is-the-pro-plan" target="_blank" rel="noopener noreferrer" className="text-green-400 underline">Consulta la tarifa de Claude Pro.</a>
           </p>
           <p className="text-[15px] text-zinc-400 leading-relaxed">
-            Si valoras una hora de tu trabajo en {PRICING.hourlyRate}, compárala con los {PRICING.kit} del kit. Si te ahorra 1 hora por semana, ¿qué harías con ese tiempo? <strong className="text-white">Tiempo para avanzar en lo que te importa, sin repetir el mismo contexto a la IA.</strong>
+            El Kit cuesta {pricing.kit}, en un solo pago. Lo configuras con tus datos y sigues usando los archivos, sin una cuota mensual del kit. <strong className="text-white">Tiempo para avanzar en lo que te importa, sin repetir el mismo contexto a la IA.</strong>
           </p>
         </div>
         <SectionCta />
@@ -952,7 +959,7 @@ function FAQSection() {
 }
 
 
-function SupportSection() {
+function SupportSection({ pricing }: { pricing: Pricing }) {
   const ref = useScrollReveal();
   return (
     <>
@@ -982,7 +989,7 @@ function SupportSection() {
         </div>
 
         <p className="text-[15px] text-zinc-400 leading-relaxed">
-          Por {PRICING.kit} recibes el kit y las instrucciones de soporte con IA para seguir consultándolas. El kit no añade una cuota <em>mensual</em> por ese soporte.
+          Por {pricing.kit} recibes el kit y las instrucciones de soporte con IA para seguir consultándolas. El kit no añade una cuota <em>mensual</em> por ese soporte.
         </p>
         <SectionCta />
       </div>
@@ -992,7 +999,7 @@ function SupportSection() {
 }
 
 
-function PricingSection() {
+function PricingSection({ pricing, checkoutUrl }: { pricing: Pricing; checkoutUrl: string }) {
   const ref = useScrollReveal();
   return (
     <>
@@ -1007,7 +1014,7 @@ function PricingSection() {
 
         <div className="space-y-4 text-[15px] text-zinc-400 leading-relaxed max-w-2xl mx-auto mb-10">
           <p>
-            Una configuración personalizada podría ofrecerse por {PRICING.consulting}. Un curso en video, por {PRICING.course}. Una suscripción con soporte, por {PRICING.supportMonth} al mes.
+            Ya he vendido esta configuración como un servicio hecho por mí por un importe mucho mayor. Un curso o una suscripción con soporte serían ofertas distintas.
           </p>
           <p>
             Aquí recibes el kit para hacerlo tú. Descarga los archivos, personalízalos y empieza a usarlos. Un solo pago.
@@ -1016,13 +1023,12 @@ function PricingSection() {
 
 
         <div className="mx-auto max-w-sm rounded-lg border-2 border-green-500/40 bg-green-500/[0.06] p-8 mb-6">
-          <div className="font-mono text-lg text-zinc-500 line-through mb-1">{PRICING.original}</div>
-          <div className="font-punch text-5xl sm:text-6xl font-extrabold text-gradient-green mb-2">{PRICING.kit}</div>
+          <div className="font-punch text-5xl sm:text-6xl font-extrabold text-gradient-green mb-2">{pricing.kit}</div>
           <p className="text-sm text-green-300/70 mb-6">
             Un solo pago. Sin suscripción. Sin renovación.
           </p>
           <a
-            href={CHECKOUT_URL}
+            href={checkoutUrl}
             className="group block w-full rounded-lg bg-green-500 px-8 py-4 text-lg font-bold text-black transition-all duration-200 hover:bg-green-400 hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(168,232,76,0.3)] cursor-pointer"
           >
             Quiero el Kit Segundo Cerebro <span className="transition-transform duration-200 group-hover:translate-x-1 inline-block">&rarr;</span>
@@ -1042,7 +1048,7 @@ function PricingSection() {
 }
 
 
-function FinalPushSection() {
+function FinalPushSection({ pricing, checkoutUrl }: { pricing: Pricing; checkoutUrl: string }) {
   const ref = useScrollReveal();
   return (
     <>
@@ -1068,10 +1074,10 @@ function FinalPushSection() {
         <div className="mt-10 text-center">
           <a
             id={FINAL_CTA_ID}
-            href={CHECKOUT_URL}
+            href={checkoutUrl}
             className="group inline-flex items-center gap-2 rounded-lg bg-green-500 px-10 py-4 text-base font-bold text-black transition-all duration-200 hover:bg-green-400 hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(168,232,76,0.3)] cursor-pointer green-glow"
           >
-            Crear mi Segundo Cerebro - {PRICING.kit} <span className="transition-transform duration-200 group-hover:translate-x-1">&rarr;</span>
+            Crear mi Segundo Cerebro - {pricing.kit} <span className="transition-transform duration-200 group-hover:translate-x-1">&rarr;</span>
           </a>
           <p className="mt-4 font-mono text-[12px] text-green-300/70">
             Un solo pago. Acceso de por vida. Actualizaciones incluidas.
@@ -1118,6 +1124,15 @@ function SCFooter() {
 
 
 export function SegundoCerebroEs() {
+  const [currency, setCurrency] = useState<Currency>("usd");
+
+  useEffect(() => {
+    setCurrency(new URLSearchParams(window.location.search).get("moneda") === "eur" ? "eur" : "usd");
+  }, []);
+
+  const pricing = PRICING[currency];
+  const checkoutUrl = CHECKOUT_URL[currency];
+
   return (
     <div lang="es">
       <main>
@@ -1127,12 +1142,12 @@ export function SegundoCerebroEs() {
         <DemoSection />
         <KitContentsSection />
         <AudienceSection />
-        <NotForSection />
-        <ValueComparisonSection />
+        <NotForSection pricing={pricing} />
+        <ValueComparisonSection pricing={pricing} currency={currency} />
         <FAQSection />
-        <SupportSection />
-        <PricingSection />
-        <FinalPushSection />
+        <SupportSection pricing={pricing} />
+        <PricingSection pricing={pricing} checkoutUrl={checkoutUrl} />
+        <FinalPushSection pricing={pricing} checkoutUrl={checkoutUrl} />
       </main>
       <SocialProofToast />
       <SCFooter />
