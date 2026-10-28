@@ -1,6 +1,6 @@
 (() => {
   "use strict";
-  const form = document.getElementById("acesso-guias");
+  const form = document.getElementById("acesso-guias") || document.getElementById("preferencias-guias");
   if (form) {
     const button = document.getElementById("enviar-cadastro");
     const summary = document.getElementById("erro-formulario");
@@ -16,7 +16,10 @@
       const controller = new AbortController();
       const timeout = setTimeout(() => controller.abort(), 18000);
       try {
-        const response = await fetch(form.action, { method: "POST", credentials: "same-origin", headers: { "Content-Type": "application/json" }, body: JSON.stringify(Object.fromEntries(new FormData(form))), signal: controller.signal });
+        const payload = Object.fromEntries(new FormData(form));
+        payload.consentimentos = { comercial: form.elements.namedItem("consent_comercial")?.checked === true, publicidade: form.elements.namedItem("consent_publicidade")?.checked === true };
+        if (payload.consentimentos.publicidade && form.id === "acesso-guias") payload.marketing = window.infuserGuiasMarketing();
+        const response = await fetch(form.action, { method: "POST", credentials: "same-origin", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload), signal: controller.signal });
         const result = await response.json();
         if (!response.ok) {
           Object.entries(result.campos || {}).forEach(([name, message]) => {
@@ -28,6 +31,7 @@
           throw new Error(result.erro || "Confira os campos e tente novamente.");
         }
         if (typeof result.destino !== "string" || !/^\/(?!\/)/.test(result.destino)) throw new Error("Atualize a página e tente novamente.");
+        if (form.id === "preferencias-guias") window.infuserGuiasPreferenciasAlteradas(payload.consentimentos.publicidade);
         window.location.assign(result.destino);
       } catch (error) {
         summary.textContent = error instanceof Error && error.name !== "AbortError" ? error.message : "O envio demorou mais do que o esperado. Confira a sua conexão e tente novamente.";

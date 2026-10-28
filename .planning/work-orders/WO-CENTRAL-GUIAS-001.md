@@ -35,7 +35,7 @@ scope_lock:
     background_jobs: []
   acceptance_ids: [AC-01, AC-02, AC-03, AC-04, AC-05]
   stop_when: [AC-01, AC-02, AC-03, AC-04, AC-05]
-  passed_acceptance_ids: []
+  passed_acceptance_ids: [AC-01, AC-02, AC-03, AC-04]
 ---
 # Central de guias com cadastro obrigatório
 
@@ -65,3 +65,13 @@ Handoff: conteúdo em `c3df1cb`; `npm run build` final concluiu com as rotas nov
 ## Rodada autorizada: marketing, v1.1
 
 Fonte: novo pedido de Yan para guardar respostas, cookies/localização e dados úteis para públicos semelhantes e contato comercial. Atualização autorizada pelo root antes de uma única publicação. AC-01 mantém catálogo/gates e soma GTM condicionado nos 16 HTMLs; AC-02 soma escolhas opcionais, versão, metadados allowlisted e GeoJS tolerante a falhas; AC-03 soma preferências e revogação; AC-04 soma filtros comercial/Meta e proibição de texto livre no Meta; AC-05 mantém suíte/build e achado TS2493 fora da frente. Prova adicional: `npm test -- tests/guias/marketing.test.ts tests/guias/preferencias.test.ts`. Teto restante: 30 a 35 min sem ultrapassar os 90 min originais.
+
+## Evidência v1.1
+
+- `npm test`: 564 aprovados, 9 pulados por ambiente (4 Postgres descartável e 5 HTTP sem URL). Novos testes cobrem opt-out sem chamada GeoJS, indisponibilidade tolerada no cadastro, whitelist, loader condicionado, preferências/revogação e filtros/export Meta sem respostas livres.
+- `tsc --noEmit`: somente os dois TS2493 legados do instalador, preservados fora da frente.
+- Escolhas atuais por contato prevalecem sobre capturas antigas, e revogar remove enriquecimentos da base corrente. GTM é carregado uma vez após opt-in, e coleta posterior dos cookies exige autorização ainda vigente no servidor. Formulário e preferências nunca carregam GTM.
+- Facto do código: 15 guias tinham o loader inline; `guia-ia-sem-bajulacao.html` não tinha. Nos 15 foi substituído só o script; no restante foi adicionado o mesmo loader funcional condicionado. Textos/botões/conteúdo dos 16 foram preservados.
+- Localização é só estimada por IP (GeoJS, timeout 1,5s), sem prompt GPS. Não houve disparo de mensagem, campanha, criação de audiência nem alegação de conversão Meta.
+- Migração atualizada é aditiva e repetível: `guias_leads` recebe escolhas/metadados e `guias_consentimentos` guarda histórico com versão/origem/horário do servidor. Aplicar antes da publicação; configuração continua apenas `GUIAS_ACCESS_SECRET`.
+- Limite: tags do restante do site React continuam no carregador preexistente, fora desta fatia. A mudança de consentimento cobre central e os 16 guias; a política recebe a seção específica.

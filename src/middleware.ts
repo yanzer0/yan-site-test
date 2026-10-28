@@ -3,6 +3,7 @@ import type { NextRequest } from "next/server";
 import { guiaPorCaminho } from "./lib/guias/catalogo";
 import { COOKIE_GUIAS, sessaoGuiasValida } from "./lib/guias/sessao";
 import { origemPublicaGuias } from "./lib/guias/http";
+import { campanhaPermitida } from "./lib/guias/atribuicao";
 
 // Basic auth da demo do Marja App (/demomarja), entregue a um prospect por WhatsApp.
 // O matcher tambem cobre o painel e os guias, roteados separadamente no fim.
@@ -130,6 +131,7 @@ export async function protegerGuia(request: NextRequest): Promise<NextResponse> 
     } else {
       const destino = new URL("/guias/acesso", origemPublicaGuias(request));
       if (guia) destino.searchParams.set("guia", guia.slug);
+      for (const [nome, valor] of Object.entries(campanhaPermitida(request.nextUrl.searchParams))) destino.searchParams.set(nome, valor);
       resposta = NextResponse.redirect(destino, 307);
     }
   } catch {

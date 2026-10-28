@@ -12,7 +12,7 @@ function requisicao(corpo: unknown, extra: Record<string, string> = {}): NextReq
   return new NextRequest("http://localhost:3000/api/guias/acesso", { method: "POST", headers: { "content-type": "application/json", origin: "http://localhost:3000", "x-forwarded-for": randomUUID(), ...extra }, body: typeof corpo === "string" ? corpo : JSON.stringify(corpo) });
 }
 beforeEach(() => { process.env.GUIAS_ACCESS_SECRET = "segredo-sintetico-exclusivo-".repeat(3); gravar.mockReset().mockResolvedValue(undefined); });
-afterEach(() => { delete process.env.GUIAS_ACCESS_SECRET; vi.restoreAllMocks(); vi.unstubAllEnvs(); });
+afterEach(() => { delete process.env.GUIAS_ACCESS_SECRET; vi.restoreAllMocks(); vi.unstubAllEnvs(); vi.unstubAllGlobals(); });
 
 describe("cadastro obrigatório dos guias", () => {
   it.each(CAMPOS_GUIAS)("recusa campo ausente: %s", async (campo) => {
@@ -32,7 +32,7 @@ describe("cadastro obrigatório dos guias", () => {
     const response = await POST(requisicao(CADASTRO));
     expect(response.status).toBe(200);
     expect(await response.json()).toEqual({ destino: "/guia-skill" });
-    expect(gravar).toHaveBeenCalledWith(expect.any(String), { nome: CADASTRO.nome, email: CADASTRO.email, whatsapp: "5511999999999", nicho: CADASTRO.nicho, interesse: CADASTRO.interesse, impedimento: CADASTRO.impedimento, guia: "skills", origem: "https://instagram.com/p/abc" });
+    expect(gravar).toHaveBeenCalledWith(expect.any(String), { nome: CADASTRO.nome, email: CADASTRO.email, whatsapp: "5511999999999", nicho: CADASTRO.nicho, interesse: CADASTRO.interesse, impedimento: CADASTRO.impedimento, guia: "skills", origem: "https://instagram.com/p/abc" }, { comercial: false, publicidade: false }, expect.objectContaining({ publicidade: { status: "nao_autorizada" } }));
     const cookie = response.cookies.get(COOKIE_GUIAS)!;
     expect(await sessaoGuiasValida(cookie.value)).toBe(true);
     expect(response.headers.get("set-cookie")).toContain("HttpOnly");
@@ -42,6 +42,13 @@ describe("cadastro obrigatório dos guias", () => {
   it("entrada geral volta para a biblioteca", async () => {
     const response = await POST(requisicao({ ...CADASTRO, guia: "" }));
     expect(response.status).toBe(200); expect(await response.json()).toEqual({ destino: "/guias" });
+  });
+  it("salva escolhas e libera com GeoJS indisponível", async () => {
+    vi.stubGlobal("fetch", vi.fn(async () => { throw new Error("GeoJS offline"); }));
+    const r = await POST(requisicao({ ...CADASTRO, consentimentos: { comercial: true, publicidade: true }, marketing: { campanha: { utm_source: "instagram", fbclid: "click-123", email: "private@example.com" } } }, { "x-forwarded-for": "8.8.8.8" }));
+    expect(r.status).toBe(200); expect(r.headers.get("set-cookie")).toContain("HttpOnly");
+    expect(gravar).toHaveBeenCalledWith(expect.any(String), expect.any(Object), { comercial: true, publicidade: true }, expect.objectContaining({ publicidade: expect.objectContaining({ localizacao: expect.objectContaining({ status: "indisponivel" }) }) }));
+    expect(await r.json()).toEqual({ destino: "/guia-skill?utm_source=instagram&fbclid=click-123" });
   });
   it("falha de banco não libera nem vaza dados no log", async () => {
     gravar.mockRejectedValue(new Error(`banco falhou com ${CADASTRO.email}`));
@@ -73,8 +80,8 @@ describe("cadastro obrigatório dos guias", () => {
     expect(externo.status).toBe(403);
   });
   it("limita corpo pelo tamanho real e pelo cabeçalho", async () => {
-    expect((await POST(requisicao("x".repeat(12289)))).status).toBe(413);
-    expect((await POST(requisicao(CADASTRO, { "content-length": "12289" }))).status).toBe(413);
+    expect((await POST(requisicao("x".repeat(32769)))).status).toBe(413);
+    expect((await POST(requisicao(CADASTRO, { "content-length": "32769" }))).status).toBe(413);
     expect(gravar).not.toHaveBeenCalled();
   });
   it("limita exatamente dez envios por rede em quinze minutos", async () => {

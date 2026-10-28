@@ -38,3 +38,7 @@ export async function sessaoGuiasValida(token: string | undefined, agora = Date.
     return await crypto.subtle.verify("HMAC", await chave(segredo), bytesBase64url(partes[2]), encoder.encode(`${partes[0]}.${partes[1]}`));
   } catch { return false; }
 }
+
+export async function idSessaoGuias(token: string | undefined): Promise<string | undefined> {
+  return await sessaoGuiasValida(token) ? token!.split(".")[0] : undefined;
+}

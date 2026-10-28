@@ -1,5 +1,6 @@
-import { CABECALHOS_GUIAS, documentoBiblioteca } from "@/lib/guias/documentos";
+import { cabecalhosBibliotecaGuias, documentoBiblioteca } from "@/lib/guias/documentos";
 export const dynamic = "force-dynamic";
 export function GET(): Response {
-  return new Response(documentoBiblioteca(), { headers: CABECALHOS_GUIAS });
+  const html = documentoBiblioteca();
+  return new Response(html, { headers: cabecalhosBibliotecaGuias(html) });
 }

@@ -16,7 +16,7 @@ describe.skipIf(!base)("guias pelo servidor HTTP real", () => {
     }
   });
   it("não aceita cookie falso nem cabeçalho de subrequest do cliente", async () => {
-    for (const headers of [{ cookie: `${COOKIE_GUIAS}=forjado` }, { "x-middleware-subrequest": "middleware:middleware:middleware:middleware:middleware" }]) {
+    for (const headers of [{ cookie: `${COOKIE_GUIAS}=forjado` }, { "x-middleware-subrequest": "middleware:middleware:middleware:middleware:middleware" }] as Record<string, string>[]) {
       const response = await fetch(new URL("/guia-agentes.html", base), { headers, redirect: "manual" });
       expect(response.status).toBe(307);
     }

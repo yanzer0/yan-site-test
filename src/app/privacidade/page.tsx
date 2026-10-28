@@ -37,7 +37,7 @@ const BODY = `
   <header>
     <div class="brand">Infuser</div>
     <h1>Política de Privacidade</h1>
-    <div class="meta">Última atualização: 22 de julho de 2026</div>
+    <div class="meta">Última atualização: 28 de outubro de 2026</div>
   </header>
 
   <p>Esta Política de Privacidade descreve como a <strong>Infuser Tecnologia e Serviços Digitais Ltda.</strong>, inscrita no CNPJ sob o nº 66.396.412/0001-09, com sede na Av. Raimundo Pereira de Magalhães, 1720, APT 14, Jardim Íris, São Paulo/SP, CEP 05145-901 ("Infuser", "nós"), coleta, utiliza, armazena e protege dados pessoais no âmbito dos seus serviços de automação e atendimento por meio de canais de mensagem, incluindo WhatsApp e Instagram.</p>
@@ -72,6 +72,13 @@ const BODY = `
   <ul>
     <li>Informações técnicas de acesso ao site (endereço IP, navegador, páginas visitadas), quando aplicável.</li>
   </ul>
+
+  <h3>3.4. Cadastro e preferências dos guias gratuitos</h3>
+  <p>Para liberar os guias, coletamos nome, e-mail, WhatsApp, nicho de atuação, interesse em IA e o impedimento relatado, além do material de entrada, origem e horário do cadastro. Essas respostas ficam disponíveis à equipe autorizada da Infuser.</p>
+  <p>Você pode, separadamente e de forma opcional, autorizar contato comercial por e-mail/WhatsApp e autorizar publicidade, medição e públicos personalizados ou semelhantes na Meta. As duas opções começam desmarcadas e não são necessárias para acessar os materiais.</p>
+  <p>Com autorização para publicidade, podemos registrar campanhas (UTM e identificadores de cliques), cookies específicos, navegador/dispositivo, idioma, fuso horário, tela/janela e IP público. Enviamos o IP à GeoJS (<a href="https://www.geojs.io/privacy/">política do provedor</a>) para estimar país, região e cidade. A localização é aproximada e pode estar indisponível ou incorreta; não solicitamos GPS nem criamos impressão digital do dispositivo.</p>
+  <p>O Google Tag Manager organiza as tags autorizadas, incluindo serviços da Meta, Google Analytics, Microsoft Clarity e UTMify. Nos guias, essas tags só são carregadas com publicidade autorizada. Os provedores podem processar dados fora do Brasil conforme suas políticas. Identificadores de contato e localização disponíveis podem compor públicos da Meta; as respostas sobre nicho, interesse e impedimento não entram nessa exportação.</p>
+  <p>Guardamos escolhas, versão do aviso, origem e horários do servidor. Altere ou revogue em <a href="/guias/preferencias">Preferências dos guias</a>. Revogar impede futuras cargas de publicidade nos guias e novas exportações da finalidade desmarcada, e remove enriquecimentos de publicidade da base corrente. Isso não desfaz tratamentos já realizados por terceiros. Para exclusão ou outros direitos: contato@useinfuser.com.</p>
 
   <h2>4. Finalidades e bases legais</h2>
   <p>Tratamos dados pessoais para as seguintes finalidades, amparadas nas bases legais da LGPD:</p>
@@ -124,7 +131,7 @@ const BODY = `
 
   <footer>
     Infuser Tecnologia e Serviços Digitais Ltda. — CNPJ 66.396.412/0001-09 — São Paulo/SP.<br>
-    Documento em conformidade com a Lei nº 13.709/2018 (LGPD).
+    Informações sobre o tratamento de dados pessoais pela Infuser.
   </footer>
 </div>`;
 
