@@ -16,3 +16,5 @@
 .direction-icon{display:block;width:18px;height:18px;flex-shrink:0}.form-symbol .direction-icon{width:24px;height:24px}.submit-button .direction-icon{width:22px;height:22px}
 
 .decline-button{margin-top:10px}
+
+@media(max-width:760px){.submit-button{gap:8px;padding-inline:10px}}
