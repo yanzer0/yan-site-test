@@ -8,7 +8,7 @@ risco: alto
 central_branch: codex/central-guias-20261028
 scope_lock:
   version: 1
-  base_commit: 4e3df3314726e5133bc2c7431f865d7583810665
+  base_commit: c212e8848489664012c9e0f1bb0781f185b4b395
   allowed_write_globs:
     - .planning/work-orders/WO-CENTRAL-GUIAS-001.md
     - specs/009-central-guias/UX-E-CONTEUDO.md
@@ -94,3 +94,5 @@ O usuário pede as duas opções inicialmente marcadas e o destaque verde ocupan
 AC-06: render inicial marcado e preferências falsas preservadas; ações explícitas e negativa sem metadados; os dois botões bloqueiam/restauram em erro. Prova: `npm test -- tests/guias/acoes-formulario.test.ts tests/guias/catalogo.test.ts tests/guias/preferencias.test.ts tests/guias/acesso.test.ts`.
 AC-07: destaque grid-column 1 / -1 em todos os breakpoints, mantendo 16 guias/ordem e SVG. Prova: catálogo e CSS afetados, QA vivo pelo root.
 Escopo desta fatia restrito aos quatro arquivos de produção do delta, testes afetados e docs listados. Sem DB/auth/outros guias. Teto desta nova autorização: 2 rodadas ou 90 min, alvo 10 min. O achado TS2493 e o estado anterior permanecem visíveis; sem closeout falso.
+
+A base desta nova fatia é o estado publicado c212e88 autorizado no despacho. O range novo exclui as alterações já entregues da v1.1; por isso o lock foi restrito aos arquivos desta revisão.
