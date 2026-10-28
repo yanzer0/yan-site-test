@@ -12,3 +12,8 @@ O pedido novo exige guardar respostas e dados úteis para contato, mensuração 
 Metadados limitados e com origem: campanha e IDs allowlisted; navegador, idioma, fuso, tela, cookies específicos e IP público apenas com publicidade autorizada. Localização aproximada por IP via GeoJS, host HTTPS fixo, sem redirect e timeout de 1,5s; falha fica indisponível e não bloqueia cadastro. Sem GPS, fingerprint, cookies de autenticação ou coleta de histórico. O loader GTM existente dos 16 guias será substituído por um loader compartilhado condicionado à escolha, sem pixel duplicado. Exportação Meta contém só identificadores padronizados, sem respostas abertas, IP ou cookies; contato filtra opt-in comercial. Sem disparos nem criação de audiência.
 
 Migração aditiva idempotente inclui escolhas atuais, JSONB de metadados e histórico de consentimentos. Alteração/negação impede cargas futuras do GTM; revogação remove os enriquecimentos de publicidade da base corrente. Não podemos desfazer tratamentos já efetuados por terceiros antes da revogação. Provas: opt-out sem GeoJS/metadados, whitelist, indisponibilidade tolerada, revogação e filtros de export, GTM único e os gates anteriores. O TS2493 legado continua fora do escopo.
+
+
+## Central Infuser, revisão v1.3
+
+DAG: definição > builders/scan + catálogo > rotas e middleware + portal/Kit tracking > testes/ZIP/integração > build > revisão/publicação root. Um executor nesta frente; a ligação captura/slug/catálogo é compartilhada, sem paralelismo de código. Rollback do app conserva banco e ZIPs; sem migração. Deploy só depois de root confirmar rotas novas e ausência de acesso direto a private/.

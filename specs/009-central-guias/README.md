@@ -1,7 +1,7 @@
 ---
 status: em-andamento
 definition_status: ready-for-build
-version: 1.2
+version: 1.3
 created: 2026-10-28
 owner: Yan
 ---
@@ -47,3 +47,8 @@ Os 15 loaders GTM encontrados foram substituídos; o guia IA sem bajulação, qu
 ## Revisão v1.2
 
 Autorizada em 28/10: escolhas iniciais marcadas no cadastro, confirmação explícita ou acesso sem marketing, sem mexer no false padrão do servidor nem nas preferências existentes. Destaque em linha inteira; sem migração. Contrato e UX são as fontes desta mudança.
+
+
+## Central Infuser, revisão v1.3
+
+Central Infuser em /central, com /guias compatível: 25 itens confirmados, sem preços. Os 16 guias continuam; somam Kit VS Code gratuito, 3 pacotes gratuitos, 4 Premium e Painel OS Em breve. Pagos levam às LPs públicas, nunca liberam conteúdo comprado. Recursos exigem cadastro e sessão. Três ZIPs fixos em private/central, montados das fontes canônicas autorizadas. Estúdio/Segundo Cérebro Premium/Pergaminho aguardam URLs confirmadas; não inventar destinos. Sem migração. Root revisa/publica.

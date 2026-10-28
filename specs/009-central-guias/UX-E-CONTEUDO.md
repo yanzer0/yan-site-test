@@ -20,3 +20,8 @@ Migração aditiva idempotente inclui escolhas atuais, JSONB de metadados e hist
 No cadastro inicial, contato e publicidade começam marcados. Isso não inicia publicidade nem significa confirmação por omissão. O botão Confirmar escolhas e acessar confirma os valores visíveis; Continuar sem marketing envia ambas as escolhas falsas e nenhum metadado de publicidade, mantendo os seis campos obrigatórios. Submitter ausente/desconhecido nunca promove os defaults a autorização. Ambos os botões ficam indisponíveis durante a gravação e recuperam seus rótulos em falha. Na página de preferências, sempre renderizar os valores efetivamente salvos, inclusive revogações. Aviso persistido: guias-marketing-2026-10-28-v2; nenhuma migração.
 
 O primeiro card ocupa 1 / -1 na grade em todos os tamanhos. No desktop ficam um destaque de largura total e 15 cards em cinco linhas de três, sem mudar DOM, URLs, busca, filtros ou ícones SVG. O root faz QA em 375px e desktop. Não há alegação de certificação jurídica; as escolhas dependem de ação afirmativa conforme a orientação já comunicada pelo root.
+
+
+## Central Infuser, revisão v1.3
+
+Marca Central Infuser e hero de guias, recursos e produtos. Cards com tipo e selo de estado, Premium sem preço, Em breve sem botão de compra/cadastro. Guia educativo e pacote são entregas distintas e explicitamente nomeadas. Detalhe de recurso mostra requisitos reais e baixar/instruções. Flex nativo preenche a última linha, featured flex-basis 100%; tablet duas e mobile uma coluna. Manter SVG, v2 clara e dois CTAs anteriores.

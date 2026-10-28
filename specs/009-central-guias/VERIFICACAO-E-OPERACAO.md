@@ -20,3 +20,8 @@ O pedido novo exige guardar respostas e dados úteis para contato, mensuração 
 Metadados limitados e com origem: campanha e IDs allowlisted; navegador, idioma, fuso, tela, cookies específicos e IP público apenas com publicidade autorizada. Localização aproximada por IP via GeoJS, host HTTPS fixo, sem redirect e timeout de 1,5s; falha fica indisponível e não bloqueia cadastro. Sem GPS, fingerprint, cookies de autenticação ou coleta de histórico. O loader GTM existente dos 16 guias será substituído por um loader compartilhado condicionado à escolha, sem pixel duplicado. Exportação Meta contém só identificadores padronizados, sem respostas abertas, IP ou cookies; contato filtra opt-in comercial. Sem disparos nem criação de audiência.
 
 Migração aditiva idempotente inclui escolhas atuais, JSONB de metadados e histórico de consentimentos. Alteração/negação impede cargas futuras do GTM; revogação remove os enriquecimentos de publicidade da base corrente. Não podemos desfazer tratamentos já efetuados por terceiros antes da revogação. Provas: opt-out sem GeoJS/metadados, whitelist, indisponibilidade tolerada, revogação e filtros de export, GTM único e os gates anteriores. O TS2493 legado continua fora do escopo.
+
+
+## Central Infuser, revisão v1.3
+
+Testar 16 gates originais e todos os aliases/HTMLs, central/Kit/3 detalhes/3 downloads, cookies falsos e traversal, ZIP real com arquivos esperados/sem material pago. Catálogo com URLs válidas, estados/tipos e exclusões; SaaS sem signup. Testar Kit consent-aware vs LPs existentes, busca/filtros e ações explícitas. Rodar afetados, suíte/build uma vez; QA 375/desktop e smoke root. TS2493 antigo permanece registrado.

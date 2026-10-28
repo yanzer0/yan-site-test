@@ -18,3 +18,8 @@ Migração aditiva idempotente inclui escolhas atuais, JSONB de metadados e hist
 No cadastro inicial, contato e publicidade começam marcados. Isso não inicia publicidade nem significa confirmação por omissão. O botão Confirmar escolhas e acessar confirma os valores visíveis; Continuar sem marketing envia ambas as escolhas falsas e nenhum metadado de publicidade, mantendo os seis campos obrigatórios. Submitter ausente/desconhecido nunca promove os defaults a autorização. Ambos os botões ficam indisponíveis durante a gravação e recuperam seus rótulos em falha. Na página de preferências, sempre renderizar os valores efetivamente salvos, inclusive revogações. Aviso persistido: guias-marketing-2026-10-28-v2; nenhuma migração.
 
 O primeiro card ocupa 1 / -1 na grade em todos os tamanhos. No desktop ficam um destaque de largura total e 15 cards em cinco linhas de três, sem mudar DOM, URLs, busca, filtros ou ícones SVG. O root faz QA em 375px e desktop. Não há alegação de certificação jurídica; as escolhas dependem de ação afirmativa conforme a orientação já comunicada pelo root.
+
+
+## Central Infuser, revisão v1.3
+
+GET /central exige sessão. GET /central/recursos/:slug mostra requisitos e instruções; GET /central/baixar/:slug exige sessão e devolve ZIP allowlisted, attachment/nosniff/no-store. Sem sessão, o download redireciona ao cadastro contextual e depois ao detalhe. Slug inválido=404, arquivo ausente=503. POST de captura aceita também os IDs fixos desses recursos e Kit, sem URL arbitrária; sem alvo abre /central. Nenhum evento, endpoint de pagamento ou schema alterado.

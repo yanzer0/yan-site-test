@@ -8,27 +8,29 @@ risco: alto
 central_branch: codex/central-guias-20261028
 scope_lock:
   version: 1
-  base_commit: c212e8848489664012c9e0f1bb0781f185b4b395
+  base_commit: c45a870a95224ef49637197855d26316d267955c
   allowed_write_globs:
     - .planning/work-orders/WO-CENTRAL-GUIAS-001.md
-    - specs/009-central-guias/UX-E-CONTEUDO.md
-    - specs/009-central-guias/CONTRATOS-E-EVENTOS.md
-    - specs/009-central-guias/README.md
-    - specs/009-central-guias/INDEX.md
-    - src/lib/guias/documentos.ts
-    - src/app/privacidade/page.tsx
-    - src/lib/guias/marketing.ts
-    - public/guias/guias.js
-    - public/guias/guias.css
+    - specs/009-central-guias/**
+    - src/lib/guias/**
+    - src/app/central/**
+    - src/app/guias/**
+    - src/app/api/guias/**
+    - src/middleware.ts
+    - public/guias/**
+    - private/central/**
+    - src/components/gtm.tsx
+    - src/components/utm-tracker.tsx
     - tests/guias/**
+    - deploy/vps/smoke.mjs
   architecture_delta:
-    production_files: [src/lib/guias/documentos.ts, src/lib/guias/marketing.ts, public/guias/guias.js, public/guias/guias.css, src/app/privacidade/page.tsx]
+    production_files: [src/lib/guias/**, src/app/central/**, src/app/guias/**, src/app/api/guias/**, src/middleware.ts, public/guias/**, private/central/**, src/components/gtm.tsx, src/components/utm-tracker.tsx, deploy/vps/smoke.mjs]
     runtime_dependencies: []
-    public_contracts: [GET /guias, GET /guias/acesso, GET /guias/:slug, POST /api/guias/acesso]
+    public_contracts: [GET /central, GET /central/recursos/:slug, GET /central/baixar/:slug, GET /kit-vscode]
     persistence_surfaces: []
     background_jobs: []
-  acceptance_ids: [AC-01, AC-02, AC-03, AC-04, AC-05, AC-06, AC-07]
-  stop_when: [AC-01, AC-02, AC-03, AC-04, AC-05, AC-06, AC-07]
+  acceptance_ids: [AC-01, AC-02, AC-03, AC-04, AC-05, AC-06, AC-07, AC-08, AC-09, AC-10, AC-11]
+  stop_when: [AC-01, AC-02, AC-03, AC-04, AC-05, AC-06, AC-07, AC-08, AC-09, AC-10, AC-11]
   passed_acceptance_ids: [AC-01, AC-02, AC-03, AC-04, AC-06, AC-07]
 ---
 # Central de guias com cadastro obrigatório
@@ -105,3 +107,12 @@ Achado de texto fora dos quatro arquivos autorizados de produção: `src/app/pri
 Fechamento pontual autorizado pelo root antes da publicação: a frase da política agora descreve seleção inicial, confirmação afirmativa, alternativa sem marketing e preferências efetivamente salvas. O caminho exato da política foi incluído no lock para refletir essa autorização. Documento compartilhado passa a guias.js?v=20261028-3 e guias.css?v=20261028-2 para evitar handler/CSS antigo na nova interação. Nenhum outro código ou comportamento foi alterado; testes afetados de formulário/catálogo, sem build redundante.
 
 QA móvel do root em 375px mediu ações com largura 278px, primária de 76,5px e secundária de 53,25px por quebra do rótulo. Ajuste estritamente móvel: gap 8px e padding horizontal 10px em submit-button, preservando padding vertical, fonte, rótulos, comportamento e SVG. Desktop não muda. O root fará a nova medição; sem suíte/build repetidos para esta declaração CSS.
+
+## Nova fatia: Central Infuser, autorização de 28/10 às 16h29
+
+Fonte: pedido novo de reunir gratuitos e pagos, Premium e SaaS Em breve; o usuário confirmou incluir os dois bônus do Club. A base é c45a870 publicado. Um executor, teto novo de 2 rodadas/90 min, alvo 25 a 35 min. Não publicar nem mudar cobrança, conteúdo pago ou flags.
+AC-08: catálogo único com 16 guias, Kit VS Code gratuito, 3 pacotes públicos, 4 páginas Premium confirmadas e Painel OS Em breve sem checkout/data. Pendentes de URL não são inventados. Prova: testes/central.
+AC-09: central, Kit, detalhes e downloads exigem seis campos/sessão; preservar todos os aliases/HTMLs originais; destino allowlisted e download anônimo volta ao detalhe. Prova: middleware/acesso/recursos/HTTP.
+AC-10: três ZIPs privados válidos, fonte canônica e scan sem segredo/dado interno; builders oficiais e skill GPU só empacotada. Prova: suíte de arquivos/ZIP e outputs dos builders.
+AC-11: v2 clara, destaque full-width, flex-wrap/flex-grow sem preenchimento falso; filtros/tipos/contagens reais. Kit usa tracking consentido, sem UtmTracker incondicional, demais LPs preservadas. Confirmação/negativa e mobile anteriores mantidos. Prova: testes afetados, suíte completa/build e QA do root.
+O TS2493 legado do instalador permanece explicitamente fora desta fatia; nenhuma redução de gate ou closeout falso. Sem migração de banco.
