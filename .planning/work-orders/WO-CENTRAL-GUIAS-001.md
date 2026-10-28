@@ -16,12 +16,13 @@ scope_lock:
     - specs/009-central-guias/README.md
     - specs/009-central-guias/INDEX.md
     - src/lib/guias/documentos.ts
+    - src/app/privacidade/page.tsx
     - src/lib/guias/marketing.ts
     - public/guias/guias.js
     - public/guias/guias.css
     - tests/guias/**
   architecture_delta:
-    production_files: [src/lib/guias/documentos.ts, src/lib/guias/marketing.ts, public/guias/guias.js, public/guias/guias.css]
+    production_files: [src/lib/guias/documentos.ts, src/lib/guias/marketing.ts, public/guias/guias.js, public/guias/guias.css, src/app/privacidade/page.tsx]
     runtime_dependencies: []
     public_contracts: [GET /guias, GET /guias/acesso, GET /guias/:slug, POST /api/guias/acesso]
     persistence_surfaces: []
@@ -100,3 +101,5 @@ A base desta nova fatia é o estado publicado c212e88 autorizado no despacho. O 
 Evidência da nova fatia: testes afetados 54/54 aprovados, incluindo 10 casos de render/ações de formulário. Defaults do servidor e dados/auth não foram alterados. Sete requisitos de interação e os seis campos foram preservados. O typecheck geral continua com os dois TS2493 anteriores do instalador. Nenhum cenário antigo foi removido; três expectativas de versão foram atualizadas para v2.
 
 Achado de texto fora dos quatro arquivos autorizados de produção: `src/app/privacidade/page.tsx`, seção 3.4, ainda afirma que as opções começam desmarcadas. O root deve alinhar essa frase ao novo fluxo antes da publicação; o executor não alterou arquivo fora da sua propriedade.
+
+Fechamento pontual autorizado pelo root antes da publicação: a frase da política agora descreve seleção inicial, confirmação afirmativa, alternativa sem marketing e preferências efetivamente salvas. O caminho exato da política foi incluído no lock para refletir essa autorização. Documento compartilhado passa a guias.js?v=20261028-3 e guias.css?v=20261028-2 para evitar handler/CSS antigo na nova interação. Nenhum outro código ou comportamento foi alterado; testes afetados de formulário/catálogo, sem build redundante.
