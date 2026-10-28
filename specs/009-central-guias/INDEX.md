@@ -1,13 +1,13 @@
-# Central de guias: manifesto v1.1
+# Central de guias: manifesto v1.2
 
 | Artefato | Versão | Estado |
 |---|---|---|
-| [Entidade](README.md) | 1.1 | ready-for-build |
+| [Entidade](README.md) | 1.2 | ready-for-build |
 | [Requisitos](PRD.md) | 1.1 | ready-for-build |
 | [Arquitetura](ARQUITETURA.md) | 1.1 | ready-for-build |
-| [Contratos](CONTRATOS-E-EVENTOS.md) | 1.1 | ready-for-build |
+| [Contratos](CONTRATOS-E-EVENTOS.md) | 1.2 | ready-for-build |
 | [Dados](DADOS-E-APIS.md) | 1.1 | ready-for-build |
-| [Studio e UX](UX-E-CONTEUDO.md) | 1.1 | ready-for-build |
+| [Studio e UX](UX-E-CONTEUDO.md) | 1.2 | ready-for-build |
 | [Plano](PLANO-DE-IMPLEMENTACAO.md) | 1.1 | ready-for-build |
 | [Verificação](VERIFICACAO-E-OPERACAO.md) | 1.1 | ready-for-build |
 | [Decisão](DECISAO-ARQUITETURAL.md) | 1.1 | ready-for-build |

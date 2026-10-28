@@ -11,30 +11,23 @@ scope_lock:
   base_commit: 4e3df3314726e5133bc2c7431f865d7583810665
   allowed_write_globs:
     - .planning/work-orders/WO-CENTRAL-GUIAS-001.md
-    - specs/009-central-guias/**
-    - src/lib/guias/**
-    - src/app/guias/**
-    - src/app/api/guias/**
-    - src/app/leads/guias/**
-    - src/app/leads/page.tsx
-    - src/middleware.ts
-    - public/guias/**
+    - specs/009-central-guias/UX-E-CONTEUDO.md
+    - specs/009-central-guias/CONTRATOS-E-EVENTOS.md
+    - specs/009-central-guias/README.md
+    - specs/009-central-guias/INDEX.md
+    - src/lib/guias/documentos.ts
+    - src/lib/guias/marketing.ts
+    - public/guias/guias.js
+    - public/guias/guias.css
     - tests/guias/**
-    - deploy/vps/smoke.mjs
-    - src/app/privacidade/page.tsx
-    - public/guia*.html
-    - public/opus*.html
-    - public/agente-que-aprende.html
-    - public/protocolo-de-autoria.html
-    - public/tutorial-maestri.html
   architecture_delta:
-    production_files: [src/lib/guias/**, src/app/guias/**, src/app/api/guias/**, src/app/leads/guias/**, src/app/leads/page.tsx, src/middleware.ts, public/guias/**, deploy/vps/smoke.mjs, src/app/privacidade/page.tsx, public/guia*.html, public/opus*.html, public/agente-que-aprende.html, public/protocolo-de-autoria.html, public/tutorial-maestri.html]
+    production_files: [src/lib/guias/documentos.ts, src/lib/guias/marketing.ts, public/guias/guias.js, public/guias/guias.css]
     runtime_dependencies: []
     public_contracts: [GET /guias, GET /guias/acesso, GET /guias/:slug, POST /api/guias/acesso]
-    persistence_surfaces: [guias_leads, guias_consentimentos]
+    persistence_surfaces: []
     background_jobs: []
-  acceptance_ids: [AC-01, AC-02, AC-03, AC-04, AC-05]
-  stop_when: [AC-01, AC-02, AC-03, AC-04, AC-05]
+  acceptance_ids: [AC-01, AC-02, AC-03, AC-04, AC-05, AC-06, AC-07]
+  stop_when: [AC-01, AC-02, AC-03, AC-04, AC-05, AC-06, AC-07]
   passed_acceptance_ids: [AC-01, AC-02, AC-03, AC-04]
 ---
 # Central de guias com cadastro obrigatório
@@ -94,3 +87,10 @@ O root comprovou no screenshot de produção que o glifo diagonal era apresentad
 9. Nenhum assert preexistente foi removido. AC-05 mantém explicitamente os dois TS2493 do instalador, reproduzidos no baseline e fora desta mudança; não houve closeout falso.
 10. Aplicados Studio (direção, sourcing, criação e QA), frontend-design, design-taste-frontend, ui-ux-pro-max, awwwards-standards; Codar com software-engineer, event-driven, ponytail e code-craft; Tráfego para atribuição e exportações. Rollback preserva tabelas e dados.
 
+
+## Nova fatia autorizada pelo usuário, 28/10 às 15h28
+
+O usuário pede as duas opções inicialmente marcadas e o destaque verde ocupando toda a primeira linha. O CTA afirmativo passa a Confirmar escolhas e acessar, com alternativa igualmente visível Continuar sem marketing. Os seis campos continuam necessários para ambos. A negativa ou submitter ausente/desconhecido envia false/false, sem enriquecimento; preferências exibem valores salvos reais e o backend mantém omissão=false. Aviso de dados passa a v2, sem migração.
+AC-06: render inicial marcado e preferências falsas preservadas; ações explícitas e negativa sem metadados; os dois botões bloqueiam/restauram em erro. Prova: `npm test -- tests/guias/acoes-formulario.test.ts tests/guias/catalogo.test.ts tests/guias/preferencias.test.ts tests/guias/acesso.test.ts`.
+AC-07: destaque grid-column 1 / -1 em todos os breakpoints, mantendo 16 guias/ordem e SVG. Prova: catálogo e CSS afetados, QA vivo pelo root.
+Escopo desta fatia restrito aos quatro arquivos de produção do delta, testes afetados e docs listados. Sem DB/auth/outros guias. Teto desta nova autorização: 2 rodadas ou 90 min, alvo 10 min. O achado TS2493 e o estado anterior permanecem visíveis; sem closeout falso.

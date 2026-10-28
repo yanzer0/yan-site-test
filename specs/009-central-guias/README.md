@@ -1,7 +1,7 @@
 ---
 status: em-andamento
 definition_status: ready-for-build
-version: 1.1
+version: 1.2
 created: 2026-10-28
 owner: Yan
 ---
@@ -43,3 +43,7 @@ Reaplicar a mesma `migration.sql` antes da publicação: ALTER IF NOT EXISTS pre
 As preferências ficam em `/guias/preferencias`. Consulta/CSV em `/leads/guias?modo=todos|comercial|meta`, lotes de 200. A visualização mostra as escolhas efetivas mais recentes do contato; Meta exporta só email/phone/fn/ln/ct/st/country, deduplicados. Nunca colar o CSV interno em uma plataforma de audiência. Não há envio automático ou criação de públicos nesta versão.
 
 Os 15 loaders GTM encontrados foram substituídos; o guia IA sem bajulação, que não tinha GTM, recebeu apenas o loader compartilhado condicionado. Tags globais nas outras páginas React não foram alteradas. Formulário e preferências são páginas sensíveis e não iniciam GTM, mesmo para um visitante que antes autorizou publicidade. Nenhum evento de conversão Meta é presumido.
+
+## Revisão v1.2
+
+Autorizada em 28/10: escolhas iniciais marcadas no cadastro, confirmação explícita ou acesso sem marketing, sem mexer no false padrão do servidor nem nas preferências existentes. Destaque em linha inteira; sem migração. Contrato e UX são as fontes desta mudança.
