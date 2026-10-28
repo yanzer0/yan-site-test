@@ -31,7 +31,7 @@ scope_lock:
     background_jobs: []
   acceptance_ids: [AC-01, AC-02, AC-03, AC-04, AC-05, AC-06, AC-07, AC-08, AC-09, AC-10, AC-11]
   stop_when: [AC-01, AC-02, AC-03, AC-04, AC-05, AC-06, AC-07, AC-08, AC-09, AC-10, AC-11]
-  passed_acceptance_ids: [AC-01, AC-02, AC-03, AC-04, AC-06, AC-07]
+  passed_acceptance_ids: [AC-01, AC-02, AC-03, AC-04, AC-06, AC-07, AC-08, AC-09, AC-10]
 ---
 # Central de guias com cadastro obrigatório
 
@@ -124,3 +124,5 @@ O TS2493 legado do instalador permanece explicitamente fora desta fatia; nenhuma
 - Afetados: 162 aprovados antes da suíte HTTP, cobrindo controles antigos, todos os slugs, ZIPs e o Kit consentido. Suíte completa: 602 aprovados, 9 pulados por ambiente na rodada de 16h49. Nenhum cenário antigo removido; expectativas de destino, contagem e layout foram atualizadas ao contrato novo.
 - Typecheck: somente os dois TS2493 legados em testes/instalar, inalterados. Sem migração; três arquivos privados de distribuição entram no deploy. Root mantém QA vivo e publicação.
 - Limite de escopo: o painel interno de leads ainda resolve títulos com o catálogo antigo de guias; os novos IDs e URLs estão corretamente persistidos no campo e metadados/CSV, mas sua legenda de título pode cair no fallback genérico. Não alterado porque src/app/leads/guias não pertence a esta fatia.
+
+Handoff desta fatia: código em 569c94d. Build único de produção concluído com /central, /central/recursos/[slug] e /central/baixar/[slug], middleware 38,2kB. HTTP real final: 6/6, incluindo Kit e os três ZIPs reais com sessão, anônimos/falsos bloqueados e arquivo privado inacessível. Preview de produção local ativo em http://127.0.0.1:3188/guias/acesso; /central usa o mesmo segredo sintético das rodadas anteriores e banco fictício indisponível. AC-11 aguarda o QA visual independente do root e AC-05 mantém somente os TS2493 legados. Sem publicação nem migração.
