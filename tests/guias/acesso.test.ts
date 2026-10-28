@@ -41,7 +41,7 @@ describe("cadastro obrigatório dos guias", () => {
   });
   it("entrada geral volta para a biblioteca", async () => {
     const response = await POST(requisicao({ ...CADASTRO, guia: "" }));
-    expect(response.status).toBe(200); expect(await response.json()).toEqual({ destino: "/guias" });
+    expect(response.status).toBe(200); expect(await response.json()).toEqual({ destino: "/central" });
   });
   it("salva escolhas e libera com GeoJS indisponível", async () => {
     vi.stubGlobal("fetch", vi.fn(async () => { throw new Error("GeoJS offline"); }));

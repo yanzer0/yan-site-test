@@ -38,6 +38,57 @@ export function guiaPorCaminho(caminho: string): Guia | undefined {
 }
 
 export function destinoDoGuia(slug: unknown): string | undefined {
-  if (slug === "" || slug === undefined || slug === null) return "/guias";
-  return typeof slug === "string" ? guiaPorSlug(slug)?.caminho : undefined;
+  if (slug === "" || slug === undefined || slug === null) return "/central";
+  return typeof slug === "string" ? alvoDeAcesso(slug)?.caminho : undefined;
+}
+
+export interface RecursoCentral {
+  readonly slug: string;
+  readonly titulo: string;
+  readonly descricao: string;
+  readonly tipo: "Agente" | "Kit" | "Skill";
+  readonly arquivo: string;
+  readonly requisitos: readonly string[];
+  readonly instrucoes: readonly string[];
+}
+export const RECURSOS_CENTRAL: readonly RecursoCentral[] = [
+  { slug: "pacote-agente-que-aprende", titulo: "Agente que Aprende: pacote para instalar", descricao: "Instalador, agente e harness para levar o método do guia ao seu projeto.", tipo: "Agente", arquivo: "agente-que-aprende.zip", requisitos: ["Node.js 18 ou superior instalado no computador.", "Um projeto local e um assistente de código compatível com as instruções do pacote."], instrucoes: ["Extraia o ZIP em uma pasta do seu computador.", "Abra o LEIA-ME.md da pasta agente-que-aprende e siga a instalação indicada.", "O pacote inclui os testes do ciclo. Confira as orientações antes de usar em um projeto real."] },
+  { slug: "orquestra-claude-codex", titulo: "Orquestra Claude + Codex", descricao: "Pacote com instalador e skills para organizar o trabalho dos dois agentes em um projeto.", tipo: "Kit", arquivo: "orquestra-claude-codex.zip", requisitos: ["Node.js 18 ou superior, Claude Code e Codex instalados e configurados.", "Um projeto local no qual você possa instalar as skills do pacote."], instrucoes: ["Extraia o arquivo orquestra-claude-codex.zip.", "Leia o LEIA-ME.md e execute a instalação conforme o seu projeto.", "Siga o método e os comandos documentados no próprio pacote."] },
+  { slug: "video-transcricao-gpu", titulo: "Vídeo: transcrição GPU e frames", descricao: "Skill para transcrever áudio e vídeo localmente e extrair frames com timestamps.", tipo: "Skill", arquivo: "video-transcricao-gpu.zip", requisitos: ["Windows, Python e ffmpeg para os scripts e a verificação do ambiente.", "GPU NVIDIA com CUDA e faster-whisper configurados para transcrição.", "A extração de frames com ffmpeg funciona sem GPU."], instrucoes: ["Extraia a pasta video-transcricao-gpu e abra o INSTALAR.md.", "Copie a pasta inteira para o diretório de skills do Codex ou do Claude Code, conforme as instruções.", "Antes de transcrever, rode a verificação check-gpu-transcription.ps1 indicada no pacote. Os modelos e dependências não estão incluídos no ZIP."] },
+];
+export interface ItemCentral {
+  readonly slug: string;
+  readonly titulo: string;
+  readonly descricao: string;
+  readonly categoria: string;
+  readonly tipo: "Guia" | "Agente" | "Skill" | "Kit" | "SaaS";
+  readonly estado: "Gratuito" | "Premium" | "Em breve";
+  readonly grupo: "guias" | "recursos" | "premium" | "em-breve";
+  readonly caminho?: string;
+  readonly acao?: string;
+}
+export const KIT_VSCODE: ItemCentral & { caminho: string } = { slug: "kit-vscode", titulo: "Kit Prático Claude Code no VS Code", descricao: "Guia gratuito de instalação, funcionalidades, atalhos e referência para usar o Claude Code no VS Code.", tipo: "Kit", estado: "Gratuito", grupo: "guias", categoria: "Claude e agentes", caminho: "/kit-vscode", acao: "Abrir kit gratuito" };
+export const CATALOGO_CENTRAL: readonly ItemCentral[] = [
+  ...GUIAS.map((guia): ItemCentral => ({ ...guia, tipo: "Guia", estado: "Gratuito", grupo: "guias", caminho: `/guias/${guia.slug}`, acao: "Abrir guia" })),
+  KIT_VSCODE,
+  ...RECURSOS_CENTRAL.map((recurso): ItemCentral => ({ ...recurso, categoria: "Pacote para baixar", estado: "Gratuito", grupo: "recursos", caminho: `/central/recursos/${recurso.slug}`, acao: "Ver pacote" })),
+  { slug: "legiao", titulo: "A Legião", descricao: "Especialistas de marketing e vendas para trabalhar com você no Claude.", categoria: "Produto Infuser", tipo: "Agente", estado: "Premium", grupo: "premium", caminho: "/legiao", acao: "Conhecer produto" },
+  { slug: "kit-segundo-cerebro", titulo: "Kit Segundo Cérebro", descricao: "Organize contexto, conhecimento e decisões para trabalhar com IA no seu ambiente.", categoria: "Produto Infuser", tipo: "Kit", estado: "Premium", grupo: "premium", caminho: "/kit-segundo-cerebro", acao: "Conhecer produto" },
+  { slug: "kit-skills", titulo: "Kit de Skills", descricao: "Skills prontas para estruturar tarefas e especialidades no Claude.", categoria: "Produto Infuser", tipo: "Kit", estado: "Premium", grupo: "premium", caminho: "/kit-skills", acao: "Conhecer produto" },
+  { slug: "kit-jarvis", titulo: "Jarvis Kit", descricao: "Automações de computador por palmas e comandos de voz.", categoria: "Produto Infuser", tipo: "Kit", estado: "Premium", grupo: "premium", caminho: "/kit-jarvis", acao: "Conhecer produto" },
+  { slug: "painel-os", titulo: "Painel OS", descricao: "O SaaS da Infuser para reunir o cérebro da empresa, agentes e operação em um painel.", categoria: "SaaS da Infuser", tipo: "SaaS", estado: "Em breve", grupo: "em-breve" },
+];
+export function recursoPorSlug(slug: string): RecursoCentral | undefined { return RECURSOS_CENTRAL.find((recurso) => recurso.slug === slug); }
+export function alvoDeAcesso(slug: string | null | undefined): { slug: string; titulo: string; caminho: string } | undefined {
+  const guia = guiaPorSlug(slug); if (guia) return guia;
+  if (slug === KIT_VSCODE.slug) return KIT_VSCODE;
+  const recurso = RECURSOS_CENTRAL.find((item) => item.slug === slug);
+  return recurso ? { ...recurso, caminho: `/central/recursos/${recurso.slug}` } : undefined;
+}
+export function alvoPorCaminho(caminho: string): { slug: string; titulo: string; caminho: string } | undefined {
+  const guia = guiaPorCaminho(caminho); if (guia) return guia;
+  let limpo: string; try { limpo = decodeURIComponent(caminho).replace(/\/$/, ""); } catch { return undefined; }
+  if (limpo === KIT_VSCODE.caminho) return KIT_VSCODE;
+  const recurso = RECURSOS_CENTRAL.find((item) => [`/central/recursos/${item.slug}`, `/central/baixar/${item.slug}`].includes(limpo));
+  return recurso ? alvoDeAcesso(recurso.slug) : undefined;
 }

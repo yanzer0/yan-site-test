@@ -71,6 +71,7 @@ export function UtmTracker() {
   const pathname = usePathname();
 
   useEffect(() => {
+    if (pathname === "/kit-vscode") return;
     const params = new URLSearchParams(window.location.search);
     const incoming: Record<string, string> = {};
     UTM_KEYS.forEach((key) => {

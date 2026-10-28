@@ -116,3 +116,11 @@ AC-09: central, Kit, detalhes e downloads exigem seis campos/sessão; preservar 
 AC-10: três ZIPs privados válidos, fonte canônica e scan sem segredo/dado interno; builders oficiais e skill GPU só empacotada. Prova: suíte de arquivos/ZIP e outputs dos builders.
 AC-11: v2 clara, destaque full-width, flex-wrap/flex-grow sem preenchimento falso; filtros/tipos/contagens reais. Kit usa tracking consentido, sem UtmTracker incondicional, demais LPs preservadas. Confirmação/negativa e mobile anteriores mantidos. Prova: testes afetados, suíte completa/build e QA do root.
 O TS2493 legado do instalador permanece explicitamente fora desta fatia; nenhuma redução de gate ou closeout falso. Sem migração de banco.
+
+## Evidência de execução: Central Infuser
+
+- Builders oficiais: Agente que Aprende, 8/8 testes e ZIP de 25.127 bytes; Orquestra, scan limpo e instalador com PROVA, ZIP de 10.040 bytes. Skill GPU: os seis arquivos originais, ZIP nativo de 9.250 bytes, sem executar transcrição/modelos/dependências. Scan estático de 22 arquivos sem credenciais, nomes de clientes ou caminhos privados; suíte também lê e valida os ZIPs.
+- Catálogo de 25 itens: 16 guias HTML existentes, 1 Kit VS Code gratuito, 3 pacotes gratuitos, 4 Premium confirmados e 1 SaaS Em breve. Total gratuito: 20. URLs de Estúdio, Segundo Cérebro Premium e Pergaminho seguem pendentes com o usuário e não foram inventadas.
+- Afetados: 162 aprovados antes da suíte HTTP, cobrindo controles antigos, todos os slugs, ZIPs e o Kit consentido. Suíte completa: 602 aprovados, 9 pulados por ambiente na rodada de 16h49. Nenhum cenário antigo removido; expectativas de destino, contagem e layout foram atualizadas ao contrato novo.
+- Typecheck: somente os dois TS2493 legados em testes/instalar, inalterados. Sem migração; três arquivos privados de distribuição entram no deploy. Root mantém QA vivo e publicação.
+- Limite de escopo: o painel interno de leads ainda resolve títulos com o catálogo antigo de guias; os novos IDs e URLs estão corretamente persistidos no campo e metadados/CSV, mas sua legenda de título pode cair no fallback genérico. Não alterado porque src/app/leads/guias não pertence a esta fatia.

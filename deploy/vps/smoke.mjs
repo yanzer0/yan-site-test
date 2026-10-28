@@ -64,7 +64,8 @@ const protectedGuides = new Set([
   "/guiamotion", "/guiacarrossel", "/promptsmotion", "/guia-agentes",
   "/guia-comandos-gpt", "/guia-gpt6-astra", "/guia-ia-sem-bajulacao",
   "/guia-mapeamento-processos", "/guia-skill", "/opus5", "/opus55",
-  "/protocolo-de-autoria", "/tutorial-maestri", "/guia-videos-motion", "/guias",
+  "/protocolo-de-autoria", "/tutorial-maestri", "/guia-videos-motion", "/guias", "/central", "/kit-vscode",
+  ...["pacote-agente-que-aprende", "orquestra-claude-codex", "video-transcricao-gpu"].flatMap((slug) => [`/central/recursos/${slug}`, `/central/baixar/${slug}`]),
 ]);
 
 async function check(path, expectedStatuses, options = {}) {
@@ -113,6 +114,8 @@ for (const name of ["nome", "email", "whatsapp", "nicho", "interesse", "impedime
 }
 await check("/leads/guias", [302, 303, 307, 308]);
 await check("/leads/guias/export", [404]);
+await check("/private/central/agente-que-aprende.zip", [404]);
+await check("/central/baixar/desconhecido", [404]);
 
 for (const path of skillTreeAssets) {
   const result = await check(path, [200]);

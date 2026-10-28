@@ -52,3 +52,13 @@ Autorizada em 28/10: escolhas iniciais marcadas no cadastro, confirmação expl�
 ## Central Infuser, revisão v1.3
 
 Central Infuser em /central, com /guias compatível: 25 itens confirmados, sem preços. Os 16 guias continuam; somam Kit VS Code gratuito, 3 pacotes gratuitos, 4 Premium e Painel OS Em breve. Pagos levam às LPs públicas, nunca liberam conteúdo comprado. Recursos exigem cadastro e sessão. Três ZIPs fixos em private/central, montados das fontes canônicas autorizadas. Estúdio/Segundo Cérebro Premium/Pergaminho aguardam URLs confirmadas; não inventar destinos. Sem migração. Root revisa/publica.
+
+### Pacotes distribuídos nesta revisão
+
+| Arquivo privado | Origem canônica | Tamanho | Requisitos principais |
+|---|---|---|---|
+| agente-que-aprende.zip | _infoprodutos/agente-que-aprende/build.mjs, pacote/ | 25.127 bytes | Node 18+, assistente de código e projeto local |
+| orquestra-claude-codex.zip | _infoprodutos/orquestra-claude-codex/build.mjs, pacote/ | 10.040 bytes | Node 18+, Claude Code e Codex |
+| video-transcricao-gpu.zip | seis arquivos de _infoprodutos/kit-de-skills/video-transcricao-gpu | 9.250 bytes | Windows, Python, ffmpeg; NVIDIA/CUDA e faster-whisper para transcrição |
+
+São assets privados de deploy do site, não novas fontes do produto. Os fontes do brain não foram alterados; apenas os dist ignorados foram gerados. A Orquestra é o pacote existente e mantém seu método original; a pendência de atualização do produto continua no brain. A skill GPU não inclui modelos nem instala dependências automaticamente. Extração de frames não requer GPU. Novos links: /central, /central/recursos/<slug> e /central/baixar/<slug>; sem sessão, o download volta ao formulário e depois ao detalhe.

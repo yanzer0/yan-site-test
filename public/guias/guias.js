@@ -61,7 +61,7 @@
       card.hidden = !((category === "todos" || card.dataset.categoria === category) && card.dataset.busca.includes(query));
       if (!card.hidden) visible += 1;
     });
-    document.getElementById("resultado-busca").textContent = `${visible} ${visible === 1 ? "guia disponível" : "guias disponíveis"}`;
+    document.getElementById("resultado-busca").textContent = `${visible} ${visible === 1 ? "item" : "itens"} na Central`;
     document.getElementById("sem-guias").hidden = visible !== 0;
   };
   search.addEventListener("input", filterCards);

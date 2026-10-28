@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { guiaPorCaminho } from "./lib/guias/catalogo";
+import { alvoPorCaminho } from "./lib/guias/catalogo";
 import { COOKIE_GUIAS, sessaoGuiasValida } from "./lib/guias/sessao";
 import { origemPublicaGuias } from "./lib/guias/http";
 import { campanhaPermitida } from "./lib/guias/atribuicao";
@@ -121,8 +121,8 @@ function painelComCsp(request: NextRequest): NextResponse {
 }
 
 export async function protegerGuia(request: NextRequest): Promise<NextResponse> {
-  const guia = guiaPorCaminho(request.nextUrl.pathname);
-  const central = request.nextUrl.pathname.replace(/\/$/, "") === "/guias";
+  const guia = alvoPorCaminho(request.nextUrl.pathname);
+  const central = ["/guias", "/central"].includes(request.nextUrl.pathname.replace(/\/$/, ""));
   if (!guia && !central) return NextResponse.next();
   let resposta: NextResponse;
   try {
@@ -154,7 +154,7 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
 
 export const config = {
   matcher: [
-    "/demomarja", "/demomarja.html", "/leads/:path*", "/guias/:path*",
+    "/demomarja", "/demomarja.html", "/leads/:path*", "/guias/:path*", "/central/:path*", "/kit-vscode",
     "/agente-que-aprende", "/agente-que-aprende.html",
     "/guia-99-comandos", "/guia-99-comandos.html", "/99comandos",
     "/guia-agentes", "/guia-agentes.html",

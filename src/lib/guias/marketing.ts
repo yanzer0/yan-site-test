@@ -3,6 +3,7 @@ import type { NextRequest } from "next/server";
 import { campanhaPermitida, COOKIES_PUBLICIDADE } from "./atribuicao";
 import { origemSemDados } from "./captura";
 import { origemPublicaGuias } from "./http";
+import { alvoDeAcesso, guiaPorSlug } from "./catalogo";
 
 export const AVISO_MARKETING_GUIAS = "guias-marketing-2026-10-28-v2";
 export interface ConsentimentosGuias { readonly comercial: boolean; readonly publicidade: boolean }
@@ -81,7 +82,9 @@ export async function localizarIp(ip: string): Promise<LocalizacaoGuia> {
   } catch { return indisponivel("provedor_indisponivel"); }
 }
 export async function coletarMetadados(req: NextRequest, corpo: unknown, guia: string, consentimento: ConsentimentosGuias): Promise<MetadadosGuias> {
-  const entrada = { url: `${origemPublicaGuias(req)}/guias${guia ? `/${guia}` : ""}`, guia: guia || "central" };
+  const alvo = alvoDeAcesso(guia);
+  const caminhoEntrada = guiaPorSlug(guia) ? `/guias/${guia}` : alvo?.caminho ?? "/central";
+  const entrada = { url: `${origemPublicaGuias(req)}${caminhoEntrada}`, guia: guia || "central" };
   if (!consentimento.publicidade) return { entrada, publicidade: { status: "nao_autorizada" } };
   const dados = objeto(corpo), campanha = campanhaPermitida(new URLSearchParams(objeto(dados.campanha) as Record<string,string>));
   const ip = req.headers.get("x-forwarded-for")?.split(",").at(-1)?.trim() ?? "";

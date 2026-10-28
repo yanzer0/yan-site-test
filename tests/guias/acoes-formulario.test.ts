@@ -28,7 +28,7 @@ function formulario({ valido = true, comercial = true, publicidade = true, prefe
   };
   runInNewContext(readFileSync("public/guias/guias.js", "utf8"), context);
   const enviar = (submitter?: unknown) => submit({ preventDefault: () => {}, submitter });
-  const concluir = () => liberar({ ok: !falha, json: async () => falha ? { erro: "Tente novamente." } : { destino: "/guias" } });
+  const concluir = () => liberar({ ok: !falha, json: async () => falha ? { erro: "Tente novamente." } : { destino: "/central" } });
   return { primary, decline, buttons, form, marketing, assign, fetch, enviar, concluir, summary };
 }
 
@@ -47,7 +47,7 @@ describe("ações explícitas do cadastro", () => {
     expect(f.buttons.every((button) => button.disabled)).toBe(true);
     const payload = JSON.parse(f.fetch.mock.calls[0][1].body);
     expect(payload.consentimentos).toEqual({ comercial: false, publicidade: true }); expect(payload.marketing).toEqual({ navegador: { idioma: "pt-BR" } });
-    f.concluir(); await envio; expect(f.assign).toHaveBeenCalledWith("/guias");
+    f.concluir(); await envio; expect(f.assign).toHaveBeenCalledWith("/central");
   });
   it.each(["decline", "missing", "unknown"])("%s não autoriza os defaults nem coleta enriquecimento", async (acao) => {
     const f = formulario(); const submitter = acao === "decline" ? f.decline : acao === "unknown" ? { dataset: { consentAction: "confirm" } } : undefined;
@@ -70,7 +70,7 @@ describe("ações explícitas do cadastro", () => {
   });
   it("destaque ocupa a grade toda e preserva os dezesseis links e a ordem", () => {
     const css = readFileSync("public/guias/guias.css", "utf8"), html = documentoBiblioteca();
-    expect(css.match(/\.guide-card:first-child\{grid-column:1 \/ -1/g)).toHaveLength(2); expect(css).not.toMatch(/grid-column:span [12]/);
+    expect(css).toContain(".guide-grid>.guide-card:first-child{flex-basis:100%}"); expect(css).toContain("display:flex;flex-wrap:wrap"); expect(css).not.toMatch(/grid-column:span [12]/);
     expect(GUIAS).toHaveLength(16); const indices = GUIAS.map((guia) => html.indexOf(`href="/guias/${guia.slug}"`));
     expect(indices.every((index) => index >= 0)).toBe(true); expect(indices).toEqual([...indices].sort((a,b) => a-b));
   });
