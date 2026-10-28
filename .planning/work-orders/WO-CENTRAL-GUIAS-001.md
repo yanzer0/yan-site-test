@@ -28,7 +28,7 @@ scope_lock:
     background_jobs: []
   acceptance_ids: [AC-01, AC-02, AC-03, AC-04, AC-05, AC-06, AC-07]
   stop_when: [AC-01, AC-02, AC-03, AC-04, AC-05, AC-06, AC-07]
-  passed_acceptance_ids: [AC-01, AC-02, AC-03, AC-04]
+  passed_acceptance_ids: [AC-01, AC-02, AC-03, AC-04, AC-06, AC-07]
 ---
 # Central de guias com cadastro obrigatório
 
@@ -96,3 +96,7 @@ AC-07: destaque grid-column 1 / -1 em todos os breakpoints, mantendo 16 guias/or
 Escopo desta fatia restrito aos quatro arquivos de produção do delta, testes afetados e docs listados. Sem DB/auth/outros guias. Teto desta nova autorização: 2 rodadas ou 90 min, alvo 10 min. O achado TS2493 e o estado anterior permanecem visíveis; sem closeout falso.
 
 A base desta nova fatia é o estado publicado c212e88 autorizado no despacho. O range novo exclui as alterações já entregues da v1.1; por isso o lock foi restrito aos arquivos desta revisão.
+
+Evidência da nova fatia: testes afetados 54/54 aprovados, incluindo 10 casos de render/ações de formulário. Defaults do servidor e dados/auth não foram alterados. Sete requisitos de interação e os seis campos foram preservados. O typecheck geral continua com os dois TS2493 anteriores do instalador. Nenhum cenário antigo foi removido; três expectativas de versão foram atualizadas para v2.
+
+Achado de texto fora dos quatro arquivos autorizados de produção: `src/app/privacidade/page.tsx`, seção 3.4, ainda afirma que as opções começam desmarcadas. O root deve alinhar essa frase ao novo fluxo antes da publicação; o executor não alterou arquivo fora da sua propriedade.

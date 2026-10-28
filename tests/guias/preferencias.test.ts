@@ -17,7 +17,7 @@ describe("preferências de publicidade e contato", () => {
     const r = await GET(new NextRequest("https://useinfuser.com/api/guias/preferencias")); expect(r.status).toBe(401); expect(db.ler).not.toHaveBeenCalled();
   });
   it("sessão recebe só escolhas e identificador sem PII", async () => {
-    const r = await GET(await request()); expect(r.status).toBe(200); expect(await r.json()).toMatchObject({ comercial: true, publicidade: true, versao: "guias-marketing-2026-10-28-v1" });
+    const r = await GET(await request()); expect(r.status).toBe(200); expect(await r.json()).toMatchObject({ comercial: true, publicidade: true, versao: "guias-marketing-2026-10-28-v2" });
   });
   it("revogação salva as duas escolhas e elimina cookies permitidos", async () => {
     const r = await POST(await request({ consentimentos: { comercial: false, publicidade: false } }));

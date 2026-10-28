@@ -12,7 +12,7 @@ describe("persistência e exportação", () => {
     expect(template.join("")).toContain("INSERT INTO guias_leads");
     expect(template.join("")).not.toContain(dados.email);
     expect(template.join("")).toContain("INSERT INTO guias_consentimentos");
-    expect(parametros.slice(10, 13)).toEqual([false, false, "guias-marketing-2026-10-28-v1"]);
+    expect(parametros.slice(10, 13)).toEqual([false, false, "guias-marketing-2026-10-28-v2"]);
     expect(parametros.slice(0, 10)).toEqual(["id-sintetico", dados.nome, dados.email, dados.whatsapp, dados.nicho, dados.interesse, dados.impedimento, dados.guia, dados.origem, VERSAO_AVISO_GUIAS]);
   });
   it("consulta paginada tem ordenação estável e limites parametrizados", async () => {
@@ -27,7 +27,7 @@ describe("persistência e exportação", () => {
   });
   it("revogação remove metadados e atualiza todos os registros do contato", async () => {
     await alterarPreferenciasGuias("id", { comercial: false, publicidade: false });
-    expect(query).toHaveBeenCalledWith(expect.stringContaining("jsonb_set(l.metadados, '{publicidade}'"), ["id", false, false, "guias-marketing-2026-10-28-v1"]);
+    expect(query).toHaveBeenCalledWith(expect.stringContaining("jsonb_set(l.metadados, '{publicidade}'"), ["id", false, false, "guias-marketing-2026-10-28-v2"]);
     expect(query.mock.calls[0][0]).toContain("INSERT INTO guias_consentimentos");
     expect(query.mock.calls[0][0]).toContain("l.email = alvo.email OR l.whatsapp = alvo.whatsapp");
     await atualizarMedicaoGuias("id", {}, {}); expect(query.mock.calls[1][0]).toContain("consent_publicidade = true AND NOT EXISTS");

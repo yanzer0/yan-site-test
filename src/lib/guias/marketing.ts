@@ -4,7 +4,7 @@ import { campanhaPermitida, COOKIES_PUBLICIDADE } from "./atribuicao";
 import { origemSemDados } from "./captura";
 import { origemPublicaGuias } from "./http";
 
-export const AVISO_MARKETING_GUIAS = "guias-marketing-2026-10-28-v1";
+export const AVISO_MARKETING_GUIAS = "guias-marketing-2026-10-28-v2";
 export interface ConsentimentosGuias { readonly comercial: boolean; readonly publicidade: boolean }
 export interface LocalizacaoGuia {
   status: "disponivel" | "indisponivel";

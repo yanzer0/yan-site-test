@@ -3,6 +3,8 @@
   const form = document.getElementById("acesso-guias") || document.getElementById("preferencias-guias");
   if (form) {
     const button = document.getElementById("enviar-cadastro");
+    const buttons = Array.from(form.querySelectorAll('button[type="submit"]'));
+    const labels = new Map(buttons.map((item) => [item, item.firstElementChild.textContent]));
     const summary = document.getElementById("erro-formulario");
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
@@ -10,14 +12,18 @@
       form.querySelectorAll("[aria-invalid]").forEach((field) => field.removeAttribute("aria-invalid"));
       form.querySelectorAll(".field-error").forEach((message) => { message.textContent = ""; });
       if (!form.reportValidity()) return;
-      const label = button.firstElementChild.textContent;
-      button.disabled = true;
-      button.firstElementChild.textContent = "Abrindo o seu material...";
+      const signup = form.id === "acesso-guias";
+      const confirmed = event.submitter === button && (!signup || button.dataset.consentAction === "confirm");
+      const activeButton = buttons.includes(event.submitter) ? event.submitter : button;
+      buttons.forEach((item) => { item.disabled = true; });
+      activeButton.firstElementChild.textContent = signup ? "Abrindo o seu material..." : "Salvando preferências...";
       const controller = new AbortController();
       const timeout = setTimeout(() => controller.abort(), 18000);
       try {
         const payload = Object.fromEntries(new FormData(form));
-        payload.consentimentos = { comercial: form.elements.namedItem("consent_comercial")?.checked === true, publicidade: form.elements.namedItem("consent_publicidade")?.checked === true };
+        delete payload.consent_comercial;
+        delete payload.consent_publicidade;
+        payload.consentimentos = { comercial: confirmed && form.elements.namedItem("consent_comercial")?.checked === true, publicidade: confirmed && form.elements.namedItem("consent_publicidade")?.checked === true };
         if (payload.consentimentos.publicidade && form.id === "acesso-guias") payload.marketing = window.infuserGuiasMarketing();
         const response = await fetch(form.action, { method: "POST", credentials: "same-origin", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload), signal: controller.signal });
         const result = await response.json();
@@ -38,8 +44,7 @@
         summary.hidden = false;
         const invalid = form.querySelector("[aria-invalid=true]");
         (invalid || summary).focus();
-        button.disabled = false;
-        button.firstElementChild.textContent = label;
+        buttons.forEach((item) => { item.disabled = false; item.firstElementChild.textContent = labels.get(item); });
       } finally { clearTimeout(timeout); }
     });
   }
