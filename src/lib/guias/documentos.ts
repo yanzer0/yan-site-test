@@ -18,7 +18,7 @@ export const CABECALHOS_GUIAS = {
 
 function documento(titulo: string, corpo: string): string {
   const nonce = crypto.randomUUID().replace(/-/g, "");
-  return `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>${escaparHtml(titulo)} | Infuser</title><meta name="description" content="Central Infuser: guias, recursos gratuitos e produtos Premium para aplicar IA na sua rotina."><link rel="icon" href="/legiao/assets/favicon.svg"><link rel="stylesheet" href="/guias/guias.css?v=20261028-3"><script nonce="${nonce}" src="/guias/marketing.js?v=20261028-1" defer></script><script nonce="${nonce}" src="/guias/guias.js?v=20261028-4" defer></script></head><body>${corpo}<footer class="footer wrap"><span>Por Yan Galasso · Infuser</span><a href="/guias/preferencias">Preferências de privacidade</a><a href="/privacidade" target="_blank" rel="noopener">Política de privacidade <span aria-hidden="true">${SETA_DIAGONAL}</span></a></footer></body></html>`;
+  return `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>${escaparHtml(titulo)} | Infuser</title><meta name="description" content="Central Infuser: guias, recursos gratuitos e produtos Premium para aplicar IA na sua rotina."><link rel="icon" href="/legiao/assets/favicon.svg"><link rel="stylesheet" href="/guias/guias.css?v=20261028-4"><script nonce="${nonce}" src="/guias/marketing.js?v=20261028-1" defer></script><script nonce="${nonce}" src="/guias/guias.js?v=20261028-4" defer></script></head><body>${corpo}<footer class="footer wrap"><span>Por Yan Galasso · Infuser</span><a href="/guias/preferencias">Preferências de privacidade</a><a href="/privacidade" target="_blank" rel="noopener">Política de privacidade <span aria-hidden="true">${SETA_DIAGONAL}</span></a></footer></body></html>`;
 }
 
 function marca(biblioteca = false): string {
@@ -28,9 +28,11 @@ function marca(biblioteca = false): string {
 function ficha(item: ItemCentral, indice: number): string {
   const tema = ["teal", "lime", "paper"][indice % 3];
   const pesquisar = escaparHtml(`${item.titulo} ${item.descricao} ${item.categoria} ${item.tipo} ${item.estado}`.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase());
-  const titulo = item.caminho ? `<a href="${escaparHtml(item.caminho)}">${escaparHtml(item.titulo)}</a>` : escaparHtml(item.titulo);
-  const acao = item.caminho ? `<a class="card-link" href="${escaparHtml(item.caminho)}" aria-label="${escaparHtml(item.acao ?? "Abrir")}: ${escaparHtml(item.titulo)}">${escaparHtml(item.acao ?? "Abrir")}<span aria-hidden="true">${SETA_DIAGONAL}</span></a>` : '<span class="coming-soon">Em breve</span>';
-  return `<article class="guide-card ${tema}" data-guia data-categoria="${item.grupo}" data-busca="${pesquisar}"><div class="card-top"><span class="tag">${item.tipo} · ${escaparHtml(item.categoria)}</span><span class="state-badge ${item.grupo}">${item.estado}</span></div><div><h3>${titulo}</h3><p>${escaparHtml(item.descricao)}</p></div><div class="card-bottom"><span>${escaparHtml(item.relacao ?? (item.estado === "Premium" ? "Produto com acesso próprio" : item.estado === "Em breve" ? "SaaS da Infuser" : "Acesso gratuito"))}</span>${acao}</div></article>`;
+  // Destination cards are native full-area links, including their padding and whitespace.
+  const tag = item.caminho ? "a" : "article";
+  const destino = item.caminho ? ` href="${escaparHtml(item.caminho)}" aria-label="${escaparHtml(item.acao ?? "Abrir")}: ${escaparHtml(item.titulo)}"` : "";
+  const acao = item.caminho ? `<span class="card-link" aria-hidden="true">${escaparHtml(item.acao ?? "Abrir")}<span>${SETA_DIAGONAL}</span></span>` : '<span class="coming-soon">Em breve</span>';
+  return `<${tag} class="guide-card ${tema}"${destino} data-guia data-categoria="${item.grupo}" data-busca="${pesquisar}"><div class="card-top"><span class="tag">${item.tipo} · ${escaparHtml(item.categoria)}</span><span class="state-badge ${item.grupo}">${item.estado}</span></div><div><h3>${escaparHtml(item.titulo)}</h3><p>${escaparHtml(item.descricao)}</p></div><div class="card-bottom"><span>${escaparHtml(item.relacao ?? (item.estado === "Premium" ? "Produto com acesso próprio" : item.estado === "Em breve" ? "SaaS da Infuser" : "Acesso gratuito"))}</span>${acao}</div></${tag}>`;
 }
 
 export function documentoBiblioteca(): string {

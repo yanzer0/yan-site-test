@@ -37,6 +37,22 @@ describe("Central Infuser", () => {
     expect(html).toContain("Upgrade do Kit base"); expect(html).toContain("Complemento opcional do Kit");
     expect(html).toContain('href="https://pay.hotmart.com/O108099140A?off=bmb50jm3&amp;checkoutMode=10"');
   });
+  it("usa um link nativo por card inteiro e mantém Em breve não interativo", () => {
+    const html = documentoBiblioteca();
+    const cards = [...html.matchAll(/<(a|article) class="guide-card [^"]*"([^>]*)>([\s\S]*?)<\/\1>/g)];
+    expect(cards).toHaveLength(CATALOGO_CENTRAL.length);
+    cards.forEach(([_, tag, atributos, corpo], index) => {
+      const item = CATALOGO_CENTRAL[index];
+      expect(corpo).not.toMatch(/<a\b|<button\b|tabindex=/);
+      expect(corpo).toMatch(/<h3>[^<]+<\/h3>/);
+      if (item.caminho) {
+        expect(tag).toBe("a"); expect(atributos).toContain(`href="${item.caminho.replace(/&/g, "&amp;")}"`);
+        expect(atributos).toContain("aria-label="); expect(corpo).toContain('<span class="card-link" aria-hidden="true">');
+      } else {
+        expect(tag).toBe("article"); expect(atributos).not.toContain("href="); expect(corpo).not.toContain('class="card-link"');
+      }
+    });
+  });
   it("cadastro mantém requisitos e encaminha material específico ou Central", () => {
     expect(destinoDoGuia("")).toBe("/central"); expect(destinoDoGuia("https://evil.example")).toBeUndefined();
     for (const slug of ["kit-vscode", ...RECURSOS_CENTRAL.map((r) => r.slug)]) {
