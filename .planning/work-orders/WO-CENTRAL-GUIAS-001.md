@@ -77,3 +77,7 @@ Fonte: novo pedido de Yan para guardar respostas, cookies/localização e dados 
 - Limite: tags do restante do site React continuam no carregador preexistente, fora desta fatia. A mudança de consentimento cobre central e os 16 guias; a política recebe a seção específica.
 
 Handoff final v1.1: `99cd9b6` contém a implementação. Build final concluiu com `/guias/preferencias` e `/api/guias/preferencias`; HTTP real final: 5/5 aprovados. Preview reiniciado em 127.0.0.1:3188 com segredo sintético e banco local deliberadamente indisponível. São 7 linhas de asserts ajustadas para os argumentos novos, limite de 32KiB e filtro paginado; os 7 cenários foram mantidos e receberam expectativas correspondentes. Nenhum teste ou cenário antigo foi removido. Migração/gravação real, QA visual independente e deploy continuam com o root; AC-05 permanece parcial por TS2493 legado.
+
+## Correção visual pontual do QA
+
+O root comprovou no screenshot de produção que o glifo diagonal era apresentado como emoji azul no Windows. Nesta correção limitada, os cinco usos do ícone na central, gate, preferências e rodapé passaram a um SVG inline com stroke=currentColor, dimensões explícitas e aria-hidden. Sem mudança funcional, de consentimento, dados ou escopo; TS2493 legado permanece. Prova afetada: `npm test -- tests/guias/catalogo.test.ts`. Publicação/revisão ficam com o root.
