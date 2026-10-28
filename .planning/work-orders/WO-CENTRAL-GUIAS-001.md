@@ -81,3 +81,16 @@ Handoff final v1.1: `99cd9b6` contém a implementação. Build final concluiu co
 ## Correção visual pontual do QA
 
 O root comprovou no screenshot de produção que o glifo diagonal era apresentado como emoji azul no Windows. Nesta correção limitada, os cinco usos do ícone na central, gate, preferências e rodapé passaram a um SVG inline com stroke=currentColor, dimensões explícitas e aria-hidden. Sem mudança funcional, de consentimento, dados ou escopo; TS2493 legado permanece. Prova afetada: `npm test -- tests/guias/catalogo.test.ts`. Publicação/revisão ficam com o root.
+## Revisão e publicação pelo root
+
+1. Release de código `587ce6e10bdf` publicado na VPS e confirmado em `/api/health` no apex e no `www`.
+2. `npm test -- tests/guias`, com HTTP local real habilitado: 129/129 aprovados na revisão.
+3. Build Linux de produção aprovado; smoke interno de 99 probes aprovado. Smoke externo: 99/99 em cada host no release funcional anterior ao ajuste exclusivo das setas SVG.
+4. Os 16 guias, aliases, sublinks e HTMLs exigem cadastro; variante percent-encoded também foi conferida.
+5. Cadastro real de verificação salvou as seis respostas antes de abrir a biblioteca; sem marketing autorizado, não iniciou scripts de terceiros.
+6. Captura de marketing real conferiu campanha, cookie permitido e localização aproximada disponível; cookie de login e campos extras ficaram fora da gravação.
+7. Alteração e revogação de contato comercial conferidas no navegador e no banco, com três eventos de histórico.
+8. QA visual desktop/celular aprovado após trocar os glifos por SVG; busca ClickUp retornou um guia; largura 375 px sem overflow. Dois cadastros de teste removidos e Postgres descartável encerrado.
+9. Nenhum assert preexistente foi removido. AC-05 mantém explicitamente os dois TS2493 do instalador, reproduzidos no baseline e fora desta mudança; não houve closeout falso.
+10. Aplicados Studio (direção, sourcing, criação e QA), frontend-design, design-taste-frontend, ui-ux-pro-max, awwwards-standards; Codar com software-engineer, event-driven, ponytail e code-craft; Tráfego para atribuição e exportações. Rollback preserva tabelas e dados.
+
