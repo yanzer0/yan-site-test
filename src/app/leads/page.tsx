@@ -101,6 +101,7 @@ export default async function LeadsPage({
         <div className="lp-topo-sessao">
           <span className="lp-marca">Infuser</span>
           <span>{usuario.nome}</span>
+          <Link className="lp-voltar" href="/leads/guias">Leads dos guias</Link>
           {usuario.papel === "admin" && (
             <Link className="lp-voltar" href="/leads/equipe">
               equipe{pendentes > 0 ? ` (${pendentes} esperando)` : ""}

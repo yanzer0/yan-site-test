@@ -29,7 +29,7 @@ scope_lock:
     background_jobs: []
   acceptance_ids: [AC-01, AC-02, AC-03, AC-04, AC-05]
   stop_when: [AC-01, AC-02, AC-03, AC-04, AC-05]
-  passed_acceptance_ids: []
+  passed_acceptance_ids: [AC-01, AC-02, AC-03, AC-04]
 ---
 # Central de guias com cadastro obrigatório
 
@@ -41,3 +41,14 @@ AC-03: cookie válido/adulterado/expirado e middleware anterior preservado. Prov
 AC-04: consulta/export só para equipe aprovada. Prova: `npm test -- tests/guias/leads.test.ts`.
 AC-05: suíte, TypeScript e build. Prova: `npm test`, `npx tsc --noEmit`, `npm run build`. QA visual e deploy pelo root, fora desta sessão.
 Teto: 2 rodadas ou 90 minutos; preservar modelo/esforço vigente. Revisão e publicação pelo root; não alegar executadas.
+
+## Evidência da execução
+
+RED inicial: `npm test -- tests/guias/catalogo.test.ts`, 2 falhas antes de implementar catálogo/proteção.
+AC-01/03: catálogo + middleware, 63 testes aprovados; sessão, 5 aprovados. Todos os links, aliases, sublinks e 16 HTMLs cobertos.
+AC-02: `tests/guias/acesso.test.ts`, 27 aprovados, incluindo seis campos, falha de banco, origem, tamanho e limites reais.
+AC-04: `tests/guias/leads.test.ts` + `db.test.ts`, 7 aprovados, sem saída anônima e com CSV protegido.
+Suíte: `npm test`, 542 aprovados; 9 pulados explicitamente (4 de Postgres descartável e 5 HTTP sem URL). Nenhum assert antigo removido.
+HTTP real: suíte permanente em `tests/guias/http.test.ts`; rodada final após build cobre domínio público atrás do proxy.
+AC-05 permanece parcialmente pendente: `npx tsc --noEmit` encontra somente TS2493 em `tests/instalar/instalar.test.ts:94,101`, arquivo sem delta. A mesma falha foi reproduzida no checkout principal com `node node_modules/typescript/bin/tsc --noEmit --incremental false --project C:/Users/PC/Documents/GitHub/yan-site-test/tsconfig.json`. Não foi corrigida por estar fora do escopo.
+Código pronto para revisão do root; gate não foi relaxado. A revisão visual, a migração, o teste de gravação viva e o deploy não foram executados pelo executor.

@@ -1,5 +1,8 @@
 #!/usr/bin/env node
 
+import { readdirSync } from "node:fs";
+import { resolve } from "node:path";
+
 const baseUrl = new URL(process.argv[2] ?? "http://127.0.0.1:3000");
 const expectedRelease = process.argv[3] ?? process.env.APP_RELEASE;
 
@@ -56,6 +59,13 @@ const instalarAssets = [
 ];
 
 const checks = [];
+const protectedGuides = new Set([
+  "/agente-que-aprende", "/99comandos", "/guia-99-comandos", "/guia-clickup",
+  "/guiamotion", "/guiacarrossel", "/promptsmotion", "/guia-agentes",
+  "/guia-comandos-gpt", "/guia-gpt6-astra", "/guia-ia-sem-bajulacao",
+  "/guia-mapeamento-processos", "/guia-skill", "/opus5", "/opus55",
+  "/protocolo-de-autoria", "/tutorial-maestri", "/guia-videos-motion", "/guias",
+]);
 
 async function check(path, expectedStatuses, options = {}) {
   const url = new URL(path, baseUrl);
@@ -85,9 +95,24 @@ if (expectedRelease && healthBody.release !== expectedRelease) {
 }
 
 for (const path of publicPaths) {
+  if (protectedGuides.has(path)) continue;
   const result = await check(path, [200]);
   if (result.body.length < 100) throw new Error(`${path}: response body is unexpectedly small`);
 }
+
+const guideFiles = readdirSync(resolve("public")).filter((name) => /^(?:guia-|opus|agente-que-aprende|protocolo-de-autoria|tutorial-maestri).*\.html$/.test(name));
+for (const path of [...protectedGuides, ...guideFiles.map((name) => `/${name}`)]) {
+  const { response } = await check(path, [307]);
+  const location = new URL(response.headers.get("location") ?? "", baseUrl);
+  if (location.pathname !== "/guias/acesso") throw new Error(`${path}: guide capture gate is missing`);
+  if (!response.headers.get("cache-control")?.includes("no-store")) throw new Error(`${path}: protected guide must not be cached`);
+}
+const guideGate = await check("/guias/acesso", [200]);
+for (const name of ["nome", "email", "whatsapp", "nicho", "interesse", "impedimento"]) {
+  if (!guideGate.body.includes(`name="${name}"`)) throw new Error(`/guias/acesso: missing field ${name}`);
+}
+await check("/leads/guias", [302, 303, 307, 308]);
+await check("/leads/guias/export", [404]);
 
 for (const path of skillTreeAssets) {
   const result = await check(path, [200]);

@@ -1,9 +1,12 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { guiaPorCaminho } from "./lib/guias/catalogo";
+import { COOKIE_GUIAS, sessaoGuiasValida } from "./lib/guias/sessao";
+import { origemPublicaGuias } from "./lib/guias/http";
 
 // Basic auth da demo do Marja App (/demomarja), entregue a um prospect por WhatsApp.
-// O matcher no fim do arquivo limita este middleware AS DUAS rotas da demo -- o resto
-// do site nao passa por aqui. Proteger tambem o .html e obrigatorio: o rewrite de
+// O matcher tambem cobre o painel e os guias, roteados separadamente no fim.
+// Proteger tambem o .html e obrigatorio: o rewrite de
 // /demomarja aponta pra ele, entao sem isso bastaria pedir o arquivo direto pra pular
 // a senha.
 //
@@ -116,14 +119,54 @@ function painelComCsp(request: NextRequest): NextResponse {
   return response;
 }
 
-export function middleware(request: NextRequest): NextResponse {
+export async function protegerGuia(request: NextRequest): Promise<NextResponse> {
+  const guia = guiaPorCaminho(request.nextUrl.pathname);
+  const central = request.nextUrl.pathname.replace(/\/$/, "") === "/guias";
+  if (!guia && !central) return NextResponse.next();
+  let resposta: NextResponse;
+  try {
+    if (await sessaoGuiasValida(request.cookies.get(COOKIE_GUIAS)?.value)) {
+      resposta = NextResponse.next();
+    } else {
+      const destino = new URL("/guias/acesso", origemPublicaGuias(request));
+      if (guia) destino.searchParams.set("guia", guia.slug);
+      resposta = NextResponse.redirect(destino, 307);
+    }
+  } catch {
+    resposta = new NextResponse("O acesso aos guias está temporariamente indisponível. Tente novamente em instantes.", { status: 503, headers: { "Content-Type": "text/plain; charset=utf-8" } });
+  }
+  resposta.headers.set("Cache-Control", "no-store, max-age=0");
+  resposta.headers.set("X-Robots-Tag", "noindex, nofollow");
+  resposta.headers.append("Vary", "Cookie");
+  return resposta;
+}
+
+export async function middleware(request: NextRequest): Promise<NextResponse> {
   // 🔴 A separacao e por caminho e vem PRIMEIRO. O handler da demo devolve 503
   // quando as credenciais dela faltam no ambiente, e sem esta linha o painel
   // herdaria esse 503 por uma variavel que nao tem nada a ver com ele.
   if (request.nextUrl.pathname.startsWith("/leads")) return painelComCsp(request);
-  return demoMarja(request);
+  if (request.nextUrl.pathname === "/demomarja" || request.nextUrl.pathname === "/demomarja.html") return demoMarja(request);
+  return protegerGuia(request);
 }
 
 export const config = {
-  matcher: ["/demomarja", "/demomarja.html", "/leads/:path*"],
+  matcher: [
+    "/demomarja", "/demomarja.html", "/leads/:path*", "/guias/:path*",
+    "/agente-que-aprende", "/agente-que-aprende.html",
+    "/guia-99-comandos", "/guia-99-comandos.html", "/99comandos",
+    "/guia-agentes", "/guia-agentes.html",
+    "/guiacarrossel", "/guia-carrossel-animado.html",
+    "/guia-clickup", "/guia-clickup.html",
+    "/guia-comandos-gpt", "/guia-comandos-gpt.html",
+    "/guia-gpt6-astra", "/guia-gpt6-astra.html",
+    "/guia-ia-sem-bajulacao", "/guia-ia-sem-bajulacao.html",
+    "/guia-mapeamento-processos", "/guia-mapeamento-processos.html",
+    "/promptsmotion", "/guia-prompts-motion.html",
+    "/guia-skill", "/guia-skill.html",
+    "/guia-videos-motion", "/guiamotion", "/guia-videos-motion.html",
+    "/opus5", "/opus5.html", "/opus55", "/opus55.html",
+    "/protocolo-de-autoria", "/protocolo-de-autoria.html",
+    "/tutorial-maestri", "/tutorial-maestri.html",
+  ],
 };
