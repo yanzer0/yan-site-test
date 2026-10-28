@@ -14,6 +14,7 @@ scope_lock:
     - specs/009-central-guias/**
     - src/lib/guias/**
     - src/app/central/**
+    - src/app/leads/guias/page.tsx
     - src/app/guias/**
     - src/app/api/guias/**
     - src/middleware.ts
@@ -24,14 +25,14 @@ scope_lock:
     - tests/guias/**
     - deploy/vps/smoke.mjs
   architecture_delta:
-    production_files: [src/lib/guias/**, src/app/central/**, src/app/guias/**, src/app/api/guias/**, src/middleware.ts, public/guias/**, private/central/**, src/components/gtm.tsx, src/components/utm-tracker.tsx, deploy/vps/smoke.mjs]
+    production_files: [src/lib/guias/**, src/app/central/**, src/app/guias/**, src/app/api/guias/**, src/middleware.ts, public/guias/**, private/central/**, src/components/gtm.tsx, src/components/utm-tracker.tsx, deploy/vps/smoke.mjs, src/app/leads/guias/page.tsx]
     runtime_dependencies: []
     public_contracts: [GET /central, GET /central/recursos/:slug, GET /central/baixar/:slug, GET /kit-vscode]
     persistence_surfaces: []
     background_jobs: []
-  acceptance_ids: [AC-01, AC-02, AC-03, AC-04, AC-05, AC-06, AC-07, AC-08, AC-09, AC-10, AC-11]
-  stop_when: [AC-01, AC-02, AC-03, AC-04, AC-05, AC-06, AC-07, AC-08, AC-09, AC-10, AC-11]
-  passed_acceptance_ids: [AC-01, AC-02, AC-03, AC-04, AC-06, AC-07, AC-08, AC-09, AC-10]
+  acceptance_ids: [AC-01, AC-02, AC-03, AC-04, AC-05, AC-06, AC-07, AC-08, AC-09, AC-10, AC-11, AC-12]
+  stop_when: [AC-01, AC-02, AC-03, AC-04, AC-05, AC-06, AC-07, AC-08, AC-09, AC-10, AC-11, AC-12]
+  passed_acceptance_ids: [AC-01, AC-02, AC-03, AC-04, AC-06, AC-07, AC-08, AC-09, AC-10, AC-12]
 ---
 # Central de guias com cadastro obrigatório
 
@@ -111,7 +112,7 @@ QA móvel do root em 375px mediu ações com largura 278px, primária de 76,5px 
 ## Nova fatia: Central Infuser, autorização de 28/10 às 16h29
 
 Fonte: pedido novo de reunir gratuitos e pagos, Premium e SaaS Em breve; o usuário confirmou incluir os dois bônus do Club. A base é c45a870 publicado. Um executor, teto novo de 2 rodadas/90 min, alvo 25 a 35 min. Não publicar nem mudar cobrança, conteúdo pago ou flags.
-AC-08: catálogo único com 16 guias, Kit VS Code gratuito, 3 pacotes públicos, 4 páginas Premium confirmadas e Painel OS Em breve sem checkout/data. Pendentes de URL não são inventados. Prova: testes/central.
+AC-08: catálogo único com 16 guias, Kit VS Code gratuito, 3 pacotes públicos, 7 produtos Premium com destinos documentados, incluindo dois complementos com relação explícita à oferta base, e Painel OS Em breve sem checkout/data. Nenhum checkout standalone é inventado. Prova: testes/central.
 AC-09: central, Kit, detalhes e downloads exigem seis campos/sessão; preservar todos os aliases/HTMLs originais; destino allowlisted e download anônimo volta ao detalhe. Prova: middleware/acesso/recursos/HTTP.
 AC-10: três ZIPs privados válidos, fonte canônica e scan sem segredo/dado interno; builders oficiais e skill GPU só empacotada. Prova: suíte de arquivos/ZIP e outputs dos builders.
 AC-11: v2 clara, destaque full-width, flex-wrap/flex-grow sem preenchimento falso; filtros/tipos/contagens reais. Kit usa tracking consentido, sem UtmTracker incondicional, demais LPs preservadas. Confirmação/negativa e mobile anteriores mantidos. Prova: testes afetados, suíte completa/build e QA do root.
@@ -126,3 +127,10 @@ O TS2493 legado do instalador permanece explicitamente fora desta fatia; nenhuma
 - Limite de escopo: o painel interno de leads ainda resolve títulos com o catálogo antigo de guias; os novos IDs e URLs estão corretamente persistidos no campo e metadados/CSV, mas sua legenda de título pode cair no fallback genérico. Não alterado porque src/app/leads/guias não pertence a esta fatia.
 
 Handoff desta fatia: código em 569c94d. Build único de produção concluído com /central, /central/recursos/[slug] e /central/baixar/[slug], middleware 38,2kB. HTTP real final: 6/6, incluindo Kit e os três ZIPs reais com sessão, anônimos/falsos bloqueados e arquivo privado inacessível. Preview de produção local ativo em http://127.0.0.1:3188/guias/acesso; /central usa o mesmo segredo sintético das rodadas anteriores e banco fictício indisponível. AC-11 aguarda o QA visual independente do root e AC-05 mantém somente os TS2493 legados. Sem publicação nem migração.
+
+## Fechamento de conteúdo autorizado pelo root
+
+O catálogo passa a 28 itens e 7 Premium. Estúdio de CrIAção usa https://pay.hotmart.com/A108157970A, confirmado no briefing canônico de 27/10 e pelo título vivo da Hotmart (root). Segundo Cérebro Premium é explicitamente upgrade do Kit, CTA Conhecer o Kit base para /kit-segundo-cerebro. O Pergaminho é complemento opcional da oferta do Kit, CTA Ver oferta com complementos para https://pay.hotmart.com/O108099140A?off=bmb50jm3&checkoutMode=10, conforme nota de bumps de 20/10. Nenhuma compra standalone é anunciada para os complementos.
+AC-12: a Entrada do painel resolve alvos gratuitos por alvoDeAcesso; cadastro geral vazio mostra Central Infuser e slug legado desconhecido continua visível/escapado pelo React, sem rótulo inventado. Prova: testes/guias/leads.test.ts. A propriedade adicional da página foi registrada no lock. DB, queries e CSV permanecem intactos. Sem novos arquivos de pacote ou rebuild de assets.
+
+Evidência do fechamento comercial: 31/31 testes afetados aprovados (Central 13, filtros 1, leads 10, catálogo 7). As expectativas de 25/4 passaram a 28/7 conforme os três produtos autorizados; Pergaminho deixou somente a exclusão de conteúdo pendente e ganhou assert positivo de vínculo/CTA/URL. Nenhum cenário foi removido. `tsc --noEmit` continua somente com os dois TS2493 legados do instalador. Build adicional dispensado nesta revisão pequena; o root fará o build da VPS no delta final. Nenhum ZIP, schema, query ou CSV foi alterado.

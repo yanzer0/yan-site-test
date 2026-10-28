@@ -51,7 +51,7 @@ Autorizada em 28/10: escolhas iniciais marcadas no cadastro, confirmação expl�
 
 ## Central Infuser, revisão v1.3
 
-Central Infuser em /central, com /guias compatível: 25 itens confirmados, sem preços. Os 16 guias continuam; somam Kit VS Code gratuito, 3 pacotes gratuitos, 4 Premium e Painel OS Em breve. Pagos levam às LPs públicas, nunca liberam conteúdo comprado. Recursos exigem cadastro e sessão. Três ZIPs fixos em private/central, montados das fontes canônicas autorizadas. Estúdio/Segundo Cérebro Premium/Pergaminho aguardam URLs confirmadas; não inventar destinos. Sem migração. Root revisa/publica.
+Central Infuser em /central, com /guias compatível: 28 itens confirmados, sem preços. Os 16 guias continuam; somam Kit VS Code gratuito, 3 pacotes gratuitos, 7 Premium e Painel OS Em breve. Pagos levam às LPs públicas, nunca liberam conteúdo comprado. Recursos exigem cadastro e sessão. Três ZIPs fixos em private/central, montados das fontes canônicas autorizadas. Estúdio tem checkout confirmado; Segundo Cérebro Premium e Pergaminho são complementos com CTAs explícitos para as ofertas base documentadas, sem alegar compra standalone. Sem migração. Root revisa/publica.
 
 ### Pacotes distribuídos nesta revisão
 
@@ -62,3 +62,11 @@ Central Infuser em /central, com /guias compatível: 25 itens confirmados, sem p
 | video-transcricao-gpu.zip | seis arquivos de _infoprodutos/kit-de-skills/video-transcricao-gpu | 9.250 bytes | Windows, Python, ffmpeg; NVIDIA/CUDA e faster-whisper para transcrição |
 
 São assets privados de deploy do site, não novas fontes do produto. Os fontes do brain não foram alterados; apenas os dist ignorados foram gerados. A Orquestra é o pacote existente e mantém seu método original; a pendência de atualização do produto continua no brain. A skill GPU não inclui modelos nem instala dependências automaticamente. Extração de frames não requer GPU. Novos links: /central, /central/recursos/<slug> e /central/baixar/<slug>; sem sessão, o download volta ao formulário e depois ao detalhe.
+
+### Destinos comerciais confirmados no fechamento
+
+- Estúdio de CrIAção: https://pay.hotmart.com/A108157970A, seis agentes de vídeo para Windows, CTA de compra. Fonte: briefing canônico de tráfego de 27/10, linhas 15/19/159, e título da Hotmart conferido pelo root.
+- Segundo Cérebro Premium: upgrade do Kit com instalação guiada e validação; CTA Conhecer o Kit base para /kit-segundo-cerebro. Não é anunciado como checkout standalone do Premium.
+- O Pergaminho: prompts ordenados para pesquisar/validar oportunidade, complemento opcional da oferta do Kit; CTA Ver oferta com complementos para https://pay.hotmart.com/O108099140A?off=bmb50jm3&checkoutMode=10. Fonte: checkouts-hotmart.md, bumps de 20/10.
+
+Contagem atual: 28 itens, 20 gratuitos, 7 Premium e 1 Em breve. O painel de leads agora exibe os títulos dos novos alvos gratuitos e preserva slugs legados desconhecidos em vez de rotulá-los como Central.

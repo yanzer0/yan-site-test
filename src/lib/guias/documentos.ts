@@ -28,9 +28,9 @@ function marca(biblioteca = false): string {
 function ficha(item: ItemCentral, indice: number): string {
   const tema = ["teal", "lime", "paper"][indice % 3];
   const pesquisar = escaparHtml(`${item.titulo} ${item.descricao} ${item.categoria} ${item.tipo} ${item.estado}`.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase());
-  const titulo = item.caminho ? `<a href="${item.caminho}">${escaparHtml(item.titulo)}</a>` : escaparHtml(item.titulo);
-  const acao = item.caminho ? `<a class="card-link" href="${item.caminho}" aria-label="${escaparHtml(item.acao ?? "Abrir")}: ${escaparHtml(item.titulo)}">${escaparHtml(item.acao ?? "Abrir")}<span aria-hidden="true">${SETA_DIAGONAL}</span></a>` : '<span class="coming-soon">Em breve</span>';
-  return `<article class="guide-card ${tema}" data-guia data-categoria="${item.grupo}" data-busca="${pesquisar}"><div class="card-top"><span class="tag">${item.tipo} · ${escaparHtml(item.categoria)}</span><span class="state-badge ${item.grupo}">${item.estado}</span></div><div><h3>${titulo}</h3><p>${escaparHtml(item.descricao)}</p></div><div class="card-bottom"><span>${item.estado === "Premium" ? "Produto com acesso próprio" : item.estado === "Em breve" ? "SaaS da Infuser" : "Acesso gratuito"}</span>${acao}</div></article>`;
+  const titulo = item.caminho ? `<a href="${escaparHtml(item.caminho)}">${escaparHtml(item.titulo)}</a>` : escaparHtml(item.titulo);
+  const acao = item.caminho ? `<a class="card-link" href="${escaparHtml(item.caminho)}" aria-label="${escaparHtml(item.acao ?? "Abrir")}: ${escaparHtml(item.titulo)}">${escaparHtml(item.acao ?? "Abrir")}<span aria-hidden="true">${SETA_DIAGONAL}</span></a>` : '<span class="coming-soon">Em breve</span>';
+  return `<article class="guide-card ${tema}" data-guia data-categoria="${item.grupo}" data-busca="${pesquisar}"><div class="card-top"><span class="tag">${item.tipo} · ${escaparHtml(item.categoria)}</span><span class="state-badge ${item.grupo}">${item.estado}</span></div><div><h3>${titulo}</h3><p>${escaparHtml(item.descricao)}</p></div><div class="card-bottom"><span>${escaparHtml(item.relacao ?? (item.estado === "Premium" ? "Produto com acesso próprio" : item.estado === "Em breve" ? "SaaS da Infuser" : "Acesso gratuito"))}</span>${acao}</div></article>`;
 }
 
 export function documentoBiblioteca(): string {

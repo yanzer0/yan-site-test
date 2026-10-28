@@ -66,6 +66,7 @@ export interface ItemCentral {
   readonly grupo: "guias" | "recursos" | "premium" | "em-breve";
   readonly caminho?: string;
   readonly acao?: string;
+  readonly relacao?: string;
 }
 export const KIT_VSCODE: ItemCentral & { caminho: string } = { slug: "kit-vscode", titulo: "Kit Prático Claude Code no VS Code", descricao: "Guia gratuito de instalação, funcionalidades, atalhos e referência para usar o Claude Code no VS Code.", tipo: "Kit", estado: "Gratuito", grupo: "guias", categoria: "Claude e agentes", caminho: "/kit-vscode", acao: "Abrir kit gratuito" };
 export const CATALOGO_CENTRAL: readonly ItemCentral[] = [
@@ -76,6 +77,9 @@ export const CATALOGO_CENTRAL: readonly ItemCentral[] = [
   { slug: "kit-segundo-cerebro", titulo: "Kit Segundo Cérebro", descricao: "Organize contexto, conhecimento e decisões para trabalhar com IA no seu ambiente.", categoria: "Produto Infuser", tipo: "Kit", estado: "Premium", grupo: "premium", caminho: "/kit-segundo-cerebro", acao: "Conhecer produto" },
   { slug: "kit-skills", titulo: "Kit de Skills", descricao: "Skills prontas para estruturar tarefas e especialidades no Claude.", categoria: "Produto Infuser", tipo: "Kit", estado: "Premium", grupo: "premium", caminho: "/kit-skills", acao: "Conhecer produto" },
   { slug: "kit-jarvis", titulo: "Jarvis Kit", descricao: "Automações de computador por palmas e comandos de voz.", categoria: "Produto Infuser", tipo: "Kit", estado: "Premium", grupo: "premium", caminho: "/kit-jarvis", acao: "Conhecer produto" },
+  { slug: "estudio-criacao", titulo: "Estúdio de CrIAção", descricao: "Seis agentes de vídeo em um estúdio de criação para Windows.", categoria: "Produto Infuser", tipo: "Agente", estado: "Premium", grupo: "premium", caminho: "https://pay.hotmart.com/A108157970A", acao: "Comprar Estúdio" },
+  { slug: "segundo-cerebro-premium", titulo: "Segundo Cérebro Premium", descricao: "Instalação guiada e mecanismos de validação para o projeto, em um upgrade do Kit Segundo Cérebro.", categoria: "Produto Infuser", tipo: "Kit", estado: "Premium", grupo: "premium", caminho: "/kit-segundo-cerebro", acao: "Conhecer o Kit base", relacao: "Upgrade do Kit base" },
+  { slug: "pergaminho", titulo: "O Pergaminho", descricao: "Sequência de prompts para pesquisar e validar uma oportunidade, vendida como complemento opcional da oferta do Kit.", categoria: "Produto Infuser", tipo: "Kit", estado: "Premium", grupo: "premium", caminho: "https://pay.hotmart.com/O108099140A?off=bmb50jm3&checkoutMode=10", acao: "Ver oferta com complementos", relacao: "Complemento opcional do Kit" },
   { slug: "painel-os", titulo: "Painel OS", descricao: "O SaaS da Infuser para reunir o cérebro da empresa, agentes e operação em um painel.", categoria: "SaaS da Infuser", tipo: "SaaS", estado: "Em breve", grupo: "em-breve" },
 ];
 export function recursoPorSlug(slug: string): RecursoCentral | undefined { return RECURSOS_CENTRAL.find((recurso) => recurso.slug === slug); }

@@ -39,4 +39,18 @@ describe("saídas de dados dos guias", () => {
     expect(response.status).toBe(503); expect(await response.text()).not.toContain("dado-sensivel");
     vi.restoreAllMocks();
   });
+  it.each([
+    ["kit-vscode", "Kit Prático Claude Code no VS Code"],
+    ["pacote-agente-que-aprende", "Agente que Aprende: pacote para instalar"],
+    ["orquestra-claude-codex", "Orquestra Claude + Codex"],
+    ["video-transcricao-gpu", "Vídeo: transcrição GPU e frames"],
+    ["", "Central Infuser"],
+    ["legado-<script>", "legado-&lt;script&gt;"],
+  ])("identifica a entrada %s sem inventar título", async (guia, esperado) => {
+    usuarioLogado.mockResolvedValue({ id: "time", nome: "Equipe" });
+    listar.mockResolvedValue([{ id: "id", nome: "Teste", email: "teste@example.com", whatsapp: "5511999999999", nicho: "Teste", interesse: "Testar IA", impedimento: "Falta tempo", guia, origem: "direto", criadoEm: new Date("2026-10-28T12:00:00Z") }]);
+    const html = renderToStaticMarkup(await LeadsPage({ searchParams: Promise.resolve({}) }));
+    expect(html).toContain(esperado); expect(html).not.toContain("legado-<script>");
+    expect(html).not.toContain("Central de guias");
+  });
 });
