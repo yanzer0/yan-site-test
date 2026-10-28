@@ -21,15 +21,21 @@ scope_lock:
     - public/guias/**
     - tests/guias/**
     - deploy/vps/smoke.mjs
+    - src/app/privacidade/page.tsx
+    - public/guia*.html
+    - public/opus*.html
+    - public/agente-que-aprende.html
+    - public/protocolo-de-autoria.html
+    - public/tutorial-maestri.html
   architecture_delta:
-    production_files: [src/lib/guias/**, src/app/guias/**, src/app/api/guias/**, src/app/leads/guias/**, src/app/leads/page.tsx, src/middleware.ts, public/guias/**, deploy/vps/smoke.mjs]
+    production_files: [src/lib/guias/**, src/app/guias/**, src/app/api/guias/**, src/app/leads/guias/**, src/app/leads/page.tsx, src/middleware.ts, public/guias/**, deploy/vps/smoke.mjs, src/app/privacidade/page.tsx, public/guia*.html, public/opus*.html, public/agente-que-aprende.html, public/protocolo-de-autoria.html, public/tutorial-maestri.html]
     runtime_dependencies: []
     public_contracts: [GET /guias, GET /guias/acesso, GET /guias/:slug, POST /api/guias/acesso]
-    persistence_surfaces: [guias_leads]
+    persistence_surfaces: [guias_leads, guias_consentimentos]
     background_jobs: []
   acceptance_ids: [AC-01, AC-02, AC-03, AC-04, AC-05]
   stop_when: [AC-01, AC-02, AC-03, AC-04, AC-05]
-  passed_acceptance_ids: [AC-01, AC-02, AC-03, AC-04]
+  passed_acceptance_ids: []
 ---
 # Central de guias com cadastro obrigatório
 
@@ -54,3 +60,8 @@ AC-05 permanece parcialmente pendente: `npx tsc --noEmit` encontra somente TS249
 Código pronto para revisão do root; gate não foi relaxado. A revisão visual, a migração, o teste de gravação viva e o deploy não foram executados pelo executor.
 
 Handoff: conteúdo em `c3df1cb`; `npm run build` final concluiu com as rotas novas e middleware 36,9 kB. `TEST_GUIAS_HTTP_URL=http://127.0.0.1:3188 npm test -- tests/guias/http.test.ts`: 5 aprovados, incluindo proxy, variantes percent-encoded, sessão válida, cookie falso e subrequest. `git diff --check` e Scope Lock aprovados. Revisão de simplicidade: sem dependência nova ou abstração descartável; Lean already. Ship. Estado segue active para a revisão do root e a decisão explícita sobre AC-05, sem closeout falso.
+
+
+## Rodada autorizada: marketing, v1.1
+
+Fonte: novo pedido de Yan para guardar respostas, cookies/localização e dados úteis para públicos semelhantes e contato comercial. Atualização autorizada pelo root antes de uma única publicação. AC-01 mantém catálogo/gates e soma GTM condicionado nos 16 HTMLs; AC-02 soma escolhas opcionais, versão, metadados allowlisted e GeoJS tolerante a falhas; AC-03 soma preferências e revogação; AC-04 soma filtros comercial/Meta e proibição de texto livre no Meta; AC-05 mantém suíte/build e achado TS2493 fora da frente. Prova adicional: `npm test -- tests/guias/marketing.test.ts tests/guias/preferencias.test.ts`. Teto restante: 30 a 35 min sem ultrapassar os 90 min originais.
