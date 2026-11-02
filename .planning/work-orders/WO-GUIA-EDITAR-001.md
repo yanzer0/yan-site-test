@@ -2,7 +2,7 @@
 work_order: WO-GUIA-EDITAR-001
 created: 2026-11-02
 updated: 2026-11-02
-status: active
+status: complete
 classe: conteudo
 risco: baixo
 central_branch: claude/guia-editar-20261102
@@ -26,12 +26,14 @@ scope_lock:
     background_jobs: []
   acceptance_ids: [AC-01, AC-02, AC-03]
   stop_when: [AC-01, AC-02, AC-03]
-  passed_acceptance_ids: [AC-01]
+  passed_acceptance_ids: [AC-01, AC-02, AC-03]
 ---
 # Guia EDITAR na Central
 
-Objetivo: publicar o guia "Você grava uma vez. A IA edita o resto.", entrega do Reels "Sou advogado. A IA consegue editar meus vídeos?" (palavra-chave EDITAR), em identidade v2 clara, como 17º guia da Central, protegido pelo cadastro como os demais. Fonte do conteúdo: `_knowledge/conteudo/guias/guia-editar-videos.html` no brain. Fora: mudança de layout da Central, captura ou middleware.
+Objetivo: publicar o guia "Você grava uma vez. A IA edita o resto.", entrega do Reels "Sou advogado. A IA consegue editar meus vídeos?" (palavra-chave EDITAR), em identidade v2 clara, como 17º guia da Central, protegido pelo cadastro como os demais. Fonte do conteúdo: `_knowledge/conteudo/guias/guia-editar-videos.html` no brain. Fora: mudança de layout da Central e da captura; o middleware só ganha as três portas do guia na lista protegida.
 
 - AC-01: `GUIAS` tem 17 itens e `/guia-editar-videos`, `/editar` e `/guias/editar-videos` resolvem para o guia; testes de `tests/guias` verdes com as contagens novas.
 - AC-02: build de produção sem erro e smoke da VPS cobrindo `/guia-editar-videos`.
 - AC-03: em produção, sem sessão o guia redireciona ao cadastro; com sessão serve o HTML, e a Central mostra 29 itens.
+
+Closeout 02/11/2026: d6c3d93 no ar (release d6c3d9311e36 healthy na VPS). 614 testes verdes; as quatro portas redirecionam a /guias/acesso?guia=editar-videos sem sessão; SHA-256 do HTML servido igual ao do commit.
