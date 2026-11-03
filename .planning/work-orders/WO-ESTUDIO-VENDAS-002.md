@@ -2,7 +2,7 @@
 work_order: WO-ESTUDIO-VENDAS-002
 created: 2026-11-03
 updated: 2026-11-03
-status: active
+status: complete
 classe: conteudo
 risco: baixo
 central_branch: claude/modest-neumann-93078b
@@ -22,7 +22,7 @@ scope_lock:
     background_jobs: []
   acceptance_ids: [AC-01, AC-02, AC-03]
   stop_when: [AC-01, AC-02, AC-03]
-  passed_acceptance_ids: []
+  passed_acceptance_ids: [AC-01, AC-02, AC-03]
 ---
 # Página do Estúdio v2: interface como estrela
 
@@ -31,3 +31,5 @@ Pedido do Yan (via sessão orquestradora, 03/11): "com a identidade v2 clara, ok
 - AC-01: hero e seções mostram a interface real em movimento (vídeo curto) e em print, versão 1.465.0+, sem dado pessoal.
 - AC-02: tokens v2 literais (Carbon/Onyx, Lime, rampa Teal, Inter/Onest/Geist Mono, `.glass`), logo canônico do brain; zero travessão; preço só no Investimento.
 - AC-03: no ar, conferida em 1440 e 375 sem rolagem lateral e sem erro no console; o CTA abre o checkout.
+
+Closeout 03/11/2026: ae776e4 no ar (release ae776e4f49f0 healthy). Interface capturada do origin/master (1.465.0+ no /health) servida localmente, variante sem instalador, sem dado de comprador e sem os 5 efeitos vetados no briefing de criativos. SHA-256 do HTML servido igual ao do commit; 1440 e 375 sem rolagem lateral, vídeo do hero tocando, fontes carregadas, console sem erro; o CTA abre o checkout (R$ 67 ou 12x de R$ 6,93) com o sck.
