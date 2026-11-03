@@ -2,7 +2,7 @@
 work_order: WO-GUIAS-ESTUDOS-FOTOS-001
 created: 2026-11-03
 updated: 2026-11-03
-status: active
+status: complete
 classe: conteudo
 risco: baixo
 central_branch: claude/guias-estudos-fotos-20261103
@@ -31,7 +31,7 @@ scope_lock:
     background_jobs: []
   acceptance_ids: [GEF-01, GEF-02, GEF-03]
   stop_when: [GEF-01, GEF-02, GEF-03]
-  passed_acceptance_ids: []
+  passed_acceptance_ids: [GEF-01, GEF-02, GEF-03]
 ---
 # Guias de estudo de livros e de fotos profissionais na Central
 
@@ -40,3 +40,5 @@ Objetivo: publicar os guias "Estude qualquer livro com o ChatGPT" (`/guia-estudo
 - GEF-01: `GUIAS` tem 19 itens e os dois caminhos resolvem para os guias; testes de `tests/guias` verdes com as contagens novas.
 - GEF-02: build de produção sem erro e smoke da VPS cobrindo `/guia-estudos` e `/guia-fotos`.
 - GEF-03: em produção, sem sessão os dois guias redirecionam ao cadastro e a Central mostra 31 itens.
+
+Closeout 03/11/2026: ea53f39 no ar (release ea53f39462b6 healthy na VPS, smoke verde). 180 testes de `tests/guias` verdes; `/guia-estudos`, `/guia-fotos`, `/guias/estudar-livros` e `/guias/fotos-profissionais` redirecionam a /guias/acesso?guia=<slug> sem sessão nos dois hosts; SHA-256 dos dois HTMLs servidos igual ao do commit. Contagem da Central (31 itens, 23 gratuitos) provada pelos testes no mesmo commit.
