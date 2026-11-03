@@ -174,6 +174,17 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      {
+        // Mesmo raciocinio do /legiao: :path+ pega os videos e webp da LP do Estudio,
+        // nunca a pagina /estudio.
+        source: "/estudio/:path+",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
     ];
   },
   images: {

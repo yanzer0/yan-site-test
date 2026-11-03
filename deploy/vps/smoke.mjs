@@ -27,6 +27,7 @@ const publicPaths = [
   "/guia-ia-sem-bajulacao",
   "/guia-mapeamento-processos",
   "/guia-skill",
+  "/estudio",
   "/kit-jarvis",
   "/kit-segundo-cerebro",
   "/kit-skills",
