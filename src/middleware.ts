@@ -168,6 +168,8 @@ export const config = {
     "/guia-skill", "/guia-skill.html",
     "/guia-videos-motion", "/guiamotion", "/guia-videos-motion.html",
     "/guia-editar-videos", "/editar", "/guia-editar-videos.html",
+    "/guia-estudos", "/guia-estudos.html",
+    "/guia-fotos", "/guia-fotos.html",
     "/opus5", "/opus5.html", "/opus55", "/opus55.html",
     "/protocolo-de-autoria", "/protocolo-de-autoria.html",
     "/tutorial-maestri", "/tutorial-maestri.html",
