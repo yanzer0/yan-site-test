@@ -19,6 +19,8 @@ const publicPaths = [
   "/guiamotion",
   "/guia-editar-videos",
   "/editar",
+  "/guia-videos-gemini",
+  "/prompt",
   "/guia-estudos",
   "/guia-fotos",
   "/guiacarrossel",
@@ -69,7 +71,7 @@ const protectedGuides = new Set([
   "/guiamotion", "/guiacarrossel", "/promptsmotion", "/guia-agentes",
   "/guia-comandos-gpt", "/guia-gpt6-astra", "/guia-ia-sem-bajulacao",
   "/guia-mapeamento-processos", "/guia-skill", "/opus5", "/opus55",
-  "/protocolo-de-autoria", "/tutorial-maestri", "/guia-videos-motion", "/guia-editar-videos", "/editar", "/guia-estudos", "/guia-fotos", "/guias", "/central", "/kit-vscode",
+  "/protocolo-de-autoria", "/tutorial-maestri", "/guia-videos-motion", "/guia-editar-videos", "/editar", "/guia-videos-gemini", "/prompt", "/guia-estudos", "/guia-fotos", "/guias", "/central", "/kit-vscode",
   ...["pacote-agente-que-aprende", "orquestra-claude-codex", "video-transcricao-gpu"].flatMap((slug) => [`/central/recursos/${slug}`, `/central/baixar/${slug}`]),
 ]);
 

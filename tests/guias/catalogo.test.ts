@@ -14,11 +14,11 @@ describe("inventário público de guias", () => {
   it("não deixa arquivos diretos fora da proteção do middleware", () => {
     expect(readFileSync(resolve("src/middleware.ts"), "utf8")).toContain("protegerGuia");
   });
-  it("inclui exatamente os dezessete HTMLs gratuitos presentes no código", () => {
+  it("inclui exatamente os vinte HTMLs gratuitos presentes no código", () => {
     const arquivos = readdirSync(resolve("public")).filter((name) => /^(?:guia-|opus|agente-que-aprende|protocolo-de-autoria|tutorial-maestri).*\.html$/.test(name));
-    expect(GUIAS).toHaveLength(19);
+    expect(GUIAS).toHaveLength(20);
     expect(GUIAS.map((guia) => guia.arquivo).sort()).toEqual(arquivos.sort());
-    expect(new Set(GUIAS.map((guia) => guia.slug)).size).toBe(19);
+    expect(new Set(GUIAS.map((guia) => guia.slug)).size).toBe(20);
   });
   it("todos os aliases de route handlers estão no mesmo catálogo", () => {
     for (const entry of readdirSync(resolve("src/app"), { withFileTypes: true })) {

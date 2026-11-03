@@ -68,10 +68,10 @@ describe("ações explícitas do cadastro", () => {
     const f = formulario({ preferencias: true, comercial: false, publicidade: false }); const envio = f.enviar(f.primary);
     expect(JSON.parse(f.fetch.mock.calls[0][1].body).consentimentos).toEqual({ comercial: false, publicidade: false }); f.concluir(); await envio;
   });
-  it("destaque ocupa a grade toda e preserva os dezessete links e a ordem", () => {
+  it("destaque ocupa a grade toda e preserva os vinte links e a ordem", () => {
     const css = readFileSync("public/guias/guias.css", "utf8"), html = documentoBiblioteca();
     expect(css).toContain(".guide-grid>.guide-card:first-child{flex-basis:100%}"); expect(css).toContain("display:flex;flex-wrap:wrap"); expect(css).not.toMatch(/grid-column:span [12]/);
-    expect(GUIAS).toHaveLength(19); const indices = GUIAS.map((guia) => html.indexOf(`href="/guias/${guia.slug}"`));
+    expect(GUIAS).toHaveLength(20); const indices = GUIAS.map((guia) => html.indexOf(`href="/guias/${guia.slug}"`));
     expect(indices.every((index) => index >= 0)).toBe(true); expect(indices).toEqual([...indices].sort((a,b) => a-b));
   });
 });
