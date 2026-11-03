@@ -21,20 +21,115 @@
 @font-face{font-family:"Inter";font-weight:100 900;font-style:normal;font-display:swap;src:url(/legiao/fonts/inter-latin-var.woff2) format("woff2")}
 @font-face{font-family:"Onest";font-weight:100 900;font-style:normal;font-display:swap;src:url(/legiao/fonts/onest-latin-var.woff2) format("woff2")}
 @font-face{font-family:"Geist Mono";font-weight:500;font-style:normal;font-display:swap;src:url(/legiao/fonts/geistmono-latin-500.woff2) format("woff2")}
-/* Identidade Infuser v2, modo claro (o mesmo da interface do Estúdio): papel, tinta, Lime só
-   no "IA" e na ação de compra, rampa Teal pra rótulo e prova. A faixa de filme Onyx carrega as
-   saídas reais dos agentes. Raio: cartões 18px, quadros de vídeo 14px, botões em pílula. */
+/* Identidade Infuser v2: tokens.css literal (_knowledge/branding/infuser-v2/tokens.css), modo claro.
+   Abaixo dele só apelidos e medidas da página, nenhuma cor nova. */
 :root{
-  --ink:#0C0C0A; --carbon:#171717; --onyx:#020202; --paper:#EEF4EF; --warm:#F0F0E4;
-  --lime:#C6FF34; --lime-deep:#A8E84C;
-  --teal-3:#3BD0A0; --teal-5:#2FA084; --teal-7:#1F6F5F; --teal-9:#143A31;
-  --n-700:#2A2A28; --n-500:#5F625B; --n-300:#9A9D95; --n-200:#C7CAC2; --n-100:#E7E9E4;
-  --muted:#4A4D47; --line:rgba(12,12,10,.12); --line-2:rgba(12,12,10,.07);
-  --font-display:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
-  --font-body:"Onest",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
-  --font-mono:"Geist Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
-  --max:1180px; --text:680px; --r:18px; --r-sm:14px; --r-full:999px;
-  --ease:cubic-bezier(.2,.7,.2,1);
+  --ink: #0C0C0A;
+  --carbon: #171717;
+  --onyx: #020202;
+  --warm-white: #F0F0E4;
+  --paper: #EEF4EF;
+  --lime: #C6FF34;
+  --lime-deep: #A8E84C;
+  --teal-300: #3BD0A0;
+  --teal-500: #2FA084;
+  --teal-700: #1F6F5F;
+  --teal-900: #143A31;
+  --n-900: #171717;
+  --n-700: #2A2A28;
+  --n-500: #5F625B;
+  --n-300: #9A9D95;
+  --n-200: #C7CAC2;
+  --n-100: #E7E9E4;
+  --success: #3BD0A0;
+  --warning: #F6C445;
+  --error: #FF5247;
+  --info: #5BA8FF;
+  --font-display:'Inter',system-ui,sans-serif;
+  --font-body:'Onest',system-ui,sans-serif;
+  --font-mono:'Geist Mono',ui-monospace,monospace;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 28px;
+  --radius-full: 999px;
+  --ease-out: cubic-bezier(.2,.7,.2,1);
+  --ease-spring: cubic-bezier(.34,1.4,.5,1);
+  --dur-1: 120ms;
+  --dur-2: 200ms;
+  --dur-3: 320ms;
+  --dur-4: 520ms;
+  --glass-blur: 4px;
+  --glass-fill: rgba(255,255,255,.06);
+  --glass-border: rgba(255,255,255,.22);
+  --shadow-card: 0 18px 50px rgba(0,0,0,.45);
+  --shadow-glass: 0 22px 56px rgba(0,0,0,.45), inset 0 1px 1px rgba(255,255,255,.4);
+}
+
+/* ============================================================
+   .glass - MATERIAL DE VIDRO PADRÃO (Infuser v2)
+   🔴 REGRA DE OURO (fallback do backdrop-filter): a BASE sozinha
+   já tem que ficar LEGÍVEL. blur/saturação e a lente líquida
+   (displacement SVG) são REALCE PROGRESSIVO, atrás de @supports.
+   Se o browser não suportar backdrop-filter - ou o filtro url()
+   não renderizar - o vidro NÃO quebra: perde só o blur; a base
+   (fill sólido + borda + sombra + brilho) segura o contraste.
+   NUNCA dependa do backdrop-filter pra legibilidade/contraste.
+   Uso: <div class="glass glass--light">…</div> · claro: class="glass glass glass--light--light"
+   · lente líquida (experimental, opt-in): class="glass glass--light glass--liquid"
+   ============================================================ */
+.glass{
+  position:relative;
+  border:1px solid var(--glass-border);
+  border-radius:var(--radius-lg);
+  /* BASE legível SEM backdrop-filter: fill sólido (Carbon ~72%) sob o gradiente de vidro */
+  background:
+    linear-gradient(135deg, rgba(255,255,255,.06), rgba(255,255,255,.015)),
+    rgba(23,23,23,.72);
+  box-shadow:var(--shadow-glass), inset 0 -12px 30px rgba(255,255,255,.05);
+}
+/* brilho especular (Apple) - decorativo, nunca essencial */
+.glass::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  background:radial-gradient(130% 90% at 14% 6%, rgba(255,255,255,.32), transparent 44%);
+  mix-blend-mode:screen;}
+/* REALCE 1 - blur+saturação só com suporte (aí o fill sólido sai, o blur assume) */
+@supports ((-webkit-backdrop-filter:blur(4px)) or (backdrop-filter:blur(4px))){
+  .glass{
+    background:linear-gradient(135deg, rgba(255,255,255,.06), rgba(255,255,255,.015));
+    -webkit-backdrop-filter:blur(var(--glass-blur)) saturate(190%);
+            backdrop-filter:blur(var(--glass-blur)) saturate(190%);
+  }
+  /* REALCE 2 - lente líquida (displacement SVG, EXPERIMENTAL no Chrome). Opt-in.
+     Exige um <filter id="glass-distortion"> na página. Se o url() não renderizar,
+     cai no REALCE 1 (blur) e na BASE - nunca quebra. */
+  .glass--liquid{
+    -webkit-backdrop-filter:blur(var(--glass-blur)) saturate(190%) url(#glass-distortion);
+            backdrop-filter:blur(var(--glass-blur)) saturate(190%) url(#glass-distortion);
+  }
+}
+/* modo claro (frost): fill sobe pra legibilidade do texto escuro */
+.glass--light{
+  background:linear-gradient(135deg, rgba(255,255,255,.55), rgba(255,255,255,.30)), rgba(238,244,239,.66);
+  border-color:rgba(255,255,255,.6);
+  box-shadow:0 22px 56px rgba(0,0,0,.14), inset 0 1px 1px rgba(255,255,255,.7);
+}
+@supports ((-webkit-backdrop-filter:blur(4px)) or (backdrop-filter:blur(4px))){
+  .glass--light{ background:linear-gradient(135deg, rgba(255,255,255,.42), rgba(255,255,255,.18)); }
+}
+:root{
+  --warm:var(--warm-white); --teal-3:var(--teal-300); --teal-5:var(--teal-500); --teal-7:var(--teal-700); --teal-9:var(--teal-900);
+  --muted:var(--n-700); --line:rgba(12,12,10,.12); --line-2:rgba(12,12,10,.07);
+  --max:1180px; --text:680px; --r:var(--radius-lg); --r-sm:14px; --r-full:var(--radius-full);
+  --ease:var(--ease-out);
 }
 *,*::before,*::after{box-sizing:border-box}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
@@ -65,15 +160,6 @@ section{padding:112px 0;position:relative;scroll-margin-top:96px}
 .bg i:nth-child(1){width:60vw;height:60vw;left:-18vw;top:-22vw;background:#CFE9DC}
 .bg i:nth-child(2){width:46vw;height:46vw;right:-14vw;top:10vh;background:#E6F5C2}
 
-/* vidro claro (tokens v2): base legível, blur só como realce */
-.glass{position:relative;border:1px solid rgba(255,255,255,.7);border-radius:var(--r);
-  background:linear-gradient(135deg,rgba(255,255,255,.7),rgba(255,255,255,.45)),rgba(238,244,239,.7);
-  box-shadow:0 22px 56px rgba(0,0,0,.08),inset 0 1px 1px rgba(255,255,255,.8)}
-@supports ((-webkit-backdrop-filter:blur(4px)) or (backdrop-filter:blur(4px))){
-  .glass{background:linear-gradient(135deg,rgba(255,255,255,.62),rgba(255,255,255,.34));
-    -webkit-backdrop-filter:blur(8px) saturate(160%);backdrop-filter:blur(8px) saturate(160%)}
-}
-
 /* botões */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:0 28px;border-radius:var(--r-full);
   font-family:var(--font-display);font-weight:700;font-size:16px;letter-spacing:-.01em;text-decoration:none;white-space:nowrap;
@@ -97,14 +183,15 @@ section{padding:112px 0;position:relative;scroll-margin-top:96px}
 
 /* hero */
 .hero{padding:40px 0 88px}
-.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:56px;align-items:center}
+.hero>.container{max-width:1380px;display:grid;grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr);gap:48px;align-items:center}
+@media (max-width:1000px){.hero>.container{grid-template-columns:1fr}}
 .hero .eyebrow{margin-bottom:22px}
-.hero h1{font-size:clamp(40px,5.6vw,74px);line-height:1;letter-spacing:-.045em}
+.hero h1{font-size:clamp(38px,4.3vw,60px);line-height:1.02;letter-spacing:-.045em}
 .hero .kicker{font-size:clamp(17px,1.6vw,20px);color:var(--muted);margin-top:24px;max-width:560px}
 .hero .ctas{margin-top:34px;display:flex;flex-wrap:wrap;align-items:center;gap:18px 24px}
 .req{font-family:var(--font-mono);font-size:12.5px;color:var(--n-500);letter-spacing:.02em;line-height:1.5}
 .req b{color:var(--ink);font-weight:500}
-.demo{position:relative;justify-self:center;width:100%;max-width:min(320px,calc((100svh - 220px) * .5625))}
+.demo{position:relative;width:100%}
 .phone{position:relative;aspect-ratio:9/16;border-radius:26px;overflow:hidden;background:var(--onyx);border:6px solid var(--onyx);
   box-shadow:0 30px 80px rgba(20,58,49,.28)}
 .phone video,.phone img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
@@ -116,10 +203,28 @@ section{padding:112px 0;position:relative;scroll-margin-top:96px}
 .ask{margin-top:-34px;position:relative;z-index:3;padding:16px 18px;border-radius:var(--r-sm)}
 .ask .l{font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--teal-7);margin-bottom:6px}
 .ask code{font-family:var(--font-mono);font-size:13px;line-height:1.55;color:var(--ink)}
-@media (max-width:900px){
-  .hero-grid{grid-template-columns:1fr;gap:48px}
-  .demo{max-width:320px}
-}
+
+
+/* janela: a interface do Estúdio dentro de um navegador */
+.window{border-radius:var(--radius-lg);overflow:hidden;background:var(--onyx);border:1px solid rgba(12,12,10,.14);box-shadow:0 40px 100px rgba(20,58,49,.22),0 8px 24px rgba(0,0,0,.08)}
+.window-bar{display:flex;align-items:center;gap:14px;height:38px;padding:0 14px;background:var(--carbon)}
+.window-bar i{display:block;width:10px;height:10px;border-radius:50%;background:var(--n-700)}
+.window-bar span{display:flex;gap:6px}
+.window-bar b{flex:1;max-width:340px;margin:0 auto;font-family:var(--font-mono);font-weight:500;font-size:12px;color:var(--n-300);background:var(--onyx);border-radius:var(--radius-full);padding:4px 14px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.window-bar b em{font-style:normal;color:var(--lime)}
+.window video,.window img{display:block;width:100%;height:auto}
+.window .view{position:relative;aspect-ratio:16/10;background:var(--paper)}
+.window .view video,.window .view img{position:absolute;inset:0;height:100%;object-fit:cover;object-position:top}
+.fig-cap{font-size:14px;color:var(--n-500);margin-top:12px}
+.fig-cap b{color:var(--ink);font-weight:600}
+.hero-win{margin:0}
+@media (max-width:1000px){.hero-win{margin-top:8px}}
+.showcase{display:grid;grid-template-columns:300px 1fr;gap:28px;align-items:start;margin-bottom:28px}
+.showcase .demo{max-width:300px}
+.showcase .ask{margin-top:14px}
+.showcase .window .view{aspect-ratio:1320/1422}
+@media (max-width:900px){.showcase{grid-template-columns:1fr}.showcase .demo{justify-self:center}}
+@media (max-width:760px){.window-bar{height:30px}.window-bar span{display:none}}
 
 /* faixa de filme: saídas reais */
 .strip{background:var(--onyx);color:var(--warm);padding:28px 0 30px;position:relative}
@@ -176,14 +281,6 @@ section{padding:112px 0;position:relative;scroll-margin-top:96px}
 .fx-h{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:16px 32px;margin-bottom:22px}
 .fx-h h3{font-size:clamp(24px,2.6vw,32px)}
 .fx-h .ask{margin:0;max-width:520px}
-.fx-row{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:10px;scrollbar-width:thin;scrollbar-color:var(--n-200) transparent}
-.fx-row figure{flex:0 0 170px;margin:0;scroll-snap-align:start}
-.fx-row .clip{position:relative;aspect-ratio:9/16;border-radius:var(--r-sm);overflow:hidden;background:var(--carbon)}
-.fx-row video,.fx-row img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.fx-row figcaption{font-size:14px;font-weight:600;margin-top:8px}
-.fx-note{font-size:14px;color:var(--n-500);margin-top:10px}
-@media (max-width:760px){.fx-row{margin-inline:-16px;padding-inline:16px}.fx-row figure{flex-basis:44%}}
-
 /* agentes */
 .group{margin-top:8px}
 .group + .group{margin-top:64px}
@@ -284,7 +381,7 @@ footer{padding:40px 0 56px;font-size:14px;color:var(--n-500)}
 
 <header class="nav">
   <div class="container">
-    <div class="nav-in glass">
+    <div class="nav-in glass glass--light">
       <a class="nav-name" href="#topo">Estúdio de Cr<span class="mk">IA</span>ção</a>
       <div class="nav-r">
         <img src="/estudio/lockup-horizontal-light.svg" alt="Infuser" width="92" height="22">
@@ -297,8 +394,8 @@ footer{padding:40px 0 56px;font-size:14px;color:var(--n-500)}
 <main id="topo">
 
 <section class="hero">
-  <div class="container hero-grid">
-    <div>
+  <div class="container">
+    <div class="hero-copy">
       <span class="eyebrow">Estúdio de CrIAção · 10 agentes de vídeo</span>
       <h1>Você grava. Pede em português. <span class="mk">O&nbsp;vídeo volta editado.</span></h1>
       <p class="kicker">Dez agentes de criação e edição de vídeo que trabalham dentro do seu Claude Code ou do Codex. Eles cortam o silêncio e o tropeço, legendam, animam a abertura, transformam a sua live em Reels e fazem vídeo sem você aparecer.</p>
@@ -307,20 +404,13 @@ footer{padding:40px 0 56px;font-size:14px;color:var(--n-500)}
         <p class="req"><b>Windows</b> · Claude Code com plano pago ou Codex</p>
       </div>
     </div>
-    <div class="demo" id="demo">
-      <div class="phone">
-        <video class="v-depois" src="/estudio/ag-editor.mp4" poster="/estudio/ag-editor.webp" muted loop playsinline preload="metadata" aria-label="Vídeo editado pelo Editor de Reels, com legenda e a palavra-chave destacada"></video>
-        <video class="v-antes" src="/estudio/ag-editor-antes.mp4" poster="/estudio/ag-editor-antes.webp" muted loop playsinline preload="none" aria-label="O mesmo vídeo como foi gravado, sem edição"></video>
-        <div class="ab" role="group" aria-label="Comparar">
-          <button type="button" data-ab="antes" aria-pressed="false">Gravado</button>
-          <button type="button" data-ab="depois" aria-pressed="true">Editado</button>
-        </div>
+    <figure class="hero-win">
+      <div class="window">
+        <div class="window-bar"><span><i></i><i></i><i></i></span><b>mcp.useinfuser.com/<em>estudio</em></b></div>
+        <div class="view"><video id="ui-hero" src="/estudio/ui-agentes.mp4" poster="/estudio/ui-agentes.webp" muted loop playsinline preload="auto" aria-label="A interface do Estúdio: a aba Agentes com os dois rolos e o Editor de Reels aberto"></video></div>
       </div>
-      <div class="ask glass">
-        <p class="l">O pedido que fez esse vídeo</p>
-        <code>Use o Editor de Reels no vídeo gravacao-terca.mp4 da pasta Vídeos, com legenda destacando a palavra-chave.</code>
-      </div>
-    </div>
+      <figcaption class="fig-cap"><b>A interface do Estúdio, como o comprador vê.</b> Cada agente com o vídeo de exemplo, o pedido pronto pra copiar e o caminho que ele faz.</figcaption>
+    </figure>
   </div>
 </section>
 
@@ -355,7 +445,7 @@ footer{padding:40px 0 56px;font-size:14px;color:var(--n-500)}
           <li>Exporta e descobre o erro depois de postar</li>
         </ul>
       </div>
-      <div class="col new glass">
+      <div class="col new glass glass--light">
         <h3>Com o Estúdio</h3>
         <ul>
           <li>Escreve o pedido numa frase, em português</li>
@@ -376,11 +466,34 @@ footer{padding:40px 0 56px;font-size:14px;color:var(--n-500)}
       <h2 class="h2">Ele trabalha como um estúdio. Nada avança sem o seu ok.</h2>
       <p class="lead">O Editor de Reels pega o vídeo que você gravou falando pra câmera, corta o silêncio e o tropeço, coloca legenda com a palavra-chave destacada na cor da sua marca e deixa o áudio em -16 LUFS. O caminho tem quatro etapas, e cada uma espera a sua aprovação.</p>
     </div>
+    <div class="showcase">
+      <div class="demo" id="demo">
+        <div class="phone">
+          <video class="v-depois" data-src="/estudio/ag-editor.mp4" poster="/estudio/ag-editor.webp" muted loop playsinline preload="none" aria-label="Vídeo editado pelo Editor de Reels, com legenda e a palavra-chave destacada"></video>
+          <video class="v-antes" src="/estudio/ag-editor-antes.mp4" poster="/estudio/ag-editor-antes.webp" muted loop playsinline preload="none" aria-label="O mesmo vídeo como foi gravado, sem edição"></video>
+          <div class="ab" role="group" aria-label="Comparar">
+            <button type="button" data-ab="antes" aria-pressed="false">Gravado</button>
+            <button type="button" data-ab="depois" aria-pressed="true">Editado</button>
+          </div>
+        </div>
+        <div class="ask glass glass--light">
+          <p class="l">O pedido que fez esse vídeo</p>
+          <code>Use o Editor de Reels no vídeo gravacao-terca.mp4 da pasta Vídeos, com legenda destacando a palavra-chave.</code>
+        </div>
+      </div>
+      <figure>
+        <div class="window">
+          <div class="window-bar"><span><i></i><i></i><i></i></span><b>mcp.useinfuser.com/<em>estudio</em></b></div>
+          <div class="view"><img src="/estudio/ui-editor.webp" alt="O Editor de Reels na interface do Estúdio: antes e depois, onde roda, como pedir, o fluxo de estúdio e a linha do tempo das quatro etapas" width="1320" height="1422" loading="lazy" decoding="async"></div>
+        </div>
+        <figcaption class="fig-cap"><b>O Editor de Reels na interface.</b> Antes e depois, o pedido pronto, o fluxo de estúdio e as quatro etapas.</figcaption>
+      </figure>
+    </div>
     <div class="stages">
-      <div class="stage glass"><span class="n">Etapa 1</span><h3>Corte</h3><p>Ele mostra o que vai cortar, em linguagem de gente, e só corta com o seu ok.</p></div>
-      <div class="stage glass"><span class="n">Etapa 2</span><h3>Storyboard</h3><p>Uma página com o quadro real de cada cena e o texto na posição em que vai aparecer.</p></div>
-      <div class="stage glass"><span class="n">Etapa 3</span><h3>Edição</h3><p>Cada versão fica numa pasta nova. Pra mudar, diga o tempo ou a cena.</p></div>
-      <div class="stage glass"><span class="n">Etapa 4</span><h3>Final</h3><p>Com o seu sim, ela vira a versão aceita. Um chat novo continua de onde vocês pararam.</p></div>
+      <div class="stage glass glass--light"><span class="n">Etapa 1</span><h3>Corte</h3><p>Ele mostra o que vai cortar, em linguagem de gente, e só corta com o seu ok.</p></div>
+      <div class="stage glass glass--light"><span class="n">Etapa 2</span><h3>Storyboard</h3><p>Uma página com o quadro real de cada cena e o texto na posição em que vai aparecer.</p></div>
+      <div class="stage glass glass--light"><span class="n">Etapa 3</span><h3>Edição</h3><p>Cada versão fica numa pasta nova. Pra mudar, diga o tempo ou a cena.</p></div>
+      <div class="stage glass glass--light"><span class="n">Etapa 4</span><h3>Final</h3><p>Com o seu sim, ela vira a versão aceita. Um chat novo continua de onde vocês pararam.</p></div>
     </div>
     <div class="feats">
       <div class="feat"><p class="big">17</p><b>Efeitos prontos</b><p>Holofote, Órbita, Capa de revista e outros. Você escolhe pelo nome na mesma conversa da edição.</p></div>
@@ -393,22 +506,14 @@ footer{padding:40px 0 56px;font-size:14px;color:var(--n-500)}
 
     <div class="fx">
       <div class="fx-h">
-        <h3>Alguns dos 17 efeitos</h3>
-        <div class="ask glass"><p class="l">Pedido</p><code>Use o Editor de Reels no gravacao.mp4 com o efeito Holofote.</code></div>
+        <h3>Os efeitos rodando na interface</h3>
+        <div class="ask glass glass--light"><p class="l">Pedido</p><code>Use o Editor de Reels no gravacao.mp4 com o efeito Holofote.</code></div>
       </div>
-      <div class="fx-row">
-        <figure><div class="clip"><video data-src="/estudio/ef-holofote.mp4" poster="/estudio/ef-holofote.webp" muted loop playsinline preload="none" aria-hidden="true"></video></div><figcaption>Holofote</figcaption></figure>
-        <figure><div class="clip"><video data-src="/estudio/ef-orbita.mp4" poster="/estudio/ef-orbita.webp" muted loop playsinline preload="none" aria-hidden="true"></video></div><figcaption>Órbita</figcaption></figure>
-        <figure><div class="clip"><video data-src="/estudio/ef-capa-de-revista.mp4" poster="/estudio/ef-capa-de-revista.webp" muted loop playsinline preload="none" aria-hidden="true"></video></div><figcaption>Capa de revista</figcaption></figure>
-        <figure><div class="clip"><video data-src="/estudio/ef-checklist.mp4" poster="/estudio/ef-checklist.webp" muted loop playsinline preload="none" aria-hidden="true"></video></div><figcaption>Checklist</figcaption></figure>
-        <figure><div class="clip"><video data-src="/estudio/ef-leque-de-celulares.mp4" poster="/estudio/ef-leque-de-celulares.webp" muted loop playsinline preload="none" aria-hidden="true"></video></div><figcaption>Leque de celulares</figcaption></figure>
-        <figure><div class="clip"><video data-src="/estudio/ef-palavra-pastel.mp4" poster="/estudio/ef-palavra-pastel.webp" muted loop playsinline preload="none" aria-hidden="true"></video></div><figcaption>Palavra pastel</figcaption></figure>
-        <figure><div class="clip"><video data-src="/estudio/ef-linha-do-tempo.mp4" poster="/estudio/ef-linha-do-tempo.webp" muted loop playsinline preload="none" aria-hidden="true"></video></div><figcaption>Linha do tempo</figcaption></figure>
-        <figure><div class="clip"><video data-src="/estudio/ef-toca-do-coelho.mp4" poster="/estudio/ef-toca-do-coelho.webp" muted loop playsinline preload="none" aria-hidden="true"></video></div><figcaption>Toca do coelho</figcaption></figure>
-        <figure><div class="clip"><video data-src="/estudio/ef-chuva-de-atalhos.mp4" poster="/estudio/ef-chuva-de-atalhos.webp" muted loop playsinline preload="none" aria-hidden="true"></video></div><figcaption>Chuva de atalhos</figcaption></figure>
-        <figure><div class="clip"><video data-src="/estudio/ef-arco-de-cards.mp4" poster="/estudio/ef-arco-de-cards.webp" muted loop playsinline preload="none" aria-hidden="true"></video></div><figcaption>Arco de cards</figcaption></figure>
+      <div class="window">
+        <div class="window-bar"><span><i></i><i></i><i></i></span><b>mcp.useinfuser.com/estudio/<em>#efeitos</em></b></div>
+        <div class="view"><video data-src="/estudio/ui-efeitos.mp4" poster="/estudio/ui-efeitos.webp" muted loop playsinline preload="none" aria-label="A aba Efeitos da interface, com os efeitos rodando quando o mouse passa"></video></div>
       </div>
-      <p class="fx-note">Arraste pro lado pra ver mais. Cada efeito é aplicado sobre o vídeo que você gravou.</p>
+      <p class="fig-cap">Passe o mouse num efeito e ele roda. Cada um é aplicado sobre o vídeo que você gravou.</p>
     </div>
   </div>
 </section>
@@ -420,15 +525,22 @@ footer{padding:40px 0 56px;font-size:14px;color:var(--n-500)}
       <h2 class="h2">Seis rodam inteiros no seu PC. Quatro usam um gerador pago, e a gente diz isso antes de você comprar.</h2>
     </div>
 
+    <figure style="margin:0 0 56px">
+      <div class="window">
+        <div class="window-bar"><span><i></i><i></i><i></i></span><b>mcp.useinfuser.com/<em>estudio</em></b></div>
+        <div class="view" style="aspect-ratio:1440/936"><img src="/estudio/ui-rolos.webp" alt="Os dois rolos da aba Agentes: Roda no seu PC e Com gerador externo, na sua conta" width="1440" height="936" loading="lazy" decoding="async"></div>
+      </div>
+      <figcaption class="fig-cap"><b>Os dois rolos da aba Agentes.</b> Em cima, o que roda no seu PC. Embaixo, o que usa gerador externo na sua conta; Documentário e Formatos de anúncio chegam em breve.</figcaption>
+    </figure>
     <div class="group">
       <div class="group-h"><h3>Rodam no seu PC</h3><span class="tag tag-free">sem custo extra</span></div>
       <div class="agents six">
-        <article class="agent glass"><span class="k">Roteiro</span><h4>Roteirista</h4><p>Escreve o vídeo antes de ele existir: 3 ganchos, blocos e CTA, no seu jeito de falar.</p></article>
-        <article class="agent glass"><span class="k">Edição</span><h4>Editor de Reels</h4><p>Edita o vídeo que você gravou falando pra câmera, em quatro etapas aprovadas, com 17 efeitos prontos.</p></article>
-        <article class="agent glass"><span class="k">Criação</span><h4>Motion de abertura e fechamento</h4><p>O gancho entra animado nos primeiros segundos e o vídeo fecha num cartão com o seu CTA.</p></article>
-        <article class="agent glass"><span class="k">Edição</span><h4>Cortes de vídeo longo</h4><p>Lê a live, a aula ou o podcast, escolhe os trechos com mais força e entrega cada um como Reels.</p></article>
-        <article class="agent glass"><span class="k">Criação</span><h4>Explicativo sem rosto</h4><p>De um texto, sai um vídeo narrado, com as palavras animadas no tempo da voz. Você não aparece.</p></article>
-        <article class="agent glass"><span class="k">Criação</span><h4>Carrossel animado</h4><p>O carrossel que você já postou vira Reels, com cada slide intacto, deslizando no tempo de leitura.</p></article>
+        <article class="agent glass glass--light"><span class="k">Roteiro</span><h4>Roteirista</h4><p>Escreve o vídeo antes de ele existir: 3 ganchos, blocos e CTA, no seu jeito de falar.</p></article>
+        <article class="agent glass glass--light"><span class="k">Edição</span><h4>Editor de Reels</h4><p>Edita o vídeo que você gravou falando pra câmera, em quatro etapas aprovadas, com 17 efeitos prontos.</p></article>
+        <article class="agent glass glass--light"><span class="k">Criação</span><h4>Motion de abertura e fechamento</h4><p>O gancho entra animado nos primeiros segundos e o vídeo fecha num cartão com o seu CTA.</p></article>
+        <article class="agent glass glass--light"><span class="k">Edição</span><h4>Cortes de vídeo longo</h4><p>Lê a live, a aula ou o podcast, escolhe os trechos com mais força e entrega cada um como Reels.</p></article>
+        <article class="agent glass glass--light"><span class="k">Criação</span><h4>Explicativo sem rosto</h4><p>De um texto, sai um vídeo narrado, com as palavras animadas no tempo da voz. Você não aparece.</p></article>
+        <article class="agent glass glass--light"><span class="k">Criação</span><h4>Carrossel animado</h4><p>O carrossel que você já postou vira Reels, com cada slide intacto, deslizando no tempo de leitura.</p></article>
       </div>
     </div>
 
@@ -439,10 +551,10 @@ footer{padding:40px 0 56px;font-size:14px;color:var(--n-500)}
         <p><b>Esses quatro escrevem os pedidos pra um gerador de imagem e vídeo pago, na sua conta</b> (Seedream, Gemini, Seedance e outros). Você gera lá e paga cada geração direto ao serviço. Esse custo não está no preço do Estúdio. Os seis agentes de cima não têm custo extra nenhum.</p>
       </div>
       <div class="agents four">
-        <article class="agent glass"><span class="k">Criação</span><h4>Animação 3D</h4><p>Transforma uma ideia num curta 3D narrado que mostra como algo funciona.</p></article>
-        <article class="agent glass"><span class="k">Criação</span><h4>Episódios de Desenho</h4><p>Monta a sua série de desenho animado, episódio por episódio.</p></article>
-        <article class="agent glass"><span class="k">Criação</span><h4>Motion de papel recortado</h4><p>Transforma uma imagem sua num vídeo de colagem que se monta sozinho.</p></article>
-        <article class="agent glass"><span class="k">Criação</span><h4>Comercial Cinematográfico</h4><p>Transforma a ideia do seu produto num comercial de 30 segundos com vários cortes.</p></article>
+        <article class="agent glass glass--light"><span class="k">Criação</span><h4>Animação 3D</h4><p>Transforma uma ideia num curta 3D narrado que mostra como algo funciona.</p></article>
+        <article class="agent glass glass--light"><span class="k">Criação</span><h4>Episódios de Desenho</h4><p>Monta a sua série de desenho animado, episódio por episódio.</p></article>
+        <article class="agent glass glass--light"><span class="k">Criação</span><h4>Motion de papel recortado</h4><p>Transforma uma imagem sua num vídeo de colagem que se monta sozinho.</p></article>
+        <article class="agent glass glass--light"><span class="k">Criação</span><h4>Comercial Cinematográfico</h4><p>Transforma a ideia do seu produto num comercial de 30 segundos com vários cortes.</p></article>
       </div>
     </div>
   </div>
@@ -477,7 +589,7 @@ footer{padding:40px 0 56px;font-size:14px;color:var(--n-500)}
       <h2 class="h2">Se você grava e trava na edição, é pra você. Se você está no Mac, ainda não.</h2>
     </div>
     <div class="fit">
-      <div class="col yes glass">
+      <div class="col yes glass glass--light">
         <h3>É pra você se</h3>
         <ul>
           <li>Você grava Reels falando pra câmera e a edição é o que te segura</li>
@@ -518,7 +630,7 @@ footer{padding:40px 0 56px;font-size:14px;color:var(--n-500)}
         <a class="btn btn-buy" href="https://pay.hotmart.com/A108157970A" rel="noopener">Quero o Estúdio de CrIAção</a>
         <p class="safe"><span>Acesso por e-mail</span><span>Pagamento pela Hotmart</span><span>7 dias de garantia</span></p>
       </div>
-      <div class="guarantee glass">
+      <div class="guarantee glass glass--light">
         <div class="days">7<small>DIAS DE GARANTIA</small></div>
         <div>
           <h3>Instala, pede e vê o vídeo voltar</h3>
@@ -584,7 +696,7 @@ footer{padding:40px 0 56px;font-size:14px;color:var(--n-500)}
   // Hero: o editado toca sozinho; o botão troca pro vídeo como foi gravado.
   var demo = document.getElementById("demo");
   var depois = demo.querySelector(".v-depois"), antes = demo.querySelector(".v-antes");
-  if (!calm) play(depois);
+  if (!calm) play(document.getElementById("ui-hero"));
   Array.prototype.forEach.call(demo.querySelectorAll("[data-ab]"), function (b) {
     b.addEventListener("click", function () {
       var isAntes = b.getAttribute("data-ab") === "antes";
@@ -592,6 +704,7 @@ footer{padding:40px 0 56px;font-size:14px;color:var(--n-500)}
       demo.querySelectorAll("[data-ab]").forEach(function (x) { x.setAttribute("aria-pressed", String(x === b)); });
       var on = isAntes ? antes : depois, off = isAntes ? depois : antes;
       off.pause();
+      if (!on.src) on.src = on.getAttribute("data-src");
       on.currentTime = 0;
       play(on);
     });
