@@ -2,7 +2,7 @@
 work_order: WO-GUIA-VIDEOS-GEMINI-001
 created: 2026-11-03
 updated: 2026-11-03
-status: active
+status: complete
 classe: conteudo
 risco: baixo
 central_branch: claude/guia-videos-gemini-20261103
@@ -29,7 +29,7 @@ scope_lock:
     background_jobs: []
   acceptance_ids: [GVG-01, GVG-02, GVG-03]
   stop_when: [GVG-01, GVG-02, GVG-03]
-  passed_acceptance_ids: []
+  passed_acceptance_ids: [GVG-01, GVG-02, GVG-03]
 ---
 # Guia de vídeos no Gemini na Central
 
@@ -38,3 +38,5 @@ Objetivo: publicar o guia "4 prompts de vídeo no Gemini" em `/guia-videos-gemin
 - GVG-01: `GUIAS` tem 20 itens e o caminho resolve para o guia; testes de `tests/guias` verdes com as contagens novas.
 - GVG-02: build de produção sem erro e smoke da VPS cobrindo `/guia-videos-gemini`.
 - GVG-03: em produção, sem sessão o guia redireciona ao cadastro e a Central mostra 32 itens.
+
+Closeout 03/11/2026: 69c23de no ar (release 69c23de95b99 healthy na VPS, smoke verde). 183 testes de `tests/guias` verdes, build com `/guia-videos-gemini` estático; `/guia-videos-gemini` e `/guias/videos-gemini` redirecionam a /guias/acesso?guia=videos-gemini sem sessão nos dois hosts; SHA-256 do HTML servido igual ao do commit. Contagem da Central (32 itens, 24 gratuitos) provada pelos testes no mesmo commit.
