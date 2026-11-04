@@ -2,7 +2,7 @@
 work_order: WO-GUIA-CLONAR-SITES-001
 created: 2026-11-04
 updated: 2026-11-04
-status: active
+status: complete
 classe: conteudo
 risco: baixo
 central_branch: claude/guia-clonar-sites-20261104
@@ -29,7 +29,7 @@ scope_lock:
     background_jobs: []
   acceptance_ids: [GCS-01, GCS-02, GCS-03]
   stop_when: [GCS-01, GCS-02, GCS-03]
-  passed_acceptance_ids: []
+  passed_acceptance_ids: [GCS-01, GCS-02, GCS-03]
 ---
 # Guia de clonar sites na Central
 
@@ -38,3 +38,5 @@ Objetivo: publicar o guia "Clone o design de qualquer site com o Claude" em `/gu
 - GCS-01: `GUIAS` tem 51 itens e o caminho resolve para o guia; testes de `tests/guias` verdes com as contagens novas.
 - GCS-02: build de produção sem erro e smoke da VPS cobrindo `/guia-clonar-sites`.
 - GCS-03: em produção, sem sessão o guia redireciona ao cadastro e a Central mostra 64 itens.
+
+Closeout 04/11/2026: 7b1f077 no ar (release 7b1f07734812 healthy na VPS, smoke verde). 281 testes de `tests/guias` verdes, build com `/guia-clonar-sites` estático; `/guia-clonar-sites` e `/guias/clonar-sites` redirecionam a /guias/acesso?guia=clonar-sites sem sessão nos dois hosts; SHA-256 do HTML servido igual ao do commit. Contagem da Central (64 itens, 56 gratuitos) provada pelos testes no mesmo commit.
