@@ -58,6 +58,8 @@ describe("distribuição privada dos recursos", () => {
       }
       if (recurso.slug === "video-transcricao-gpu") {
         expect(arquivos.size).toBe(6); expect(arquivos.has("video-transcricao-gpu/scripts/transcribe-gpu.py")).toBe(true); expect(arquivos.has("video-transcricao-gpu/INSTALAR.md")).toBe(true);
+      } else if (recurso.slug === "reel-dinamico") {
+        expect(arquivos.has("reel-dinamico/SKILL.md")).toBe(true); expect(arquivos.has("reel-dinamico/scripts/reel.py")).toBe(true); expect(arquivos.has("reel-dinamico/references/setup.md")).toBe(true);
       } else {
         const raiz = recurso.slug === "pacote-agente-que-aprende" ? "agente-que-aprende" : "orquestra-claude-codex";
         expect(arquivos.has(`${raiz}/instalar.mjs`)).toBe(true); expect(arquivos.has(`${raiz}/LEIA-ME.md`)).toBe(true);

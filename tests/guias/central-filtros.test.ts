@@ -14,8 +14,8 @@ describe("busca e filtros da Central", () => {
     runInNewContext(readFileSync("public/guias/guias.js", "utf8"), { document });
     filtros[3].click(); expect(cards.filter((card) => !card.hidden)).toHaveLength(7); expect(resultado.textContent).toBe("7 itens na Central");
     filtros[4].click(); expect(cards.filter((card) => !card.hidden)).toHaveLength(1); expect(cards[CATALOGO_CENTRAL.findIndex((item) => item.slug === "painel-os")].hidden).toBe(false);
-    filtros[2].click(); expect(cards.filter((card) => !card.hidden)).toHaveLength(3);
+    filtros[2].click(); expect(cards.filter((card) => !card.hidden)).toHaveLength(4);
     search.value = "GPU"; pesquisar(); expect(cards.filter((card) => !card.hidden)).toHaveLength(1);
-    search.value = "nenhum assunto"; pesquisar(); expect(vazio.hidden).toBe(false); expect(cards).toHaveLength(32);
+    search.value = "nenhum assunto"; pesquisar(); expect(vazio.hidden).toBe(false); expect(cards).toHaveLength(63);
   });
 });
