@@ -2,7 +2,7 @@
 work_order: WO-GUIAS-30-SKILLS-001
 created: 2026-11-03
 updated: 2026-11-03
-status: active
+status: complete
 classe: conteudo
 risco: baixo
 central_branch: feat/guias-30-skills-20261103
@@ -30,7 +30,7 @@ scope_lock:
     background_jobs: []
   acceptance_ids: [G30-01, G30-02, G30-03]
   stop_when: [G30-01, G30-02, G30-03]
-  passed_acceptance_ids: []
+  passed_acceptance_ids: [G30-01, G30-02, G30-03]
 ---
 # Guias da série "30 dias, 30 skills do Claude" na Central
 
@@ -39,3 +39,8 @@ Objetivo: publicar 30 guias gratuitos (um por dia da série) em `/guia-<slug>`, 
 - G30-01: `GUIAS` com 50 itens e `RECURSOS_CENTRAL` com 4; cada caminho resolve para o guia; testes de `tests/guias` verdes com as contagens novas.
 - G30-02: build de produção sem erro e smoke da VPS cobrindo os 30 caminhos e o pacote.
 - G30-03: em produção, sem sessão os guias redirecionam ao cadastro e a Central mostra os itens novos.
+## Fechamento
+
+- G30-01: `GUIAS` 50 e `RECURSOS_CENTRAL` 4; `tests/guias` 278 verdes; suíte inteira 718 verdes. Slug de catálogo do dia 17 é `skill-mcp-builder` (o caminho `/guias/mcp-builder` batia na trava `/mc` do teste da Central); a página segue em `/guia-mcp-builder`.
+- G30-02: `next build` local com as 30 rotas `○` estáticas; release `02b4bc4253a6` healthy na VPS pelo `deploy.sh`, com o smoke cobrindo os 30 caminhos e o pacote.
+- G30-03: em produção, as 30 URLs `/guia-<slug>` e `/central/recursos/reel-dinamico` respondem 307 para `/guias/acesso?guia=<slug>`; `/api/health` informa `02b4bc4253a6`.
