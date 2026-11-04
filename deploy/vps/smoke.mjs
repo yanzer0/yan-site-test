@@ -22,6 +22,7 @@ const publicPaths = [
   "/guia-estudos",
   "/guia-fotos",
   "/guia-videos-gemini",
+  "/guia-clonar-sites",
   "/guia-skill-creator",
   "/guia-humanizer",
   "/guia-taste-skill",
@@ -100,7 +101,7 @@ const protectedGuides = new Set([
   "/guiamotion", "/guiacarrossel", "/promptsmotion", "/guia-agentes",
   "/guia-comandos-gpt", "/guia-gpt6-astra", "/guia-ia-sem-bajulacao",
   "/guia-mapeamento-processos", "/guia-skill", "/opus5", "/opus55",
-  "/protocolo-de-autoria", "/tutorial-maestri", "/guia-videos-motion", "/guia-editar-videos", "/editar", "/guia-estudos", "/guia-fotos", "/guia-videos-gemini", "/guia-skill-creator", "/guia-humanizer", "/guia-taste-skill", "/guia-i-have-adhd", "/guia-ponytail", "/guia-caveman", "/guia-planning-with-files", "/guia-frontend-design", "/guia-ui-ux-pro-max", "/guia-impeccable", "/guia-huashu-design", "/guia-archify", "/guia-excalidraw-diagram", "/guia-remotion-skills", "/guia-n8n-skills", "/guia-playwright-skill", "/guia-mcp-builder", "/guia-document-skills", "/guia-obsidian-skills", "/guia-last30days", "/guia-superpowers", "/guia-marketingskills", "/guia-claude-seo", "/guia-claude-ads", "/guia-grill-me", "/guia-agent-skills", "/guia-vercel-agent-skills", "/guia-brand-guidelines", "/guia-reel-dinamico", "/guia-stack-skills-claude", "/guias", "/central", "/kit-vscode",
+  "/protocolo-de-autoria", "/tutorial-maestri", "/guia-videos-motion", "/guia-editar-videos", "/editar", "/guia-estudos", "/guia-fotos", "/guia-videos-gemini", "/guia-clonar-sites", "/guia-skill-creator", "/guia-humanizer", "/guia-taste-skill", "/guia-i-have-adhd", "/guia-ponytail", "/guia-caveman", "/guia-planning-with-files", "/guia-frontend-design", "/guia-ui-ux-pro-max", "/guia-impeccable", "/guia-huashu-design", "/guia-archify", "/guia-excalidraw-diagram", "/guia-remotion-skills", "/guia-n8n-skills", "/guia-playwright-skill", "/guia-mcp-builder", "/guia-document-skills", "/guia-obsidian-skills", "/guia-last30days", "/guia-superpowers", "/guia-marketingskills", "/guia-claude-seo", "/guia-claude-ads", "/guia-grill-me", "/guia-agent-skills", "/guia-vercel-agent-skills", "/guia-brand-guidelines", "/guia-reel-dinamico", "/guia-stack-skills-claude", "/guias", "/central", "/kit-vscode",
   ...["pacote-agente-que-aprende", "orquestra-claude-codex", "video-transcricao-gpu", "reel-dinamico"].flatMap((slug) => [`/central/recursos/${slug}`, `/central/baixar/${slug}`]),
 ]);
 

@@ -171,6 +171,7 @@ export const config = {
     "/guia-estudos", "/guia-estudos.html",
     "/guia-fotos", "/guia-fotos.html",
     "/guia-videos-gemini", "/guia-videos-gemini.html",
+    "/guia-clonar-sites", "/guia-clonar-sites.html",
     "/opus5", "/opus5.html", "/opus55", "/opus55.html",
     "/protocolo-de-autoria", "/protocolo-de-autoria.html",
     "/tutorial-maestri", "/tutorial-maestri.html",
