@@ -26,7 +26,7 @@ scope_lock:
     background_jobs: []
   acceptance_ids: [AC-01, AC-02, AC-03]
   stop_when: [AC-01, AC-02, AC-03]
-  passed_acceptance_ids: []
+  passed_acceptance_ids: [AC-01, AC-02, AC-03]
 ---
 
 # Guia gratuito de reforma tributária
