@@ -61,6 +61,7 @@ const publicPaths = [
   "/guia-ia-sem-bajulacao",
   "/guia-mapeamento-processos",
   "/reforma-tributaria",
+  "/guia-img",
   "/guia-skill",
   "/estudio",
   "/kit-jarvis",
@@ -98,6 +99,7 @@ const instalarAssets = [
 
 const checks = [];
 const protectedGuides = new Set([
+  "/guia-img",
   "/reforma-tributaria",
   "/agente-que-aprende", "/99comandos", "/guia-99-comandos", "/guia-clickup",
   "/guiamotion", "/guiacarrossel", "/promptsmotion", "/guia-agentes",

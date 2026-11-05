@@ -165,6 +165,7 @@ export const config = {
     "/guia-ia-sem-bajulacao", "/guia-ia-sem-bajulacao.html",
     "/guia-mapeamento-processos", "/guia-mapeamento-processos.html",
     "/reforma-tributaria", "/guia-reforma-tributaria.html",
+    "/guia-img", "/guia-img.html",
     "/promptsmotion", "/guia-prompts-motion.html",
     "/guia-skill", "/guia-skill.html",
     "/guia-videos-motion", "/guiamotion", "/guia-videos-motion.html",
