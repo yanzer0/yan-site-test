@@ -35,7 +35,7 @@ Pedido explícito de Yan neste chat em 05/11: produzir e publicar em useinfuser.
 
 Reutilizar o HTML v2 claro do guia EDITAR, catálogo e proteção existentes. 24 perguntas com evidência sugerida, panorama breve 2026/2027/2029-2033, checklist local e roteiro de pendências. CTA /diagnostico. Fontes primárias Receita Federal e Ministério da Fazenda. Não afirmar garantia de regularidade fiscal.
 
-AC-01: guia 51 na Central (64 itens, 56 gratuitos), três portas resolvidas e protegidas; Vitest tests/guias passa sem remoção de asserts.
+AC-01: guia 52 na Central (65 itens, 57 gratuitos), três portas resolvidas e protegidas; Vitest tests/guias passa sem remoção de asserts.
 AC-02: QA em desktop e 375px, checklist persiste e botão leva a /diagnostico; build de produção e smoke aprovados.
 AC-03: publicação autorizada, /api/health na release correta, caminhos protegidos sem sessão e conteúdo correto com sessão, Central e formulário acessíveis pelo fluxo existente.
 
