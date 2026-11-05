@@ -2,7 +2,7 @@
 work_order: WO-GUIA-REFORMA-001
 created: 2026-11-05
 updated: 2026-11-05
-status: active
+status: completed
 classe: conteudo
 risco: baixo
 central_branch: codex/guia-reforma-tributaria-20261105
@@ -27,6 +27,8 @@ scope_lock:
   acceptance_ids: [AC-01, AC-02, AC-03]
   stop_when: [AC-01, AC-02, AC-03]
   passed_acceptance_ids: [AC-01, AC-02, AC-03]
+report_status: AC-01 PASS: 52 guias e 65 itens na Central. 726 testes aprovados e 10 integracoes de ambiente puladas. AC-02 PASS: QA desktop e 375px, persistencia, copia e navegacao Central-guia-diagnostico. AC-03 PASS: release 7776ad89e35b healthy. 184 probes por host. Tres portas protegidas e HTML autenticado identico. Rollback 7b1f07734812.
+code_artifact_commit: ed80dbe
 ---
 
 # Guia gratuito de reforma tributária
@@ -42,3 +44,7 @@ AC-03: publicação autorizada, /api/health na release correta, caminhos protegi
 Fora: layout da Central, captura, consentimentos, banco, regras fiscais da empresa, checkout, DNS, Caddy, disparos e automação de comentários. Sem event-driven: não há contrato novo entre sistemas. Sem dependência nova. Teto de duas rodadas ou 90 min.
 
 Rollback: imagem anterior pelo compose já documentado em deploy/vps/README.md. Alterações estáticas e aditivas, sem migration.
+
+## Closeout 2026-11-05
+
+status: completed · report_status: AC-01 PASS: 52 guias e 65 itens na Central. 726 testes aprovados e 10 integracoes de ambiente puladas. AC-02 PASS: QA desktop e 375px, persistencia, copia e navegacao Central-guia-diagnostico. AC-03 PASS: release 7776ad89e35b healthy. 184 probes por host. Tres portas protegidas e HTML autenticado identico. Rollback 7b1f07734812. · code_artifact_commit: ed80dbe
