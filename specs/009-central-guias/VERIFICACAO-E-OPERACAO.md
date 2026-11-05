@@ -1,5 +1,9 @@
 # Verificação e operação v1.1
 
+## Guia de reforma tributária, 05/11/2026
+
+Extensão de conteúdo pelo mesmo catálogo e gate: `/reforma-tributaria`, `/guia-reforma-tributaria.html` e `/guias/reforma-tributaria`. Guia v2 claro derivado do EDITAR, com resumo datado e fontes primárias, 24 perguntas, checklist local sem nota fiscal de conformidade e modelo de pendência. Não há envio das marcações, novo banco ou coleta. CTA de saída `/diagnostico`, com campanha `reforma-tributaria`. Catálogo: 51 guias, 64 itens, 56 gratuitos. Confirmar anonimamente as três portas e acesso com sessão, checklist em 375px/desktop e destino do CTA. Publicação expressamente pedida por Yan no chat; procedimento e rollback existentes. WO-GUIA-REFORMA-001.
+
 Vitest: cada campo ausente/inválido, corpo malformado/grande, origem externa, honeypot, limite, falha do banco sem cookie, destino escolhido, assinatura/expiração/adulteração, cobertura de todos os aliases e HTMLs, demo/painel preservados, equipe/CSV anônimos bloqueados e fórmula CSV neutralizada. Teste de inventário detecta guia HTML novo sem catálogo. RED inicial no inventário antes da implementação; root pode reproduzir na base. Rodar `npm test`, `npx tsc --noEmit`, `npm run build`. Asserts removidos: zero previsto.
 
 Segurança: SQL parametrizado, sem PII em cookies/logs/URL, segredo exclusivo, no-store e noindex, origem e payload limitados. Limite de envio por endereço de rede em memória com teto para o container único; registrar limite honesto e gatilho de escala no código. Biblioteca pública não contém dado pessoal. Falhas logam só operação e requestId. Equipe usa sessão existente, nenhuma conta nova.

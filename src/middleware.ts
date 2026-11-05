@@ -164,6 +164,7 @@ export const config = {
     "/guia-gpt6-astra", "/guia-gpt6-astra.html",
     "/guia-ia-sem-bajulacao", "/guia-ia-sem-bajulacao.html",
     "/guia-mapeamento-processos", "/guia-mapeamento-processos.html",
+    "/reforma-tributaria", "/guia-reforma-tributaria.html",
     "/promptsmotion", "/guia-prompts-motion.html",
     "/guia-skill", "/guia-skill.html",
     "/guia-videos-motion", "/guiamotion", "/guia-videos-motion.html",

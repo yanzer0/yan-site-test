@@ -9,6 +9,7 @@ export interface Guia {
 }
 
 export const GUIAS: readonly Guia[] = [
+  { slug: "reforma-tributaria", titulo: "Reforma tributária: sua operação está preparada?", descricao: "Entenda a transição e confira 24 perguntas sobre contabilidade, cadastros, sistemas, financeiro e processos da empresa.", categoria: "Operação e processos", arquivo: "guia-reforma-tributaria.html", caminho: "/reforma-tributaria", aliases: [] },
   { slug: "mapeamento-processos", titulo: "Encontre o que automatizar na sua empresa", descricao: "Um passo a passo para mapear processos e escolher onde a IA pode ajudar primeiro.", categoria: "Operação e processos", arquivo: "guia-mapeamento-processos.html", caminho: "/guia-mapeamento-processos", aliases: [] },
   { slug: "agentes", titulo: "Coloque agentes de IA para trabalhar", descricao: "Entenda o papel dos agentes e como começar a usá-los na sua rotina.", categoria: "Claude e agentes", arquivo: "guia-agentes.html", caminho: "/guia-agentes", aliases: [] },
   { slug: "skills", titulo: "Crie skills que carregam o seu jeito de fazer", descricao: "Extraia o critério de quem faz e transforme esse conhecimento em uma skill para o Claude.", categoria: "Claude e agentes", arquivo: "guia-skill.html", caminho: "/guia-skill", aliases: [] },
