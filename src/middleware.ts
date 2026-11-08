@@ -170,6 +170,7 @@ export const config = {
     "/guia-skill", "/guia-skill.html",
     "/guia-videos-motion", "/guiamotion", "/guia-videos-motion.html",
     "/guia-editar-videos", "/editar", "/guia-editar-videos.html",
+    "/guia-edicao-com-ia", "/edicao", "/guia-edicao-com-ia.html",
     "/guia-estudos", "/guia-estudos.html",
     "/guia-fotos", "/guia-fotos.html",
     "/guia-videos-gemini", "/guia-videos-gemini.html",

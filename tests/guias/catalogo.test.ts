@@ -16,9 +16,9 @@ describe("inventário público de guias", () => {
   });
   it("inclui exatamente os dezessete HTMLs gratuitos presentes no código", () => {
     const arquivos = readdirSync(resolve("public")).filter((name) => /^(?:guia-|opus|agente-que-aprende|protocolo-de-autoria|tutorial-maestri).*\.html$/.test(name));
-    expect(GUIAS).toHaveLength(54);
+    expect(GUIAS).toHaveLength(55);
     expect(GUIAS.map((guia) => guia.arquivo).sort()).toEqual(arquivos.sort());
-    expect(new Set(GUIAS.map((guia) => guia.slug)).size).toBe(54);
+    expect(new Set(GUIAS.map((guia) => guia.slug)).size).toBe(55);
   });
   it("todos os aliases de route handlers estão no mesmo catálogo", () => {
     for (const entry of readdirSync(resolve("src/app"), { withFileTypes: true })) {
