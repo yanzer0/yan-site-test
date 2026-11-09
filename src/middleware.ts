@@ -172,6 +172,7 @@ export const config = {
     "/guia-editar-videos", "/editar", "/guia-editar-videos.html",
     "/guia-edicao-com-ia", "/edicao", "/guia-edicao-com-ia.html",
     "/guia-foto-anuncio", "/prompt", "/guia-foto-anuncio.html",
+    "/guia-conteudo-com-claude", "/conteudo", "/guia-conteudo-com-claude.html",
     "/guia-estudos", "/guia-estudos.html",
     "/guia-fotos", "/guia-fotos.html",
     "/guia-videos-gemini", "/guia-videos-gemini.html",
