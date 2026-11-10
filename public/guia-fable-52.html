@@ -1,0 +1,444 @@
+<!DOCTYPE html><html lang="pt-br"><head>
+<meta charset="utf-8">
+<!-- Google Tag Manager -->
+<script src="/guias/marketing.js?v=20261028-1" defer></script>
+<!-- End Google Tag Manager --><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Guia · O que já vale trocar pro Fable 5.2 · Infuser</title>
+<meta name="description" content="Guia gratuito: separe as tarefas da sua empresa entre as que já valem ir pro Claude Fable 5.2, as que pedem teste lado a lado e as que ainda não. Com os números oficiais, os pedidos prontos para copiar e checklist.">
+<meta property="og:type" content="article"><meta property="og:url" content="https://useinfuser.com/guia-fable-52"><meta property="og:title" content="O que da sua operação já vale trocar pro Fable 5.2"><meta property="og:description" content="O semáforo de troca do 5.1 pro 5.2, com pedidos prontos e checklist. Guia gratuito da Infuser.">
+<style>
+@font-face{font-family:Inter;src:url('/legiao/fonts/inter-latin-var.woff2') format('woff2');font-display:swap;font-weight:100 900}
+@font-face{font-family:Onest;src:url('/legiao/fonts/onest-latin-var.woff2') format('woff2');font-display:swap;font-weight:100 900}
+@font-face{font-family:'Geist Mono';src:url('/legiao/fonts/geistmono-latin-500.woff2') format('woff2');font-display:swap;font-weight:500}
+:root{--ink:#0C0C0A;--paper:#EEF4EF;--warm:#F0F0E4;--white:#FBFCFA;--lime:#C6FF34;--teal3:#3BD0A0;--teal5:#2FA084;--teal7:#1F6F5F;--teal9:#143A31;--line:#C7CAC2;--soft:#E7E9E4;--muted:#5F625B;--warning:#9A6A12;--r-lg:20px;--r-xl:30px;--r-full:999px;color-scheme:light}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:radial-gradient(ellipse at 95% 4%,rgba(59,208,160,.13),transparent 40%),var(--paper);color:var(--ink);font-family:Onest,system-ui,sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.wrap{max-width:1080px;margin:0 auto;padding:0 28px}
+h1,h2,h3{font-family:Inter,system-ui,sans-serif;font-weight:700;letter-spacing:-.04em;line-height:1.08;text-wrap:balance;color:var(--ink)}
+p{text-wrap:pretty}
+a{color:inherit;text-decoration:none}
+a:focus-visible,button:focus-visible{outline:3px solid var(--teal7);outline-offset:4px}
+.hl{color:var(--teal7)}
+.k5{font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--teal7);margin-bottom:16px;display:block}
+nav{position:sticky;top:0;z-index:100;background:rgba(238,244,239,.8);backdrop-filter:blur(16px) saturate(150%);-webkit-backdrop-filter:blur(16px) saturate(150%);border-bottom:1px solid var(--line)}
+.navin{display:flex;align-items:center;justify-content:space-between;height:68px;max-width:1080px;margin:0 auto;padding:0 28px}
+.brand img{width:138px;height:auto;display:block}
+.navtag{font-family:'Geist Mono',monospace;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--teal7);border:1px solid rgba(31,111,95,.35);padding:6px 12px;border-radius:var(--r-full)}
+section{position:relative;padding:84px 0}
+.dark{background:var(--warm)}
+.carbon{background:transparent}
+.inner{position:relative;z-index:2}
+.hero{padding:72px 0 88px;overflow:hidden}
+.hero .blob{position:absolute;border-radius:50%;filter:blur(70px);opacity:.55;z-index:0}
+.b1{width:520px;height:520px;background:radial-gradient(circle,rgba(198,255,52,.35),transparent 70%);top:-180px;right:-120px}
+.b2{width:460px;height:460px;background:radial-gradient(circle,rgba(59,208,160,.22),transparent 70%);bottom:-220px;left:-160px}
+.heroin{position:relative;z-index:2}
+.tag{font-family:'Geist Mono',monospace;font-size:12.5px;color:var(--teal7);margin-bottom:22px;display:inline-flex;align-items:center;gap:10px}
+.tag .d{width:7px;height:7px;border-radius:50%;background:var(--teal5);box-shadow:0 0 0 4px rgba(47,160,132,.12)}
+.hero h1{font-size:clamp(40px,6vw,68px);letter-spacing:-.06em;max-width:16ch}
+.hero .sub{font-size:clamp(17px,2.1vw,19.5px);color:#2c2e29;margin-top:24px;max-width:62ch}
+.hero .by{margin-top:24px;font-size:14px;color:var(--muted)}
+.hero .by b{color:var(--ink);font-weight:600}
+.qf{margin-top:44px;border-radius:var(--r-xl);padding:8px;background:linear-gradient(135deg,rgba(255,255,255,.72),rgba(255,255,255,.38));backdrop-filter:blur(6px) saturate(160%);-webkit-backdrop-filter:blur(6px) saturate(160%);border:1px solid rgba(255,255,255,.9);box-shadow:0 18px 44px rgba(20,58,49,.10),inset 0 1px 0 rgba(255,255,255,.9)}
+.qfgrid{display:grid;grid-template-columns:repeat(4,1fr)}
+.qfc{padding:22px 24px;border-right:1px solid var(--line)}
+.qfc:last-child{border-right:0}
+.qfc .l{font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--teal7);margin-bottom:8px}
+.qfc .v{font-family:Inter,sans-serif;font-weight:700;font-size:19px;letter-spacing:-.02em;line-height:1.15}
+.qfc .v em{font-style:normal;background:linear-gradient(transparent 58%,var(--lime) 58%);padding:0 2px}
+@media(max-width:760px){.qfgrid{grid-template-columns:1fr 1fr}.qfc{border-bottom:1px solid var(--line)}.qfc:nth-child(2){border-right:0}.qfc:nth-child(n+3){border-bottom:0}}
+.jump{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px}
+.jump a{font-family:'Geist Mono',monospace;font-size:12px;color:var(--ink);border:1px solid var(--line);background:rgba(255,255,255,.55);padding:8px 13px;border-radius:var(--r-full);transition:border-color .2s,background .2s}
+.jump a:hover{border-color:var(--teal7);background:#fff}
+section[id]{scroll-margin-top:76px}
+.shead{max-width:64ch}
+.shead h2{font-size:clamp(28px,3.6vw,40px)}
+.shead p{font-size:17px;color:var(--muted);margin-top:16px;max-width:60ch}
+.faq{margin-top:40px;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.fcard{border:1px solid var(--line);border-radius:var(--r-lg);padding:24px;background:var(--white);transition:border-color .2s,transform .2s,box-shadow .2s}
+.fcard:hover{border-color:var(--teal5);transform:translateY(-2px);box-shadow:0 14px 34px rgba(20,58,49,.08)}
+.fcard h3{font-size:17px;margin-bottom:10px}
+.fcard p{font-size:14.5px;color:#3a3c36}
+@media(max-width:760px){.faq{grid-template-columns:1fr}}
+.steps{margin-top:44px;display:flex;flex-direction:column;gap:14px}
+.step{border:1px solid var(--line);border-radius:var(--r-lg);padding:26px 28px;background:var(--white)}
+.step .sh{display:flex;align-items:center;gap:13px;margin-bottom:14px}
+.step .sn{font-family:'Geist Mono',monospace;font-weight:500;font-size:13px;color:var(--ink);background:var(--lime);width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex:none}
+.step .sh h3{font-size:19px}
+.step p{font-size:15.5px;color:#3a3c36}
+.step ul{margin:12px 0 0;padding-left:18px}
+.step li{font-size:15px;color:#3a3c36;margin-bottom:8px}
+.step b{color:var(--ink);font-weight:600}
+.step ul + p,.step .prompt + p{margin-top:14px}
+.note{margin-top:14px;font-size:14.5px;color:var(--muted);border-left:2px solid var(--teal5);padding-left:14px}
+.warn{margin-top:14px;font-size:14.5px;color:#3a3c36;background:#FBF3E2;border:1px solid #EBCF97;border-radius:10px;padding:14px 16px}
+.warn b{color:var(--warning)}
+.prompt{margin-top:16px;background:var(--paper);border:1px solid var(--line);border-left:3px solid var(--teal7);border-radius:10px;overflow:hidden}
+.prompt .ph{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 12px 0 16px}
+.prompt .pl{font-family:'Geist Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.prompt .ptxt{margin:0;padding:10px 16px 16px;font-family:'Geist Mono',monospace;font-size:13.5px;line-height:1.6;color:var(--teal9);white-space:pre-wrap;word-break:break-word}
+.cp{font-family:'Geist Mono',monospace;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:var(--r-full);padding:7px 13px;min-height:34px;cursor:pointer;transition:border-color .18s,background .18s;white-space:nowrap}
+.cp:hover{border-color:var(--teal7)}
+.cp.ok{background:var(--lime);border-color:var(--lime)}
+@media(max-width:760px){.step{padding:22px 20px}.prompt .ptxt{font-size:12.5px}}
+.kit{background:var(--teal9);color:var(--warm)}
+.kitgrid{display:grid;grid-template-columns:1.1fr .9fr;gap:44px;align-items:center}
+.kit .k5{color:var(--teal3)}
+.kitgrid h2{font-size:clamp(28px,3.8vw,42px);color:var(--warm);max-width:22ch}
+.kitgrid .lead{font-size:17px;color:#cfd8d2;margin-top:20px;max-width:56ch}
+.kitgrid .lead + .lead{margin-top:14px}
+.kitbox{border:1px solid rgba(255,255,255,.22);border-radius:var(--r-xl);padding:30px;background:linear-gradient(135deg,rgba(255,255,255,.12),rgba(255,255,255,.04));backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.kitbox .t{font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--teal3);margin-bottom:16px}
+.kitbox ul{list-style:none;margin:0 0 24px}
+.kitbox li{font-size:15px;color:#cfd8d2;padding-left:26px;position:relative;margin-bottom:13px}
+.kitbox li::before{content:"";position:absolute;left:0;top:8px;width:10px;height:10px;border-radius:3px;background:var(--lime)}
+.kitbox li b{color:#fff;font-weight:600}
+.kit .boxnote{color:#a9b8b1}
+@media(max-width:900px){.kitgrid{grid-template-columns:1fr;gap:32px}}
+.boxnote{margin-top:14px;font-size:13.5px;color:var(--muted)}
+.chkwrap{margin-top:40px;border:1px solid var(--line);border-radius:var(--r-xl);padding:26px;background:var(--white)}
+.chkbar{display:flex;align-items:center;gap:16px;margin-bottom:24px}
+.chkbar span{font-family:'Geist Mono',monospace;font-size:13px;color:var(--teal7);white-space:nowrap}
+.chkprog{flex:1;height:6px;border-radius:var(--r-full);background:var(--soft);overflow:hidden}
+.chkprog i{display:block;height:100%;width:0;background:var(--teal5);transition:width .3s}
+.chkgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+.chkt{font-family:'Geist Mono',monospace;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--teal7);margin-bottom:14px}
+.chk{display:flex;gap:12px;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--soft);cursor:pointer;font-size:15px;color:#3a3c36;line-height:1.45}
+.chk input{appearance:none;-webkit-appearance:none;flex:none;width:20px;height:20px;margin-top:1px;border:1.5px solid var(--line);border-radius:6px;background:#fff;cursor:pointer;display:grid;place-items:center;transition:background .15s,border-color .15s}
+.chk input:checked{background:var(--lime);border-color:var(--ink)}
+.chk input:checked::after{content:"";width:5px;height:10px;border:solid var(--ink);border-width:0 2.5px 2.5px 0;transform:rotate(45deg) translate(-1px,-1px)}
+.chk input:focus-visible{outline:2px solid var(--teal7);outline-offset:2px}
+.chk input:checked + span{color:var(--muted);text-decoration:line-through}
+@media(max-width:900px){.chkgrid{grid-template-columns:1fr;gap:22px}.chkwrap{padding:20px}}
+.cta{text-align:center;background:linear-gradient(160deg,rgba(198,255,52,.22),transparent 55%),var(--warm);border-top:1px solid var(--line)}
+.cta h2{font-size:clamp(28px,4vw,44px);max-width:22ch;margin:0 auto}
+.cta p{font-size:17px;color:var(--muted);margin:20px auto 0;max-width:54ch}
+.cta .k5{color:var(--teal7)!important}
+.ctabtns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:34px}
+.btn{font-family:Onest,sans-serif;font-weight:600;font-size:15px;padding:14px 26px;min-height:48px;border-radius:var(--r-full);border:0;cursor:pointer;display:inline-flex;align-items:center;gap:9px;transition:transform .18s,box-shadow .18s,border-color .18s}
+.btn-lime{background:var(--lime);color:var(--ink)}
+.btn-lime:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(120,160,20,.28)}
+.btn-line{background:transparent;border:1px solid var(--ink);color:var(--ink)}
+.btn-line:hover{transform:translateY(-2px)}
+footer{padding:40px 0;border-top:1px solid var(--line)}
+.footin{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footin a.fh{font-family:'Geist Mono',monospace;font-size:13px;color:var(--muted)}
+.footin a.fh:hover{color:var(--teal7)}
+.disc{margin-top:22px;font-size:12px;color:var(--muted);max-width:80ch;line-height:1.5}
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:var(--ink);color:var(--warm);font-weight:600;font-size:14px;padding:11px 18px;border-radius:var(--r-full);box-shadow:0 12px 30px rgba(0,0,0,.25);transition:opacity .2s,transform .2s;z-index:200;max-width:calc(100% - 32px);text-align:center}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style></head>
+<body>
+<nav><div class="navin">
+  <a class="brand" href="/central" aria-label="Central Infuser"><img src="/guias/logo.svg" alt="Infuser" width="138" height="34"></a>
+  <span class="navtag">Guia gratuito</span>
+</div></nav>
+
+<section class="hero">
+  <div class="blob b1"></div><div class="blob b2"></div>
+  <div class="wrap heroin">
+    <span class="tag"><span class="d"></span>FABLE 5.2 · TRIAGEM DE TAREFAS + CHECKLIST</span>
+    <h1>O que da sua operação <span class="hl">já vale trocar pro Fable 5.2.</span> E o que ainda não.</h1>
+    <p class="sub">A Anthropic lançou o Fable 5.2 em 9 de novembro, dois meses depois do 5.1. Ficou mais barato na API e subiu a nota nos testes de fluxo de trabalho, de leitura de gráfico e de código. Mas trocar de modelo não é trocar tudo de uma vez. Este guia separa as tarefas da sua empresa em três grupos: as que já valem ir pro 5.2, as que pedem um teste lado a lado antes e as que ainda não devem ir pra IA. Com os pedidos prontos para copiar e o checklist.</p>
+    <p class="by">por <b>Yan Galasso</b> · Infuser</p>
+
+    <div class="qf"><div class="qfgrid">
+      <div class="qfc"><div class="l">Lançamento</div><div class="v"><em>9 de novembro</em> de 2026</div></div>
+      <div class="qfc"><div class="l">Na API</div><div class="v"><em>20%</em> mais barato</div></div>
+      <div class="qfc"><div class="l">Você precisa</div><div class="v">A lista das <em>suas tarefas</em></div></div>
+      <div class="qfc"><div class="l">Resultado</div><div class="v">Um <em>semáforo</em> de troca</div></div>
+    </div></div>
+
+    <div class="jump" aria-label="Ir para a parte do guia">
+      <a href="#ideia">O que mudou</a>
+      <a href="#semaforo">O semáforo</a>
+      <a href="#pedidos">Pedidos prontos</a>
+      <a href="#erros">Erros comuns</a>
+      <a href="#cuidados">Cuidados</a>
+      <a href="#checklist">Checklist</a>
+      <a href="#faq">Perguntas</a>
+    </div>
+  </div>
+</section>
+
+<section class="carbon" id="ideia">
+  <div class="wrap inner">
+    <div class="shead">
+      <span class="k5">O que mudou do 5.1 pro 5.2</span>
+      <h2>Os números que interessam pra quem tem empresa</h2>
+      <p>A Anthropic publicou uma tabela comparando os dois modelos. Separei os quatro testes que mais conversam com a rotina de uma empresa. São testes de laboratório, no esforço máximo do modelo. Servem pra saber onde olhar primeiro, não pra prometer o resultado na sua operação.</p>
+    </div>
+    <div class="faq">
+      <div class="fcard"><h3>Fluxo de trabalho de ponta a ponta</h3><p>No AutomationBench, que mede tarefas de rotina feitas do começo ao fim, o 5.1 tinha 31,4% e o 5.2 tem 51,4%. O fluxo que travava no meio chega mais vezes no fim. Ainda erra quase metade, então a conferência continua.</p></div>
+      <div class="fcard"><h3>Trabalho entregue de verdade</h3><p>No Remote Labor Index, que usa projetos reais de freelancer e só conta o que o cliente aceitaria, foi de 17,9% para 41,3%. É o salto que mais conversa com passar uma tarefa inteira pra IA.</p></div>
+      <div class="fcard"><h3>Ler gráfico sem ajuda</h3><p>No Chartography, em que o modelo recebe um gráfico e responde os valores sem ferramenta, foi de 44,8% para 73,4%. Print de dashboard, relatório em PDF e DRE em imagem ficam mais confiáveis de mandar.</p></div>
+      <div class="fcard"><h3>Programar sozinho</h3><p>No FrontierCode 2.0, de tarefas longas de programação com o agente trabalhando sozinho, foi de 32,4% para 49,1%. Vale pra quem tem automação interna, planilha com script ou integração feita com IA.</p></div>
+    </div>
+    <p class="note">Além da nota: o preço na API caiu de 10 para 8 dólares por milhão de tokens de entrada e de 50 para 40 por milhão de saída, segundo a página oficial. A cobertura do lançamento fala em respostas até 30% mais rápidas, e existe um modo rápido novo, até 2,5 vezes mais veloz, que custa o dobro do modo normal.</p>
+  </div>
+</section>
+
+<section class="dark" id="semaforo">
+  <div class="wrap inner">
+    <div class="shead">
+      <span class="k5">O semáforo</span>
+      <h2>Três grupos de tarefa, três decisões diferentes</h2>
+      <p>Pegue cada tarefa da sua operação e coloque num destes grupos. Os pedidos da próxima seção fazem essa separação com você.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="sh"><div class="sn">01</div><h3>Já vale trocar</h3></div>
+        <p>Tarefas em que a troca é quase só ganho, porque você já confere o resultado e o risco de um erro é baixo.</p>
+        <ul>
+          <li><b>O que já roda no 5.1 pela API.</b> O mesmo volume de trabalho fica 20% mais barato só trocando o modelo. Teste uma semana e compare a fatura.</li>
+          <li><b>Ler relatório, print de painel e PDF com gráfico.</b> Foi onde o salto de leitura apareceu. Resumo de DRE, leitura de relatório de anúncios, conferência de painel de vendas.</li>
+          <li><b>Fluxo com várias etapas e conferência no fim.</b> Pedido que vem por e-mail, vira lançamento no sistema e gera cobrança, com alguém aprovando antes de enviar.</li>
+          <li><b>Rascunho de automação e de código interno</b> que alguém da equipe revisa antes de colocar no ar.</li>
+        </ul>
+      </div>
+      <div class="step">
+        <div class="sh"><div class="sn">02</div><h3>Teste lado a lado antes</h3></div>
+        <p>Tarefas em que o 5.2 tende a ir melhor, mas uma mudança de comportamento custa caro. Rode os dois modelos com os mesmos casos reais e compare antes de trocar.</p>
+        <ul>
+          <li><b>O que fala direto com o cliente.</b> Atendimento, proposta comercial, resposta de reclamação. O tom pode mudar de um modelo pro outro.</li>
+          <li><b>O que depende de formato fixo.</b> Saída que vai pra planilha, sistema ou integração. Se a estrutura da resposta mudar, o processo seguinte quebra.</li>
+          <li><b>Tarefa longa que travava no 5.1.</b> É onde o ganho pode ser maior, e também onde vale medir quantas vezes chega no fim de verdade.</li>
+          <li><b>Onde esperar custa dinheiro.</b> Atendimento ao vivo pode justificar o modo rápido. Tarefa que roda de madrugada, não.</li>
+        </ul>
+      </div>
+      <div class="step">
+        <div class="sh"><div class="sn">03</div><h3>Ainda não troque</h3></div>
+        <p>Tarefas em que a versão do modelo não é o problema.</p>
+        <ul>
+          <li><b>Decisão final sem ninguém conferindo.</b> Pagamento, contrato, demissão, preço fechado com cliente. A IA prepara, uma pessoa decide.</li>
+          <li><b>Tarefa que não tem processo.</b> Se cada pessoa da equipe faz de um jeito, o modelo novo só erra mais rápido. Escreva o passo a passo primeiro.</li>
+          <li><b>Dado que não pode sair da empresa</b> sem você conferir a política de retenção do seu plano. Veja a seção de cuidados.</li>
+          <li><b>Pergunta sensível de segurança digital ou de biologia.</b> O 5.2 tem filtros nesses temas e pode mandar a pergunta para outro modelo responder.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="carbon" id="pedidos">
+  <div class="wrap inner">
+    <div class="shead">
+      <span class="k5">Pedidos prontos</span>
+      <h2>Quatro pedidos, da lista de tarefas à troca segura</h2>
+      <p>Faça os quatro na mesma conversa com o Claude: cada um usa o que o anterior deixou pronto. Troque tudo que estiver entre colchetes antes de enviar.</p>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="sh"><div class="sn">01</div><h3>Liste as tarefas da operação</h3></div>
+        <p>Ninguém lembra de todas de cabeça. O pedido faz o Claude te entrevistar por área, para a lista sair completa e com o que importa pra decidir.</p>
+        <div class="prompt"><div class="ph"><span class="pl">Pedido 1 · Inventário</span><button class="cp" type="button">Copiar</button></div><pre class="ptxt">Tenho uma empresa de [o que a empresa faz], com [número] pessoas, nas áreas [comercial, atendimento, financeiro, operação, marketing].
+Quero listar as tarefas que se repetem toda semana para decidir quais vão para a IA.
+
+Me entreviste uma área por vez, com no máximo 4 perguntas por área. No fim, monte uma tabela com:
+- tarefa
+- área e quem faz hoje
+- quantas vezes acontece por semana
+- quanto tempo leva cada vez
+- o que entra (e-mail, PDF, print, planilha, conversa) e o que sai
+- quem confere o resultado antes de seguir
+- o que acontece se der errado
+
+Não invente tarefas nem números. Quando eu não souber, escreva "a medir".</pre></div>
+      </div>
+
+      <div class="step">
+        <div class="sh"><div class="sn">02</div><h3>Coloque cada tarefa no semáforo</h3></div>
+        <p>Com a tabela pronta, o Claude aplica os critérios do semáforo e explica o motivo de cada escolha. Você revisa e muda o que não fizer sentido.</p>
+        <div class="prompt"><div class="ph"><span class="pl">Pedido 2 · Semáforo</span><button class="cp" type="button">Copiar</button></div><pre class="ptxt">Agora classifique cada tarefa da tabela em um de três grupos para trocar para o Claude Fable 5.2:
+
+VERDE (já vale trocar): alguém já confere o resultado, o erro custa pouco, e a tarefa envolve ler documento, print ou gráfico, seguir um fluxo de várias etapas ou rascunhar código interno.
+AMARELO (testar lado a lado antes): fala direto com o cliente, alimenta planilha, sistema ou integração com formato fixo, ou é uma tarefa longa que hoje trava no meio.
+VERMELHO (ainda não): decisão final sem conferência humana, tarefa sem processo definido, dado sensível que não pode sair da empresa, ou tema de segurança digital ou biologia.
+
+Para cada tarefa, diga o grupo e o motivo em uma frase.
+Depois, ordene as verdes pelo tempo que liberam por semana, usando os números da tabela. Onde estiver "a medir", diga o que eu preciso medir.</pre></div>
+        <p class="note">O pedido não decide sozinho. Leia a lista como dono: uma tarefa que o Claude marcou de verde pode ser vermelha pra você porque um cliente grande depende dela.</p>
+      </div>
+
+      <div class="step">
+        <div class="sh"><div class="sn">03</div><h3>Monte o teste lado a lado das amarelas</h3></div>
+        <p>O teste que vale é com os seus casos, não com o benchmark. Separe exemplos reais da semana passada, rode no 5.1 e no 5.2 e compare com uma régua só.</p>
+        <div class="prompt"><div class="ph"><span class="pl">Pedido 3 · Teste lado a lado</span><button class="cp" type="button">Copiar</button></div><pre class="ptxt">Monte um teste para a tarefa [nome da tarefa amarela].
+Vou rodar os mesmos [10 a 20] casos reais no Claude Fable 5.1 e no Claude Fable 5.2, com o mesmo pedido.
+
+Entregue:
+1. o pedido padrão que vou usar nos dois, escrito para esta tarefa
+2. uma régua de nota de 1 a 5 com no máximo 5 critérios (por exemplo: acertou a informação, seguiu o formato, tom certo, precisou de correção, terminou a tarefa)
+3. uma tabela em branco para eu preencher: caso, nota do 5.1, nota do 5.2, tempo de resposta, observação
+4. a regra de decisão: quando a troca vale, quando não vale e quando preciso de mais casos
+
+Vou colar os resultados depois para você me dar o veredito.</pre></div>
+        <p class="note">Tire os dados pessoais dos casos antes de colar: nome, CPF, telefone e valores de cliente. Para o teste, o conteúdo da tarefa basta.</p>
+      </div>
+
+      <div class="step">
+        <div class="sh"><div class="sn">04</div><h3>Faça a troca com rede de proteção</h3></div>
+        <p>Troque uma tarefa por vez, começando pela verde que mais libera tempo. Assim, se algo piorar, você sabe exatamente o que mudou.</p>
+        <div class="prompt"><div class="ph"><span class="pl">Pedido 4 · Plano de troca</span><button class="cp" type="button">Copiar</button></div><pre class="ptxt">Monte o plano para trocar a tarefa [nome da tarefa] para o Claude Fable 5.2.
+
+Inclua:
+- o que muda no pedido ou na configuração, e o que fica igual
+- como guardar as últimas respostas do modelo antigo para comparar
+- quem confere o resultado na primeira semana e o que essa pessoa olha
+- os sinais de que piorou e o que fazer se aparecerem
+- quando revisar de novo (data) e qual tarefa vem em seguida
+
+Escreva em passos curtos, para eu passar para quem faz a tarefa hoje.</pre></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="dark" id="erros">
+  <div class="wrap inner">
+    <div class="shead">
+      <span class="k5">Erros comuns</span>
+      <h2>Seis jeitos de perder o ganho do modelo novo</h2>
+    </div>
+    <div class="faq">
+      <div class="fcard"><h3>Trocar tudo no mesmo dia</h3><p>Se cinco tarefas mudam juntas e uma piora, ninguém sabe qual foi. Uma por vez, com data para revisar.</p></div>
+      <div class="fcard"><h3>Decidir pelo benchmark</h3><p>A tabela da Anthropic mostra onde olhar. Quem decide é o teste com os seus casos, na sua tarefa, com a sua régua.</p></div>
+      <div class="fcard"><h3>Tirar a conferência porque o modelo melhorou</h3><p>51,4% num fluxo de ponta a ponta ainda é quase metade de erro. A pessoa que confere continua, só que conferindo mais rápido.</p></div>
+      <div class="fcard"><h3>Ligar o modo rápido em tudo</h3><p>Ele custa o dobro. Só compensa onde a espera atrapalha alguém, como um atendimento ao vivo.</p></div>
+      <div class="fcard"><h3>Colocar IA numa tarefa sem processo</h3><p>Se a tarefa muda conforme quem faz, a IA também vai mudar. Escreva o passo a passo antes de trocar o modelo.</p></div>
+      <div class="fcard"><h3>Esquecer de medir antes</h3><p>Sem saber quanto tempo a tarefa levava, não dá para saber se a troca valeu. Anote o tempo de hoje antes de mexer.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="carbon" id="cuidados">
+  <div class="wrap inner">
+    <div class="shead">
+      <span class="k5">Cuidados</span>
+      <h2>O que conferir antes de mandar dado da empresa</h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="sh"><div class="sn">01</div><h3>Retenção de dados</h3></div>
+        <p>Pela página oficial, o Fable 5.2 guarda por padrão o que você envia por 30 dias, para monitoramento de segurança. Empresas elegíveis têm um caminho para retenção zero.</p>
+        <div class="warn"><b>Dado pessoal de cliente tem regra.</b> Antes de mandar dados de clientes, funcionários ou pacientes para qualquer IA, confira a política do seu plano e o que a LGPD exige da sua empresa. Na dúvida, tire o dado pessoal do texto antes de enviar.</div>
+      </div>
+      <div class="step">
+        <div class="sh"><div class="sn">02</div><h3>Filtros de segurança</h3></div>
+        <p>O 5.2 tem filtros para perguntas de segurança digital e de biologia. Quando uma pergunta é marcada, ela pode ser respondida por outro modelo da Anthropic. Se a sua empresa trabalha nessas áreas, teste as suas perguntas antes de confiar no fluxo.</p>
+      </div>
+      <div class="step">
+        <div class="sh"><div class="sn">03</div><h3>Quem pode usar</h3></div>
+        <p>Pela página oficial, o 5.2 está nos planos Pro, Max, Ultra, Team e Enterprise e na API. Confira no seu plano se ele já aparece no seletor de modelo e quanto do limite semanal ele consome.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="dark" id="checklist">
+  <div class="wrap inner">
+    <div class="shead">
+      <span class="k5">Checklist</span>
+      <h2>A troca do 5.1 pro 5.2, sem pular etapa</h2>
+      <p>Marque conforme for fazendo. O checklist fica salvo neste navegador, então dá para voltar depois e continuar de onde parou.</p>
+    </div>
+    <div class="chkwrap">
+      <div class="chkbar"><span id="chkcount">0 de 0</span><div class="chkprog"><i id="chkfill"></i></div></div>
+      <div class="chkgrid">
+        <div class="chkcol">
+          <div class="chkt">Antes de trocar</div>
+          <label class="chk"><input type="checkbox" data-k="a1"><span>Lista das tarefas que se repetem toda semana</span></label>
+          <label class="chk"><input type="checkbox" data-k="a2"><span>Tempo de hoje anotado em cada tarefa</span></label>
+          <label class="chk"><input type="checkbox" data-k="a3"><span>Cada tarefa num grupo do semáforo, com o motivo</span></label>
+          <label class="chk"><input type="checkbox" data-k="a4"><span>Quem confere cada tarefa definido</span></label>
+          <label class="chk"><input type="checkbox" data-k="a5"><span>Política de dados do seu plano conferida</span></label>
+        </div>
+        <div class="chkcol">
+          <div class="chkt">No teste</div>
+          <label class="chk"><input type="checkbox" data-k="t1"><span>Casos reais da semana, sem dado pessoal</span></label>
+          <label class="chk"><input type="checkbox" data-k="t2"><span>Mesmo pedido nos dois modelos</span></label>
+          <label class="chk"><input type="checkbox" data-k="t3"><span>Régua de nota com no máximo cinco critérios</span></label>
+          <label class="chk"><input type="checkbox" data-k="t4"><span>Formato da resposta conferido onde vai pra sistema</span></label>
+          <label class="chk"><input type="checkbox" data-k="t5"><span>Veredito anotado: troca, não troca ou mais casos</span></label>
+        </div>
+        <div class="chkcol">
+          <div class="chkt">Depois de trocar</div>
+          <label class="chk"><input type="checkbox" data-k="d1"><span>Uma tarefa trocada por vez</span></label>
+          <label class="chk"><input type="checkbox" data-k="d2"><span>Respostas antigas guardadas para comparar</span></label>
+          <label class="chk"><input type="checkbox" data-k="d3"><span>Conferência humana mantida na primeira semana</span></label>
+          <label class="chk"><input type="checkbox" data-k="d4"><span>Fatura ou limite de uso comparado com antes</span></label>
+          <label class="chk"><input type="checkbox" data-k="d5"><span>Data marcada para revisar e a próxima tarefa escolhida</span></label>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="carbon" id="faq">
+  <div class="wrap inner">
+    <div class="shead">
+      <span class="k5">Perguntas rápidas</span>
+      <h2>O que costuma aparecer na hora de trocar</h2>
+    </div>
+    <div class="faq">
+      <div class="fcard"><h3>Uso o Claude só no chat. Isso serve pra mim?</h3><p>Serve. A queda de preço vale para a API, mas o ganho de leitura de gráfico, de fluxo e de código aparece no chat também. O semáforo ajuda a escolher em que tarefa usar o 5.2 primeiro.</p></div>
+      <div class="fcard"><h3>Preciso mudar os meus pedidos?</h3><p>Na maioria das tarefas, não. Use o mesmo pedido no teste lado a lado. Se o 5.2 for melhor com o pedido antigo, troque e pronto. Ajuste o pedido só onde o teste mostrar diferença.</p></div>
+      <div class="fcard"><h3>O 5.1 vai deixar de existir?</h3><p>A página do lançamento não diz uma data. Guarde os pedidos e as respostas antigas, para comparar se um dia precisar trocar às pressas.</p></div>
+      <div class="fcard"><h3>Vale pagar o modo rápido?</h3><p>Só onde a espera atrapalha uma pessoa, como um cliente aguardando resposta. Para tarefa que roda sozinha, o modo normal entrega o mesmo resultado pela metade do preço.</p></div>
+      <div class="fcard"><h3>E o Mythos 5.2?</h3><p>É o mesmo modelo sem os filtros de segurança digital e biologia, liberado só para organizações verificadas em programas da Anthropic. Para a rotina de uma empresa, o Fable 5.2 é o que você vai usar.</p></div>
+      <div class="fcard"><h3>Por onde começo se não tenho nada com IA?</h3><p>Pelo pedido 1. A lista de tarefas, com o tempo de cada uma, já mostra onde está o trabalho repetido. A versão do modelo é a última decisão, não a primeira.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="cta">
+  <div class="wrap">
+    <span class="k5" style="color:var(--lime);display:block;margin-bottom:16px">Próximo passo</span>
+    <h2>O modelo novo só rende se a tarefa estiver bem montada.</h2>
+    <p>Se você quer ajuda para separar o que entregar para a IA na sua empresa, na call de diagnóstico a gente olha a sua operação com você e aponta as primeiras tarefas que valem automatizar. E me siga para acompanhar o que muda a cada lançamento.</p>
+    <div class="ctabtns">
+      <a class="btn btn-lime" href="/diagnostico?utm_source=guia&amp;utm_medium=conteudo&amp;utm_campaign=fable-52">Agendar diagnóstico</a>
+      <a class="btn btn-line" href="https://instagram.com/yangalasso" target="_blank" rel="noopener">Seguir @yangalasso</a>
+    </div>
+  </div>
+</section>
+
+<footer><div class="wrap">
+  <div class="footin">
+    <a class="brand" href="/central" aria-label="Central Infuser"><img src="/guias/logo.svg" alt="Infuser" width="138" height="34"></a>
+    <a class="fh" href="https://instagram.com/yangalasso" target="_blank" rel="noopener">@yangalasso</a>
+  </div>
+  <p class="disc">Guia educativo da Infuser, sem vínculo oficial com a Anthropic, a OpenAI ou o Google. Os números de teste e de preço vêm da página oficial do Claude Fable em 10 de novembro de 2026 e podem mudar. Benchmark é teste de laboratório e não garante o mesmo resultado na sua operação. Os pedidos são instruções em texto livre e o resultado varia conforme o modelo, o plano e o que você envia. Não é orientação jurídica: confira a LGPD e a política de dados do seu plano antes de enviar informação de clientes.</p>
+</div></footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite">Copiado</div>
+<script>
+(function(){
+  var toast=document.getElementById('toast'),tm;
+  function show(msg){toast.textContent=msg;toast.classList.add('on');clearTimeout(tm);tm=setTimeout(function(){toast.classList.remove('on')},1600)}
+  function copy(text){
+    if(navigator.clipboard&&window.isSecureContext){return navigator.clipboard.writeText(text)}
+    return new Promise(function(ok,no){var t=document.createElement('textarea');t.value=text;t.setAttribute('readonly','');t.style.position='fixed';t.style.opacity='0';document.body.appendChild(t);t.select();try{document.execCommand('copy')?ok():no()}catch(e){no(e)}document.body.removeChild(t)})
+  }
+  document.querySelectorAll('.prompt .cp').forEach(function(b){
+    b.addEventListener('click',function(){
+      var t=b.closest('.prompt').querySelector('.ptxt').textContent.trim();
+      copy(t).then(function(){b.textContent='Copiado';b.classList.add('ok');show('Pedido copiado. Agora troque os colchetes.');setTimeout(function(){b.textContent='Copiar';b.classList.remove('ok')},1800)},function(){show('Não deu para copiar. Selecione o texto manualmente.')});
+    });
+  });
+  // checklist salvo neste navegador
+  var KEY='guia-fable-52-checklist',state={};
+  try{state=JSON.parse(localStorage.getItem(KEY)||'{}')||{}}catch(e){state={}}
+  var boxes=document.querySelectorAll('.chk input'),cnt=document.getElementById('chkcount'),fill=document.getElementById('chkfill');
+  function upd(){var n=0;boxes.forEach(function(x){if(x.checked)n++});cnt.textContent=n+' de '+boxes.length;fill.style.width=(n/boxes.length*100)+'%'}
+  boxes.forEach(function(x){
+    x.checked=!!state[x.dataset.k];
+    x.addEventListener('change',function(){state[x.dataset.k]=x.checked;try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}upd()});
+  });
+  upd();
+})();
+</script>
+</body></html>

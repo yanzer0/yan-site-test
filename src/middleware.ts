@@ -179,6 +179,7 @@ export const config = {
     "/guia-clonar-sites", "/guia-clonar-sites.html",
     "/guia-instaclaude", "/guia-instaclaude.html",
     "/opus5", "/opus5.html", "/opus55", "/opus55.html",
+    "/guia-fable-52", "/fable", "/guia-fable-52.html",
     "/protocolo-de-autoria", "/protocolo-de-autoria.html",
     "/tutorial-maestri", "/tutorial-maestri.html",
     "/guia-skill-creator", "/guia-skill-creator.html",
