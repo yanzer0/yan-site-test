@@ -71,7 +71,7 @@ describe("ações explícitas do cadastro", () => {
   it("destaque ocupa a grade toda e preserva os dezessete links e a ordem", () => {
     const css = readFileSync("public/guias/guias.css", "utf8"), html = documentoBiblioteca();
     expect(css).toContain(".guide-grid>.guide-card:first-child{flex-basis:100%}"); expect(css).toContain("display:flex;flex-wrap:wrap"); expect(css).not.toMatch(/grid-column:span [12]/);
-    expect(GUIAS).toHaveLength(59); const indices = GUIAS.map((guia) => html.indexOf(`href="/guias/${guia.slug}"`));
+    expect(GUIAS).toHaveLength(60); const indices = GUIAS.map((guia) => html.indexOf(`href="/guias/${guia.slug}"`));
     expect(indices.every((index) => index >= 0)).toBe(true); expect(indices).toEqual([...indices].sort((a,b) => a-b));
   });
 });

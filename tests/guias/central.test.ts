@@ -11,8 +11,8 @@ beforeEach(() => { process.env.GUIAS_ACCESS_SECRET = "segredo-sintetico-central-
 afterEach(() => { delete process.env.GUIAS_ACCESS_SECRET; });
 describe("Central Infuser", () => {
   it("reúne somente as vinte e nove entregas públicas confirmadas", () => {
-    expect(CATALOGO_CENTRAL).toHaveLength(72); expect(GUIAS).toHaveLength(59);
-    expect(CATALOGO_CENTRAL.filter((item) => item.estado === "Gratuito")).toHaveLength(64);
+    expect(CATALOGO_CENTRAL).toHaveLength(73); expect(GUIAS).toHaveLength(60);
+    expect(CATALOGO_CENTRAL.filter((item) => item.estado === "Gratuito")).toHaveLength(65);
     expect(CATALOGO_CENTRAL.filter((item) => item.estado === "Premium").map((item) => item.caminho)).toEqual(["/legiao", "/kit-segundo-cerebro", "/kit-skills", "/kit-jarvis", "https://pay.hotmart.com/A108157970A", "/kit-segundo-cerebro", "https://pay.hotmart.com/O108099140A?off=bmb50jm3&checkoutMode=10"]);
     expect(CATALOGO_CENTRAL.find((item) => item.slug === "kit-vscode")).toMatchObject({ estado: "Gratuito", tipo: "Kit", caminho: "/kit-vscode" });
     expect(CATALOGO_CENTRAL.find((item) => item.slug === "painel-os")).toMatchObject({ estado: "Em breve", tipo: "SaaS" });
@@ -23,7 +23,7 @@ describe("Central Infuser", () => {
   it("renderiza tipos, estados e filtros sem um botão para o SaaS", () => {
     const html = documentoBiblioteca(); expect(html).toContain("Central Infuser");
     for (const grupo of ["guias", "recursos", "premium", "em-breve"]) expect(html).toContain(`data-filtro="${grupo}"`);
-    expect(html.match(/data-guia /g)).toHaveLength(72); expect(html).toContain("72 itens · 64 gratuitos");
+    expect(html.match(/data-guia /g)).toHaveLength(73); expect(html).toContain("73 itens · 65 gratuitos");
     expect(html).not.toContain('href="/central/painel-os"'); expect(html).not.toContain("/painel/signup");
     expect(html).toContain("Premium"); expect(html).toContain("Em breve");
     const css = readFileSync("public/guias/guias.css", "utf8");
