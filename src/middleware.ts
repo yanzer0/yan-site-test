@@ -178,6 +178,7 @@ export const config = {
     "/guia-videos-gemini", "/guia-videos-gemini.html",
     "/guia-clonar-sites", "/guia-clonar-sites.html",
     "/guia-instaclaude", "/guia-instaclaude.html",
+    "/guia-efeitos-ia", "/guia-efeitos-ia.html",
     "/opus5", "/opus5.html", "/opus55", "/opus55.html",
     "/guia-fable-52", "/fable", "/guia-fable-52.html",
     "/guia-chatgpt-critico", "/critico", "/guia-chatgpt-critico.html",
