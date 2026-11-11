@@ -2,7 +2,7 @@
 work_order: WO-GUIA-EFEITOS-IA-001
 created: 2026-11-11
 updated: 2026-11-11
-status: active
+status: complete
 classe: conteudo
 risco: baixo
 central_branch: claude/guia-efeitos-ia-20261111
@@ -29,7 +29,7 @@ scope_lock:
     background_jobs: []
   acceptance_ids: [GEI-01, GEI-02, GEI-03]
   stop_when: [GEI-01, GEI-02, GEI-03]
-  passed_acceptance_ids: []
+  passed_acceptance_ids: [GEI-01, GEI-02, GEI-03]
 ---
 # Guia de efeitos de edição com IA na Central
 
@@ -38,3 +38,5 @@ Objetivo: publicar o guia "Quatro efeitos de edição com IA" em `/guia-efeitos-
 - GEI-01: `GUIAS` tem 60 itens e o caminho resolve para o guia; testes de `tests/guias` verdes com as contagens novas.
 - GEI-02: build de produção sem erro e smoke da VPS cobrindo `/guia-efeitos-ia`.
 - GEI-03: em produção, sem sessão o guia redireciona ao cadastro e a Central mostra 73 itens.
+
+Closeout 11/11/2026: e775752 no ar (release e7757520fb50 healthy na VPS, smoke verde). 317 testes de `tests/guias` verdes, build com `/guia-efeitos-ia` estático; `/guia-efeitos-ia` e `/guias/efeitos-ia` redirecionam a /guias/acesso?guia=efeitos-ia sem sessão nos dois hosts; SHA-256 do HTML no container igual ao do commit. Contagem da Central (73 itens, 65 gratuitos) provada pelos testes no mesmo commit.
