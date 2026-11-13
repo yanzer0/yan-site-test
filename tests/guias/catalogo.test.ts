@@ -15,7 +15,10 @@ describe("inventário público de guias", () => {
     expect(readFileSync(resolve("src/middleware.ts"), "utf8")).toContain("protegerGuia");
   });
   it("inclui exatamente os dezessete HTMLs gratuitos presentes no código", () => {
-    const arquivos = readdirSync(resolve("public")).filter((name) => /^(?:guia-|opus|agente-que-aprende|protocolo-de-autoria|tutorial-maestri).*\.html$/.test(name));
+    // Guia de entrega de produto fica fora do catálogo da Central e do portão de captura:
+    // quem chega nele já comprou e recebe o link pela central de acessos.
+    const entregaDeProduto = new Set(["guia-kit-segundo-cerebro.html"]);
+    const arquivos = readdirSync(resolve("public")).filter((name) => /^(?:guia-|opus|agente-que-aprende|protocolo-de-autoria|tutorial-maestri).*\.html$/.test(name) && !entregaDeProduto.has(name));
     expect(GUIAS).toHaveLength(60);
     expect(GUIAS.map((guia) => guia.arquivo).sort()).toEqual(arquivos.sort());
     expect(new Set(GUIAS.map((guia) => guia.slug)).size).toBe(60);

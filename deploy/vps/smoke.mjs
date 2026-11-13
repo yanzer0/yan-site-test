@@ -66,6 +66,8 @@ const publicPaths = [
   "/reforma-tributaria",
   "/guia-img",
   "/guia-skill",
+  "/guia-kit-segundo-cerebro",
+  "/guia-kit-segundo-cerebro.html",
   "/estudio",
   "/kit-jarvis",
   "/kit-segundo-cerebro",
@@ -145,7 +147,11 @@ for (const path of publicPaths) {
   if (result.body.length < 100) throw new Error(`${path}: response body is unexpectedly small`);
 }
 
-const guideFiles = readdirSync(resolve("public")).filter((name) => /^(?:guia-|opus|agente-que-aprende|protocolo-de-autoria|tutorial-maestri).*\.html$/.test(name));
+// Guias de entrega de produto nao passam pelo portao de captura: quem chega neles ja comprou e
+// recebe o link pela central de acessos. Eles ficam fora da varredura que exige 307 em todo
+// public/guia-*.html, e entram em publicPaths esperando 200.
+const openGuideFiles = new Set(["guia-kit-segundo-cerebro.html"]);
+const guideFiles = readdirSync(resolve("public")).filter((name) => /^(?:guia-|opus|agente-que-aprende|protocolo-de-autoria|tutorial-maestri).*\.html$/.test(name) && !openGuideFiles.has(name));
 for (const path of [...protectedGuides, ...guideFiles.map((name) => `/${name}`)]) {
   const { response } = await check(path, [307]);
   const location = new URL(response.headers.get("location") ?? "", baseUrl);
