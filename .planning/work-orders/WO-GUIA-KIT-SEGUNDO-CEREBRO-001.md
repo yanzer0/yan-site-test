@@ -2,7 +2,7 @@
 work_order: WO-GUIA-KIT-SEGUNDO-CEREBRO-001
 created: 2026-11-13
 updated: 2026-11-13
-status: active
+status: completed
 classe: conteudo
 risco: baixo
 central_branch: guia/kit-segundo-cerebro-20261113
@@ -27,7 +27,7 @@ scope_lock:
     background_jobs: []
   acceptance_ids: [AC-01, AC-02, AC-03]
   stop_when: [AC-01, AC-02, AC-03]
-  passed_acceptance_ids: []
+  passed_acceptance_ids: [AC-01, AC-02, AC-03]
 ---
 
 # Publicar o guia de instalacao do Kit Segundo Cerebro
@@ -47,3 +47,13 @@ AC-02: QA a 1440 px e a 375 px sem rolagem horizontal, com os comandos quebrando
 AC-03: https://useinfuser.com/guia-kit-segundo-cerebro verificado em producao, com 200, conteudo certo e acentos corretos no navegador, nao pelo codigo de saida do deploy.
 
 Fora do escopo: infuser-mcp, central de acessos, Hubla, n8n, catalogo da Central e middleware. Rollback: reverter o merge da branch e redeployar a imagem anterior. Um executor, uma rodada.
+
+## Closeout em 13/11/2026
+
+AC-01 PASS: `public/guia-kit-segundo-cerebro.html` com os cinco passos do markdown na mesma ordem (extrair o kit, Obsidian, Claude Code nos dois caminhos, abrir o Claude na pasta, testar), mais a personalizacao, o backup opcional com Git e os seis problemas comuns. Rota em `src/app/guia-kit-segundo-cerebro/route.ts` servindo `text/html; charset=utf-8`. 759 testes aprovados e 10 pulados por dependerem de ambiente, incluindo o novo `tests/guias/kit-segundo-cerebro.test.ts`. O conteudo nao depende de JavaScript: o script so cuida de copiar comando e do checklist.
+
+AC-02 PASS: QA a 1440 px (scrollWidth 1425) e a 375 px (scrollWidth 375), sem rolagem horizontal nos dois. Os oito blocos de comando tem `white-space: pre-wrap` e `scrollWidth` igual ao `clientWidth` a 375 px, entao nenhum comando estoura a tela. Smoke do deploy aprovado com `/guia-kit-segundo-cerebro` e `/guia-kit-segundo-cerebro.html` em 200, sem portao.
+
+AC-03 PASS: release 0e6f839c482a healthy. https://useinfuser.com/guia-kit-segundo-cerebro responde 200 no apex e no www, aberto no navegador com `charset` UTF-8 e acentuacao correta em titulo, hero e passos. O ponteiro para `guia-personalizacao.md` esta na pagina publicada.
+
+Pendencia de fora desta frente: as cinco work orders de guias ja publicados seguem `active` com `central_branch: main` e continuam bloqueando escrita direta no main por SL002.
