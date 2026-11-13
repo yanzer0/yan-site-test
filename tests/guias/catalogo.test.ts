@@ -19,9 +19,9 @@ describe("inventário público de guias", () => {
     // quem chega nele já comprou e recebe o link pela central de acessos.
     const entregaDeProduto = new Set(["guia-kit-segundo-cerebro.html"]);
     const arquivos = readdirSync(resolve("public")).filter((name) => /^(?:guia-|opus|agente-que-aprende|protocolo-de-autoria|tutorial-maestri).*\.html$/.test(name) && !entregaDeProduto.has(name));
-    expect(GUIAS).toHaveLength(60);
+    expect(GUIAS).toHaveLength(61);
     expect(GUIAS.map((guia) => guia.arquivo).sort()).toEqual(arquivos.sort());
-    expect(new Set(GUIAS.map((guia) => guia.slug)).size).toBe(60);
+    expect(new Set(GUIAS.map((guia) => guia.slug)).size).toBe(61);
   });
   it("todos os aliases de route handlers estão no mesmo catálogo", () => {
     for (const entry of readdirSync(resolve("src/app"), { withFileTypes: true })) {

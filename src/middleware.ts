@@ -182,6 +182,7 @@ export const config = {
     "/opus5", "/opus5.html", "/opus55", "/opus55.html",
     "/guia-fable-52", "/fable", "/guia-fable-52.html",
     "/guia-chatgpt-critico", "/critico", "/guia-chatgpt-critico.html",
+    "/guia-tres-processos-claude", "/claude", "/guia-tres-processos-claude.html",
     "/protocolo-de-autoria", "/protocolo-de-autoria.html",
     "/tutorial-maestri", "/tutorial-maestri.html",
     "/guia-skill-creator", "/guia-skill-creator.html",
