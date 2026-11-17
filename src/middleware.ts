@@ -193,7 +193,7 @@ export const config = {
     "/guia-ponytail", "/guia-ponytail.html",
     "/guia-caveman", "/guia-caveman.html",
     "/guia-planning-with-files", "/guia-planning-with-files.html",
-    "/guia-frontend-design", "/guia-frontend-design.html",
+    "/guia-frontend-design", "/front", "/guia-frontend-design.html",
     "/guia-ui-ux-pro-max", "/guia-ui-ux-pro-max.html",
     "/guia-impeccable", "/guia-impeccable.html",
     "/guia-huashu-design", "/guia-huashu-design.html",
