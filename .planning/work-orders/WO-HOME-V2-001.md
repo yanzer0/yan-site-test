@@ -2,7 +2,7 @@
 work_order: WO-HOME-V2-001
 created: 2026-11-19
 updated: 2026-11-19
-status: active
+status: completed
 classe: interface
 risco: medio
 central_branch: feat/home-v2
@@ -30,7 +30,7 @@ scope_lock:
     background_jobs: []
   acceptance_ids: [AC-01, AC-02, AC-03]
   stop_when: [AC-01, AC-02, AC-03]
-  passed_acceptance_ids: []
+  passed_acceptance_ids: [AC-01, AC-02, AC-03]
 ---
 
 # Home useinfuser.com na identidade V2 clara
@@ -46,3 +46,11 @@ AC-02: QA a 1440 px e a 375 px sem rolagem horizontal, foco visivel, `prefers-re
 AC-03: https://useinfuser.com verificado em producao no navegador depois do deploy, so com o ok do Yan.
 
 Fora do escopo: paginas de produto, Central, formulario de diagnostico, layout global e middleware. Rollback: reverter o merge e redeployar a imagem anterior. Um executor, uma rodada.
+
+## Closeout em 19/11/2026
+
+AC-01 PASS: commits `3aa5d61` e `a9107b0`. A home tem hero, o que a Infuser faz, cinco produtos (Kit Segundo Cerebro, A Legiao, Estudio de CrIAcao, Kit de Skills, JARVIS Kit), a Central com 67 gratuitos lidos de `CATALOGO_CENTRAL` e o diagnostico. `npm run build` exit 0; vitest 768 aprovados e 10 pulados; eslint limpo nos arquivos tocados.
+
+AC-02 PASS: preview local a 1440 px e a 375 px com scrollWidth igual ao clientWidth e console sem erro; a entrada do hero e o campo de pontos respeitam `prefers-reduced-motion`. Yan aprovou o preview ("Pode subir").
+
+AC-03 PASS: `deploy.sh` na VPS com `useinfuser-site release a9107b075ffb is healthy`; `smoke.mjs` exit 0 no apex e no www. Em https://useinfuser.com a pagina nova abre com o titulo novo e sem erro no console; os links de produto, diagnostico, privacidade e termos respondem 200, e a Central, os guias e o Kit VS Code respondem 307 para o cadastro `/guias/acesso`, como antes.
