@@ -12,9 +12,21 @@ import {
 	WebGLRenderer,
 } from 'three';
 
-type DottedSurfaceProps = Omit<React.ComponentProps<'div'>, 'ref'>;
+interface DottedSurfaceProps extends Omit<React.ComponentProps<'div'>, 'ref'> {
+	/** Dot color as normalized RGB. Default: brand green #A8E84C. */
+	dotColor?: readonly [number, number, number];
+	/** Color the far dots fade into; match the page background. */
+	fogColor?: number;
+	dotOpacity?: number;
+}
 
-export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
+export function DottedSurface({
+	className,
+	dotColor = [0.66, 0.91, 0.3],
+	fogColor = 0x000000,
+	dotOpacity = 0.8,
+	...props
+}: DottedSurfaceProps) {
 	const containerRef = useRef<HTMLDivElement>(null);
 	const animationRef = useRef<number>(0);
 	const rendererRef = useRef<WebGLRenderer | null>(null);
@@ -33,7 +45,7 @@ export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
 		const AMOUNTY = 60;
 
 		const scene = new Scene();
-		scene.fog = new Fog(0x000000, 2000, 10000);
+		scene.fog = new Fog(fogColor, 2000, 10000);
 
 		const camera = new PerspectiveCamera(
 			60,
@@ -66,8 +78,7 @@ export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
 				const z = iy * SEPARATION - (AMOUNTY * SEPARATION) / 2;
 
 				positions.push(x, y, z);
-				// Brand green #A8E84C → RGB normalized
-				colors.push(0.66, 0.91, 0.30);
+				colors.push(dotColor[0], dotColor[1], dotColor[2]);
 			}
 		}
 
@@ -81,7 +92,7 @@ export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
 			size: 8,
 			vertexColors: true,
 			transparent: true,
-			opacity: 0.8,
+			opacity: dotOpacity,
 			sizeAttenuation: true,
 		});
 
@@ -143,6 +154,8 @@ export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
 			}
 			rendererRef.current = null;
 		};
+		// Colors are read once at mount; rebuilding the WebGL scene on a prop change is not wanted.
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	return (
