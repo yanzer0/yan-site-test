@@ -48,6 +48,7 @@
   font-style: normal;
   background: linear-gradient(transparent 60%, var(--lime) 60%);
   padding: 0 0.08em;
+  white-space: nowrap;
 }
 .hv-mono { font-family: var(--hv-mono), ui-monospace, monospace; }
 .hv-wrap { max-width: 1120px; margin: 0 auto; padding: 0 28px; }
