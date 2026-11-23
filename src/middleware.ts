@@ -186,6 +186,7 @@ export const config = {
     "/guia-reforma-com-ia", "/reforma", "/guia-reforma-com-ia.html",
     "/guia-claude-na-reuniao", "/reuniao", "/guia-claude-na-reuniao.html",
     "/guia-planilhas-com-claude", "/planilha", "/guia-planilhas-com-claude.html",
+    "/guia-scanner-de-skills", "/scanner", "/guia-scanner-de-skills.html",
     "/protocolo-de-autoria", "/protocolo-de-autoria.html",
     "/tutorial-maestri", "/tutorial-maestri.html",
     "/guia-skill-creator", "/guia-skill-creator.html",
