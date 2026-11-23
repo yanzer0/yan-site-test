@@ -185,6 +185,7 @@ export const config = {
     "/guia-tres-processos-claude", "/claude", "/guia-tres-processos-claude.html",
     "/guia-reforma-com-ia", "/reforma", "/guia-reforma-com-ia.html",
     "/guia-claude-na-reuniao", "/reuniao", "/guia-claude-na-reuniao.html",
+    "/guia-planilhas-com-claude", "/planilha", "/guia-planilhas-com-claude.html",
     "/protocolo-de-autoria", "/protocolo-de-autoria.html",
     "/tutorial-maestri", "/tutorial-maestri.html",
     "/guia-skill-creator", "/guia-skill-creator.html",
