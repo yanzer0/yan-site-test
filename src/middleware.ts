@@ -197,7 +197,7 @@ export const config = {
     "/guia-caveman", "/guia-caveman.html",
     "/guia-planning-with-files", "/guia-planning-with-files.html",
     "/guia-frontend-design", "/front", "/guia-frontend-design.html",
-    "/guia-ui-ux-pro-max", "/guia-ui-ux-pro-max.html",
+    "/guia-ui-ux-pro-max", "/paleta", "/guia-ui-ux-pro-max.html",
     "/guia-impeccable", "/guia-impeccable.html",
     "/guia-huashu-design", "/guia-huashu-design.html",
     "/guia-archify", "/guia-archify.html",
