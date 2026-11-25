@@ -2,7 +2,7 @@
 work_order: WO-GUIA-GTA-001
 created: 2026-11-25
 updated: 2026-11-25
-status: active
+status: complete
 classe: conteudo
 risco: baixo
 central_branch: claude/guia-gta-20261125
@@ -31,7 +31,7 @@ scope_lock:
     background_jobs: []
   acceptance_ids: [GGT-01, GGT-02, GGT-03]
   stop_when: [GGT-01, GGT-02, GGT-03]
-  passed_acceptance_ids: [GGT-01, GGT-02]
+  passed_acceptance_ids: [GGT-01, GGT-02, GGT-03]
 ---
 # Guia GTA do Reels de números em motion na Central
 
@@ -42,3 +42,5 @@ Objetivo: publicar "Uma conta. 45 segundos. Nenhum programa de edição" em `/gu
 - GGT-03: em produção, sem sessão as quatro portas redirecionam ao cadastro, o HTML servido é igual ao do commit, as quatro imagens respondem 200 e a Central mostra o card.
 
 Evidência local 25/11/2026: suíte completa 792 testes aprovados (10 pulados, os de HTTP que pedem servidor); `next build` sem erro, com `/gta` e `/guia-motion-numeros` estáticos e SHA-256 dos dois corpos prerenderizados igual ao do HTML (`9671f678...e411c6`). `next start` local com segredo sintético: as quatro portas deram 307 para `/guias/acesso?guia=motion-numeros` com `no-store`, e as quatro imagens 200 `image/webp`.
+
+Closeout 25/11/2026: `aea618b` no main e no ar (release `aea618bd8af5` healthy na VPS, health confirmado no apex e no `www`). Sem sessão, `/guia-motion-numeros`, `/gta`, `/guia-motion-numeros.html` e `/guias/motion-numeros` deram 307 para `/guias/acesso?guia=motion-numeros` com `no-store` nos dois hosts; as quatro imagens deram 200 `image/webp` com os tamanhos do commit. SHA-256 do HTML no container e do servido com sessão igual ao do commit (`9671f678...e411c6`). Central por sessão temporária de 5 minutos criada dentro do container, sem cadastro: antes 79 itens e 71 gratuitos, sem o card; depois 80 itens e 72 gratuitos, com o card `/guias/motion-numeros`.
