@@ -2,7 +2,7 @@
 work_order: WO-ESTUDIO-VENDAS-005
 created: 2026-11-25
 updated: 2026-11-25
-status: active
+status: complete
 classe: conteudo
 risco: baixo
 central_branch: claude/estudio-motion-20261125
@@ -25,7 +25,7 @@ scope_lock:
     background_jobs: []
   acceptance_ids: [AC-01, AC-02]
   stop_when: [AC-01, AC-02]
-  passed_acceptance_ids: []
+  passed_acceptance_ids: [AC-01, AC-02]
 ---
 # Página do Estúdio: 13 agentes (Motion design para todo comprador)
 
@@ -33,3 +33,5 @@ Pedido do Yan (25/11/2026): a página `/estudio` ainda diz 12 agentes e seis no 
 
 - AC-01: título, descrição, og:title, topo, seção de agentes, oferta e FAQ dizem 13 agentes e sete no PC; card do Motion design no grupo do PC; frame novo na faixa de saídas reais com vídeo 360x640 H.264 sem áudio e pôster WebP; print dos rolos e vídeo do topo (com o pôster) recapturados da interface real (origin/master do infuser-mcp) com o card novo, o texto de 13 agentes e sem dado de comprador; o vídeo antigo do topo abria em "12 agentes... Seis rodam no seu PC". Zero travessão; preço e checkout iguais.
 - AC-02: no ar, `/estudio` 200 público com title de 13 agentes, card e vídeo novos respondendo 200, nenhum "12 agentes" ou "Doze" no HTML servido; conferida em 1440 e 375 sem rolagem lateral e sem erro no console.
+
+Closeout 25/11/2026: `e0d1441` no ar (release `e0d144162273` healthy, health confirmado no apex e no `www`). Suíte local com 792 testes aprovados e build sem erro. Em produção, nos dois hosts: `/estudio` 200 com o title de 13 agentes, zero "12 agentes" e zero "Doze", card e frame do Motion design presentes, checkout e preço iguais; SHA-256 do HTML servido igual ao do commit; `ag-motion-design.mp4`, `ag-motion-design.webp` e `ui-agentes.mp4`, `ui-agentes.webp` e `ui-rolos.webp` (com `?v=20261125`, porque `/estudio/:path+` é `immutable`) responderam 200 byte a byte iguais ao commit. QA no navegador em 1440 e 375: zero rolagem lateral, zero erro de console, vídeo do topo tocando.
