@@ -71,6 +71,7 @@ const publicPaths = [
   "/estudio",
   "/kit-jarvis",
   "/kit-segundo-cerebro",
+  "/cerebro-genial",
   "/kit-skills",
   "/kit-vscode",
   "/legiao",
