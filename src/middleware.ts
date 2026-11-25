@@ -188,6 +188,7 @@ export const config = {
     "/guia-planilhas-com-claude", "/planilha", "/guia-planilhas-com-claude.html",
     "/guia-scanner-de-skills", "/scanner", "/guia-scanner-de-skills.html",
     "/guia-modelo-por-agente", "/modelo", "/guia-modelo-por-agente.html",
+    "/guia-motion-numeros", "/gta", "/guia-motion-numeros.html",
     "/protocolo-de-autoria", "/protocolo-de-autoria.html",
     "/tutorial-maestri", "/tutorial-maestri.html",
     "/guia-skill-creator", "/guia-skill-creator.html",
